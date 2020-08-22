@@ -1,0 +1,70 @@
+/*reset*/
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+
+  body {
+    background: #eee;
+    font-family: Arial;
+  }
+
+  /*envolve todo o nosso conteúdo*/
+  .tab {
+    width: 700px;
+    margin: 50px auto;
+  }
+
+  /*esconde o radio button*/
+  .tab input[type] {
+    display: none;
+  }
+
+  /*nossos próprios botões*/
+  .tab label {
+    display: block;
+    float: left;
+    padding: 12px 20px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color .3s;
+  }
+
+  /*ataca o label com hover e o radio button checkado*/
+  .tab label:hover,
+  .tab input:checked + label {
+    background: #5b9780;
+    color: #fff;
+  }
+
+  /*o conteúdo que mudar ao clicar nos boões*/
+  .tabs {
+    clear: both;
+    perspective: 400px;
+    -webkit-perspective: 400px;
+  }
+
+  /*aqui a nossa content*/
+  .tabs .content {
+    background: #fff;
+    width: 700px;
+    position: absolute;
+    border: 2px solid #5b9780;
+    padding: 10px 30px 40px;
+    line-height: 1.4em;
+    opacity: 0;
+    transform: rotateX(-20deg);
+    transform-origin: top center;
+    transition: opacity .3s, transform 1s;
+    z-index: 0;
+  }
+
+  /*aqui estão nosso links*/
+  #tab1:checked ~ .tabs .content:nth-of-type(1),
+  #tab2:checked ~ .tabs .content:nth-of-type(2),
+  #tab3:checked ~ .tabs .content:nth-of-type(3),
+  #tab4:checked ~ .tabs .content:nth-of-type(4) {
+    transform: rotateX(0);
+    opacity: 1;
+    z-index: 1;
+  }
