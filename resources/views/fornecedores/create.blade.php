@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<hr /> 
+<hr />
 
 <!--CEP/Endereço-->
 <div class="form-group row">
@@ -197,7 +197,7 @@
         <!-- {!! Form::text('bancoFavorecidoFornecedor', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!} -->
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    
+
     <select class="form-control" name="bancoFavorecidoFornecedor" id="bancoFavorecidoFornecedor">
                 @foreach ($todososbancos as $listabancos)
 
@@ -249,3 +249,14 @@
 
 
 @endsection
+
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+        .valido {
+            border: 1px solid green;
+        }
+        .invalido {
+            border: 1px solid red;
+        }
+</style>

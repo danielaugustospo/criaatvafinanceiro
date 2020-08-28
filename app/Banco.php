@@ -12,8 +12,11 @@ use Spatie\Permission\Traits\HasRoles;
 class Banco extends Model
 {
 
+    protected $table = 'banco';
+
     use Notifiable;
     use HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +27,8 @@ class Banco extends Model
 
     'nomeBanco',
     'codigoBanco',
+    'ativoBanco',
+    'excluidoBanco',
 
     ];
 

@@ -19,6 +19,10 @@ class CreateTableBancos extends Migration
             $table->string('nomeBanco');
             $table->string('codigoBanco');
 
+            $table->boolean('ativoBanco');
+            $table->boolean('excluidoBanco');
+
+
             $table->timestamps();
         });
     }

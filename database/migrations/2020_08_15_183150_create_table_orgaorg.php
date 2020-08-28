@@ -19,6 +19,10 @@ class CreateTableOrgaorg extends Migration
             $table->string('nome');
             $table->string('estadoOrgaoRG');
 
+            $table->boolean('ativoOrgaoRG');
+            $table->boolean('excluidoOrgaoRG');
+
+
             $table->timestamps();
         });
     }

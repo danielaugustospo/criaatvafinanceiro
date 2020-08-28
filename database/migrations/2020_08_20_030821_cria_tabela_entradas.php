@@ -28,6 +28,8 @@ class CriaTabelaEntradas extends Migration
             ->onDelete('cascade');
 
             $table->boolean('valorunitarioentrada');
+
+            $table->boolean('ativoentrada');
             $table->boolean('excluidoentrada');
 
             $table->timestamps();
@@ -43,5 +45,7 @@ class CriaTabelaEntradas extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('entradas');
+
     }
 }

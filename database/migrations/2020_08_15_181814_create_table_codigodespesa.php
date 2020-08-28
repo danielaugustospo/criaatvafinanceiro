@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableContas extends Migration
+class CreateTableCodigoDespesa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,21 @@ class CreateTableContas extends Migration
      */
     public function up()
     {
-        // Schema::create('conta', function (Blueprint $table) {
-            Schema::create('conta', function (Blueprint $table) {
+            Schema::create('codigodespesas', function (Blueprint $table) {
 
             $table->bigIncrements('id');
 
-            $table->string('numeroConta');
-            $table->string('agenciaConta');
+            $table->string('despesaCodigoDespesa');
 
 
-            $table->unsignedBigInteger('idBanco');
-            $table->foreign('idBanco')
+            $table->unsignedBigInteger('idGrupoCodigoDespesa');
+            $table->foreign('idGrupoCodigoDespesa')
             ->references('id')
-            ->on('banco')
+            ->on('grupodespesas')
             ->onDelete('cascade');
 
-            $table->boolean('ativoConta');
-            $table->boolean('excluidoConta');
+            $table->string('ativoCodigoDespesa');
+            $table->string('excluidoCodigoDespesa');
 
 
             $table->timestamps();
@@ -43,6 +41,6 @@ class CreateTableContas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conta');
+        Schema::dropIfExists('codigodespesas');
     }
 }

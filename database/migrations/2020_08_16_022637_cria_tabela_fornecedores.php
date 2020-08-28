@@ -81,5 +81,7 @@ class CriaTabelaFornecedores extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('fornecedores');
+
     }
 }

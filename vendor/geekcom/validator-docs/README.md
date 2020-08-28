@@ -1,31 +1,18 @@
-## user roles and permissions (acl) using spatie tutorial laravel 5.8
+# LaraValidator Docs - Brasil
+_Validação de documentos do Brasil usando **Laravel 6**_
 
-![Acl in Laravel 5.8](https://itsolutionstuff.com/upload/acl-in-laravel-5-8.png)
-![Acl in Laravel 5.8](https://itsolutionstuff.com/upload/laravel-5-8-acl.png)
-![Acl in Laravel 5.8](https://itsolutionstuff.com/upload/laravel-5-8-acl-2.png)
-![Acl in Laravel 5.8](https://itsolutionstuff.com/upload/laravel-5-8-acl-3.png)
+[![Build Status](https://travis-ci.org/geekcom/validator-docs.svg?branch=master)](https://travis-ci.org/geekcom/validator-docs)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/geekcom/validator-docs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/geekcom/validator-docs/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/geekcom/validator-docs/badge.svg?branch=master)](https://coveralls.io/github/geekcom/validator-docs?branch=master)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
+[![Total Downloads](https://poser.pugx.org/geekcom/validator-docs/downloads)](https://packagist.org/packages/geekcom/validator-docs)
+[![License](https://poser.pugx.org/geekcom/validator-docs/license)](https://packagist.org/packages/geekcom/validator-docs)
 
-You can follow step by step tutorial for user roles and permissions (acl) using spatie tutorial laravel 5.8 Here: https://itsolutionstuff.com/post/laravel-58-user-roles-and-permissions-tutorialexample.html
+> Para a versão compatível com Laravel 5 consulte o branch https://github.com/geekcom/validator-docs/tree/5.x.x
 
+Biblioteca Laravel para validação de CPF, CNPJ, CPF/CNPJ (quando salvos no mesmo atributo), CNH, PIS/PASEP/NIT/NIS, Título de Eleitor, Cartão Nacional de Saúde(CNS) e Certidões(nascimento/casamento/óbito).
 
-php artisan make:migration create_users_table --create=users
-
-php artisan make:migration add_votes_to_users_table --table=users
-
-php artisan migrate
-
-php artisan migrate --force
-
-php artisan migrate:refresh
-
-php artisan db:seed --class=PermissionTableSeeder
-php artisan db:seed --class=CreateAdminUserSeeder
-
-// Refresh the database and run all database seeds...
-php artisan migrate:refresh --seed
-
-----------------------------------------------------------------------------------------------------------------------------
-## Instalação Validador
+## Instalação
 
 No arquivo `composer.json`, adicione validator-docs como dependência do seu projeto:
 
@@ -203,3 +190,7 @@ public function store(Request $request)
 * **NIS** - https://www.4devs.com.br/gerador_de_pis_pasep
 * **CNS** - https://geradornv.com.br/gerador-cns/
 * **CERTIDÃO** - https://www.treinaweb.com.br/ferramentas-para-desenvolvedores/gerador/certidao
+
+Fique a vontade para contribuir fazendo um fork.
+
+Caso tenha alguma dúvida ou encontre algum bug, abra uma [issue](https://github.com/geekcom/validator-docs/issues) ou pesquise por issues antigas.

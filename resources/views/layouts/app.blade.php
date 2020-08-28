@@ -47,9 +47,9 @@
                         <!-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li> -->
                         @else
 
-                        @can('usuario-list')
+                        <!-- @can('usuario-list') -->
                             <li><a class="nav-link" href="{{ route('users.index') }}">Usuários</a></li>
-                        @endcan
+                        <!-- @endcan -->
                         @can('fornecedor-list')
                             <li><a class="nav-link" href="{{ route('fornecedores.index') }}">Fornecedores</a></li>
                         @endcan
@@ -85,7 +85,7 @@
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('contas.index') }}">Contas</a>
-                                
+
                                 @can('role-list')
                                     <a class="dropdown-item" href="{{ route('roles.index') }}">Regras</a>
                                 @endcan

@@ -27,8 +27,10 @@ class CriaTabelaBensPatrimoniais extends Migration
             ->on('products')
             ->onDelete('cascade');
 
-            $table->boolean('ativadoBensPatrimoniais');
-            $table->boolean('excluidoBensPatrimoniais');
+            $table->boolean('ativadobenspatrimoniais');
+            $table->boolean('excluidobenspatrimoniais');
+
+            $table->boolean('statusbenspatrimoniais');
 
             $table->timestamps();
 
@@ -43,5 +45,7 @@ class CriaTabelaBensPatrimoniais extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('benspatrimoniais');
+
     }
 }

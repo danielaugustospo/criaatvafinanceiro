@@ -30,6 +30,14 @@ class CriaTabelaSaidas extends Migration
             $table->boolean('ativadosaida');
             $table->boolean('excluidosaida');
 
+            $table->string('portadorsaida');
+            $table->string('datapararetiradasaida');
+            $table->string('dataretiradasaida');
+            $table->string('dataretornoretiradasaida');
+            $table->string('ocorrenciasaida');
+
+
+
             $table->timestamps();
 
         });
@@ -43,5 +51,7 @@ class CriaTabelaSaidas extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('saidas');
+
     }
 }

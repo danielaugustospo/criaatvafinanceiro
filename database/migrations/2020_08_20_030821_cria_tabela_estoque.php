@@ -43,5 +43,7 @@ class CriaTabelaEstoque extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('estoques');
+
     }
 }

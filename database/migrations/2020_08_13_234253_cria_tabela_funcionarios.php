@@ -55,6 +55,10 @@ class CriaTabelaFuncionarios extends Migration
             $table->string('nrcontafavorecidoFuncionario');
             $table->string('agenciafavorecidoFuncionario');
 
+            $table->boolean('ativoFuncionario');
+            $table->boolean('excluidoFuncionario');
+
+
             $table->timestamps();
             $table->softDeletes();
 

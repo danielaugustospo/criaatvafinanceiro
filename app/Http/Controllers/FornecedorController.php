@@ -62,7 +62,9 @@ class FornecedorController extends Controller
     {
 
         $request->validate([
-            'nomeFornecedor' => 'required|min:3',
+            'cpfFornecedor' => 'required|min:3|cpf|formato_cpf',
+            'cnpjFornecedor' => 'required|min:3|cnpj',
+            'emailFornecedor' => 'required|min:5',
 
         ]);
 

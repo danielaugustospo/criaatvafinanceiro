@@ -63,6 +63,10 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </div>
+
+{!! Form::hidden('ativoUser', '1', array('placeholder' => 'Ativo','class' => 'form-control')) !!}
+{!! Form::hidden('excluidoUser', '0', array('placeholder' => 'Excluido','class' => 'form-control')) !!}
+
 {!! Form::close() !!}
 
 <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
