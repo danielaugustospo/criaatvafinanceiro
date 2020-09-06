@@ -1,5 +1,3 @@
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
-</script>
 @extends('layouts.app')
 
 
@@ -18,7 +16,7 @@
 
 @if (count($errors) > 0)
 <div class="alert alert-danger">
-    <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -62,6 +60,11 @@
         </select>
     </div>
 </div>
+
+{!! Form::hidden('ativoConta', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoConta']) !!}
+{!! Form::hidden('excluidoConta', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoConta']) !!}
+
+
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 

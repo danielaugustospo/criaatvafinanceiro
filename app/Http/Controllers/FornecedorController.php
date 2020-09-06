@@ -61,12 +61,16 @@ class FornecedorController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
-            'cpfFornecedor' => 'required|min:3|cpf|formato_cpf',
+            'cpfFornecedor' => 'required|min:3|cpf|unique:fornecedores',
             'cnpjFornecedor' => 'required|min:3|cnpj',
             'emailFornecedor' => 'required|min:5',
 
+
+
         ]);
+
 
 
         Fornecedores::create($request->all());
@@ -145,4 +149,5 @@ class FornecedorController extends Controller
         return redirect()->route('fornecedores.index')
                         ->with('success','Fornecedor excluído com êxito!');
     }
+
 }

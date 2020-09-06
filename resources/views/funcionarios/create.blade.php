@@ -1,8 +1,4 @@
-<script
-        src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous">
-    </script>
+
 @extends('layouts.app')
 
 
@@ -21,7 +17,7 @@
 
 @if (count($errors) > 0)
   <div class="alert alert-danger">
-    <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
        @foreach ($errors->all() as $error)
          <li>{{ $error }}</li>
@@ -140,7 +136,7 @@
         <select class="form-control" name="orgaoRGFuncionario">
         @foreach ($todosorgaosrg as $listarg)
             <option value="{{$listarg->id}}">{{$listarg->nome}}</option>
-        @endforeach    
+        @endforeach
         </select>
     </div>
     <label for="expedicaoRGFuncionario" class="col-sm-2 col-form-label">Data de Emissão</label>
@@ -263,7 +259,7 @@
         <select class="form-control" name="bancoFuncionario">
         @foreach ($todososbancos as $bancos)
             <option value="{{$bancos->codigoBanco}}">Código: {{$bancos->codigoBanco}} - Banco: {{$bancos->nomeBanco}}</option>
-        @endforeach    
+        @endforeach
         </select>
         <!-- <datalist id="bancos">
             <option value="001">001 - Banco do Brasil</option>

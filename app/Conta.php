@@ -12,6 +12,8 @@ use Spatie\Permission\Traits\HasRoles;
 class Conta extends Model
 {
 
+    protected $table = 'conta';
+
     use Notifiable;
     use HasRoles;
 
@@ -25,6 +27,8 @@ class Conta extends Model
     'idBanco',
     'agenciaConta',
     'numeroConta',
+    'ativoConta',
+    'excluidoConta',
 
     ];
 

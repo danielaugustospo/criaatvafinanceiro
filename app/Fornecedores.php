@@ -12,6 +12,9 @@ use Spatie\Permission\Traits\HasRoles;
 class Fornecedores extends Model
 {
 
+
+    protected $table = 'fornecedores';
+
     use Notifiable;
     use HasRoles;
 

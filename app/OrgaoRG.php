@@ -25,6 +25,8 @@ class Orgaorg extends Model
 
     'nome',
     'estadoOrgaoRG',
+    'ativoOrgaoRG',
+    'excluidoOrgaoRG'
     ];
 
 

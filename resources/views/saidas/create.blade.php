@@ -1,5 +1,3 @@
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
-</script>
 @extends('layouts.app')
 
 
@@ -7,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Cadastro de Contas Bancárias</h2>
+            <h2>Cadastro de Saídas</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
@@ -18,7 +16,7 @@
 
 @if (count($errors) > 0)
 <div class="alert alert-danger">
-    <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>

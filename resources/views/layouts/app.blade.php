@@ -8,17 +8,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Gerenciamento Financeiro - Criaatva') }}</title>
     <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" ></script>
 
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" ></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+
+
     <script src="{{ asset('js/viacep.js') }}" defer></script>
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/inputmask5x/dist/inputmask.js') }}"></script> -->
+    <script src="{{ asset('js/inputmask5x/dist/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('js/inputmask5x/dist/bindings/inputmask.binding.js') }}"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -48,28 +56,37 @@
                         @else
 
                         <!-- @can('usuario-list') -->
-                            <li><a class="nav-link" href="{{ route('users.index') }}">Usuários</a></li>
+                        <li><a class="nav-link" href="{{ route('users.index') }}">Usuários</a></li>
                         <!-- @endcan -->
+                        @can('ordemdeservico-list')
+                        <li><a class="nav-link" href="{{ route('ordemdeservicos.index') }}">OS</a></li>
+                        @endcan
+                        @can('despesa-list')
+                        <li><a class="nav-link" href="{{ route('despesas.index') }}">Despesas</a></li>
+                        @endcan
+                        @can('verba-list')
+                        <li><a class="nav-link" href="{{ route('verbas.index') }}">Verbas</a></li>
+                        @endcan
                         @can('fornecedor-list')
-                            <li><a class="nav-link" href="{{ route('fornecedores.index') }}">Fornecedores</a></li>
+                        <li><a class="nav-link" href="{{ route('fornecedores.index') }}">Fornecedores</a></li>
                         @endcan
                         @can('cliente-list')
-                            <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
+                        <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
                         @endcan
                         @can('saidas-list')
-                            <li><a class="nav-link" href="{{ route('saidas.index') }}">Saídas</a></li>
+                        <li><a class="nav-link" href="{{ route('saidas.index') }}">Saídas</a></li>
                         @endcan
                         @can('entradas-list')
-                            <li><a class="nav-link" href="{{ route('entradas.index') }}">Entradas</a></li>
+                        <li><a class="nav-link" href="{{ route('entradas.index') }}">Entradas</a></li>
                         @endcan
                         @can('estoque-list')
-                            <li><a class="nav-link" href="{{ route('estoque.index') }}">Estoque</a></li>
+                        <li><a class="nav-link" href="{{ route('estoque.index') }}">Estoque</a></li>
                         @endcan
                         @can('funcionario-list')
-                            <li><a class="nav-link" href="{{ route('funcionarios.index') }}">Funcionários</a></li>
+                        <li><a class="nav-link" href="{{ route('funcionarios.index') }}">Funcionários</a></li>
                         @endcan
                         @can('benspatrimoniais-list')
-                            <li><a class="nav-link" href="{{ route('benspatrimoniais.index') }}">Bens Patrimoniais</a></li>
+                        <li><a class="nav-link" href="{{ route('benspatrimoniais.index') }}">Bens Patrimoniais</a></li>
                         @endcan
 
 
@@ -81,16 +98,22 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 @can('banco-list')
-                                    <a class="dropdown-item" href="{{ route('bancos.index') }}">Bancos</a>
+                                <a class="dropdown-item" href="{{ route('bancos.index') }}">Bancos</a>
+                                @endcan
+                                @can('formapagamento-list')
+                                <a class="dropdown-item" href="{{ route('formapagamentos.index') }}">Formas de Pagamento</a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('contas.index') }}">Contas</a>
 
+                                @can('codigodespesa-list')
+                                <a class="dropdown-item" href="{{ route('codigodespesas.index') }}">Código Despesas</a>
+                                @endcan
                                 @can('role-list')
-                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Regras</a>
+                                <a class="dropdown-item" href="{{ route('roles.index') }}">Regras</a>
                                 @endcan
                                 @can('orgaorg-list')
-                                    <a class="dropdown-item" href="{{ route('orgaosrg.index') }}">Órgãos RG</a>
+                                <a class="dropdown-item" href="{{ route('orgaosrg.index') }}">Órgãos RG</a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('products.index') }}">Tipo de Bens Patrimoniais</a>

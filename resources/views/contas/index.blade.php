@@ -27,8 +27,8 @@
 <table class="table table-bordered mt-2">
         <tr class="trTituloTabela">
             <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Nome Conta</th>
-            <th class="thTituloTabela">Código Conta</th>
+            <th class="thTituloTabela">Agência Conta</th>
+            <th class="thTituloTabela">Conta</th>
             <th class="thTituloTabela" width="280px">Ação</th>
         </tr>
         @foreach ($data as $conta)

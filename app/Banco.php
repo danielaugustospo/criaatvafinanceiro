@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 class Banco extends Model
 {
 
-    protected $table = 'banco';
+    protected $table = 'bancos';
 
     use Notifiable;
     use HasRoles;

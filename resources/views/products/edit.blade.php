@@ -16,7 +16,7 @@
 
     @if ($errors->any())
         <div class="alert alert-danger">
-            <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+            <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -42,6 +42,17 @@
 		        <div class="form-group">
 		            <strong>Detalhes:</strong>
 		            <textarea class="form-control" style="height:150px" name="detail" placeholder="Detalhes">{{ $product->detail }}</textarea>
+		        </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+		        <div class="form-group">
+		            <strong>Ativo:</strong>
+                    <input type="text" name="ativotipobenspatrimoniais" value="{{$product->ativotipobenspatrimoniais}}" class="form-control" placeholder="Ativo">
+		        </div>
+		        <div class="form-group">
+		            <strong>Excluido:</strong>
+                    <input type="text" name="excluidotipobenspatrimoniais" value="{{$product->excluidotipobenspatrimoniais}}" class="form-control" placeholder="Excluido">
 		        </div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">

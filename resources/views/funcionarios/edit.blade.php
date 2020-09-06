@@ -16,7 +16,7 @@
 
 @if (count($errors) > 0)
   <div class="alert alert-danger">
-    <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
        @foreach ($errors->all() as $error)
          <li>{{ $error }}</li>
@@ -47,10 +47,10 @@
             <select class="form-control">
             @foreach ($bancoselecionado as $banco)
                 <option value="{{$banco->codigoBanco}}">{{$banco->nomeBanco}}</option>
-            @endforeach  
+            @endforeach
             @foreach ($banconaoselecionado as $banco)
                 <option value="{{$banco->codigoBanco}}">{{$banco->nomeBanco}}</option>
-            @endforeach  
+            @endforeach
 
 
             </select>

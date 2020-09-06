@@ -37,4 +37,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('entradas','EntradasController');
     Route::resource('saidas','SaidasController');
     Route::resource('clientes','ClientesController');
+    Route::resource('formapagamentos','FormaPagamentoController');
+    Route::resource('ordemdeservicos','OrdemdeServicoController');
+    Route::resource('codigodespesas','CodigoDespesaController');
+    Route::resource('despesas','DespesaController');
+    Route::resource('verbas','VerbasController');
 });

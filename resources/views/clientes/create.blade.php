@@ -16,7 +16,7 @@
 
 @if (count($errors) > 0)
   <div class="alert alert-danger">
-    <strong>Whoops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
+    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
        @foreach ($errors->all() as $error)
          <li>{{ $error }}</li>
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<hr /> 
+<hr />
 
 <!--CEP/Endereço-->
 <div class="form-group row">
@@ -197,7 +197,7 @@
         <!-- {!! Form::text('bancoFavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!} -->
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    
+
     <select class="form-control" name="bancoFavorecidoCliente" id="bancoFavorecidoCliente">
                 @foreach ($todososbancos as $listabancos)
 

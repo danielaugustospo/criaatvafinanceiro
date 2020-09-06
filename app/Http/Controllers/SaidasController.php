@@ -8,6 +8,8 @@ use App\Saidas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class SaidasController extends Controller
 {
@@ -43,7 +45,10 @@ class SaidasController extends Controller
      */
     public function create()
     {
-        return view('saidas.create');
+
+        $banco =  DB::select('select * from bancos');
+
+        return view('saidas.create', compact('banco'));
     }
 
 
