@@ -50,10 +50,10 @@
 		            <strong>Ativo:</strong>
                     <input type="text" name="ativotipobenspatrimoniais" value="{{$product->ativotipobenspatrimoniais}}" class="form-control" placeholder="Ativo">
 		        </div>
-		        <div class="form-group">
-		            <strong>Excluido:</strong>
-                    <input type="text" name="excluidotipobenspatrimoniais" value="{{$product->excluidotipobenspatrimoniais}}" class="form-control" placeholder="Excluido">
-		        </div>
+		        <!-- <div class="form-group">
+		            <strong>Excluido:</strong> -->
+                    <input type="hidden" name="excluidotipobenspatrimoniais" value="{{$product->excluidotipobenspatrimoniais}}" class="form-control" placeholder="Excluido">
+		        <!-- </div> -->
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
 		      <button type="submit" class="btn btn-primary">Salvar</button>

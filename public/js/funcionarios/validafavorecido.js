@@ -2,6 +2,9 @@ $(document).ready(function () {
     $('#esconde').hide();
     $('#div_dados_favorecido').hide();
 
+    $('#escondereceita').hide();
+    $('#div_cadastro_receita').hide();
+
     $('#divcurso').hide();
 
     $('input[name=nomefavorecidoFuncionario]').val('000000');
@@ -46,6 +49,22 @@ $('#esconde').on('click', function () {
     $('input[name=nrcontafavorecidoFuncionario]').val('000000');
     $('input[name=agenciafavorecidoFuncionario]').val('000000');
 
+})
+
+$('#revealreceita').on('click', function () {
+    $('#ajax-content-receita').show('#div_cadastro_receita');
+    $('#revealreceita').hide();
+    $('#escondereceita').show();
+    $('#div_cadastro_receita').show();
+
+})
+
+
+$('#escondereceita').on('click', function () {
+    $('#ajax-content-receita').hide('#div_cadastro_receita');
+    $('#escondereceita').hide();
+    $('#revealreceita').show();
+    $('input[name=valorreceita]').val('0,00');
 
 })
 

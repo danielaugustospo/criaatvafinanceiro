@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 
 
 use App\Product;
+use Freshbitsweb\Laratables\Laratables;
 use Illuminate\Http\Request;
 
 
 class ProductController extends Controller
-{ 
+{
     /**
      * Display a listing of the resource.
      *
@@ -34,6 +35,10 @@ class ProductController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(Product::class);
+    }
 
     /**
      * Show the form for creating a new resource.

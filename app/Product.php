@@ -14,4 +14,9 @@ class Product extends Model
     protected $fillable = [
         'name', 'detail','ativotipobenspatrimoniais','excluidotipobenspatrimoniais',
     ];
+
+    public static function laratablesCustomAction($tipoBensPatrimoniaisModel)
+    {
+        return view('products.action', compact('tipoBensPatrimoniaisModel'))->render();
+    }
 }

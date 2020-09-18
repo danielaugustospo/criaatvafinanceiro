@@ -32,4 +32,9 @@ class FormaPagamento extends Model
     ];
 
 
+    public static function laratablesCustomAction($formaPagamentoModel)
+    {
+        return view('formapagamentos.action', compact('formaPagamentoModel'))->render();
+    }
+
 }

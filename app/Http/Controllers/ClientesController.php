@@ -45,8 +45,7 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        // $banco =  DB::select('select * from bancos where id = :id', ['id' => $conta->idBanco]);
-        $todososbancos =  DB::select('select distinct * from bancos');
+        $todososbancos =  DB::select('select distinct * from banco');
 
         return view('clientes.create', compact('todososbancos'));
     }

@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\FormaPagamento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Freshbitsweb\Laratables\Laratables;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class FormaPagamentoController extends Controller
@@ -33,6 +35,12 @@ class FormaPagamentoController extends Controller
         $data = FormaPagamento::orderBy('id','DESC')->paginate(5);
         return view('formapagamentos.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(FormaPagamento::class);
     }
 
 
@@ -96,6 +104,7 @@ class FormaPagamentoController extends Controller
         $formapagamento = FormaPagamento::find($id);
         $roles = FormaPagamento::pluck('nomeFormaPagamento','nomeFormaPagamento')->all();
         $bancoRole = $formapagamento->roles->pluck('nomeFormaPagamento','nomeFormaPagamento')->all();
+
 
         return view('formapagamentos.edit',compact('formapagamento','roles','bancoRole'));
 

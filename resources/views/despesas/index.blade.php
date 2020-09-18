@@ -23,39 +23,75 @@
 @endif
 
 
+<script>
 
-<table class="table table-bordered mt-2">
 
-<tr class="trTituloTabela">
-            <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Nome Despesa</th>
-            <th class="thTituloTabela">N° OS</th>
-            <th class="thTituloTabela" width="280px">Ação</th>
-        </tr>
-        @foreach ($data as $despesa)
+$(document).ready(function(){
 
-        <tr>
-	        <td>{{ $despesa->id }}</td>
-	        <td>{{ $despesa->descricaoDespesa }}</td>
-	        <td>{{ $despesa->idOS }}</td>
-	        <td>
-                <form action="{{ route('despesas.destroy',$despesa->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('despesas.show',$despesa->id) }}">Visualizar</a>
-                    @can('despesa-edit')
-                        <a class="btn btn-primary" href="{{ route('despesas.edit',$despesa->id) }}">Editar</a>
-                    @endcan
 
-                    @csrf
-                    @method('DELETE')
-                    @can('despesa-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
+    $("#despesaModel").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabeladespesa') }}",
 
-    </table>
+        columns: [
+            { name: 'id' },
+            { name: 'idCodigoDespesas' },
+            { name: 'idOS' },
+            { name: 'descricaoDespesa' },
+            { name: 'action', orderable: false, searchable:false},
+
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+    var table = $('#despesaModel').DataTable();
+
+
+     $('#despesaModel tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "despesas/"+data[0];
+    } );
+     $('#despesaModel tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "despesas/"+ data[0] + "/edit";
+    } );
+
+
+});
+</script>
+
+
+<div class="container">
+        <table id="despesaModel" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+
+            <tr>
+                    <th>Id</th>
+                    <th>Código Despesas</th>
+                    <th>Id OS</th>
+                    <th>Descrição Despesa</th>
+                    <th>Ações</th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+
+
+
 
 <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
 @endsection

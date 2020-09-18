@@ -9,6 +9,12 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('users.index') }}"> Voltar</a>
+            <hr />
+            <br>
+            <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Editar</a>
+            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
+                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
         </div>
     </div>
 </div>

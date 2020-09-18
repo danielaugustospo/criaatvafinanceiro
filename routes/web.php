@@ -23,6 +23,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/tabelabanco', 'BancoController@basicLaratableData')->name('tabelabanco');
+Route::get('/tabelaOS', 'OrdemdeServicoController@basicLaratableData')->name('tabelaOS');
+Route::get('/tabelausuarios', 'UserController@basicLaratableData')->name('tabelausuarios');
+Route::get('/tabelapercentualajax', 'TabelaPercentualController@basicLaratableData')->name('tabelapercentualajax');
+Route::get('/tabelareceita', 'ReceitaController@basicLaratableData')->name('tabelareceita');
+Route::get('/tabeladespesa', 'DespesaController@basicLaratableData')->name('tabeladespesa');
+Route::get('/tabelaformapagamento', 'FormaPagamentoController@basicLaratableData')->name('tabelaformapagamento');
+Route::get('/tabelacontas', 'ContaController@basicLaratableData')->name('tabelacontas');
+Route::get('/tabelacodigodespesas', 'CodigoDespesaController@basicLaratableData')->name('tabelacodigodespesas');
+Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('tabelaorgaosrg');
+Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
+Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
+
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
@@ -42,4 +56,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('codigodespesas','CodigoDespesaController');
     Route::resource('despesas','DespesaController');
     Route::resource('verbas','VerbasController');
+    Route::resource('tabelapercentual','TabelaPercentualController');
+    Route::resource('receita','ReceitaController');
+
 });

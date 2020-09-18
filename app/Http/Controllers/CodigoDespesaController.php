@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\CodigoDespesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Freshbitsweb\Laratables\Laratables;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class CodigoDespesaController extends Controller
@@ -35,6 +37,10 @@ class CodigoDespesaController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(CodigoDespesa::class);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -43,7 +49,9 @@ class CodigoDespesaController extends Controller
      */
     public function create()
     {
-        return view('codigodespesas.create');
+        $grupodespesas = DB::select('select * from grupodespesas  where  ativoDespesa = 1');
+
+        return view('codigodespesas.create', compact('grupodespesas'));
     }
 
 
@@ -96,9 +104,9 @@ class CodigoDespesaController extends Controller
     public function edit($id)
     {
         $codigodespesa = CodigoDespesa::find($id);
-        $roles = CodigoDespesa::pluck('nomeBanco','nomeBanco')->all();
+        // $roles = CodigoDespesa::pluck('nomeBanco','nomeBanco')->all();
 
-        return view('codigodespesas.edit',compact('codigodespesa','roles',));
+        return view('codigodespesas.edit',compact('codigodespesa'));
 
     }
 

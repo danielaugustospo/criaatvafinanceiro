@@ -96,7 +96,7 @@ trait Modifiers
      */
     private function nextOrPreviousDay($weekday = true, $forward = true)
     {
-        /** @var CarbonInterface $step */
+        /** @var CarbonInterface $date */
         $date = $this;
         $step = $forward ? 1 : -1;
 
@@ -425,6 +425,16 @@ trait Modifiers
     }
 
     /**
+     * Calls \DateTime::modify if mutable or \DateTimeImmutable::modify else.
+     *
+     * @see https://php.net/manual/en/datetime.modify.php
+     */
+    public function modify($modify)
+    {
+        return parent::modify((string) $modify);
+    }
+
+    /**
      * Similar to native modify() method of DateTime but can handle more grammars.
      *
      * @example
@@ -447,6 +457,11 @@ trait Modifiers
             $match[1] = $test->$method($this) ? $match[1].' day' : 'today';
 
             return $match[1].' '.$match[2];
-        }, trim($modifier)));
+        }, strtr(trim($modifier), [
+            ' at ' => ' ',
+            'just now' => 'now',
+            'after tomorrow' => 'tomorrow +1 day',
+            'before yesterday' => 'yesterday -1 day',
+        ])));
     }
 }

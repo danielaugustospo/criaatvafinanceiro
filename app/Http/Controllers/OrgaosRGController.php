@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\OrgaoRG;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Freshbitsweb\Laratables\Laratables;
 use Spatie\Permission\Models\Role;
 
 class OrgaosRGController extends Controller
@@ -33,6 +34,13 @@ class OrgaosRGController extends Controller
         $data = OrgaoRG::orderBy('id','DESC')->paginate(5);
         return view('orgaosrg.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+
+
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(OrgaoRG::class);
     }
 
 

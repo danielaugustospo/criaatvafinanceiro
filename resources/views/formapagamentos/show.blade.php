@@ -9,6 +9,19 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('formapagamentos.index') }}"> Voltar</a>
+            <hr />
+            <br>
+            <form action="{{ route('formapagamentos.destroy',$formapagamento->id) }}" method="POST">
+                    @can('formapagamento-edit')
+                        <a class="btn btn-primary" href="{{ route('formapagamentos.edit',$formapagamento->id) }}">Editar</a>
+                    @endcan
+
+                    @csrf
+                    @method('DELETE')
+                    @can('formapagamento-delete')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    @endcan
+                </form>
         </div>
     </div>
 </div>

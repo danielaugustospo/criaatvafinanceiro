@@ -47,14 +47,14 @@
 </div>
 
 <div class="form-group row">
-    <label for="codigoBanco" class="col-sm-2 col-form-label">Id Conta</label>
-    <div class="col-sm-2">
+    <label for="codigoBanco" class="col-sm-2 col-form-label">Selcione o Banco</label>
+    <div class="col-sm-12">
         <!-- {!! Form::text('idBanco', '', ['placeholder' => 'Id Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idBanco']) !!} -->
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-        <select class="form-control" name="idBanco" id="idBanco">
+        <select class="selecionaComInput form-control" name="idBanco" id="idBanco">
             @foreach ($banco as $dadosBanco)
 
-            <option value="{{ $dadosBanco->id }}">{{ $dadosBanco->nomeBanco }}</option>
+            <option value="{{ $dadosBanco->id }}">Código: {{ $dadosBanco->codigoBanco }} - Banco: {{ $dadosBanco->nomeBanco }}</option>
             @endforeach
 
         </select>

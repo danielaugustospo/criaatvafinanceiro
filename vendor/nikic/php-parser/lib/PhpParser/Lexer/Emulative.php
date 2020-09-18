@@ -7,17 +7,22 @@ use PhpParser\ErrorHandler;
 use PhpParser\Lexer;
 use PhpParser\Lexer\TokenEmulator\CoaleseEqualTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\FnTokenEmulator;
+use PhpParser\Lexer\TokenEmulator\MatchTokenEmulator;
+use PhpParser\Lexer\TokenEmulator\NullsafeTokenEmulator;
+use PhpParser\Lexer\TokenEmulator\NumericLiteralSeparatorEmulator;
 use PhpParser\Lexer\TokenEmulator\TokenEmulatorInterface;
+use PhpParser\Parser\Tokens;
 
 class Emulative extends Lexer
 {
-    const PHP_7_3 = '7.3.0dev';
-    const PHP_7_4 = '7.4.0dev';
+    const PHP_7_3 = '7.3dev';
+    const PHP_7_4 = '7.4dev';
+    const PHP_8_0 = '8.0dev';
 
     const FLEXIBLE_DOC_STRING_REGEX = <<<'REGEX'
 /<<<[ \t]*(['"]?)([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\1\r?\n
 (?:.*\r?\n)*?
-(?<indentation>\h*)\2(?![a-zA-Z_\x80-\xff])(?<separator>(?:;?[\r\n])?)/x
+(?<indentation>\h*)\2(?![a-zA-Z0-9_\x80-\xff])(?<separator>(?:;?[\r\n])?)/x
 REGEX;
 
     /** @var mixed[] Patches used to reverse changes introduced in the code */
@@ -26,21 +31,26 @@ REGEX;
     /** @var TokenEmulatorInterface[] */
     private $tokenEmulators = [];
 
+    /** @var string */
+    private $targetPhpVersion;
+
     /**
-     * @param mixed[] $options
+     * @param mixed[] $options Lexer options. In addition to the usual options,
+     *                         accepts a 'phpVersion' string that specifies the
+     *                         version to emulated. Defaults to newest supported.
      */
     public function __construct(array $options = [])
     {
+        $this->targetPhpVersion = $options['phpVersion'] ?? Emulative::PHP_8_0;
+        unset($options['phpVersion']);
+
         parent::__construct($options);
 
-        // prepare token emulators
         $this->tokenEmulators[] = new FnTokenEmulator();
+        $this->tokenEmulators[] = new MatchTokenEmulator();
         $this->tokenEmulators[] = new CoaleseEqualTokenEmulator();
-
-        // add emulated tokens here
-        foreach ($this->tokenEmulators as $emulativeToken) {
-            $this->tokenMap[$emulativeToken->getTokenId()] = $emulativeToken->getParserTokenId();
-        }
+        $this->tokenEmulators[] = new NumericLiteralSeparatorEmulator();
+        $this->tokenEmulators[] = new NullsafeTokenEmulator();
     }
 
     public function startLexing(string $code, ErrorHandler $errorHandler = null) {
@@ -57,14 +67,6 @@ REGEX;
         // 1. emulation of heredoc and nowdoc new syntax
         $preparedCode = $this->processHeredocNowdoc($code);
         parent::startLexing($preparedCode, $collector);
-
-        // add token emulation
-        foreach ($this->tokenEmulators as $emulativeToken) {
-            if ($emulativeToken->isEmulationNeeded($code)) {
-                $this->tokens = $emulativeToken->emulate($code, $this->tokens);
-            }
-        }
-
         $this->fixupTokens();
 
         $errors = $collector->getErrors();
@@ -72,6 +74,19 @@ REGEX;
             $this->fixupErrors($errors);
             foreach ($errors as $error) {
                 $errorHandler->handleError($error);
+            }
+        }
+
+        foreach ($this->tokenEmulators as $tokenEmulator) {
+            $emulatorPhpVersion = $tokenEmulator->getPhpVersion();
+            if (version_compare(\PHP_VERSION, $emulatorPhpVersion, '<')
+                    && version_compare($this->targetPhpVersion, $emulatorPhpVersion, '>=')
+                    && $tokenEmulator->isEmulationNeeded($code)) {
+                $this->tokens = $tokenEmulator->emulate($code, $this->tokens);
+            } else if (version_compare(\PHP_VERSION, $emulatorPhpVersion, '>=')
+                    && version_compare($this->targetPhpVersion, $emulatorPhpVersion, '<')
+                    && $tokenEmulator->isEmulationNeeded($code)) {
+                $this->tokens = $tokenEmulator->reverseEmulate($code, $this->tokens);
             }
         }
     }

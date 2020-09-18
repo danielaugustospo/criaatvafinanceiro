@@ -9,6 +9,20 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('orgaosrg.index') }}"> Voltar</a>
+            <hr />
+            <br>
+            <form action="{{ route('orgaosrg.destroy',$orgaorg->id) }}" method="POST">
+                    @can('orgaorg-edit')
+                        <a class="btn btn-primary" href="{{ route('orgaosrg.edit',$orgaorg->id) }}">Editar</a>
+                    @endcan
+
+                    @csrf
+                    @method('DELETE')
+                    @can('orgaorg-delete')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    @endcan
+                </form>
+
         </div>
     </div>
 </div>
@@ -25,16 +39,6 @@
         <div class="form-group">
             <strong>Unidade Federativa:</strong>
             {{ $orgaorg->estadoOrgaoRG }}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Regras:</strong>
-            @if(!empty($orgaorg->getRoleNames()))
-                @foreach($orgaorg->getRoleNames() as $v)
-                    <label class="badge badge-success">{{ $v }}</label>
-                @endforeach
-            @endif
         </div>
     </div>
 </div>

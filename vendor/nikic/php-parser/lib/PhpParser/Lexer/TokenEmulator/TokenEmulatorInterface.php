@@ -2,11 +2,10 @@
 
 namespace PhpParser\Lexer\TokenEmulator;
 
+/** @internal */
 interface TokenEmulatorInterface
 {
-    public function getTokenId(): int;
-
-    public function getParserTokenId(): int;
+    public function getPhpVersion(): string;
 
     public function isEmulationNeeded(string $code): bool;
 
@@ -14,4 +13,9 @@ interface TokenEmulatorInterface
      * @return array Modified Tokens
      */
     public function emulate(string $code, array $tokens): array;
+
+    /**
+     * @return array Modified Tokens
+     */
+    public function reverseEmulate(string $code, array $tokens): array;
 }

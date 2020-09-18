@@ -17,45 +17,90 @@
 
 
 @if ($message = Session::get('success'))
-    <div class="alert alert-success">
-        <p>{{ $message }}</p>
-    </div>
+<div class="alert alert-success">
+    <p>{{ $message }}</p>
+</div>
 @endif
 
 
+<script>
 
-<table class="table table-bordered mt-2">
 
-<tr class="trTituloTabela">
-            <th class="thTituloTabela">OS n°</th>
-            <th class="thTituloTabela">Nome OS</th>
-            <th class="thTituloTabela">Cliente</th>
-            <th class="thTituloTabela" width="280px">Ação</th>
-        </tr>
-        @foreach ($data as $ordemdeservico)
+$(document).ready(function(){
 
-        <tr>
-	        <td>{{ $ordemdeservico->id }}</td>
-	        <td>{{ $ordemdeservico->eventoOrdemdeServico }}</td>
-	        <td>{{ $ordemdeservico->clienteOrdemdeServico }}</td>
-	        <td>
-                <form action="{{ route('ordemdeservicos.destroy',$ordemdeservico->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('ordemdeservicos.show',$ordemdeservico->id) }}">Visualizar</a>
-                    @can('ordemdeservico-edit')
-                        <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit',$ordemdeservico->id) }}">Editar</a>
-                    @endcan
 
-                    @csrf
-                    @method('DELETE')
-                    @can('ordemdeservico-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
+    $("#osModel").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabelaOS') }}",
 
-    </table>
+        columns: [
+            { name: 'id' },
+            { name: 'eventoOrdemdeServico' },
+            { name: 'clienteOrdemdeServico' },
+            { name: 'action', orderable: false, searchable:false},
+
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+    var table = $('#osModel').DataTable();
+
+
+     $('#osModel tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "ordemdeservicos/"+data[0];
+    } );
+     $('#osModel tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "ordemdeservicos/"+ data[0] + "/edit";
+    } );
+
+
+    $('#osModel tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+
+
+});
+</script>
+
+
+<div class="container">
+        <table id="osModel" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+
+            <tr>
+                    <th>OS n°</th>
+                    <th>Nome OS</th>
+                    <th>Cliente</th>
+                    <th>Ações</th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+
+
+
+
+
+
+
 
 <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
 @endsection

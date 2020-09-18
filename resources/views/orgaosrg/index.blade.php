@@ -24,6 +24,79 @@
 
 
 
+
+<script>
+
+
+$(document).ready(function(){
+
+
+    $("#orgaosrgModel").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabelaorgaosrg') }}",
+
+        columns: [
+            { name: 'id' },
+            { name: 'nome' },
+            { name: 'estadoOrgaoRG' },
+            { name: 'action', orderable: false, searchable:false},
+
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+
+    var table = $('#orgaosrgModel').DataTable();
+
+
+     $('#orgaosrgModel tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "orgaosrg/"+data[0];
+    } );
+     $('#orgaosrgModel tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "orgaosrg/"+ data[0] + "/edit";
+    } );
+
+
+
+});
+</script>
+
+
+<div class="container">
+        <table id="orgaosrgModel" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+
+            <tr>
+                    <th>Id</th>
+                    <th>Nome Órgão</th>
+                    <th>Unidade Federativa (Estado)</th>
+                    <th>Ações</th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+
+
+
+<!--
+
+
 <table class="table table-bordered mt-2">
         <tr>
             <th>Id</th>
@@ -53,7 +126,7 @@
 	        </td>
 	    </tr>
         @endforeach
-    </table>
+    </table> -->
 
 
 <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>

@@ -8,6 +8,10 @@ use App\Banco;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Freshbitsweb\Laratables\Laratables;
+
+
 
 class BancoController extends Controller
 {
@@ -33,6 +37,13 @@ class BancoController extends Controller
         $data = Banco::orderBy('id','DESC')->paginate(5);
         return view('bancos.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
+
+
+    }
+
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(Banco::class);
     }
 
 

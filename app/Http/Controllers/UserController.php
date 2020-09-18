@@ -10,6 +10,8 @@ use App\User;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
+use Freshbitsweb\Laratables\Laratables;
+
 
 
 class UserController extends Controller
@@ -35,6 +37,11 @@ class UserController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
+
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(User::class);
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -60,6 +60,8 @@ class Funcionario extends Model
     'bancofavorecidoFuncionario',
     'nrcontafavorecidoFuncionario',
     'agenciafavorecidoFuncionario',
+    'ativoFuncionario',
+    'excluidoFuncionario'
     ];
 
 

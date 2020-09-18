@@ -22,9 +22,81 @@
     </div>
 @endif
 
+<script>
 
 
-<table class="table table-bordered mt-2">
+$(document).ready(function(){
+    
+    
+    $("#bancos").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabelabanco') }}",
+        
+        columns: [
+            { name: 'id' },
+            { name: 'nomeBanco' },
+            { name: 'codigoBanco' },
+            { name: 'ativoBanco' },
+            { name: 'action', orderable: false, searchable:false},
+            
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+
+    var table = $('#bancos').DataTable();
+     
+
+     $('#bancos tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "bancos/"+data[0];
+    } );
+     $('#bancos tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "bancos/"+ data[0] + "/edit";
+    } );
+    //  $('#bancos tbody').on( 'click', '#excluir', function () {
+    //     var data = table.row( $(this).parents('tr') ).data();
+    //     location.href = "bancos/destroy/" + data[0]);
+    // } );
+
+ 
+});
+</script>
+
+
+<div class="container">
+        <table id="bancos" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+    
+            <tr>
+                    <th>Id</th>
+                    <th>Nome Banco</th>
+                    <th>Código Banco</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
+                </tr>
+              
+            </thead>
+        </table>
+    </div>
+
+
+
+<!-- <table class="table table-bordered mt-2">
 
 <tr class="trTituloTabela">
             <th class="thTituloTabela">Id</th>
@@ -55,7 +127,7 @@
 	    </tr>
         @endforeach
 
-    </table>
+    </table> -->
 
 <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
 @endsection

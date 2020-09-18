@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Conta;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Freshbitsweb\Laratables\Laratables;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +40,11 @@ class ContaController extends Controller
     }
 
 
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(Conta::class);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -47,7 +53,7 @@ class ContaController extends Controller
     public function create(Request $request)
     {
 
-        $banco =  DB::select('select * from bancos');
+        $banco =  DB::select('select * from banco');
         // $banco = Banco::show($request->all());
 
         // var_dump($banco);
@@ -97,8 +103,8 @@ class ContaController extends Controller
         {
             $role = Role::find($id);
             // $idBancoJoinConta ='';
-            $idBancoJoinConta = Conta::join("bancos", "contas.idBanco", "=", "bancos.id")
-                ->where("contas.idbanco", $id)
+            $idBancoJoinConta = Conta::join("banco", "conta.idBanco", "=", "banco.id")
+                ->where("conta.idbanco", $id)
                 ->get();
 
 
@@ -120,8 +126,8 @@ class ContaController extends Controller
         $roles = Conta::pluck('numeroConta', 'numeroConta')->all();
         $contaRole = $conta->roles->pluck('numeroConta', 'numeroConta')->all();
 
-        $banco =  DB::select('select * from bancos where id = :id', ['id' => $conta->idBanco]);
-        $todososbancos =  DB::select('select distinct * from bancos');
+        $banco =  DB::select('select * from banco where id = :id', ['id' => $conta->idBanco]);
+        $todososbancos =  DB::select('select * from banco where ativoBanco = 1 order by :bancoConta asc', ['bancoConta' => $conta->idBanco]);
 
         return view('contas.edit', compact('conta', 'roles', 'contaRole', 'banco', 'todososbancos'));
 

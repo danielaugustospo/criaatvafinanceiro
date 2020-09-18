@@ -57,5 +57,9 @@ class Fornecedores extends Model
 
     ];
 
+    public static function laratablesCustomAction($tabelaFornecedoresModel)
+    {
+        return view('fornecedores.action', compact('tabelaFornecedoresModel'))->render();
+    }
 
 }

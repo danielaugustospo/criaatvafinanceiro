@@ -48,5 +48,10 @@ class Despesa extends Model
 
     ];
 
+    public static function laratablesCustomAction($despesaModel)
+    {
+        return view('despesas.action', compact('despesaModel'))->render();
+    }
+
 
 }

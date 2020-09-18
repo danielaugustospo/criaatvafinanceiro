@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 
@@ -16,14 +15,14 @@
 
 
 @if (count($errors) > 0)
-  <div class="alert alert-danger">
+<div class="alert alert-danger">
     <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
-       @foreach ($errors->all() as $error)
-         <li>{{ $error }}</li>
-       @endforeach
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
     </ul>
-  </div>
+</div>
 @endif
 
 
@@ -31,17 +30,28 @@
 
 {!! Form::open(array('route' => 'codigodespesas.store','method'=>'POST')) !!}
 
-<div class="form-group row">
+<!-- <div class="form-group row">
     <label for="idGrupoCodigoDespesa" class="col-sm-2 col-form-label">Código da Despesa</label>
     <div class="col-sm-2">
         {!! Form::text('idGrupoCodigoDespesa', '', ['placeholder' => 'Código Despesa', 'class' => 'form-control', 'maxlength' => '20']) !!}
 
     </div>
-</div>
+</div> -->
 <div class="form-group row">
-    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Nome Classe de Despesa</label>
+    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Tipo de Despesa</label>
     <div class="col-sm-10">
         {!! Form::text('despesaCodigoDespesa', '', ['placeholder' => 'Tipo de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!}
+    </div>
+</div>
+<div class="form-group row">
+    <label for="idGrupoCodigoDespesa" class=" col-sm-2 col-form-label">Selecione o Grupo</label>
+    <div class="col-sm-10">
+        <!-- {!! Form::text('despesaCodigoDespesa', '', ['placeholder' => 'Tipo de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!} -->
+        <select name="idGrupoCodigoDespesa" id="idGrupoCodigoDespesa" class="selecionaComInput">
+        @foreach ($grupodespesas as $grupoDespesa)
+            <option value="{{ $grupoDespesa->id }}">Código: {{ $grupoDespesa->id }} - Grupo: {{ $grupoDespesa->grupoDespesa }}</option>
+        @endforeach
+        </select>
     </div>
 </div>
 

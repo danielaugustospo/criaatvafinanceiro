@@ -33,4 +33,9 @@ class Conta extends Model
     ];
 
 
+    public static function laratablesCustomAction($contasModel)
+    {
+        return view('contas.action', compact('contasModel'))->render();
+    }
+
 }

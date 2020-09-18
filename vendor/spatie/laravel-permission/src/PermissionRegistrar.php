@@ -115,7 +115,8 @@ class PermissionRegistrar
     public function forgetCachedPermissions()
     {
         $this->permissions = null;
-        $this->cache->forget(self::$cacheKey);
+
+        return $this->cache->forget(self::$cacheKey);
     }
 
     /**
@@ -152,6 +153,13 @@ class PermissionRegistrar
     public function getPermissionClass(): Permission
     {
         return app($this->permissionClass);
+    }
+
+    public function setPermissionClass($permissionClass)
+    {
+        $this->permissionClass = $permissionClass;
+
+        return $this;
     }
 
     /**

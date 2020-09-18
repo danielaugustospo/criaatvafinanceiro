@@ -24,7 +24,7 @@ class CriaTabelaEntradas extends Migration
             $table->unsignedBigInteger('idbenspatrimoniais');
             $table->foreign('idbenspatrimoniais')
             ->references('id')
-            ->on('bens_patrimoniais')
+            ->on('benspatrimoniais')
             ->onDelete('cascade');
 
             $table->boolean('valorunitarioentrada');

@@ -9,6 +9,20 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('fornecedores.index') }}"> Voltar</a>
+            <hr />
+            <br>
+            <form action="{{ route('fornecedores.destroy',$fornecedor->id) }}" method="POST">
+                    @can('fornecedor-edit')
+                        <a class="btn btn-primary" href="{{ route('fornecedores.edit',$fornecedor->id) }}">Editar</a>
+                    @endcan
+
+                    @csrf
+                    @method('DELETE')
+                    @can('fornecedor-delete')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    @endcan
+                </form>
+
         </div>
     </div>
 </div>

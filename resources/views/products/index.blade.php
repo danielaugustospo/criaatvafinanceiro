@@ -23,7 +23,81 @@
     @endif
 
 
-    <table class="table table-bordered mt-2">
+
+
+    <script>
+
+
+$(document).ready(function(){
+
+
+    $("#tipoBensPatrimoniaisModel").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabelatipobenspatrimoniais') }}",
+
+        columns: [
+            { name: 'id' },
+            { name: 'name' },
+            { name: 'detail' },
+            { name: 'ativotipobenspatrimoniais' },
+            { name: 'action', orderable: false, searchable:false},
+
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+
+    var table = $('#tipoBensPatrimoniaisModel').DataTable();
+
+
+     $('#tipoBensPatrimoniaisModel tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "products/"+data[0];
+    } );
+     $('#tipoBensPatrimoniaisModel tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "products/"+ data[0] + "/edit";
+    } );
+
+
+});
+</script>
+
+
+<div class="container">
+        <table id="tipoBensPatrimoniaisModel" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Detalhes</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+
+
+
+
+
+    <!-- <table class="table table-bordered mt-2">
         <tr class="trTituloTabela">
             <th class="thTituloTabela">Id</th>
             <th class="thTituloTabela">Nome</th>
@@ -52,7 +126,7 @@
 	        </td>
 	    </tr>
 	    @endforeach
-    </table>
+    </table> -->
 
 
     {!! $products->links() !!}

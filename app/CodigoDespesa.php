@@ -32,5 +32,9 @@ class CodigoDespesa extends Model
 
     ];
 
+    public static function laratablesCustomAction($codigoDespesasModel)
+    {
+        return view('codigodespesas.action', compact('codigoDespesasModel'))->render();
+    }
 
 }

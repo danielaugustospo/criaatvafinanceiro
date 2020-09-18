@@ -10,6 +10,20 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
+            <hr />
+            <br>
+            <form action="{{ route('contas.destroy',$conta->id) }}" method="POST">
+                    @can('conta-edit')
+                        <a class="btn btn-primary" href="{{ route('contas.edit',$conta->id) }}">Editar</a>
+                    @endcan
+
+                    @csrf
+                    @method('DELETE')
+                    @can('conta-delete')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    @endcan
+                </form>
+
         </div>
     </div>
 </div>

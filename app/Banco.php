@@ -32,5 +32,11 @@ class Banco extends Model
 
     ];
 
+    public static function laratablesCustomAction($bancos)
+    {
+        return view('bancos.action', compact('bancos'))->render();
+    }
+
+
 
 }

@@ -45,4 +45,11 @@ class OrdemdeServico extends Model
     ];
 
 
+
+
+    public static function laratablesCustomAction($osModel)
+    {
+        return view('ordemdeservicos.action', compact('osModel'))->render();
+    }
+
 }

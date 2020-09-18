@@ -47,7 +47,7 @@ class FuncionarioController extends Controller
     {
 
         $todosorgaosrg = DB::select('select * from orgaorg');
-        $todososbancos =  DB::select('select distinct * from bancos');
+        $todososbancos =  DB::select('select distinct * from banco');
         return view('funcionarios.create', compact('todosorgaosrg','todososbancos'));
     }
 
@@ -62,7 +62,7 @@ class FuncionarioController extends Controller
 
         $request->validate([
             'nomeFuncionario' => 'required|min:3',
-            'cpfFuncionario'  => 'required',
+            'cpfFuncionario'  => 'required|cpf|unique:funcionarios',
 
             'cepFuncionario' => 'required',
             'enderecoFuncionario' => 'required',
@@ -106,7 +106,7 @@ class FuncionarioController extends Controller
 
         Funcionario::create($request->all());
 
-       
+
         return redirect()->route('funcionarios.index')
                         ->with('success','Funcionário criado com êxito.');
     }
@@ -137,8 +137,8 @@ class FuncionarioController extends Controller
         $roles = Funcionario::pluck('nomeFuncionario','nomeFuncionario')->all();
         $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
 
-        $bancoselecionado = DB::select('select distinct * from bancos  where codigoBanco = :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
-        $banconaoselecionado = DB::select('select distinct * from bancos  where codigoBanco != :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+        $bancoselecionado = DB::select('select distinct * from banco  where codigoBanco = :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+        $banconaoselecionado = DB::select('select distinct * from banco  where codigoBanco != :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
         return view('funcionarios.edit',compact('funcionario','roles','funcionarioRole','bancoselecionado','banconaoselecionado'));
 

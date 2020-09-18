@@ -8,18 +8,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Gerenciamento Financeiro - Criaatva') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" ></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+
+
 
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" ></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="{{ asset('js/viacep.js') }}" defer></script>
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
     <!-- <script src="{{ asset('js/inputmask5x/dist/inputmask.js') }}"></script> -->
     <script src="{{ asset('js/inputmask5x/dist/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('js/inputmask5x/dist/bindings/inputmask.binding.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -27,6 +34,31 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+
+<script>
+    $(document).ready(function() {
+        $(".padraoReal").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+    });
+
+    $(document).ready(function($) {
+        $(".selecionaComInput").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+    });
+</script>
 
 </head>
 
@@ -58,12 +90,41 @@
                         <!-- @can('usuario-list') -->
                         <li><a class="nav-link" href="{{ route('users.index') }}">Usuários</a></li>
                         <!-- @endcan -->
-                        @can('ordemdeservico-list')
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Ordem de Serviço <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('ordemdeservico-list')
+                                <a class="dropdown-item" href="{{ route('ordemdeservicos.index') }}">OS</a>
+                                @endcan
+                                @can('despesa-list')
+                                <a class="dropdown-item" href="{{ route('despesas.index') }}">Despesas</a>
+                                @endcan
+
+                                @can('receita-list')
+                                <a class="dropdown-item" href="{{ route('receita.index') }}">Receitas</a>
+                                @endcan
+
+                                @can('tabelapercentual-list')
+                                <a class="dropdown-item" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a>
+                                @endcan
+
+                            </div>
+                        </li>
+
+                        <!-- @can('ordemdeservico-list')
                         <li><a class="nav-link" href="{{ route('ordemdeservicos.index') }}">OS</a></li>
                         @endcan
                         @can('despesa-list')
                         <li><a class="nav-link" href="{{ route('despesas.index') }}">Despesas</a></li>
                         @endcan
+                        @can('receita-list')
+                        <li><a class="nav-link" href="{{ route('receita.index') }}">Receitas</a></li>
+                        @endcan
+                        @can('tabelapercentual-list')
+                        <li><a class="nav-link" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a></li>
+                        @endcan -->
                         @can('verba-list')
                         <li><a class="nav-link" href="{{ route('verbas.index') }}">Verbas</a></li>
                         @endcan

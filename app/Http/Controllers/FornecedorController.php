@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Fornecedores;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Freshbitsweb\Laratables\Laratables;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,12 @@ class FornecedorController extends Controller
     }
 
 
+    public function basicLaratableData()
+    {
+        return Laratables::recordsOf(Fornecedores::class);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,8 +52,7 @@ class FornecedorController extends Controller
      */
     public function create()
     {
-        // $banco =  DB::select('select * from bancos where id = :id', ['id' => $conta->idBanco]);
-        $todososbancos =  DB::select('select distinct * from bancos');
+        $todososbancos =  DB::select('select distinct * from banco');
 
         return view('fornecedores.create', compact('todososbancos'));
     }
@@ -103,10 +109,11 @@ class FornecedorController extends Controller
     public function edit($id)
     {
         $fornecedor = Fornecedores::find($id);
-        $roles = Fornecedores::pluck('nomeFornecedor','nomeFornecedor')->all();
-        $fornecedorRole = $fornecedor->roles->pluck('nomeFornecedor','nomeFornecedor')->all();
+        $todososbancos = DB::select('select * from banco order by :idBancoFornecedor asc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
+        // $roles = Fornecedores::pluck('nomeFornecedor','nomeFornecedor')->all();
+        // $fornecedorRole = $fornecedor->roles->pluck('nomeFornecedor','nomeFornecedor')->all();
 
-        return view('fornecedores.edit',compact('fornecedor','roles','fornecedorRole'));
+        return view('fornecedores.edit',compact('fornecedor','todososbancos'));
 
         // return view('fornecedores.edit',compact('fornecedor'));
     }

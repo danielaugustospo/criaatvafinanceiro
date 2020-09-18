@@ -21,6 +21,81 @@
 @endif
 
 
+
+<script>
+
+
+$(document).ready(function(){
+    
+    
+    $("#usersmodel").DataTable({
+        serverSide: true,
+        ajax: "{{ route('tabelausuarios') }}",
+        
+        columns: [
+            { name: 'id' },
+            { name: 'name' },
+            { name: 'email' },
+            { name: 'ativoUser' },
+            { name: 'action', orderable: false, searchable:false},
+            
+        ],
+        "language": {
+        "lengthMenu": "Exibindo _MENU_ registros por página",
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Exibindo página _PAGE_ de _PAGES_",
+        "infoEmpty": "Nenhum registro encontrado",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "search": "Pesquisar",
+        "paginate": {
+            "previous": "Anterior",
+            "next":"Próximo",
+        },
+    },
+
+    });
+
+
+    var table = $('#usersmodel').DataTable();
+     
+
+     $('#usersmodel tbody').on( 'click', '#visualizar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "users/"+data[0];
+    } );
+     $('#usersmodel tbody').on( 'click', '#editar', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        location.href = "users/"+ data[0] + "/edit";
+    } );
+
+ 
+});
+</script>
+
+
+<div class="container">
+        <table id="usersmodel" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+    
+            <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
+                </tr>
+              
+            </thead>
+        </table>
+    </div>
+
+
+
+
+
+
+
+<!-- 
 <table class="table table-bordered mt-2">
   <tr class="trTituloTabela">
    <th class="thTituloTabela">No</th>
@@ -50,7 +125,7 @@
     </td>
   </tr>
  @endforeach
-</table>
+</table> -->
 
 
 {!! $data->render() !!}

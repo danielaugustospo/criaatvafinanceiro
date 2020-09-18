@@ -2,7 +2,7 @@
 
 
 @section('content')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
 
 <script type="text/javascript">
     $(document).ready(function($) {
@@ -30,7 +30,19 @@
         });
     });
     $(document).ready(function($) {
+        $("#idFormaPagamentoReceita").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+    });
+    $(document).ready(function($) {
         $("#conta").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+    });
+    $(document).ready(function($) {
+        $("#contaReceita").select2()({
             placeholder: 'Selecione uma opção',
             dropdownParent: $('#myModal'),
         });
@@ -38,120 +50,135 @@
     $(document).ready(function() {
         $("#totalPrecoReal").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#totalPrecoCliente").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#lucro").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#valorEstornado").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#precoReal").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#precoCliente").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#valorTotalOrdemdeServico").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#valorProjetoOrdemdeServico").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
     $(document).ready(function() {
         $("#valorOrdemdeServico").inputmask('decimal', {
             'alias': 'numeric',
-            'groupSeparator': '.',
+            // 'groupSeparator': '.',
             'autoGroup': true,
             'digits': 2,
-            'radixPoint': ",",
+            'radixPoint': ".",
             'digitsOptional': false,
             'allowMinus': false,
-            'prefix': 'R$ ',
+            // 'prefix': 'R$ ',
             'placeholder': ''
         });
     });
+    $(document).ready(function() {
+        $("#valorreceita").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+    });
+
+
 </script>
 
 
@@ -278,8 +305,8 @@
 
 
 <hr>
-<input class="btn btn-primary" id="reveal" value="Cadastrar Despesa" style="cursor:pointer;">
-<input class="btn btn-danger" id="esconde" value="Remover Despesa" style="cursor:pointer;">
+<input class="btn btn-primary" id="reveal" value="Cadastrar Despesa" readonly style="cursor:pointer;">
+<input class="btn btn-danger" id="esconde" value="Remover Despesa" readonly style="cursor:pointer;">
 
 <div id="ajax-content">
 
@@ -305,7 +332,7 @@
                 <!-- {!! Form::text('idCodigoDespesas', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 
                 <select name="idCodigoDespesas" id="idCodigoDespesas">
-                    <option value="0">Sem Despesa Cadastrada</option>
+                    <option value="0" selected="selected">Sem Despesa Cadastrada</option>
 
                     @foreach ($codigoDespesa as $listaCodigoDespesas)
                     <option value="{{$listaCodigoDespesas->id}}">
@@ -316,13 +343,6 @@
 
             </div>
         </div>
-        <!-- <div class="form-group row">
-            <label for="idOS" class="col-sm-2 col-form-label">OS Vinculada a Despesa</label>
-            <div class="col-sm-10"> -->
-                <!-- {!! Form::text('idOS', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-
-            <!-- </div>
-        </div> -->
         <div class="form-group row">
             <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Informação da Despesa</label>
             <div class="col-sm-10">
@@ -335,7 +355,7 @@
             <div class="col-sm-10">
                 <!-- {!! Form::text('idFornecedor', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 
-                <select name="idFornecedor" class="form-control">
+                <select name="idFornecedor" id="idFornecedor" class="form-control">
                     @foreach ($listaForncedores as $fornecedor)
 
                     <option value="{{ $fornecedor->id }}">Nome: {{ $fornecedor->nomeFornecedor }} - Razão Social: {{ $fornecedor->razaosocialFornecedor }} - Contato: {{ $fornecedor->contatoFornecedor }}</option>
@@ -452,16 +472,109 @@
 
             </div>
         </div>
-        <div class="form-group row">
+        <!-- <div class="form-group row">
             <label for="atuacao" class="col-sm-2 col-form-label">Atuação</label>
-            <div class="col-sm-10">
+            <div class="col-sm-10"> -->
                 {!! Form::hidden('atuacao', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
 
         {!! Form::hidden('idOS', 'null', ['placeholder' => 'Id OS ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idOS']) !!}
         {!! Form::hidden('excluidoDespesa', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
+
+    </div>
+</div>
+
+
+<hr>
+<input class="btn btn-primary"  id="revealreceita" value="Cadastrar Receita" readonly style="cursor:pointer;">
+<input class="btn btn-danger"   id="escondereceita" value="Remover Receita" readonly style="cursor:pointer;">
+
+<div id="ajax-content-receita">
+
+    <div id="div_cadastro_receita">
+
+        <div class="pull-left">
+            <h2>Cadastro de Receitas</h2>
+        </div>
+
+        <!-- Seção Receitas -->
+
+        <div class="form-group row">
+            <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
+            <div class="col-sm-3">
+                <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="form-control col-sm-8 js-example-basic-multiple">
+                    <option value="0" selected="selected">Sem Receita</option>
+                    @foreach ($formapagamento as $formaPG)
+                        <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+                <label for="datapagamentoreceita" class="col-sm-1 col-form-label">Data de Pagamento</label>
+                <div class="col-sm-3">
+                    {!! Form::date('datapagamentoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
+                </div>
+
+            <label for="pagoreceita" class="col-sm-1 col-form-label">Pago</label>
+            <div class="col-sm-2">
+                <!-- {!! Form::text('pagoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
+                <!-- {!! Form::text('pago', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
+                <select name="pagoreceita" id="pagoreceita" style="padding:4px;" class="form-control">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+
+                <label for="dataemissaoreceita" class="col-sm-2 col-form-label">Data de Emissão</label>
+                <div class="col-sm-3">
+                    {!! Form::date('dataemissaoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
+                </div>
+                <label for="valorreceita" class="col-sm-1 col-form-label">Valor</label>
+                <div class="col-sm-3">
+                    <input type="text" id="valorreceita" class="col-sm-8 form-control" name="valorreceita" value="0,00" placeholder="Preencha o valor" /><br>
+                </div>
+
+                <label for="contareceita" class="col-sm-1 col-form-label">Conta</label>
+                <div class="col-sm-2">
+
+                <select name="contareceita" id="contaReceita" class="col-sm-12 form-control js-example-basic-multiple">
+                    @foreach ($listaContas as $contas)
+
+                    <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
+
+                    @endforeach
+                </select>
+                </div>
+
+        </div>
+
+
+
+        <div class="form-group row">
+            <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
+            <div class="col-sm-3">
+                {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
+            </div>
+
+            <label for="emissaoreceita" class="col-sm-1 col-form-label">Emissão</label>
+            <div class="col-sm-3">
+                <input type="text" id="emissaoreceita" class="col-sm-8 form-control" name="emissaoreceita"  placeholder="Emissão" /><br>
+            </div>
+
+            <label for="nfreceita" class="col-sm-1 col-form-label">NF</label>
+            <div class="col-sm-2">
+                {!! Form::text('nfreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
+
+            </div>
+        </div>
+              {!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!}
 
     </div>
 </div>

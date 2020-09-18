@@ -191,6 +191,8 @@ public function store(Request $request)
     dd($data);
 }
 ```
+## Documentação select2
+https://select2.org/configuration
 
 ----------------------------------------------------------------------------------------------------------------------------
 
