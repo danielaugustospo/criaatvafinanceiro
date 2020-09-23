@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 class Banco extends Model
 {
 
-    protected $table = 'bancos';
+    protected $table = 'banco';
 
     use Notifiable;
     use HasRoles;
@@ -36,7 +36,5 @@ class Banco extends Model
     {
         return view('bancos.action', compact('bancos'))->render();
     }
-
-
 
 }

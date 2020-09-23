@@ -19,6 +19,7 @@ class BensPatrimoniais extends Model
         'idTipoBensPatrimoniais',
         'descricaoBensPatrimoniais',
         'ativadoBensPatrimoniais',
-        'excluidoBensPatrimoniais'
+        'excluidoBensPatrimoniais',
+        'statusbenspatrimoniais'
         ];
 }

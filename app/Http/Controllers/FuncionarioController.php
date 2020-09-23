@@ -79,7 +79,7 @@ class FuncionarioController extends Controller
             'rgFuncionario' => 'required',
             'orgaoRGFuncionario' => 'required',
             'expedicaoRGFuncionario' => 'required',
-            'tituloFuncionario' => 'required',
+            'tituloFuncionario' => 'required|titulo_eleitor',
             'maeFuncionario' => 'required',
             'paiFuncionario' => 'required',
             'profissaoFuncionario' => 'required',
@@ -121,7 +121,13 @@ class FuncionarioController extends Controller
     public function show($id)
     {
         $funcionario = Funcionario::find($id);
-        return view('funcionarios.show',compact('funcionario'));
+
+        $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
+        $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
+
+        $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+
+        return view('funcionarios.show',compact('funcionario','todosorgaosrg','todososbancos'));
     }
 
 
@@ -136,11 +142,11 @@ class FuncionarioController extends Controller
         $funcionario = Funcionario::find($id);
         $roles = Funcionario::pluck('nomeFuncionario','nomeFuncionario')->all();
         $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
+        $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
 
-        $bancoselecionado = DB::select('select distinct * from banco  where codigoBanco = :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
-        $banconaoselecionado = DB::select('select distinct * from banco  where codigoBanco != :bancoFuncionario', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+        $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
-        return view('funcionarios.edit',compact('funcionario','roles','funcionarioRole','bancoselecionado','banconaoselecionado'));
+        return view('funcionarios.edit',compact('funcionario','roles','funcionarioRole','todosorgaosrg','todososbancos'));
 
         // return view('funcionarios.edit',compact('funcionario'));
     }
@@ -156,8 +162,46 @@ class FuncionarioController extends Controller
     public function update(Request $request, Funcionario $funcionario)
     {
          request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+            'nomeFuncionario'                       => 'required|min:3',
+            'cpfFuncionario'                        => 'required|cpf',
+
+            'cepFuncionario'                        => 'required',
+            'enderecoFuncionario'                   => 'required',
+            'bairroFuncionario'                     => 'required',
+            'cidadeFuncionario'                     => 'required',
+            'ufFuncionario'                         => 'required',
+            'celularFuncionario'                    => 'required',
+            'telresidenciaFuncionario'              => 'required',
+            'contatoemergenciaFuncionario'          => 'required',
+            'emailFuncionario'                      => 'required',
+            'redesocialFuncionario'                 => 'required',
+            'facebookFuncionario'                   => 'required',
+            'telegramFuncionario'                   => 'required',
+            'rgFuncionario'                         => 'required',
+            'orgaoRGFuncionario'                    => 'required',
+            'expedicaoRGFuncionario'                => 'required',
+            'tituloFuncionario'                     => 'required|titulo_eleitor',
+            'maeFuncionario'                        => 'required',
+            'paiFuncionario'                        => 'required',
+            'profissaoFuncionario'                  => 'required',
+            'cargoEmpresaFuncionario'               => 'required',
+            'tipocontratoFuncionario'               => 'required',
+            'grauescolaridadeFuncionario'           => 'required',
+            'descformacaoFuncionario'               => 'required',
+            'certficFuncionario'                    => 'required',
+            'uncertificadoraFuncionario'            => 'required',
+            'anocertificacaoFuncionario'            => 'required',
+            'contacorrenteFuncionario'              => 'required',
+            'bancoFuncionario'                      => 'required',
+            'nrcontaFuncionario'                    => 'required',
+            'agenciaFuncionario'                    => 'required',
+            'nomefavorecidoFuncionario'             => 'required',
+            'cpffavorecidoFuncionario'              => 'required',
+            'contacorrentefavorecidoFuncionario'    => 'required',
+            'bancofavorecidoFuncionario'            => 'required',
+            'nrcontafavorecidoFuncionario'          => 'required',
+            'agenciafavorecidoFuncionario'          => 'required',
+
         ]);
 
 

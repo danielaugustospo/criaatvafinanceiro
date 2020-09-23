@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Cadastro de Contas Bancárias</h2>
+            <h2>Cadastro de Estoque</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
@@ -63,7 +63,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+
 
 
 

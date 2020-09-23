@@ -8,6 +8,8 @@ use App\BensPatrimoniais;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class BensPatrimoniaisController extends Controller
 {
@@ -43,7 +45,9 @@ class BensPatrimoniaisController extends Controller
      */
     public function create()
     {
-        return view('benspatrimoniais.create');
+        $tipoBensPatrimoniais =  DB::select('select distinct * from products where ativotipobenspatrimoniais = 1 and excluidotipobenspatrimoniais = 0;');
+
+        return view('benspatrimoniais.create', compact('tipoBensPatrimoniais'));
     }
 
 
@@ -61,6 +65,7 @@ class BensPatrimoniaisController extends Controller
             'nomeBensPatrimoniais'      => 'required|min:3',
             'idTipoBensPatrimoniais'    => 'required',
             'descricaoBensPatrimoniais' => 'required',
+            'statusbenspatrimoniais'    => 'required',
             'ativadoBensPatrimoniais'   => 'required',
             'excluidoBensPatrimoniais'  => 'required',
 

@@ -8,6 +8,8 @@ use App\Estoque;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class EstoqueController extends Controller
 {
@@ -43,7 +45,8 @@ class EstoqueController extends Controller
      */
     public function create()
     {
-        return view('estoque.create');
+        $banco = DB::select('select * from banco');
+        return view('estoque.create',compact('banco'));
     }
 
 

@@ -241,15 +241,15 @@
 
 
 <table id="tabelaDespesaPorOS" class="table table-bordered table-striped">
-<thead class="thead-dark">
-    <tr>
-        <th>Id</th>
-        <th>Código Despesas</th>
-        <th>Id OS</th>
-        <th>Descrição Despesa</th>
-        <th width="280px">Ação</th>
-    </tr>
-</thead>
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Código Despesas</th>
+            <th>Id OS</th>
+            <th>Descrição Despesa</th>
+            <th width="280px">Ação</th>
+        </tr>
+    </thead>
 
 
 
@@ -341,16 +341,16 @@
 
 
 <table id="tabelaReceitaPorOS" class="table table-bordered table-striped">
-<thead class="thead-dark">
-    <tr>
-        <th>Id</th>
-        <th>OS Receita</th>
-        <th>Valor</th>
-        <th>Pago</th>
-        <th>Conta</th>
-        <th width="280px">Ação</th>
-    </tr>
-</thead>
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>OS Receita</th>
+            <th>Valor</th>
+            <th>Pago</th>
+            <th>Conta</th>
+            <th width="280px">Ação</th>
+        </tr>
+    </thead>
 
 
 
@@ -532,16 +532,16 @@
 
 
 <table id="tabelaPercentualPorOS" class="table table-bordered table-striped">
-<thead class="thead-dark">
-    <tr>
-        <th>Id</th>
-        <th>Nome Parte</th>
-        <th>Percentual</th>
-        <th>Pago</th>
-        <th>Id OS</th>
-        <th>Ações</th>
-    </tr>
-</thead>
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Nome Parte</th>
+            <th>Percentual</th>
+            <th>Pago</th>
+            <th>Id OS</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
 
 
     @foreach ($percentualPorOS as $tabelapercentual)
@@ -714,5 +714,5 @@
 
 
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+ 
 @endsection

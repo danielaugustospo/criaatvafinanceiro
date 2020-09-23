@@ -46,7 +46,7 @@ class SaidasController extends Controller
     public function create()
     {
 
-        $banco =  DB::select('select * from bancos');
+        $banco =  DB::select('select * from banco');
 
         return view('saidas.create', compact('banco'));
     }

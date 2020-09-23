@@ -131,5 +131,5 @@ $(document).ready(function(){
 
     {!! $products->links() !!}
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+ 
 @endsection

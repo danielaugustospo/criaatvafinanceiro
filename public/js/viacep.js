@@ -1,20 +1,20 @@
 function limpa_formulário_cep() {
     //Limpa valores do formulário de cep.
-    document.getElementById('enderecoFuncionario').value = ("");
-    document.getElementById('bairroFuncionario').value = ("");
-    document.getElementById('cidadeFuncionario').value = ("");
-    document.getElementById('ufFuncionario').value = ("");
-    // document.getElementById('ibgeFuncionario').value = ("");
+    document.getElementById('endereco').value = ("");
+    document.getElementById('bairro').value = ("");
+    document.getElementById('cidade').value = ("");
+    document.getElementById('uf').value = ("");
+    // document.getElementById('ibge').value = ("");
 }
 
 function meu_callback(conteudo) {
     if (!("erro" in conteudo)) {
         //Atualiza os campos com os valores.
-        document.getElementById('enderecoFuncionario').value = (conteudo.logradouro);
-        document.getElementById('bairroFuncionario').value = (conteudo.bairro);
-        document.getElementById('cidadeFuncionario').value = (conteudo.localidade);
-        document.getElementById('ufFuncionario').value = (conteudo.uf);
-        // document.getElementById('ibgeFuncionario').value = (conteudo.ibge);
+        document.getElementById('endereco').value = (conteudo.logradouro);
+        document.getElementById('bairro').value = (conteudo.bairro);
+        document.getElementById('cidade').value = (conteudo.localidade);
+        document.getElementById('uf').value = (conteudo.uf);
+        // document.getElementById('ibge').value = (conteudo.ibge);
     } //end if.
     else {
         //CEP não Encontrado.
@@ -38,11 +38,11 @@ function pesquisacep(valor) {
         if (validacep.test(cep)) {
 
             //Preenche os campos com "..." enquanto consulta webservice.
-            document.getElementById('enderecoFuncionario').value = "...";
-            document.getElementById('bairroFuncionario').value = "...";
-            document.getElementById('cidadeFuncionario').value = "...";
-            document.getElementById('ufFuncionario').value = "...";
-            // document.getElementById('ibgeFuncionario').value = "...";
+            document.getElementById('endereco').value = "...";
+            document.getElementById('bairro').value = "...";
+            document.getElementById('cidade').value = "...";
+            document.getElementById('uf').value = "...";
+            // document.getElementById('ibge').value = "...";
 
             //Cria um elemento javascript.
             var script = document.createElement('script');

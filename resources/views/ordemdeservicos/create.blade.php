@@ -589,7 +589,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+ 
 
 
 

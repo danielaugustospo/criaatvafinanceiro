@@ -49,16 +49,17 @@
 <hr />
 
 <!--CEP/Endereço-->
+<h4>Localização</h4>
 <div class="form-group row">
     <label for="cepCliente" class="col-sm-1 col-form-label">CEP</label>
     <div class="col-sm-2">
-        {!! Form::text('cepCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::number('cepCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'id' => 'cep', 'onblur' =>'pesquisacep(this.value)', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '8']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="enderecoCliente" class="col-sm-1 col-form-label">Endereço</label>
-    <div class="col-sm-6">
-        {!! Form::text('enderecoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+    <div class="col-sm-5">
+        {!! Form::text('enderecoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'id' => 'endereco', 'maxlength' => '100']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
@@ -68,43 +69,43 @@
 <div class="form-group row">
     <label for="bairroCliente" class="col-sm-1 col-form-label">Bairro</label>
     <div class="col-sm-2">
-        {!! Form::text('bairroCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::text('bairroCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'id' => 'bairro', 'maxlength' => '10']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="cidadeCliente" class="col-sm-1 col-form-label">Cidade</label>
     <div class="col-sm-3">
-        {!! Form::text('cidadeCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('cidadeCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'id' => 'cidade', 'maxlength' => '100']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="estadoCliente" class="col-sm-1 col-form-label">Estado</label>
     <div class="col-sm-1">
-        {!! Form::text('estadoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('estadoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'id' => 'uf', 'maxlength' => '100']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
 </div>
 
 <hr />
-
+<h4>Contato</h4>
 <!--1°Tel/2°Tel/Email-->
 <div class="form-group row">
     <label for="telefone1Cliente" class="col-sm-1 col-form-label">1°Tel</label>
     <div class="col-sm-2">
-        {!! Form::text('telefone1Cliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::number('telefone1Cliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="telefone2Cliente" class="col-sm-1 col-form-label">2°Tel</label>
     <div class="col-sm-2">
-        {!! Form::text('telefone2Cliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::number('telefone2Cliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="emailCliente" class="col-sm-1 col-form-label">Email</label>
     <div class="col-sm-3">
-        {!! Form::text('emailCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::email('emailCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
@@ -115,7 +116,7 @@
 <div class="form-group row">
     <label for="cnpjCliente" class="col-sm-1 col-form-label">CNPJ</label>
     <div class="col-sm-2">
-        {!! Form::text('cnpjCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20']) !!}
+        {!! Form::number('cnpjCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '14']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
@@ -132,15 +133,19 @@
 <div class="form-group row">
     <label for="cpfCliente" class="col-sm-1 col-form-label">CPF</label>
     <div class="col-sm-2">
-        {!! Form::text('cpfCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20']) !!}
+        {!! Form::number('cpfCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="identidadeCliente" class="col-sm-1 col-form-label">RG</label>
-    <div class="col-sm-6">
-        {!! Form::text('identidadeCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20']) !!}
-
+    <div class="col-sm-3">
+        {!! Form::number('identidadeCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '10']) !!}
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+    </div>
+    <label for="dataCadastroCliente" class="col-sm-1 col-form-label">Data de Contrato</label>
+    <div class="col-sm-2">
+        {!! Form::text('dataCadastroCliente', '', ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8']) !!}
+        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
 </div>
 
@@ -152,27 +157,31 @@
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
     <label for="siteCliente" class="col-sm-1 col-form-label">Site</label>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         {!! Form::text('siteCliente', '', ['placeholder' => 'Site', 'class' => 'form-control', 'maxlength' => '8']) !!}
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
-    <label for="dataCadastroCliente" class="col-sm-1 col-form-label">Data de Contrato</label>
-    <div class="col-sm-2">
-        {!! Form::text('dataCadastroCliente', '', ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-    </div>
+
 </div>
 
 
 <hr />
-
+<h4>Dados Bancários</h4>
 
 <!--BANCO/AGENCIA/CONTA-->
 <div class="form-group row">
     <label for="bancoCliente" class="col-sm-1 col-form-label">Banco Cliente</label>
-    <div class="col-sm-2">
-        {!! Form::text('bancoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+    <div class="col-sm-3">
+        <!-- {!! Form::text('bancoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!} -->
+        <select class="selecionaComInput form-control" name="bancoCliente" id="bancoCliente">
+            @foreach ($todososbancos as $listabancos)
 
+            <option value="{{$listabancos->id}}">
+                {{$listabancos->nomeBanco}}
+            </option>
+            @endforeach
+
+        </select>
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
     <label for="agenciaCliente" class="col-sm-1 col-form-label">Agência</label>
@@ -198,15 +207,15 @@
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
 
-    <select class="form-control" name="bancoFavorecidoCliente" id="bancoFavorecidoCliente">
-                @foreach ($todososbancos as $listabancos)
+        <select class="selecionaComInput form-control" name="bancoFavorecidoCliente" id="bancoFavorecidoCliente">
+            @foreach ($todososbancos as $listabancos)
 
-                <option value="{{$listabancos->id}}">
-                    {{$listabancos->nomeBanco}}
-                </option>
-                @endforeach
+            <option value="{{$listabancos->id}}">
+                {{$listabancos->nomeBanco}}
+            </option>
+            @endforeach
 
-    </select>
+        </select>
 
     </div>
     <label for="agenciafavorecidoCliente" class="col-sm-1 col-form-label">Agência Favorecido</label>
@@ -225,17 +234,17 @@
 <!--BANCO/AGENCIA/CONTA-->
 <div class="form-group row">
     <label for="nomefavorecidoCliente" class="col-sm-1 col-form-label">Nome Completo Favorecido Cliente</label>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         {!! Form::text('nomefavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
-    <label for="cpffavorecidoCliente" class="col-sm-2 col-form-label">CNPJ/CNPJ Favorecido Cliente</label>
-    <div class="col-sm-4">
-        {!! Form::text('cpffavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+    <label for="cpffavorecidoCliente" class="col-sm-2 col-form-label">CPF/CNPJ Favorecido Cliente</label>
+    <div class="col-sm-3">
+        {!! Form::number('cpffavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '14']) !!}
 
+    </div>
 </div>
-
 {!! Form::hidden('ativoCliente', '1', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 {!! Form::hidden('excluidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 
@@ -243,7 +252,8 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+
+ 
 
 
 

@@ -9,7 +9,7 @@
         </div>
         <div class="pull-right">
             @can('entradas-create')
-            <a class="btn btn-success" href="{{ route('saidas.create') }}"> Cadastrar Nova Entrada</a>
+            <a class="btn btn-success" href="{{ route('entradas.create') }}"> Cadastrar Nova Entrada</a>
             @endcan
         </div>
     </div>
@@ -56,5 +56,5 @@
 
     </table>
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+
 @endsection

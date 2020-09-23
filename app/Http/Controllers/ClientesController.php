@@ -45,7 +45,8 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        $todososbancos =  DB::select('select distinct * from banco');
+
+        $todososbancos =  DB::select('select distinct * from banco where ativoBanco = 1;');
 
         return view('clientes.create', compact('todososbancos'));
     }
@@ -61,8 +62,34 @@ class ClientesController extends Controller
     {
 
         $request->validate([
-            'nomeCliente' => 'required|min:3',
-
+            'nomeCliente'                       => 'required',
+            'contatoCliente'                    => 'required',
+            'razaosocialCliente'                => 'required',
+            'siteCliente'                       => 'required',
+            'cepCliente'                        => 'required',
+            'enderecoCliente'                   => 'required',
+            'bairroCliente'                     => 'required',
+            'cidadeCliente'                     => 'required',
+            'estadoCliente'                     => 'required',
+            'telefone1Cliente'                  => 'required',
+            'telefone2Cliente'                  => 'required',
+            'cnpjCliente'                       => 'required',
+            'inscEstadualCliente'               => 'required',
+            'cpfCliente'                        => 'required',
+            'identidadeCliente'                 => 'required',
+            'emailCliente'                      => 'required',
+            'dataCadastroCliente'               => 'required',
+            'bancoCliente'                      => 'required',
+            'nrcontaCliente'                    => 'required',
+            'agenciaCliente'                    => 'required',
+            'bancoFavorecidoCliente'            => 'required',
+            'nomefavorecidoCliente'             => 'required',
+            'cpffavorecidoCliente'              => 'required',
+            'contacorrentefavorecidoCliente'    => 'required',
+            // 'nrcontafavorecidoCliente'          => 'required',
+            'agenciafavorecidoCliente'          => 'required',
+            'ativoCliente'                      => 'required',
+            'excluidoCliente'                   => 'required',
         ]);
 
 
@@ -83,7 +110,10 @@ class ClientesController extends Controller
     public function show($id)
     {
         $cliente = Clientes::find($id);
-        return view('clientes.show',compact('cliente'));
+        $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
+        $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
+
+        return view('clientes.show',compact('cliente','todososbancosCliente','todososbancosFavorecidoCliente'));
     }
 
 
@@ -98,8 +128,11 @@ class ClientesController extends Controller
         $cliente = Clientes::find($id);
         $roles = Clientes::pluck('nomeCliente','nomeCliente')->all();
         $clienteRole = $cliente->roles->pluck('nomeCliente','nomeCliente')->all();
+        $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
+        $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
 
-        return view('clientes.edit',compact('cliente','roles','clienteRole'));
+
+        return view('clientes.edit',compact('cliente','roles','clienteRole','todososbancosCliente','todososbancosFavorecidoCliente'));
 
         // return view('clientes.edit',compact('cliente'));
     }
@@ -115,8 +148,35 @@ class ClientesController extends Controller
     public function update(Request $request, Clientes $cliente)
     {
          request()->validate([
-            'nomeCliente' => 'required',
-            'codigoBanco' => 'required',
+
+            'nomeCliente'                       => 'required',
+            'contatoCliente'                    => 'required',
+            'razaosocialCliente'                => 'required',
+            'siteCliente'                       => 'required',
+            'cepCliente'                        => 'required',
+            'enderecoCliente'                   => 'required',
+            'bairroCliente'                     => 'required',
+            'cidadeCliente'                     => 'required',
+            'estadoCliente'                     => 'required',
+            'telefone1Cliente'                  => 'required',
+            'telefone2Cliente'                  => 'required',
+            'cnpjCliente'                       => 'required',
+            'inscEstadualCliente'               => 'required',
+            'cpfCliente'                        => 'required',
+            'identidadeCliente'                 => 'required',
+            'emailCliente'                      => 'required',
+            'dataCadastroCliente'               => 'required',
+            'bancoCliente'                      => 'required',
+            'nrcontaCliente'                    => 'required',
+            'agenciaCliente'                    => 'required',
+            'bancoFavorecidoCliente'            => 'required',
+            'nomefavorecidoCliente'             => 'required',
+            'cpffavorecidoCliente'              => 'required',
+            'contacorrentefavorecidoCliente'    => 'required',
+            // 'nrcontafavorecidoCliente'          => 'required',
+            'agenciafavorecidoCliente'          => 'required',
+            'ativoCliente'                      => 'required',
+            'excluidoCliente'                   => 'required',
         ]);
 
 

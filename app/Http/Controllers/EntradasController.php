@@ -8,6 +8,8 @@ use App\Entradas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class EntradasController extends Controller
 {
@@ -43,7 +45,9 @@ class EntradasController extends Controller
      */
     public function create()
     {
-        return view('entradas.create');
+        $banco =  DB::select('select * from banco');
+
+        return view('entradas.create', compact('banco'));
     }
 
 

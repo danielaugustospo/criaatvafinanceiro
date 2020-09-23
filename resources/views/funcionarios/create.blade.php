@@ -42,29 +42,29 @@
 <div class="form-group row">
     <label for="cepFuncionario" class="col-sm-2 col-form-label">CEP</label>
     <div class="col-sm-2">
-        {!! Form::text('cepFuncionario', '', ['placeholder' => 'CEP', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'cepFuncionario','onblur' =>'pesquisacep(this.value)']) !!}
+        {!! Form::text('cepFuncionario', '', ['placeholder' => 'CEP', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'cep','onblur' =>'pesquisacep(this.value)']) !!}
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
     <label for="enderecoFuncionario" class="col-sm-2 col-form-label">Endereço</label>
     <div class="col-sm-6">
-        {!! Form::text('enderecoFuncionario', '', ['placeholder' => 'Endereço', 'class' => 'form-control', 'id' => 'enderecoFuncionario', 'maxlength' => '100']) !!}
+        {!! Form::text('enderecoFuncionario', '', ['placeholder' => 'Endereço', 'class' => 'form-control', 'id' => 'endereco', 'maxlength' => '100']) !!}
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
 </div>
 <div class="form-group row ">
     <label for="bairroFuncionario" class="col-sm-2 col-form-label">Bairro</label>
     <div class="col-sm-3">
-        {!! Form::text('bairroFuncionario', '', ['placeholder' => 'Bairro', 'class' => 'form-control', 'id' => 'bairroFuncionario', 'maxlength' => '30', 'readonly']) !!}
+        {!! Form::text('bairroFuncionario', '', ['placeholder' => 'Bairro', 'class' => 'form-control', 'id' => 'bairro', 'maxlength' => '30', 'readonly']) !!}
         <!-- <input type="text" class="form-control" id="bairroFuncionario" placeholder="Bairro"> -->
     </div>
     <label for="cidadeFuncionario" class="col-sm-2 col-form-label">Cidade</label>
     <div class="col-sm-3">
-        {!! Form::text('cidadeFuncionario', '', ['placeholder' => 'Cidade', 'class' => 'form-control', 'id' => 'cidadeFuncionario', 'maxlength' => '30', 'readonly']) !!}
+        {!! Form::text('cidadeFuncionario', '', ['placeholder' => 'Cidade', 'class' => 'form-control', 'id' => 'cidade', 'maxlength' => '30', 'readonly']) !!}
         <!-- <input type="text" class="form-control" id="cidadeFuncionario" placeholder="Cidade"> -->
     </div>
     <label for="ufFuncionario" class="col-sm-1 col-form-label">Estado</label>
     <div class="col-sm-1">
-        {!! Form::text('ufFuncionario', '', ['placeholder' => 'Estado', 'class' => 'form-control', 'id' => 'ufFuncionario', 'maxlength' => '3', 'readonly']) !!}
+        {!! Form::text('ufFuncionario', '', ['placeholder' => 'Estado', 'class' => 'form-control', 'id' => 'uf', 'maxlength' => '3', 'readonly']) !!}
         <!-- <input type="text" class="form-control" id="ufFuncionario" placeholder="UF"> -->
     </div>
 </div>
@@ -73,17 +73,17 @@
 <div class="form-group row ">
     <label for="celularFuncionario" class="col-sm-2 col-form-label">Celular</label>
     <div class="col-sm-2">
-        {!! Form::text('celularFuncionario', '219xxxxxxxx', ['placeholder' => 'Celular', 'class' => 'form-control', 'maxlength' => '11']) !!}
+        {!! Form::number('celularFuncionario', '219xxxxxxxx', ['placeholder' => 'Celular', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
         <!-- <input type="text" class="form-control" id="celularFuncionario" placeholder="Celular"> -->
     </div>
     <label for="telresidenciaFuncionario" class="col-sm-2 col-form-label">Telefone Residência</label>
     <div class="col-sm-2">
-        {!! Form::text('telresidenciaFuncionario', '21xxxxxxxx', ['placeholder' => 'Tel Residência', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::number('telresidenciaFuncionario', '21xxxxxxxx', ['placeholder' => 'Tel Residência', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '10']) !!}
         <!-- <input type="text" class="form-control" id="telresidenciaFuncionario" placeholder="Telefone Residência"> -->
     </div>
     <label for="contatoemergenciaFuncionario" class="col-sm-2 col-form-label">Contato Emergência</label>
     <div class="col-sm-2">
-        {!! Form::text('contatoemergenciaFuncionario', '21xxxxxxxx', ['placeholder' => 'Contato Emergência', 'class' => 'form-control', 'maxlength' => '10']) !!}
+        {!! Form::number('contatoemergenciaFuncionario', '21xxxxxxxx', ['placeholder' => 'Contato Emergência', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '10']) !!}
         <!-- <input type="text" class="form-control" id="telresidenciaFuncionario" placeholder="Telefone Residência"> -->
     </div>
 
@@ -119,7 +119,7 @@
 <div class="form-group row ">
     <label for="cpfFuncionario" class="col-sm-2 col-form-label">CPF</label>
     <div class="col-sm-4">
-        {!! Form::text('cpfFuncionario', '', ['placeholder' => 'CPF (somente números)', 'class' => 'form-control', 'maxlength' => '11' , 'required']) !!}
+        {!! Form::number('cpfFuncionario', '', ['placeholder' => 'CPF (somente números)', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11' , 'required']) !!}
         <!-- <input type="text" class="form-control" id="cpfFuncionario" placeholder="CPF"> -->
     </div>
 </div>
@@ -150,7 +150,7 @@
 <div class="form-group row ">
     <label for="tituloFuncionario" class="col-sm-2 col-form-label">Título de Eleitor</label>
     <div class="col-sm-4">
-        {!! Form::text('tituloFuncionario', '', ['placeholder' => 'Título de Eleitor', 'class' => 'form-control', 'maxlength' => '12']) !!}
+        {!! Form::number('tituloFuncionario', '', ['placeholder' => 'Título de Eleitor', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '12']) !!}
         <!-- <input type="text" class="form-control" id="tituloFuncionario" placeholder="Título de Eleitor"> -->
     </div>
 </div>
@@ -292,7 +292,7 @@
             </div>
             <label for="valor2" class="col-sm-2 col-form-label">CPF do Favorecido</label>
             <div class="col-sm-4">
-                {!! Form::text('cpffavorecidoFuncionario', '', ['placeholder' => 'CPF do Favorecido', 'class' => 'form-control', 'id' => 'cpffavorecidoFuncionario', 'maxlength' => '11']) !!}
+                {!! Form::number('cpffavorecidoFuncionario', '', ['placeholder' => 'CPF do Favorecido', 'class' => 'form-control', 'id' => 'cpffavorecidoFuncionario', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
             </div>
 
         </div>
@@ -334,7 +334,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
-<p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
+ 
 
 
 
