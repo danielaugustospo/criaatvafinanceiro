@@ -103,10 +103,8 @@ class BensPatrimoniaisController extends Controller
     public function edit($id)
     {
         $benspatrimoniais = BensPatrimoniais::find($id);
-        $roles = BensPatrimoniais::pluck('nomeFuncionario','nomeFuncionario')->all();
-        $funcionarioRole = $benspatrimoniais->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
 
-        return view('benspatrimoniais.edit',compact('benspatrimoniais','roles','funcionarioRole'));
+        return view('benspatrimoniais.edit',compact('benspatrimoniais'));
 
         // return view('bensPatrimoniais.edit',compact('benspatrimoniais'));
     }
@@ -122,8 +120,13 @@ class BensPatrimoniaisController extends Controller
     public function update(Request $request, BensPatrimoniais $benspatrimoniais)
     {
          request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+
+            'nomeBensPatrimoniais'          => 'required',
+            'idTipoBensPatrimoniais'        => 'required',
+            'descricaoBensPatrimoniais'     => 'required',
+            'ativadoBensPatrimoniais'       => 'required',
+            'excluidoBensPatrimoniais'      => 'required',
+            'statusbenspatrimoniais'        => 'required',
         ]);
 
 

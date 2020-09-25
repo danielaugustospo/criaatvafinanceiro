@@ -23,21 +23,23 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Email:</strong>
+            <strong>Descrição:</strong>
             {{ $benspatrimoniais->descricaoBensPatrimoniais }}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Regras:</strong>
-            @if(!empty($benspatrimoniais->getRoleNames()))
-                @foreach($benspatrimoniais->getRoleNames() as $v)
-                    <label class="badge badge-success">{{ $v }}</label>
-                @endforeach
-            @endif
+            <strong>Tipo Bem Patrimonial:</strong>
+            {{ $benspatrimoniais->idTipoBensPatrimoniais }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Status Bem Patrimonial:</strong>
+            {{ $benspatrimoniais->statusbenspatrimoniais }}
         </div>
     </div>
 </div>
 
- 
+
 @endsection
