@@ -38,15 +38,13 @@
         </option>
         @endforeach
     </select>
-</div>
-    <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
-    <div class="col-sm-3">
-        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-8 js-example-basic-multiple">
-            @foreach ($listametodopagamento as $formaPG)
-            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
-            @endforeach
-        </select>
+</div>    
+    <label for="dataemissaoreceita" class="col-sm-1 col-form-label">N° Registro</label>
+    <div class="col-sm-4">
+    {!! Form::text('registroreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
     </div>
+
 
     <label for="datapagamentoreceita" class="col-sm-1 col-form-label">Data de Pagamento</label>
     <div class="col-sm-3">
@@ -64,15 +62,18 @@
 </div>
 <div class="form-group row">
 
-    <label for="dataemissaoreceita" class="col-sm-2 col-form-label">Data de Emissão</label>
-    <div class="col-sm-3">
-        {!! Form::date('dataemissaoreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
-    </div>
     <label for="valorreceita" class="col-sm-1 col-form-label">Valor</label>
     <div class="col-sm-3">
         <input type="text" id="valorreceita" class="col-sm-8 form-control" name="valorreceita" value="{{ $receita->valorreceita }}" placeholder="Preencha o valor" /><br>
     </div>
-
+    <label for="idFormaPagamento" class="col-sm-1 col-form-label">Forma Pagamento</label>
+    <div class="col-sm-4">
+        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-10 js-example-basic-multiple">
+            @foreach ($listametodopagamento as $formaPG)
+            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+            @endforeach
+        </select>
+    </div>
     <label for="contareceita" class="col-sm-1 col-form-label">Conta</label>
     <div class="col-sm-2">
 
@@ -86,25 +87,10 @@
 </div>
 
 
+<input type="hidden" id="emissaoreceita" class="col-sm-8 form-control" value="{{$receita->emissaoreceita}}" name="emissaoreceita" placeholder="Emissão" /><br>
 
-<div class="form-group row">
-    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
-    <div class="col-sm-3">
-        {!! Form::text('registroreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('dataemissaoreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
 
-    </div>
-
-    <label for="emissaoreceita" class="col-sm-1 col-form-label">Emissão</label>
-    <div class="col-sm-3">
-        <input type="text" id="emissaoreceita" class="col-sm-8 form-control" value="{{$receita->emissaoreceita}}" name="emissaoreceita" placeholder="Emissão" /><br>
-    </div>
-
-    <label for="nfreceita" class="col-sm-1 col-form-label">NF</label>
-    <div class="col-sm-2">
-        {!! Form::text('nfreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
-
-    </div>
-</div>
 {!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!}
 
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}

@@ -103,8 +103,9 @@ class BensPatrimoniaisController extends Controller
     public function edit($id)
     {
         $benspatrimoniais = BensPatrimoniais::find($id);
+        $tipoBensPatrimoniais =  DB::select('select distinct * from products where ativotipobenspatrimoniais = 1 and excluidotipobenspatrimoniais = 0;');
 
-        return view('benspatrimoniais.edit',compact('benspatrimoniais'));
+        return view('benspatrimoniais.edit',compact('benspatrimoniais','tipoBensPatrimoniais'));
 
         // return view('bensPatrimoniais.edit',compact('benspatrimoniais'));
     }

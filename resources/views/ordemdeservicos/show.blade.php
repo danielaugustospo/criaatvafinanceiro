@@ -167,49 +167,17 @@
 
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
-    <div class="col-sm-2">
-        <label class="form-control">{{ $ordemdeservico->dataVendaOrdemdeServico }}</label>
+    <div class="col-sm-6">
+        <label class="col-sm-4 form-control">{{ $ordemdeservico->dataVendaOrdemdeServico }}</label>
     </div>
-    <label for="dataOrdemdeServico" class="col-sm-2 col-form-label">Data Ordem de Serviço</label>
-    <div class="col-sm-2">
-        <label class="form-control">{{ $ordemdeservico->dataOrdemdeServico }}</label>
 
-    </div>
-    <label for="dataCriacaoOrdemdeServico" class="col-sm-1 col-form-label">Data Criação</label>
-    <div class="col-sm-3">
-        <label class="form-control">{{ $ordemdeservico->dataCriacaoOrdemdeServico }}</label>
-
-    </div>
-</div>
-
-
-<div class="form-group row">
-    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor Total</label>
+    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         <label class="form-control">{{ $ordemdeservico->valorTotalOrdemdeServico }}</label>
 
     </div>
-    <label for="valorProjetoOrdemdeServico" class="col-sm-1 col-form-label">Valor Projeto</label>
-    <div class="col-sm-2">
-        <label class="form-control">{{ $ordemdeservico->valorProjetoOrdemdeServico }}</label>
-
-    </div>
-    <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor Ordem de Serviço</label>
-    <div class="col-sm-3">
-        <label class="form-control">{{ $ordemdeservico->valorOrdemdeServico }}</label>
-
-    </div>
 </div>
 
-
-
-<div class="form-group row">
-    <label for="clienteOrdemdeServico" class="col-sm-2 col-form-label">Nome da Ordem de Serviços</label>
-    <div class="col-sm-10">
-        <label class="form-control">{{ $ordemdeservico->clienteOrdemdeServico }}</label>
-
-    </div>
-</div>
 <div class="form-group row">
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
     <div class="col-sm-10">
@@ -217,13 +185,7 @@
 
     </div>
 </div>
-<div class="form-group row">
-    <label for="servicoOrdemdeServico" class="col-sm-2 col-form-label">Serviço</label>
-    <div class="col-sm-10">
-        <label class="form-control">{{ $ordemdeservico->servicoOrdemdeServico }}</label>
 
-    </div>
-</div>
 <div class="form-group row">
     <label for="obsOrdemdeServico" class="col-sm-2 col-form-label">Observação</label>
     <div class="col-sm-10">

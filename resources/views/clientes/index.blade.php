@@ -28,7 +28,7 @@
 
     <thead class="thead-dark">
         <th class="thTituloTabela">Id</th>
-        <th class="thTituloTabela">Nome Cliente</th>
+        <th class="thTituloTabela">Nome Fantasia</th>
         <th class="thTituloTabela">CNPJ Cliente</th>
         <th class="thTituloTabela">Contato Cliente</th>
         <th class="thTituloTabela" width="280px">Ação</th>

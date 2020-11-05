@@ -77,9 +77,9 @@
 </div>
 <div class="form-group row">
 
-    <label for="dataemissaoreceita" class="col-sm-2 col-form-label">Data de Emissão</label>
+    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
     <div class="col-sm-3">
-        {!! Form::date('dataemissaoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
 
     </div>
     <label for="valorreceita" class="col-sm-1 col-form-label">Valor</label>
@@ -93,7 +93,7 @@
         <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-12 form-control js-example-basic-multiple">
             @foreach ($listaContas as $contas)
 
-            <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
+            <option value="{{ $contas->id }}">{{ $contas->numeroConta }}</option>
 
             @endforeach
         </select>
@@ -103,25 +103,11 @@
 
 
 
-<div class="form-group row">
-    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
-    <div class="col-sm-3">
-        {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
 
-    </div>
-
-    <label for="emissaoreceita" class="col-sm-1 col-form-label">Emissão</label>
-    <div class="col-sm-3">
-        <input type="text" id="emissaoreceita" class="col-sm-8 form-control" name="emissaoreceita" placeholder="Emissão" /><br>
-    </div>
-
-    <label for="nfreceita" class="col-sm-1 col-form-label">NF</label>
-    <div class="col-sm-2">
-        {!! Form::text('nfreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
-
-    </div>
-</div>
 <!-- {!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!} -->
+{!! Form::hidden('registroreceita', '0', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+<input type="hidden" id="emissaoreceita" class="col-sm-8 form-control" name="emissaoreceita" placeholder="Emissão" value="0" /><br>
+{!! Form::hidden('nfreceita', '0', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
 
 
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}

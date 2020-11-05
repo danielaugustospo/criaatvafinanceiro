@@ -36,7 +36,14 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Status Bem Patrimonial:</strong>
-            {{ $benspatrimoniais->statusbenspatrimoniais }}
+            @if ( $benspatrimoniais->statusbenspatrimoniais  = 1)
+            Disponivel
+            @elseif ( $benspatrimoniais->statusbenspatrimoniais  = 2)
+            Em Uso
+            @elseif ( $benspatrimoniais->statusbenspatrimoniais  = 3)
+            Manutenção
+            @endif
+
         </div>
     </div>
 </div>

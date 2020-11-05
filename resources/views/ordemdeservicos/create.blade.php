@@ -214,7 +214,7 @@
     <div class="col-sm-4">
         <!-- {!! Form::text('nomeFormaPagamento', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
         <!-- <select name="nomeFormaPagamento" id="testa" class="selectPG js-example-basic-multiple"  multiple="multiple"> -->
-        <select name="nomeFormaPagamento" id="nomeFormaPagamento" class="form-control col-sm-4 js-example-basic-multiple">
+        <select name="nomeFormaPagamento" id="nomeFormaPagamento" class="form-control js-example-basic-multiple">
             @foreach ($formapagamento as $formaPG)
             <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
             @endforeach
@@ -235,51 +235,20 @@
 
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
-    <div class="col-sm-2">
-        {!! Form::date('dataVendaOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+    <div class="col-sm-6">
+        {!! Form::date('dataVendaOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100']) !!}
     </div>
-    <label for="dataOrdemdeServico" class="col-sm-2 col-form-label">Data Ordem de Serviço</label>
-    <div class="col-sm-2">
-        {!! Form::date('dataOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-    </div>
-    <label for="dataCriacaoOrdemdeServico" class="col-sm-1 col-form-label">Data Criação</label>
-    <div class="col-sm-3">
-        {!! Form::date('dataCriacaoOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-    </div>
-</div>
-
-
-<div class="form-group row">
     <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor Total</label>
     <div class="col-sm-2">
         <!-- {!! Form::text('valorTotalOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
         <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
 
     </div>
-    <label for="valorProjetoOrdemdeServico" class="col-sm-1 col-form-label">Valor Projeto</label>
-    <div class="col-sm-2">
-        <!-- {!! Form::text('valorProjetoOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <input type="text" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
-
-    </div>
-    <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor Ordem de Serviço</label>
-    <div class="col-sm-3">
-        <!-- {!! Form::text('valorOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <input type="text" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
-
-    </div>
 </div>
 
 
 
-<div class="form-group row">
-    <label for="clienteOrdemdeServico" class="col-sm-2 col-form-label">Nome da Ordem de Serviços</label>
-    <div class="col-sm-10">
-        {!! Form::text('clienteOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-    </div>
-</div>
 <div class="form-group row">
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
     <div class="col-sm-10">
@@ -287,13 +256,7 @@
 
     </div>
 </div>
-<div class="form-group row">
-    <label for="servicoOrdemdeServico" class="col-sm-2 col-form-label">Serviço</label>
-    <div class="col-sm-10">
-        {!! Form::text('servicoOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-    </div>
-</div>
 <div class="form-group row">
     <label for="obsOrdemdeServico" class="col-sm-2 col-form-label">Observação</label>
     <div class="col-sm-10">
@@ -579,7 +542,14 @@
     </div>
 </div>
 
+<input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
+<input type="hidden" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
 
+{!! Form::hidden('dataOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('dataCriacaoOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+
+{!! Form::hidden('clienteOrdemdeServico', 'Campo Nome da OS', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('servicoOrdemdeServico', 'Campo Serviço', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 
 {!! Form::hidden('dataExclusaoOrdemdeServico', '00', ['placeholder' => 'Data Exclusão', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'dataExclusaoOrdemdeServico']) !!}

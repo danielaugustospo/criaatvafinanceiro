@@ -30,7 +30,7 @@
 {!! Form::open(array('route' => 'clientes.store','method'=>'POST')) !!}
 
 <div class="form-group row">
-    <label for="nomeCliente" class="col-sm-2 col-form-label">Nome do Cliente</label>
+    <label for="nomeCliente" class="col-sm-2 col-form-label">Nome Fantasia</label>
     <div class="col-sm-10">
         {!! Form::text('nomeCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
@@ -199,52 +199,13 @@
 </div>
 
 
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="bancoFavorecidoCliente" class="col-sm-1 col-form-label">Banco Favorecido Cliente</label>
-    <div class="col-sm-3">
-        <!-- {!! Form::text('bancoFavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!} -->
+{!! Form::hidden('bancoFavorecidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+{!! Form::hidden('agenciafavorecidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+{!! Form::hidden('contacorrentefavorecidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+{!! Form::hidden('nomefavorecidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('cpffavorecidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '14']) !!}
 
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
 
-        <select class="selecionaComInput form-control" name="bancoFavorecidoCliente" id="bancoFavorecidoCliente">
-            @foreach ($todososbancos as $listabancos)
-
-            <option value="{{$listabancos->id}}">
-                {{$listabancos->nomeBanco}}
-            </option>
-            @endforeach
-
-        </select>
-
-    </div>
-    <label for="agenciafavorecidoCliente" class="col-sm-1 col-form-label">Agência Favorecido</label>
-    <div class="col-sm-2">
-        {!! Form::text('agenciafavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-    <label for="contacorrentefavorecidoCliente" class="col-sm-2 col-form-label">Número Conta Favorecido Cliente</label>
-    <div class="col-sm-3">
-        {!! Form::text('contacorrentefavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-</div>
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="nomefavorecidoCliente" class="col-sm-1 col-form-label">Nome Completo Favorecido Cliente</label>
-    <div class="col-sm-6">
-        {!! Form::text('nomefavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-    <label for="cpffavorecidoCliente" class="col-sm-2 col-form-label">CPF/CNPJ Favorecido Cliente</label>
-    <div class="col-sm-3">
-        {!! Form::number('cpffavorecidoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '14']) !!}
-
-    </div>
-</div>
 {!! Form::hidden('ativoCliente', '1', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 {!! Form::hidden('excluidoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 

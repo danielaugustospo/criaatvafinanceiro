@@ -31,7 +31,7 @@
 {!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id] ]) !!}
 
 <div class="form-group row">
-    <label for="nomeCliente" class="col-sm-2 col-form-label">Nome do Cliente</label>
+    <label for="nomeCliente" class="col-sm-2 col-form-label">Nome Fantasia</label>
     <div class="col-sm-10">
         {!! Form::text('nomeCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '100']) !!}
 
@@ -200,52 +200,6 @@
 </div>
 
 
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="bancoFavorecidoCliente" class="col-sm-1 col-form-label">Banco Favorecido Cliente</label>
-    <div class="col-sm-3">
-        <!-- {!! Form::text('bancoFavorecidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '10']) !!} -->
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-
-        <select class="selecionaComInput form-control" name="bancoFavorecidoCliente" id="bancoFavorecidoCliente" disabled>
-            @foreach ($todososbancosFavorecidoCliente as $listabancos)
-
-            <option value="{{$listabancos->id}}">
-                {{$listabancos->nomeBanco}}
-            </option>
-            @endforeach
-
-        </select>
-
-    </div>
-    <label for="agenciafavorecidoCliente" class="col-sm-1 col-form-label">Agência Favorecido</label>
-    <div class="col-sm-2">
-        {!! Form::text('agenciafavorecidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '10']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-    <label for="contacorrentefavorecidoCliente" class="col-sm-2 col-form-label">Número Conta Favorecido Cliente</label>
-    <div class="col-sm-3">
-        {!! Form::text('contacorrentefavorecidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '10']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-</div>
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="nomefavorecidoCliente" class="col-sm-1 col-form-label">Nome Completo Favorecido Cliente</label>
-    <div class="col-sm-6">
-        {!! Form::text('nomefavorecidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '100']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-    <label for="cpffavorecidoCliente" class="col-sm-2 col-form-label">CPF/CNPJ Favorecido Cliente</label>
-    <div class="col-sm-3">
-        {!! Form::number('cpffavorecidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','readonly', 'maxlength' => '14']) !!}
-
-    </div>
-</div>
     {!! Form::hidden('ativoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '10']) !!}
     {!! Form::hidden('excluidoCliente', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'readonly', 'maxlength' => '10']) !!}
 

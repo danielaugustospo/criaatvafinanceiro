@@ -34,7 +34,7 @@
 <div class="form-group row">
     <label for="nomeFuncionario" class="col-sm-2 col-form-label">Nome Completo do Funcionário</label>
     <div class="col-sm-10">
-        {!! Form::text('nomeFuncionario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('nomeFuncionario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
 
         <!-- <input type="text" class="form-control" nome="nomeFuncionario" id="nomeFuncionario" placeholder="Nome do Funcionário"> -->
     </div>
@@ -42,7 +42,7 @@
 <div class="form-group row">
     <label for="cepFuncionario" class="col-sm-2 col-form-label">CEP</label>
     <div class="col-sm-2">
-        {!! Form::text('cepFuncionario', '', ['placeholder' => 'CEP', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'cep','onblur' =>'pesquisacep(this.value)']) !!}
+        {!! Form::text('cepFuncionario', '', ['placeholder' => 'CEP', 'class' => 'form-control', 'maxlength' => '8', 'required', 'id' => 'cep','onblur' =>'pesquisacep(this.value)']) !!}
         <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
     <label for="enderecoFuncionario" class="col-sm-2 col-form-label">Endereço</label>
@@ -73,7 +73,7 @@
 <div class="form-group row ">
     <label for="celularFuncionario" class="col-sm-2 col-form-label">Celular</label>
     <div class="col-sm-2">
-        {!! Form::number('celularFuncionario', '219xxxxxxxx', ['placeholder' => 'Celular', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
+        {!! Form::number('celularFuncionario', '219xxxxxxxx', ['placeholder' => 'Celular', 'class' => 'form-control', 'required', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '11']) !!}
         <!-- <input type="text" class="form-control" id="celularFuncionario" placeholder="Celular"> -->
     </div>
     <label for="telresidenciaFuncionario" class="col-sm-2 col-form-label">Telefone Residência</label>

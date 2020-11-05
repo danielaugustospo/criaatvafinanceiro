@@ -54,8 +54,11 @@
 <div class="form-group row">
     <label for="statusbenspatrimoniais" class="col-sm-2 col-form-label">Status do Bem Patrimonial</label>
     <div class="col-sm-2">
-
-        {!! Form::text('statusbenspatrimoniais', '', ['placeholder' => 'Status do Bem Patrimonial', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'statusbenspatrimoniais']) !!}
+        <select class="form-control" name="statusbenspatrimoniais" id="statusbenspatrimoniais">
+            <option value="1">Disponível</option>
+            <option value="2">Em Uso</option>
+            <option value="3">Manutenção</option>
+        </select>
         <!-- <input type="text" class="form-control" id="descricaoBensPatrimoniais" placeholder="Endereço"> -->
     </div>
     <label for="descricaoBensPatrimoniais" class="col-sm-1 col-form-label">Descrição</label>
