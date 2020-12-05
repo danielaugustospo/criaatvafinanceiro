@@ -47,17 +47,10 @@ class CriaTabelaFornecedores extends Migration
             $table->string('agenciaFornecedor');
 
 
-            $table->unsignedBigInteger('bancoFavorecidoFornecedor');
-            $table->foreign('bancoFavorecidoFornecedor')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
-
-            $table->string('nomefavorecidoFornecedor');
-            $table->string('cpffavorecidoFornecedor');
-            $table->string('contacorrentefavorecidoFornecedor');
-
-            $table->string('agenciafavorecidoFornecedor');
+            $table->string('chavePix1Fornecedor');
+            $table->string('chavePix2Fornecedor');
+            $table->string('chavePix3Fornecedor');
+            $table->string('chavePix4Fornecedor');
 
             $table->boolean('ativoFornecedor');
             $table->boolean('excluidoFornecedor');

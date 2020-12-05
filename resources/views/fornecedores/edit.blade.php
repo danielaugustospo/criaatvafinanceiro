@@ -31,7 +31,7 @@
 
 
 <div class="form-group row">
-    <label for="nomeFornecedor" class="col-sm-2 col-form-label">Nome do Fornecedor</label>
+    <label for="nomeFornecedor" class="col-sm-2 col-form-label">Nome Fantasia</label>
     <div class="col-sm-10">
         {!! Form::text('nomeFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100' ]) !!}
 
@@ -201,57 +201,36 @@
         <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
 </div>
-
-
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="bancoFavorecidoFornecedor" class="col-sm-2 col-form-label">Banco Favorecido Fornecedor</label>
-    <div class="col-sm-3">
-        <!-- {!! Form::text('bancoFavorecidoFornecedor', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10'  ]) !!} -->
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-
-        <select class="selecionaComInput form-control" name="bancoFavorecidoFornecedor" id="bancoFavorecidoFornecedor">
-            @foreach ($todososbancos as $listabancos)
-
-            <option value="{{$listabancos->id}}">
-                {{$listabancos->nomeBanco}}
-            </option>
-            @endforeach
-        </select>
-
+<div class="d-flex justify-content-center">
+        <img src="../img/logo_pix.png" class="mb-3" width="200px;" alt="">
     </div>
-    <label for="agenciafavorecidoFornecedor" class="col-sm-1 col-form-label">Agência Favorecido</label>
+<div class="form-group row">
+
+    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 1</label>
     <div class="col-sm-2">
-        {!! Form::text('agenciafavorecidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10' ]) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+        {!! Form::text('chavePix1Fornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25' ]) !!}
     </div>
-    <label for="contacorrentefavorecidoFornecedor" class="col-sm-1 col-form-label">Número Conta Favorecido Fornecedor</label>
-    <div class="col-sm-3">
-        {!! Form::text('contacorrentefavorecidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10' ]) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 2</label>
+    <div class="col-sm-2">
+        {!! Form::text('chavePix2Fornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25' ]) !!}
     </div>
+    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 3</label>
+    <div class="col-sm-2">
+        {!! Form::text('chavePix3Fornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25' ]) !!}
+    </div>
+    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 4</label>
+    <div class="col-sm-2">
+        {!! Form::text('chavePix4Fornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25' ]) !!}
+    </div>
+
 </div>
-<!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="nomefavorecidoFornecedor" class="col-sm-2 col-form-label">Nome Completo Favorecido Fornecedor</label>
-    <div class="col-sm-4">
-        {!! Form::text('nomefavorecidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control col-sm-12', 'maxlength' => '100' ]) !!}
 
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
-    </div>
-    <label for="cpffavorecidoFornecedor" class="col-sm-2 col-form-label">CPF/CNPJ Favorecido Fornecedor</label>
-    <div class="col-sm-4">
-        {!! Form::number('cpffavorecidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'oninput'=>'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);','maxlength' => '14' ]) !!}
-    </div>
 
-    {!! Form::hidden('ativoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
-    {!! Form::hidden('excluidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+{!! Form::hidden('ativoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
+{!! Form::hidden('excluidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 
-    <button class="btn btn-success btn-sm" type="submit">Salvar</button>
+<button class="btn btn-success btn-sm" type="submit">Salvar</button>
 
-    {!! Form::close() !!}
+{!! Form::close() !!}
 
-    @endsection
+@endsection

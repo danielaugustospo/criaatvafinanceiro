@@ -43,18 +43,12 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Banco:</strong>
-            <select class="form-control" name="idBanco" id="idBanco">
-            <!-- @foreach ($banco as $dadosBanco) -->
-                @foreach ($todososbancos as $listabancos)
-
-                <!-- <option value="{{$dadosBanco->id}}">
-                    {{$dadosBanco->nomeBanco}}
-                </option> -->
+            <select class="selecionaComInput form-control" name="idBanco" id="idBanco">
+                    @foreach ($todososbancos as $listabancos)
                 <option value="{{$listabancos->id}}">
                     {{$listabancos->nomeBanco}}
                 </option>
                 @endforeach
-            <!-- @endforeach -->
 
             </select>
 

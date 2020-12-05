@@ -31,33 +31,30 @@
 {!! Form::open(array('route' => 'receita.store','method'=>'POST')) !!}
 
 
-<div class="pull-left">
-    <h2>Cadastro de Receitas</h2>
-</div>
-
 <!-- Seção Receitas -->
-
-<label for="idOS" class="col-sm-2 col-form-label">Vincular a OS:</label>
-<div class="col-sm-12 mb-3">
-    <select name="idOS" id="idOS" class="selecionaComInput col-sm-12">
-        @foreach ($todasOSAtivas as $listaOS)
-        <option value="{{$listaOS->id}}">
-            Código da OS: {{$listaOS->id}} - Evento: {{$listaOS->eventoOrdemdeServico}}
-        </option>
-        @endforeach
-    </select>
-</div>
-
 <div class="form-group row">
-    <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
-    <div class="col-sm-3">
-        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-8 js-example-basic-multiple">
-            <option value="0" selected="selected">Sem Receita</option>
-            @foreach ($formapagamento as $formaPG)
-            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+
+    <label for="idOS" class="col-sm-2 col-form-label">Vincular a OS:</label>
+    <div class="col-sm-10 mb-3">
+        <select name="idOS" id="idOS" class="selecionaComInput form-control" style="width: -webkit-fill-available;">
+            @foreach ($todasOSAtivas as $listaOS)
+            <option value="{{$listaOS->id}}">
+                Código da OS: {{$listaOS->id}} - Evento: {{$listaOS->eventoOrdemdeServico}}
+            </option>
             @endforeach
         </select>
     </div>
+</div>
+
+<div class="form-group row">
+
+
+    <label for="registroreceita" class="col-sm-1 col-form-label">N° Registro</label>
+    <div class="col-sm-4">
+        {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
+    </div>
+
 
     <label for="datapagamentoreceita" class="col-sm-1 col-form-label">Data de Pagamento</label>
     <div class="col-sm-3">
@@ -76,21 +73,26 @@
     </div>
 </div>
 <div class="form-group row">
-
-    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
-    <div class="col-sm-3">
-        {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
-
-    </div>
     <label for="valorreceita" class="col-sm-1 col-form-label">Valor</label>
     <div class="col-sm-3">
         <input type="text" id="valorreceita" class="padraoReal col-sm-8 form-control" name="valorreceita" value="0,00" placeholder="Preencha o valor" /><br>
     </div>
 
+    <label for="idFormaPagamento" class="col-sm-1 col-form-label">Forma Pagamento</label>
+    <div class="col-sm-4">
+        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-10 js-example-basic-multiple">
+            <option value="0" selected="selected">Sem Receita</option>
+            @foreach ($formapagamento as $formaPG)
+            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+            @endforeach
+        </select>
+    </div>
+
+
     <label for="contareceita" class="col-sm-1 col-form-label">Conta</label>
     <div class="col-sm-2">
 
-        <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-12 form-control js-example-basic-multiple">
+        <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-14 form-control js-example-basic-multiple">
             @foreach ($listaContas as $contas)
 
             <option value="{{ $contas->id }}">{{ $contas->numeroConta }}</option>
@@ -113,7 +115,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
- 
+
 
 
 

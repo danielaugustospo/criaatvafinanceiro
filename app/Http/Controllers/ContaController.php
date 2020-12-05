@@ -53,7 +53,7 @@ class ContaController extends Controller
     public function create(Request $request)
     {
 
-        $banco =  DB::select('select * from banco');
+        $banco =  DB::select('select * from banco order by id');
         // $banco = Banco::show($request->all());
 
         // var_dump($banco);
@@ -103,12 +103,23 @@ class ContaController extends Controller
         {
             $role = Role::find($id);
             // $idBancoJoinConta ='';
-            $idBancoJoinConta = Conta::join("banco", "conta.idBanco", "=", "banco.id")
-                ->where("conta.idbanco", $id)
-                ->get();
+            // $idBancoJoinConta = Conta::join("banco", "conta.idBanco", "=", "banco.id")
+            //     ->where("conta.idbanco", $id)
+            //     ->get();
 
 
-            return view('contas.show', compact('conta', 'idBancoJoinConta'));
+            $banco =
+            DB::select('SELECT b.id, b.nomeBanco 
+                FROM banco b
+                    WHERE  b.ativoBanco = 1
+                    AND b.excluidoBanco = 0
+                    AND b.id = :id', ['id' => $conta->idBanco ]);
+
+            // $banco =  DB::select('select * from banco where id = :id', ['id' => $conta->idBanco]);
+
+
+
+            return view('contas.show', compact('conta', 'banco'));
         }
     }
 
@@ -127,7 +138,7 @@ class ContaController extends Controller
         $contaRole = $conta->roles->pluck('numeroConta', 'numeroConta')->all();
 
         $banco =  DB::select('select * from banco where id = :id', ['id' => $conta->idBanco]);
-        $todososbancos =  DB::select('select * from banco where ativoBanco = 1 order by :bancoConta asc', ['bancoConta' => $conta->idBanco]);
+        $todososbancos =  DB::select('select * from banco where ativoBanco = 1 order by id = :bancoConta desc', ['bancoConta' => $conta->idBanco]);
 
         return view('contas.edit', compact('conta', 'roles', 'contaRole', 'banco', 'todososbancos'));
 

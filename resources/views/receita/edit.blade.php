@@ -15,38 +15,38 @@
 
 
 @if (count($errors) > 0)
-  <div class="alert alert-danger">
+<div class="alert alert-danger">
     <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
-       @foreach ($errors->all() as $error)
-         <li>{{ $error }}</li>
-       @endforeach
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
     </ul>
-  </div>
+</div>
 @endif
 
 
 {!! Form::model($receita, ['method' => 'PATCH','route' => ['receita.update', $receita->id]]) !!}
 
 <div class="form-group row">
-<label for="idOS" class="col-sm-2 col-form-label">Vincular a OS:</label>
-<div class="col-sm-12 mb-3">
-    <select name="idOS" id="idOS" class="selecionaComInput col-sm-12">
-        @foreach ($todasOSAtivas as $listaOS)
-        <option value="{{$listaOS->id}}">
-            Código da OS: {{$listaOS->id}} - Evento: {{$listaOS->eventoOrdemdeServico}}
-        </option>
-        @endforeach
-    </select>
-</div>    
+    <label for="idOS" class="col-sm-2 col-form-label">Vincular a OS:</label>
+    <div class="col-sm-10 mb-3">
+        <select name="idOS" id="idOS" class="selecionaComInput form-control" style="width: -webkit-fill-available;">
+            @foreach ($todasOSAtivas as $listaOS)
+            <option value="{{$listaOS->id}}">
+                Código da OS: {{$listaOS->id}} - Evento: {{$listaOS->eventoOrdemdeServico}}
+            </option>
+            @endforeach
+        </select>
+    </div>
     <label for="dataemissaoreceita" class="col-sm-1 col-form-label">N° Registro</label>
-    <div class="col-sm-4">
-    {!! Form::text('registroreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+    <div class="col-sm-3">
+        {!! Form::text('registroreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
 
     </div>
 
 
-    <label for="datapagamentoreceita" class="col-sm-1 col-form-label">Data de Pagamento</label>
+    <label for="datapagamentoreceita" class="col-sm-2 col-form-label">Data de Pagamento</label>
     <div class="col-sm-3">
         {!! Form::date('datapagamentoreceita', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
     </div>
@@ -79,7 +79,7 @@
 
         <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-12 form-control js-example-basic-multiple">
             @foreach ($listaContas as $contas)
-                <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
+            <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
             @endforeach
         </select>
     </div>
@@ -97,5 +97,5 @@
 
 {!! Form::close() !!}
 
- 
+
 @endsection

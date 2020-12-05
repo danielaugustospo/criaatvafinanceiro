@@ -46,7 +46,9 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Nome Banco:</strong>
-            {{ $conta->nomeBanco }}
+            @foreach ($banco as $listabancos)
+                {{ $listabancos->nomeBanco }}
+            @endforeach
         </div>
     </div>
 

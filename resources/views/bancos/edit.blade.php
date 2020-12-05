@@ -37,7 +37,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Código do Banco:</strong>
-            {!! Form::text('codigoBanco', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+            {!! Form::text('codigoBanco', null, array('placeholder' => 'Somente Números','class' => 'form-control')) !!}
         </div>
     </div>
     {!! Form::hidden('ativoBanco', null, ['placeholder' => 'Ativo Banco', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoBanco']) !!}

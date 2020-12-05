@@ -135,9 +135,10 @@
 </div>
 <div class="form-group row">
 
-    <label for="precoCliente" class="col-sm-2 col-form-label">Preço</label>
+    <label for="precoReal" class="col-sm-2 col-form-label">Preço</label>
     <div class="col-sm-2">
-        <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br>
+        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
+        {!! Form::text('precoReal', null, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal form-control', 'maxlength' => '100', 'id' => 'precoReal', 'value' => '0,00']) !!}
 
     </div>
 
@@ -152,7 +153,7 @@
 </div>
 <div class="form-group row">
     <label for="quempagou" class="col-sm-2 col-form-label">Reembolsado</label>
-    <div class="col-sm-1">
+    <div class="col-sm-2">
         <select name="quempagou" id="quempagou" style="padding:4px;" class="form-control">
             <option value="S">Sim</option>
             <option value="N">Não</option>
@@ -196,7 +197,7 @@
 
     </div>
 
-    <label for="data" class="col-sm-1 col-form-label">Vencimento</label>
+    <label for="data" class="col-sm-2 col-form-label">Vencimento</label>
     <div class="col-sm-3">
         {!! Form::date('data', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 

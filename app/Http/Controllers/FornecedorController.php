@@ -69,31 +69,31 @@ class FornecedorController extends Controller
 
         $request->validate([
 
-            'nomeFornecedor' => 'required|min:1',
-            'contatoFornecedor' => 'required|min:1',
-            'razaosocialFornecedor' => 'required|min:1',
-            'siteFornecedor' => 'required|min:1',
-            'cepFornecedor' => 'required|min:1',
-            'enderecoFornecedor' => 'required|min:1',
-            'bairroFornecedor' => 'required|min:1',
-            'cidadeFornecedor' => 'required|min:1',
-            'estadoFornecedor' => 'required|min:1',
-            'telefone1Fornecedor' => 'required|min:1',
-            'telefone2Fornecedor' => 'required|min:1',
-            'cnpjFornecedor' => 'required|min:1|cnpj',
-            'inscEstadualFornecedor' => 'required|min:1',
-            'cpfFornecedor' => 'required|min:1||cpf|unique:fornecedores',
-            'identidadeFornecedor' => 'required|min:1',
-            'emailFornecedor' => 'required|min:5',
-            'dataCadastroFornecedor' => 'required|min:1',
-            'bancoFornecedor' => 'required|min:1',
-            'nrcontaFornecedor' => 'required|min:1',
-            'agenciaFornecedor' => 'required|min:1',
-            'bancoFavorecidoFornecedor' => 'required|min:1',
-            'nomefavorecidoFornecedor' => 'required|min:1',
-            'cpffavorecidoFornecedor' => 'required|min:1',
-            'contacorrentefavorecidoFornecedor' => 'required|min:1',
-            'agenciafavorecidoFornecedor' => 'required|min:1',
+            'nomeFornecedor'          => 'required|min:1',
+            'contatoFornecedor'       => 'required|min:1',
+            'razaosocialFornecedor'   => 'required|min:1',
+            'siteFornecedor'          => 'required|min:1',
+            'cepFornecedor'           => 'required|min:1',
+            'enderecoFornecedor'      => 'required|min:1',
+            'bairroFornecedor'        => 'required|min:1',
+            'cidadeFornecedor'        => 'required|min:1',
+            'estadoFornecedor'        => 'required|min:1',
+            'telefone1Fornecedor'     => 'required|min:1',
+            'telefone2Fornecedor'     => 'required|min:1',
+            'cnpjFornecedor'          => 'required|min:1|cnpj',
+            'inscEstadualFornecedor'  => 'required|min:1',
+            'cpfFornecedor'           => 'required|min:1|cpf|unique:fornecedores',
+            'identidadeFornecedor'    => 'required|min:1',
+            'emailFornecedor'         => 'required|min:5',
+            'dataCadastroFornecedor'  => 'required|min:1',
+            'bancoFornecedor'         => 'required|min:1',
+            'nrcontaFornecedor'       => 'required|min:1',
+            'agenciaFornecedor'       => 'required|min:1',
+            'chavePix1Fornecedor'     => 'required|min:1',
+            'chavePix2Fornecedor'     => 'required|min:1',
+            'chavePix3Fornecedor'     => 'required|min:1',
+            'chavePix4Fornecedor'     => 'required|min:1',
+
             'ativoFornecedor' => 'required|min:1',
             'excluidoFornecedor' => 'required|min:1',
 
@@ -134,7 +134,7 @@ class FornecedorController extends Controller
     {
         $fornecedor = Fornecedores::find($id);
 
-        $todososbancos = DB::select('select * from banco order by id = :idBancoFornecedor asc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
+        $todososbancos = DB::select('select * from banco order by id = :idBancoFornecedor desc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
         // $roles = Fornecedores::pluck('nomeFornecedor','nomeFornecedor')->all();
         // $fornecedorRole = $fornecedor->roles->pluck('nomeFornecedor','nomeFornecedor')->all();
 
@@ -175,11 +175,16 @@ class FornecedorController extends Controller
             'bancoFornecedor'                       => 'required|min:1',
             'nrcontaFornecedor'                     => 'required|min:1',
             'agenciaFornecedor'                     => 'required|min:1',
-            'bancoFavorecidoFornecedor'             => 'required|min:1',
-            'nomefavorecidoFornecedor'              => 'required|min:1',
-            'cpffavorecidoFornecedor'               => 'required|min:1',
-            'contacorrentefavorecidoFornecedor'     => 'required|min:1',
-            'agenciafavorecidoFornecedor'           => 'required|min:1',
+            'chavePix1Fornecedor'                   => 'required|min:1',
+            'chavePix2Fornecedor'                   => 'required|min:1',
+            'chavePix3Fornecedor'                   => 'required|min:1',
+            'chavePix4Fornecedor'                   => 'required|min:1',
+
+            // 'bancoFavorecidoFornecedor'             => 'required|min:1',
+            // 'nomefavorecidoFornecedor'              => 'required|min:1',
+            // 'cpffavorecidoFornecedor'               => 'required|min:1',
+            // 'contacorrentefavorecidoFornecedor'     => 'required|min:1',
+            // 'agenciafavorecidoFornecedor'           => 'required|min:1',
             'ativoFornecedor'                       => 'required|min:1',
             'excluidoFornecedor'                    => 'required|min:1',
 
