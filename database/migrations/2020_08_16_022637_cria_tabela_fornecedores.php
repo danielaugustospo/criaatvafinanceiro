@@ -36,13 +36,6 @@ class CriaTabelaFornecedores extends Migration
             $table->string('dataCadastroFornecedor');
 
 
-            $table->unsignedBigInteger('bancoFornecedor');
-            $table->foreign('bancoFornecedor')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
-
-            // $table->string('bancoFuncionario');
             $table->string('nrcontaFornecedor');
             $table->string('agenciaFornecedor');
 
@@ -54,6 +47,15 @@ class CriaTabelaFornecedores extends Migration
 
             $table->boolean('ativoFornecedor');
             $table->boolean('excluidoFornecedor');
+
+            $table->unsignedBigInteger('bancoFornecedor');
+            $table->foreign('bancoFornecedor')
+            ->references('id')
+            ->on('banco')
+            ->onDelete('cascade');
+
+            // $table->string('bancoFuncionario');
+
 
             // $table->timestamp('created_at')->nullable(); //Data Criação
 
