@@ -12,7 +12,9 @@ php artisan make:migration create_users_table --create=users
 
 php artisan make:migration add_votes_to_users_table --table=users
 
-php artisan migrate
+Foi criado um link simbólico para a pasta storage em public. Para gerar esse comando no servidor, execute:
+
+php artisan storage:link
 
 php artisan migrate --force
 
