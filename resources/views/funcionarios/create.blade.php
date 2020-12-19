@@ -1,43 +1,44 @@
-
 @extends('layouts.app')
 
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Cadastro de Funcionário</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('funcionarios.index') }}"> Voltar</a>
-        </div>
-    </div>
+
+{!! Form::open(array('route' => 'funcionarios.store','method'=>'POST', 'enctype'=>'multipart/form-data' )) !!}
+
+<div class="col-lg-12 margin-tb">
+    <a class="btn btn-primary" href="{{ route('funcionarios.index') }}"> Voltar</a>
 </div>
 
-
 @if (count($errors) > 0)
-  <div class="alert alert-danger">
+<div class="alert alert-danger">
     <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
     <ul>
-       @foreach ($errors->all() as $error)
-         <li>{{ $error }}</li>
-       @endforeach
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
     </ul>
-  </div>
+</div>
 @endif
 
 
+<div class="form-group row col-lg-12 mt-4">
 
+    <h2 class="col-lg-4 pl-0">Cadastro de Funcionário</h2>
+    <div class="col-lg-8 d-flex justify-content-end">
+        <label class="col-sm-3 col-form-label pr-2">Cadastrar Foto</label>
+        <input type="file" class="form-control-file btn btn-secondary col-sm-6" name="fotoFuncionario" name="fotoFuncionario">
+    </div>
 
-{!! Form::open(array('route' => 'funcionarios.store','method'=>'POST')) !!}
+</div>
+
 
 <div class="form-group row">
     <label for="nomeFuncionario" class="col-sm-2 col-form-label">Nome Completo do Funcionário</label>
     <div class="col-sm-10">
-        {!! Form::text('nomeFuncionario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
+        {!! Form::text('nomeFuncionario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'required']) !!}
+    </div>
 
         <!-- <input type="text" class="form-control" nome="nomeFuncionario" id="nomeFuncionario" placeholder="Nome do Funcionário"> -->
-    </div>
 </div>
 <div class="form-group row">
     <label for="cepFuncionario" class="col-sm-2 col-form-label">CEP</label>
@@ -134,9 +135,9 @@
         <!-- {!! Form::text('orgaoRGFuncionario', '', ['placeholder' => 'Orgão RG', 'class' => 'form-control', 'maxlength' => '11', 'list' => 'emissoresrg']) !!} -->
         <!-- <input type="text" class="form-control" id="orgaoRGFuncionario" placeholder="Orgão RG"> -->
         <select class="selecionaComInput form-control" name="orgaoRGFuncionario">
-        @foreach ($todosorgaosrg as $listarg)
+            @foreach ($todosorgaosrg as $listarg)
             <option value="{{$listarg->id}}">{{$listarg->nome}}</option>
-        @endforeach
+            @endforeach
         </select>
     </div>
     <label for="expedicaoRGFuncionario" class="col-sm-2 col-form-label">Data de Emissão</label>
@@ -228,13 +229,13 @@
     <input type="radio" name="certficFuncionario" class="comcert ml-2 m-1 mt-3" value="1">
     <label for="certficFuncionario" class="col-form-label pl-0">Sim</label>
 
-    </div>
-    <div id="divcertprof" class="form-group row col-sm-12 mt-2">
-        <label for="uncertificadoraFuncionario" class="col-sm-2 col-form-label pl-0">Unidade Certificadora</label>
-        <input class="form-control col-sm-4 " type="text" name="uncertificadoraFuncionario"  id="uncertificadoraFuncionario" maxlength="60">
+</div>
+<div id="divcertprof" class="form-group row col-sm-12 mt-2">
+    <label for="uncertificadoraFuncionario" class="col-sm-2 col-form-label pl-0">Unidade Certificadora</label>
+    <input class="form-control col-sm-4 " type="text" name="uncertificadoraFuncionario" id="uncertificadoraFuncionario" maxlength="60">
 
-        <label for="anocertificacaoFuncionario" class="col-sm-2 col-form-label">Ano Certificação</label>
-        <input class="form-control col-sm-2" type="text" name="anocertificacaoFuncionario" id="anocertificacaoFuncionario" maxlength="4">
+    <label for="anocertificacaoFuncionario" class="col-sm-2 col-form-label">Ano Certificação</label>
+    <input class="form-control col-sm-2" type="text" name="anocertificacaoFuncionario" id="anocertificacaoFuncionario" maxlength="4">
 
 </div>
 <hr>
@@ -254,9 +255,9 @@
     <div class="col-sm-4">
         <!-- {!! Form::text('bancoFuncionario', '', ['placeholder' => 'Banco', 'class' => 'form-control', 'maxlength' => '11', 'list' => 'bancos' ]) !!} -->
         <select class="selecionaComInput form-control" name="bancoFuncionario">
-        @foreach ($todososbancos as $bancos)
+            @foreach ($todososbancos as $bancos)
             <option value="{{$bancos->codigoBanco}}">Código: {{$bancos->codigoBanco}} - Banco: {{$bancos->nomeBanco}}</option>
-        @endforeach
+            @endforeach
         </select>
     </div>
     <label for="valor2" class="col-sm-2 col-form-label">Banco</label>
@@ -334,7 +335,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
- 
+
 
 
 

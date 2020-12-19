@@ -20,10 +20,10 @@ class FuncionarioController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:funcionario-list|funcionario-create|funcionario-edit|funcionario-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:funcionario-create', ['only' => ['create','store']]);
-         $this->middleware('permission:funcionario-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:funcionario-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:funcionario-list|funcionario-create|funcionario-edit|funcionario-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:funcionario-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:funcionario-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:funcionario-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -32,8 +32,8 @@ class FuncionarioController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Funcionario::orderBy('id','DESC')->paginate(5);
-        return view('funcionarios.index',compact('data'))
+        $data = Funcionario::orderBy('id', 'DESC')->paginate(5);
+        return view('funcionarios.index', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -48,7 +48,7 @@ class FuncionarioController extends Controller
 
         $todosorgaosrg = DB::select('select * from orgaorg');
         $todososbancos = DB::select('select distinct * from banco');
-        return view('funcionarios.create', compact('todosorgaosrg','todososbancos'));
+        return view('funcionarios.create', compact('todosorgaosrg', 'todososbancos'));
     }
 
     /**
@@ -59,17 +59,24 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
+        $funcionario = new Funcionario();
+
 
         $request->validate([
             'nomeFuncionario' => 'required|min:3',
             'cpfFuncionario'  => 'required|cpf|unique:funcionarios',
 
-            'cepFuncionario' => 'required',
+            'cepFuncionario'      => 'required',
             'enderecoFuncionario' => 'required',
-            'bairroFuncionario' => 'required',
-            'cidadeFuncionario' => 'required',
-            'ufFuncionario' => 'required',
-            'celularFuncionario' => 'required',
+            'bairroFuncionario'   => 'required',
+            'cidadeFuncionario'   => 'required',
+            'ufFuncionario'       => 'required',
+            'celularFuncionario'  => 'required',
+            'fotoFuncionario'     => 'required',
+            'bancoFuncionario'    => 'required',
+
+
+
 
             // 'telresidenciaFuncionario' => 'required',
             // 'contatoemergenciaFuncionario' => 'required',
@@ -105,11 +112,84 @@ class FuncionarioController extends Controller
         ]);
 
 
-        Funcionario::create($request->all());
+        $funcionario->nomeFuncionario                                   = $request->get('nomeFuncionario');
+        $funcionario->cpfFuncionario                                    = $request->get('cpfFuncionario');
+        $funcionario->cepFuncionario                                    = $request->get('cepFuncionario');
+        $funcionario->enderecoFuncionario                               = $request->get('enderecoFuncionario');
+        $funcionario->bairroFuncionario                                 = $request->get('bairroFuncionario');
+        $funcionario->cidadeFuncionario                                 = $request->get('cidadeFuncionario');
+        $funcionario->ufFuncionario                                     = $request->get('ufFuncionario');
+        $funcionario->celularFuncionario                                = $request->get('celularFuncionario');
+
+        $funcionario->telresidenciaFuncionario                          = $request->get('telresidenciaFuncionario');
+        $funcionario->contatoemergenciaFuncionario                      = $request->get('contatoemergenciaFuncionario');
+        $funcionario->emailFuncionario                                  = $request->get('emailFuncionario');
+        $funcionario->redesocialFuncionario                             = $request->get('redesocialFuncionario');
+        $funcionario->facebookFuncionario                               = $request->get('facebookFuncionario');
+        $funcionario->telegramFuncionario                               = $request->get('telegramFuncionario');
+        $funcionario->rgFuncionario                                     = $request->get('rgFuncionario');
+        $funcionario->orgaoRGFuncionario                                = $request->get('orgaoRGFuncionario');
+        $funcionario->expedicaoRGFuncionario                            = $request->get('expedicaoRGFuncionario');
+        $funcionario->tituloFuncionario                                 = $request->get('tituloFuncionario');
+        $funcionario->maeFuncionario                                    = $request->get('maeFuncionario');
+        $funcionario->paiFuncionario                                    = $request->get('paiFuncionario');
+        $funcionario->profissaoFuncionario                              = $request->get('profissaoFuncionario');
+        $funcionario->cargoEmpresaFuncionario                           = $request->get('cargoEmpresaFuncionario');
+        $funcionario->tipocontratoFuncionario                           = $request->get('tipocontratoFuncionario');
+        $funcionario->grauescolaridadeFuncionario                       = $request->get('grauescolaridadeFuncionario');
+        $funcionario->descformacaoFuncionario                           = $request->get('descformacaoFuncionario');
+        $funcionario->certficFuncionario                                = $request->get('certficFuncionario');
+        $funcionario->uncertificadoraFuncionario                        = $request->get('uncertificadoraFuncionario');
+        $funcionario->anocertificacaoFuncionario                        = $request->get('anocertificacaoFuncionario');
+        $funcionario->contacorrenteFuncionario                          = $request->get('contacorrenteFuncionario');
+        $funcionario->bancoFuncionario                                  = $request->get('bancoFuncionario');
+        $funcionario->nrcontaFuncionario                                = $request->get('nrcontaFuncionario');
+        $funcionario->agenciaFuncionario                                = $request->get('agenciaFuncionario');
+        $funcionario->nomefavorecidoFuncionario                         = $request->get('nomefavorecidoFuncionario');
+        $funcionario->cpffavorecidoFuncionario                          = $request->get('cpffavorecidoFuncionario');
+        $funcionario->contacorrentefavorecidoFuncionario                = $request->get('contacorrentefavorecidoFuncionario');
+        $funcionario->bancofavorecidoFuncionario                        = $request->get('bancofavorecidoFuncionario');
+        $funcionario->nrcontafavorecidoFuncionario                      = $request->get('nrcontafavorecidoFuncionario');
+        $funcionario->agenciafavorecidoFuncionario                      = $request->get('agenciafavorecidoFuncionario');
+        $funcionario->ativoFuncionario                                  = $request->get('ativoFuncionario');
+        $funcionario->excluidoFuncionario                               = $request->get('excluidoFuncionario');
 
 
-        return redirect()->route('funcionarios.index')
-                        ->with('success','Funcionário criado com êxito.');
+        // Define o valor default para a variável que contém o nome da imagem 
+        $nameFile = null;
+
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('fotoFuncionario') && $request->file('fotoFuncionario')->isValid()) {
+
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+
+            // Recupera a extensão do arquivo
+            $extension = $request->fotoFuncionario->extension();
+
+            // Define finalmente o nome
+            $nameFile = "{$name}.{$extension}";
+
+            // Faz o upload:
+            $upload = $request->fotoFuncionario->storeAs('fotosFuncionarios', $nameFile, 'public');
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if (!$upload) {
+                return redirect()->back()
+                    ->with('error', 'Falha ao fazer upload')
+                    ->withInput();
+            } else {
+                //Funcionario::create($request->all());
+                $funcionario->fotoFuncionario = $nameFile;
+                $funcionario->save();
+                return redirect()->route('funcionarios.index')
+                    ->with('success', 'Funcionário criado com êxito.');
+            }
+            //Funcionario::create($request->all());
+
+
+        }
     }
 
 
@@ -123,12 +203,12 @@ class FuncionarioController extends Controller
     {
         $funcionario = Funcionario::find($id);
 
-        $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
+        $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario', 'nomeFuncionario')->all();
         $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
 
         $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
-        return view('funcionarios.show',compact('funcionario','todosorgaosrg','todososbancos'));
+        return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos'));
     }
 
 
@@ -141,13 +221,13 @@ class FuncionarioController extends Controller
     public function edit($id)
     {
         $funcionario = Funcionario::find($id);
-        $roles = Funcionario::pluck('nomeFuncionario','nomeFuncionario')->all();
-        $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
+        $roles = Funcionario::pluck('nomeFuncionario', 'nomeFuncionario')->all();
+        $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario', 'nomeFuncionario')->all();
         $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
 
         $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
-        return view('funcionarios.edit',compact('funcionario','roles','funcionarioRole','todosorgaosrg','todososbancos'));
+        return view('funcionarios.edit', compact('funcionario', 'roles', 'funcionarioRole', 'todosorgaosrg', 'todososbancos'));
 
         // return view('funcionarios.edit',compact('funcionario'));
     }
@@ -162,7 +242,7 @@ class FuncionarioController extends Controller
      */
     public function update(Request $request, Funcionario $funcionario)
     {
-         request()->validate([
+        request()->validate([
             'nomeFuncionario' => 'required|min:3',
             'cpfFuncionario'  => 'required|cpf',
 
@@ -205,13 +285,91 @@ class FuncionarioController extends Controller
             // 'agenciafavorecidoFuncionario' => 'required',
 
         ]);
+        $funcionario->nomeFuncionario                                   = $request->get('nomeFuncionario');
+        $funcionario->cpfFuncionario                                    = $request->get('cpfFuncionario');
+        $funcionario->cepFuncionario                                    = $request->get('cepFuncionario');
+        $funcionario->enderecoFuncionario                               = $request->get('enderecoFuncionario');
+        $funcionario->bairroFuncionario                                 = $request->get('bairroFuncionario');
+        $funcionario->cidadeFuncionario                                 = $request->get('cidadeFuncionario');
+        $funcionario->ufFuncionario                                     = $request->get('ufFuncionario');
+        $funcionario->celularFuncionario                                = $request->get('celularFuncionario');
 
+        $funcionario->telresidenciaFuncionario                          = $request->get('telresidenciaFuncionario');
+        $funcionario->contatoemergenciaFuncionario                      = $request->get('contatoemergenciaFuncionario');
+        $funcionario->emailFuncionario                                  = $request->get('emailFuncionario');
+        $funcionario->redesocialFuncionario                             = $request->get('redesocialFuncionario');
+        $funcionario->facebookFuncionario                               = $request->get('facebookFuncionario');
+        $funcionario->telegramFuncionario                               = $request->get('telegramFuncionario');
+        $funcionario->rgFuncionario                                     = $request->get('rgFuncionario');
+        $funcionario->orgaoRGFuncionario                                = $request->get('orgaoRGFuncionario');
+        $funcionario->expedicaoRGFuncionario                            = $request->get('expedicaoRGFuncionario');
+        $funcionario->tituloFuncionario                                 = $request->get('tituloFuncionario');
+        $funcionario->maeFuncionario                                    = $request->get('maeFuncionario');
+        $funcionario->paiFuncionario                                    = $request->get('paiFuncionario');
+        $funcionario->profissaoFuncionario                              = $request->get('profissaoFuncionario');
+        $funcionario->cargoEmpresaFuncionario                           = $request->get('cargoEmpresaFuncionario');
+        $funcionario->tipocontratoFuncionario                           = $request->get('tipocontratoFuncionario');
+        $funcionario->grauescolaridadeFuncionario                       = $request->get('grauescolaridadeFuncionario');
+        $funcionario->descformacaoFuncionario                           = $request->get('descformacaoFuncionario');
+        $funcionario->certficFuncionario                                = $request->get('certficFuncionario');
+        $funcionario->uncertificadoraFuncionario                        = $request->get('uncertificadoraFuncionario');
+        $funcionario->anocertificacaoFuncionario                        = $request->get('anocertificacaoFuncionario');
+        $funcionario->contacorrenteFuncionario                          = $request->get('contacorrenteFuncionario');
+        $funcionario->bancoFuncionario                                  = $request->get('bancoFuncionario');
+        $funcionario->nrcontaFuncionario                                = $request->get('nrcontaFuncionario');
+        $funcionario->agenciaFuncionario                                = $request->get('agenciaFuncionario');
+        $funcionario->nomefavorecidoFuncionario                         = $request->get('nomefavorecidoFuncionario');
+        $funcionario->cpffavorecidoFuncionario                          = $request->get('cpffavorecidoFuncionario');
+        $funcionario->contacorrentefavorecidoFuncionario                = $request->get('contacorrentefavorecidoFuncionario');
+        $funcionario->bancofavorecidoFuncionario                        = $request->get('bancofavorecidoFuncionario');
+        $funcionario->nrcontafavorecidoFuncionario                      = $request->get('nrcontafavorecidoFuncionario');
+        $funcionario->agenciafavorecidoFuncionario                      = $request->get('agenciafavorecidoFuncionario');
+        $funcionario->ativoFuncionario                                  = $request->get('ativoFuncionario');
+        $funcionario->excluidoFuncionario                               = $request->get('excluidoFuncionario');
 
-        $funcionario->update($request->all());
+        $fotoFuncionario                                                = $request->get('fotoFuncionario');
 
+        $mensagemSucesso = 'Cadastro do funcionário ' . $funcionario->nomeFuncionario . ' foi alterado com êxito.';
 
-        return redirect()->route('funcionarios.index')
-                        ->with('success','Funcionário atualizado com sucesso');
+        if ($request->fotoFuncionario = "" || $request->fotoFuncionario = null) {
+            $funcionario->save();
+            return redirect()->route('funcionarios.index')
+                ->with('success', $mensagemSucesso);
+        }
+        // Define o valor default para a variável que contém o nome da imagem 
+        $nameFile = null;
+
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('fotoFuncionario') && $request->file('fotoFuncionario')->isValid()) {
+
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+
+            // Recupera a extensão do arquivo
+            //$extension = $request->fotoFuncionario->extension();
+
+            // Define finalmente o nome
+            //$nameFile = "{$name}.{$extension}";
+            $nameFile = "{$name}.png";
+
+            // Faz o upload:
+            $upload = $request->file('fotoFuncionario')->storeAs('fotosFuncionarios', $nameFile, 'public');
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if (!$upload) {
+                return redirect()->back()
+                    ->with('error', 'Falha ao fazer upload')
+                    ->withInput();
+            } else {
+                //Funcionario::create($request->all());
+                $funcionario->fotoFuncionario = $nameFile;
+                $funcionario->save();
+                return redirect()->route('funcionarios.index')
+                    ->with('success', $mensagemSucesso);
+            }
+            //Funcionario::create($request->all());
+        }
     }
 
 
@@ -227,6 +385,6 @@ class FuncionarioController extends Controller
         Funcionario::find($id)->delete();
 
         return redirect()->route('funcionarios.index')
-                        ->with('success','Funcionário excluído com êxito!');
+            ->with('success', 'Funcionário excluído com êxito!');
     }
 }

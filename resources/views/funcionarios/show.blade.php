@@ -2,25 +2,26 @@
 
 
 @section('content')
+
+
 <div class="row">
     <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2> Dados Funcionário {{ $funcionario->nomeFuncionario }}</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('funcionarios.index') }}"> Voltar</a>
-            <hr />
-            <br>
-            <form action="{{ route('funcionarios.destroy',$funcionario->id) }}" method="POST">
-                @can('funcionario-edit')
-                <a class="btn btn-primary" href="{{ route('funcionarios.edit',$funcionario->id) }}">Editar</a>
-                @endcan
+        <div class="col-lg-12 d-flex justify-content-between">
+            <h2> Dados Funcionário Daniel Augusto</h2>
+            <img src="../storage/fotosFuncionarios/{{ $funcionario->fotoFuncionario }}" style="height: 200;" alt="" srcset="">
 
-                @csrf
-                @method('DELETE')
-                @can('funcionario-delete')
-                <button type="submit" class="btn btn-danger">Excluir</button>
-                @endcan
+        </div>
+
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+        <div class="pull-right">
+            <a class="btn btn-primary" href="http://localhost/criaatvafinanceiro/public/funcionarios"> Voltar</a>
+            <hr>
+            <br>
+            <form action="http://localhost/criaatvafinanceiro/public/funcionarios/1" method="POST">
+                <a class="btn btn-primary" href="http://localhost/criaatvafinanceiro/public/funcionarios/{{ $funcionario->id }}/edit">Editar</a>
+
+                <input type="hidden" name="_token" value="4biFdpfiCrtgtFw1Fy2Qw6mMD7UyFoAul3j3r88Y"> <input type="hidden" name="_method" value="DELETE"> <button type="submit" class="btn btn-danger">Excluir</button>
             </form>
 
         </div>
@@ -361,5 +362,5 @@
 
 
 
- 
+
 @endsection
