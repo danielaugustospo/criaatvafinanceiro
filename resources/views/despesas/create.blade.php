@@ -78,19 +78,6 @@
 
 <!-- Seção Despesas -->
 
-
-<div class="form-group row">
-    <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
-    <div class="col-sm-7">
-        {!! Form::text('descricaoDespesa', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-    </div>
-    <label for="nRegistro" class="col-sm-1 col-form-label">N° Registro</label>
-    <div class="col-sm-2">
-        {!! Form::text('nRegistro', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '50']) !!}
-
-    </div>
-</div>
 <div class="form-group row">
     <label for="idCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
     <div class="col-sm-4">
@@ -105,6 +92,14 @@
         </select>
 
     </div>
+</div>
+
+<div class="form-group row">
+    <label for="nRegistro" class="col-sm-2 col-form-label">N° Registro</label>
+    <div class="col-sm-2">
+        {!! Form::text('nRegistro', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '50']) !!}
+
+    </div>
     <label for="idOS" class="col-sm-2 col-form-label">Vincular a OS</label>
     <div class="col-sm-4">
 
@@ -115,6 +110,15 @@
             </option>
             @endforeach
         </select>
+
+    </div>
+
+
+</div>
+<div class="form-group row">
+    <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
+    <div class="col-sm-10">
+        {!! Form::text('descricaoDespesa', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
     </div>
 </div>
@@ -134,35 +138,6 @@
     </div>
 </div>
 <div class="form-group row">
-
-    <label for="precoReal" class="col-sm-2 col-form-label">Preço</label>
-    <div class="col-sm-2">
-        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
-        {!! Form::text('precoReal', null, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal form-control', 'maxlength' => '100', 'id' => 'precoReal', 'value' => '0,00']) !!}
-
-    </div>
-
-
-    <label for="pago" class="col-sm-1 col-form-label">Pago</label>
-    <div class="col-sm-2">
-        <select name="pago" id="pago" style="padding:4px;" class="form-control">
-            <option value="S">Sim</option>
-            <option value="N">Não</option>
-        </select>
-    </div>
-</div>
-<div class="form-group row">
-    <label for="quempagou" class="col-sm-2 col-form-label">Reembolsado</label>
-    <div class="col-sm-2">
-        <select name="quempagou" id="quempagou" style="padding:4px;" class="form-control">
-            <option value="S">Sim</option>
-            <option value="N">Não</option>
-        </select>
-    </div>
-
-</div>
-<div class="form-group row">
-
     <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
     <div class="col-sm-4">
 
@@ -172,7 +147,10 @@
             @endforeach
         </select>
     </div>
-    <label for="conta" class="col-sm-1 col-form-label">Conta</label>
+</div>
+<div class="form-group row">
+
+    <label for="conta" class="col-sm-2 col-form-label">Conta</label>
     <div class="col-sm-4">
 
         <select name="conta" id="conta" class="form-control col-sm-12  js-example-basic-multiple">
@@ -183,8 +161,70 @@
             @endforeach
         </select>
     </div>
+</div>
+
+<div class="form-group row">
+
+    <label for="precoReal" class="col-sm-2 col-form-label">Preço</label>
+    <div class="col-sm-2">
+        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
+        {!! Form::text('precoReal', null, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal form-control', 'maxlength' => '100', 'id' => 'precoReal', 'value' => '0,00']) !!}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="vencimento" class="col-sm-2 col-form-label">Vencimento</label>
+    <div class="col-sm-3">
+        {!! Form::date('vencimento', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group row">
+
+    <label for="notaFiscal" class="col-sm-2 col-form-label">Nota Fiscal</label>
+    <div class="col-sm-2">
+        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
+        {!! Form::text('notaFiscal', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+    </div>
+</div>
+<div class="form-group row">
+
+    <label for="idBanco" class="col-sm-2 col-form-label">Banco</label>
+    <div class="col-sm-2">
+        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
+        {!! Form::text('idBanco', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+    </div>
+</div>
+<div class="form-group row">
+
+    <label for="cheque" class="col-sm-2 col-form-label">Cheque</label>
+    <div class="col-sm-2">
+        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
+        {!! Form::text('cheque', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100' ]) !!}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="pago" class="col-sm-2 col-form-label">Pago</label>
+    <div class="col-sm-2">
+        <select name="pago" id="pago" style="padding:4px;" class="form-control">
+            <option value="S">Sim</option>
+            <option value="N">Não</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="quempagou" class="col-sm-2 col-form-label">Reembolsado</label>
+    <div class="col-sm-2">
+        <select name="quempagou" id="quempagou" style="padding:4px;" class="form-control">
+            <option value="S">Sim</option>
+            <option value="N">Não</option>
+        </select>
+    </div>
 
 </div>
+
 
 <div class="form-group row">
 
@@ -197,16 +237,13 @@
 
     </div>
 
-    <label for="data" class="col-sm-2 col-form-label">Vencimento</label>
-    <div class="col-sm-3">
-        {!! Form::date('data', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-    </div>
 
-    <label for="valorEstornado" class="col-form-label pr-2">Despesa Fixa</label>
+    <label for="despesaFixa" class="col-form-label pl-5 pr-2">Despesa Fixa?</label>
     <!-- <div class="col-sm-5"> -->
-     <input type="checkbox" class="mt-2" value="0" >    
-           
+    <label for="despesaFixa" class="mt-2">Não</label><input type="radio" name="despesaFixa" class="mt-2" value="0">
+    <label for="despesaFixa" class="mt-2">Sim</label><input type="radio" name="despesaFixa" class="mt-2" value="1">
+
     <!-- </div> -->
 
 </div>
@@ -221,7 +258,7 @@
 {!! Form::hidden('precoReal', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('totalPrecoCliente', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('totalPrecoReal', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-{!! Form::hidden('lucro', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('idDespesaPai', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 
 
 {!! Form::hidden('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!}

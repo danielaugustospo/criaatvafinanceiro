@@ -36,8 +36,8 @@ class Receita extends Model
         'valorreceita',
         'pagoreceita',
         'contareceita',
-        'registroreceita',
-        'emissaoreceita',
+        // 'registroreceita',
+        // 'emissaoreceita',
         'nfreceita',
         'idosreceita',
 

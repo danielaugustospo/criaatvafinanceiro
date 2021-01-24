@@ -14,7 +14,7 @@ abstract class Result
     /**
      * Get the error value, if possible.
      *
-     * @return string|int
+     * @return string
      */
     public function getSuccess()
     {

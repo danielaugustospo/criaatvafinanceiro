@@ -9,11 +9,11 @@
     <title>{{ config('app.name', 'Gerenciamento Financeiro - Criaatva') }}</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 
 
 
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" ></script> -->
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" ></script>  --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
 
@@ -22,10 +22,11 @@
 
     <script src="{{ asset('js/viacep.js') }}" defer></script>
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
-    <!-- <script src="{{ asset('js/inputmask5x/dist/inputmask.js') }}"></script> -->
+    {{-- <script src="{{ asset('js/inputmask5x/dist/inputmask.js') }}"></script> --}}
     <script src="{{ asset('js/inputmask5x/dist/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('js/inputmask5x/dist/bindings/inputmask.binding.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> --}}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -57,7 +58,164 @@
                 placeholder: 'Selecione uma opção',
                 dropdownParent: $('#myModal'),
             });
+
+        $("#nomeFormaPagamento").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
         });
+
+        $("#idClienteOrdemdeServico").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#idCodigoDespesas").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#idFormaPagamento").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#idFormaPagamentoReceita").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#conta").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#contaReceita").select2()({
+            placeholder: 'Selecione uma opção',
+            dropdownParent: $('#myModal'),
+        });
+
+        $("#totalPrecoReal").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#totalPrecoCliente").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#lucro").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#valorEstornado").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#precoReal").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#precoCliente").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#valorTotalOrdemdeServico").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#valorProjetoOrdemdeServico").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#valorOrdemdeServico").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+
+        $("#valorreceita").inputmask('decimal', {
+            'alias': 'numeric',
+            // 'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ".",
+            'digitsOptional': false,
+            'allowMinus': false,
+            // 'prefix': 'R$ ',
+            'placeholder': ''
+        });
+    });
+
+
     </script>
     <style>
         /* Chrome, Safari, Edge, Opera */
@@ -104,7 +262,7 @@
                         <!-- @endcan -->
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Ordem de Serviço <span class="caret"></span>
+                                OS <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('ordemdeservico-list')
@@ -120,6 +278,24 @@
 
                                 @can('tabelapercentual-list')
                                 <a class="dropdown-item" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a>
+                                @endcan
+
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Despesas <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('despesa-list')
+                                <a class="dropdown-item" href="{{ route('despesas.index') }}">Despesas</a>
+                                @endcan
+                                @can('codigodespesa-list')
+                                <a class="dropdown-item" href="{{ route('codigodespesas.index') }}">Código Despesas</a>
+                                @endcan
+                                @can('grupodespesa-list')
+                                <a class="dropdown-item" href="{{ route('grupodespesas.index') }}">Grupo Despesas</a>
                                 @endcan
 
                             </div>
@@ -155,9 +331,9 @@
                         @can('tabelapercentual-list')
                         <li><a class="nav-link" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a></li>
                         @endcan -->
-                        @can('verba-list')
+                        <!-- @can('verba-list')
                         <li><a class="nav-link" href="{{ route('verbas.index') }}">Verbas</a></li>
-                        @endcan
+                        @endcan -->
                         @can('fornecedor-list')
                         <li><a class="nav-link" href="{{ route('fornecedores.index') }}">Fornecedores</a></li>
                         @endcan

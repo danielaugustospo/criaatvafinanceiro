@@ -16,9 +16,9 @@ class CreateTableOrdemdeServico extends Migration
         Schema::create('ordemdeservico', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('nomeFormaPagamento');
+            // $table->string('nomeFormaPagamento');
             $table->string('idClienteOrdemdeServico');
-            $table->string('dataVendaOrdemdeServico');
+            $table->timestamp('dataVendaOrdemdeServico')->nullable();
             $table->string('valorTotalOrdemdeServico');
             $table->string('valorProjetoOrdemdeServico');
             $table->string('valorOrdemdeServico');

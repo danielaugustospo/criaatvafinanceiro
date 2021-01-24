@@ -91,7 +91,7 @@
         $("#tabelaClientes").DataTable({
             "language": {
                 "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nothing found - sorry",
+                "zeroRecords": "Nenhum dado cadastrado",
                 "info": "Exibindo página _PAGE_ de _PAGES_",
                 "infoEmpty": "Nenhum registro encontrado",
                 "infoFiltered": "(filtered from _MAX_ total records)",

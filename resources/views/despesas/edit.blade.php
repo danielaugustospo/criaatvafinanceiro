@@ -175,16 +175,19 @@
             <option value="0">Não</option>
             <option value="1">Sim</option>
         </select>
-
     </div>
 
-    <label for="data" class="col-sm-2 col-form-label">Vencimento</label>
+    <label for="vencimento" class="col-sm-2 col-form-label">Vencimento</label>
     <div class="col-sm-3">
-        {!! Form::date('data', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::date('vencimento', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </div>
-
-    <label for="valorEstornado" class="col-form-label pr-2">Despesa Fixa</label>
-    <input type="checkbox" class="mt-2" value="0">
+    
+    @if ($despesa->idDespesaPai == 0)
+        <label for="valorEstornado" class="col-form-label pr-2">Despesa Fixa</label>
+        <input type="checkbox" class="mt-2" value="0">
+    @else
+        <label for="valorEstornado" class="col-form-label pr-2" style="color:red;">Esta despesa já é uma despesa fixa. Despesa Pai id {{$despesa->idDespesaPai}}</label>  
+    @endif
 
 </div>
 

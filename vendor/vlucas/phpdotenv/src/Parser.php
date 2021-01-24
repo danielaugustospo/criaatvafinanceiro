@@ -3,7 +3,6 @@
 namespace Dotenv;
 
 use Dotenv\Exception\InvalidFileException;
-use Dotenv\Regex\Regex;
 
 class Parser
 {
@@ -88,7 +87,7 @@ class Parser
      */
     private static function isValidName($name)
     {
-        return Regex::match('~\A[a-zA-Z0-9_.]+\z~', $name)->success()->getOrElse(0) === 1;
+        return preg_match('~\A[a-zA-Z0-9_.]+\z~', $name) === 1;
     }
 
     /**
@@ -109,7 +108,7 @@ class Parser
         return array_reduce(str_split($value), function ($data, $char) use ($value) {
             switch ($data[1]) {
                 case self::INITIAL_STATE:
-                    if ($char === '"' || $char === '\'') {
+                    if ($char === '"') {
                         return [$data[0], self::QUOTED_STATE];
                     } elseif ($char === '#') {
                         return [$data[0], self::COMMENT_STATE];
@@ -125,7 +124,7 @@ class Parser
                         return [$data[0].$char, self::UNQUOTED_STATE];
                     }
                 case self::QUOTED_STATE:
-                    if ($char === $value[0]) {
+                    if ($char === '"') {
                         return [$data[0], self::WHITESPACE_STATE];
                     } elseif ($char === '\\') {
                         return [$data[0], self::ESCAPE_STATE];
@@ -133,10 +132,8 @@ class Parser
                         return [$data[0].$char, self::QUOTED_STATE];
                     }
                 case self::ESCAPE_STATE:
-                    if ($char === $value[0] || $char === '\\') {
+                    if ($char === '"' || $char === '\\') {
                         return [$data[0].$char, self::QUOTED_STATE];
-                    } elseif (in_array($char, ['f', 'n', 'r', 't', 'v'], true)) {
-                        return [$data[0].stripcslashes('\\'.$char), self::QUOTED_STATE];
                     } else {
                         throw new InvalidFileException(
                             self::getErrorMessage('an unexpected escape sequence', $value)

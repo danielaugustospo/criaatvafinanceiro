@@ -4,12 +4,15 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
+        <hr class="col-sm-5">
+
         <div class="pull-left">
-            <h2>Gerenciamento de OS</h2>
+            <h2 class="text-center">Gerenciamento de Ordem de Serviço</h2>
         </div>
+        <hr class="col-sm-5">
         <div class="pull-right">
             @can('ordemdeservico-create')
-            <a class="btn btn-success" href="{{ route('ordemdeservicos.create') }}"> Criar Novo Cadastro de Ordem de Serviço</a>
+            <a class="btn btn-success ml-3" href="{{ route('ordemdeservicos.create') }}"> Cadastrar OS</a>
             @endcan
         </div>
     </div>
@@ -42,11 +45,11 @@ $(document).ready(function(){
         ],
         "language": {
         "lengthMenu": "Exibindo _MENU_ registros por página",
-        "zeroRecords": "Nothing found - sorry",
+        "zeroRecords": "Nenhum dado cadastrado",
         "info": "Exibindo página _PAGE_ de _PAGES_",
         "infoEmpty": "Nenhum registro encontrado",
         "infoFiltered": "(filtered from _MAX_ total records)",
-        "search": "Pesquisar",
+        "search": "Pesquisar Número de OS",
         "paginate": {
             "previous": "Anterior",
             "next":"Próximo",

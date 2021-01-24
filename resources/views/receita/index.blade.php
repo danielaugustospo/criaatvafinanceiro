@@ -45,7 +45,7 @@ $(document).ready(function(){
         ],
         "language": {
         "lengthMenu": "Exibindo _MENU_ registros por página",
-        "zeroRecords": "Nothing found - sorry",
+        "zeroRecords": "Nenhum dado cadastrado",
         "info": "Exibindo página _PAGE_ de _PAGES_",
         "infoEmpty": "Nenhum registro encontrado",
         "infoFiltered": "(filtered from _MAX_ total records)",
@@ -83,8 +83,8 @@ $(document).ready(function(){
             <tr>
                     <th>Id</th>
                     <th>OS Receita</th>
-                    <th>Id OS</th>
-                    <th>Descrição Despesa</th>
+                    <th>Valor</th>
+                    <th>Pago</th>
                     <th>Conta Receita</th>
                     <th>Ações</th>
                 </tr>

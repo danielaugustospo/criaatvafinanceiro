@@ -27,24 +27,29 @@ class Despesa extends Model
 
     'idCodigoDespesas',
     'idOS',
+    'idDespesaPai',
     'descricaoDespesa',
     'despesaCodigoDespesas',
     'idFornecedor',
     'precoReal',
     'atuacao',
-    'precoCliente',
     'pago',
     'quempagou',
     'idFormaPagamento',
     'conta',
     'nRegistro',
     'valorEstornado',
-    'data',
+    'vencimento',
     'totalPrecoReal',
     'totalPrecoCliente',
     'lucro',
+    'despesaFixa',
+    'notaFiscal',
+    'idBanco',
+    'cheque',
     'ativoDespesa',
     'excluidoDespesa',
+
 
     ];
 

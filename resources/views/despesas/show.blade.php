@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -40,7 +39,6 @@
 <div class="form-group row">
     <label for="idCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
     <div class="col-sm-4">
-
         <select name="idCodigoDespesas" id="idCodigoDespesas" disabled class="col-sm-12">
             @foreach ($codigoDespesa as $listaCodigoDespesas)
             <option value="{{$listaCodigoDespesas->id}}">
@@ -48,8 +46,8 @@
             </option>
             @endforeach
         </select>
-
     </div>
+
     <label for="idOS" class="col-sm-2 col-form-label">Vincular a OS</label>
     <div class="col-sm-4">
 
@@ -76,9 +74,7 @@
 
         <select name="idFornecedor" id="idFornecedor" disabled class="form-control">
             @foreach ($listaForncedores as $fornecedor)
-
             <option value="{{ $fornecedor->id }}">Nome: {{ $fornecedor->nomeFornecedor }} - Razão Social: {{ $fornecedor->razaosocialFornecedor }} - Contato: {{ $fornecedor->contatoFornecedor }}</option>
-
             @endforeach
         </select>
 
@@ -89,12 +85,10 @@
     <label for="precoReal" class="col-sm-2 col-form-label">Preço Real</label>
     <div class="col-sm-2">
         <input type="text" id="precoReal" class="form-control" name="precoReal" value="{{$despesa->precoReal}}" placeholder="Preencha o preço real" readonly /><br>
-
     </div>
     <label for="ativoDespesa" class="col-sm-1 col-form-label">Ativação</label>
     <div class="col-sm-1">
         <select name="ativoDespesa" id="ativoDespesa" disabled style="padding:4px;" class="form-control">
-
             <option value="1">Sim</option>
             <option value="0">Não</option>
         </select>
@@ -112,7 +106,6 @@
     <label for="quempagou" class="col-sm-2 col-form-label">Quem Pagou</label>
     <div class="col-sm-10">
         {!! Form::text('quempagou', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
-
     </div>
 </div>
 <div class="form-group row">
@@ -129,13 +122,11 @@
     <label for="conta" class="col-sm-1 col-form-label">Conta</label>
     <div class="col-sm-4">
 
-    <select name="conta" id="conta" disabled class="form-control col-sm-12  js-example-basic-multiple">
-        @foreach ($listaContas as $contas)
-
-        <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
-
-        @endforeach
-    </select>
+        <select name="conta" id="conta" disabled class="form-control col-sm-12  js-example-basic-multiple">
+            @foreach ($listaContas as $contas)
+            <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
+            @endforeach
+        </select>
     </div>
 
 </div>
@@ -144,23 +135,21 @@
     <label for="nRegistro" readonly class="col-sm-2 col-form-label">N° Registro</label>
     <div class="col-sm-2">
         {!! Form::text('nRegistro', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
-
     </div>
 
     <label for="valorEstornado" class="col-sm-2 col-form-label">Valor Estornado</label>
     <div class="col-sm-2">
         <input type="text" id="valorEstornado" class="form-control" name="valorEstornado" value="{{$despesa->valorEstornado}}" placeholder="Preencha o valor estornado" readonly /><br>
-
     </div>
 
-    <label for="data" class="col-sm-1 col-form-label">Data Despesa</label>
+    <label for="vencimento" class="col-sm-1 col-form-label">Vencimento</label>
     <div class="col-sm-3">
-        {!! Form::date('data', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
+        {!! Form::date('vencimento', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
 
     </div>
 </div>
 
 
 
- 
+
 @endsection

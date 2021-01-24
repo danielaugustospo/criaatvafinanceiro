@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados do Forncedor {{$cliente->nomeCliente}}</h2>
+            <h2>Editar Dados do Cliente {{$cliente->nomeCliente}}</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('clientes.index') }}"> Voltar</a>

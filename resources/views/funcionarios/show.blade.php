@@ -298,7 +298,7 @@
 <br>
 <div id="ajax-content_show">
     <div id="div_dados_favorecido_show">
-        <h2>Cadastro de Favorecido</h2>
+        <h2>Cadastro de Terceiros</h2>
         <div class="form-group row">
 
             <label for="valor1" class="col-sm-2 col-form-label">Nome Completo do Favorecido</label>

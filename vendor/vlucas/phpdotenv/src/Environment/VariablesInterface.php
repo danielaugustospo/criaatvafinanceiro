@@ -30,8 +30,6 @@ interface VariablesInterface extends ArrayAccess
      *
      * @param string $name
      *
-     * @throws \InvalidArgumentException
-     *
      * @return string|null
      */
     public function get($name);
@@ -42,8 +40,6 @@ interface VariablesInterface extends ArrayAccess
      * @param string      $name
      * @param string|null $value
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
      */
     public function set($name, $value = null);
@@ -52,8 +48,6 @@ interface VariablesInterface extends ArrayAccess
      * Clear an environment variable.
      *
      * @param string $name
-     *
-     * @throws \InvalidArgumentException
      *
      * @return void
      */

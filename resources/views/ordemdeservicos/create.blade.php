@@ -2,191 +2,32 @@
 
 
 @section('content')
-<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
+@extends('ordemdeservicos.estilo')
 
-<script type="text/javascript">
-    $(document).ready(function($) {
-        $("#nomeFormaPagamento").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#idClienteOrdemdeServico").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#idCodigoDespesas").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#idFormaPagamento").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#idFormaPagamentoReceita").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#conta").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function($) {
-        $("#contaReceita").select2()({
-            placeholder: 'Selecione uma opção',
-            dropdownParent: $('#myModal'),
-        });
-    });
-    $(document).ready(function() {
-        $("#totalPrecoReal").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#totalPrecoCliente").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#lucro").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#valorEstornado").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#precoReal").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#precoCliente").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#valorTotalOrdemdeServico").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#valorProjetoOrdemdeServico").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#valorOrdemdeServico").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
-    $(document).ready(function() {
-        $("#valorreceita").inputmask('decimal', {
-            'alias': 'numeric',
-            // 'groupSeparator': '.',
-            'autoGroup': true,
-            'digits': 2,
-            'radixPoint': ".",
-            'digitsOptional': false,
-            'allowMinus': false,
-            // 'prefix': 'R$ ',
-            'placeholder': ''
-        });
-    });
+<script>
+$(function() {
+    addColumn = function() {
+        $("#habilita_receita").clone().appendTo("#novaDivReceita");
+    }
 
+    $('#btnAddColumn').click(addColumn);
+});
 
+function removerCampos() {
+    $('.novaDivReceita').empty();
+}
 </script>
-
 
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2>Cadastro de Ordem de Serviço</h2>
+            <h5>Última OS lançada no sistema: n°
+                @foreach ($ultimaOS as $OsPassada)
+                {{ $OsPassada->idMaximo }}
+                @endforeach
+            </h5>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
@@ -210,18 +51,16 @@
 {!! Form::open(array('route' => 'ordemdeservicos.store','method'=>'POST')) !!}
 
 <div class="form-group row">
-    <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
-    <div class="col-sm-4">
-        <!-- {!! Form::text('nomeFormaPagamento', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <!-- <select name="nomeFormaPagamento" id="testa" class="selectPG js-example-basic-multiple"  multiple="multiple"> -->
-        <select name="nomeFormaPagamento" id="nomeFormaPagamento" class="form-control js-example-basic-multiple">
-            @foreach ($formapagamento as $formaPG)
-            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
-            @endforeach
-        </select>
+    <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Início</label>
+    <div class="col-sm-6">
+        {!! Form::text('dataVendaOrdemdeServico', $dataInicio , ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100', 'readonly']) !!}
     </div>
-    <label for="idClienteOrdemdeServico" class="col-sm-1 col-form-label">Cliente</label>
-    <div class="col-sm-5">
+</div>
+
+<div class="form-group row">
+
+    <label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
+    <div class="col-sm-6">
         <!-- {!! Form::text('idClienteOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
         <select name="idClienteOrdemdeServico" id="idClienteOrdemdeServico" class="form-control  js-example-basic-multiple">
             @foreach ($cliente as $clientes)
@@ -229,20 +68,12 @@
             @endforeach
         </select>
     </div>
-</div>
 
 
-
-<div class="form-group row">
-    <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
-    <div class="col-sm-6">
-        {!! Form::date('dataVendaOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100']) !!}
-    </div>
-
-    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor Total</label>
+    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         <!-- {!! Form::text('valorTotalOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
+        <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="0,00" placeholder="Preencha o preço real" required/><br>
 
     </div>
 </div>
@@ -252,7 +83,7 @@
 <div class="form-group row">
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
     <div class="col-sm-10">
-        {!! Form::text('eventoOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('eventoOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
 
     </div>
 </div>
@@ -260,287 +91,101 @@
 <div class="form-group row">
     <label for="obsOrdemdeServico" class="col-sm-2 col-form-label">Observação</label>
     <div class="col-sm-10">
-        {!! Form::text('obsOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('obsOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
 
     </div>
 </div>
 
 
+{!! Form::hidden('atuacao', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+
+
+{!! Form::hidden('idOS', 'null', ['placeholder' => 'Id OS ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idOS']) !!}
+{!! Form::hidden('excluidoDespesa', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
+
+
+
+
+
+
+<div class="pull-left">
+    <h4>Forma de Pagamento</h4>
+</div>
+
 
 <hr>
-<input class="btn btn-primary" id="reveal" value="Cadastrar Despesa" readonly style="cursor:pointer;">
-<input class="btn btn-danger" id="esconde" value="Remover Despesa" readonly style="cursor:pointer;">
+<div class="row mb-4">
+    <label class="col-sm-1" for="nfreceita">Nota Fiscal</label>
+    {!! Form::text('nfreceita', '', ['placeholder' => 'N° Nota', 'class' => 'col-sm-3 form-control', 'maxlength' => '100', 'required']) !!}
 
-<div id="ajax-content">
+</div>
 
-    <div id="div_dados_favorecido">
+<table class="styled-table" id="example-table">
+    <thead>
+        <tr>
+            <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly>
+            <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas Extra" readonly style="cursor:pointer;">
 
-        <div class="pull-left">
-            <h2>Cadastro de Despesas</h2>
-        </div>
-
-        <!-- Seção Despesas -->
-
-
-        <div class="form-group row">
-            <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
-            <div class="col-sm-10">
-                {!! Form::text('descricaoDespesa', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="idCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
-            <div class="col-sm-10">
-                <!-- {!! Form::text('idCodigoDespesas', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-
-                <select name="idCodigoDespesas" id="idCodigoDespesas">
-                    <option value="0" selected="selected">Sem Despesa Cadastrada</option>
-
-                    @foreach ($codigoDespesa as $listaCodigoDespesas)
-                    <option value="{{$listaCodigoDespesas->id}}">
-                        Código da Despesa: {{$listaCodigoDespesas->idGrupoCodigoDespesa}} - Tipo de Despesa: {{$listaCodigoDespesas->despesaCodigoDespesa}}
-                    </option>
-                    @endforeach
-                </select>
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Informação da Despesa</label>
-            <div class="col-sm-10">
-                {!! Form::text('despesaCodigoDespesas', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="idFornecedor" class="col-sm-2 col-form-label">Fornecedor</label>
-            <div class="col-sm-10">
-                <!-- {!! Form::text('idFornecedor', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-
-                <select name="idFornecedor" id="idFornecedor" class="form-control">
-                    @foreach ($listaForncedores as $fornecedor)
-
-                    <option value="{{ $fornecedor->id }}">Nome: {{ $fornecedor->nomeFornecedor }} - Razão Social: {{ $fornecedor->razaosocialFornecedor }} - Contato: {{ $fornecedor->contatoFornecedor }}</option>
-
-                    @endforeach
-                </select>
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="precoReal" class="col-sm-2 col-form-label">Preço Real</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::text('precoReal', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'precoReal']) !!} -->
-                <input type="text" id="precoReal" class="form-control" name="precoReal" value="0,00" placeholder="Preencha o preço real" /><br>
-
-            </div>
-
-            <label for="precoCliente" class="col-sm-2 col-form-label">Preço Cliente</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::text('precoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <input type="text" id="precoCliente" class="form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br>
-
-            </div>
-            <label for="precoCliente" class="col-sm-1 col-form-label">Ativação</label>
-            <div class="col-sm-1">
-                <!-- {!! Form::text('precoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <!-- {!! Form::text('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!} -->
-                <select name="ativoDespesa" id="ativoDespesa" style="padding:4px;" class="form-control">
-                    <option value="1">Sim</option>
-                    <option value="0">Não</option>
-                </select>
-            </div>
-
-            <label for="pago" class="col-sm-1 col-form-label">Pago</label>
-            <div class="col-sm-1">
-                <!-- {!! Form::text('pago', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <select name="pago" id="pago" style="padding:4px;" class="form-control">
-                    <option value="S">Sim</option>
-                    <option value="N">Não</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="quempagou" class="col-sm-2 col-form-label">Quem Pagou</label>
-            <div class="col-sm-10">
-                {!! Form::text('quempagou', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
-            <div class="col-sm-10">
-                <!-- {!! Form::text('idFormaPagamento', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <select name="idFormaPagamento" id="idFormaPagamento" class="form-control col-sm-4 js-example-basic-multiple">
+            <th>Forma Pagamento</th>
+            <th>Valor Parcela</th>
+            <th>Pago</th>
+            <th>Data Emissão NF</th>
+            <th>Data de Pagamento</th>
+            <th>Conta</th>
+            {{-- <th>Nota Fiscal</th> --}}
+        </tr>
+    </thead>
+    <tbody id="habilita_receita" class="habilita_receita">
+        <tr>
+            <td>
+                <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="form-control">
+                    <option value="0" selected="selected">Sem Receita</option>
                     @foreach ($formapagamento as $formaPG)
                     <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
                     @endforeach
                 </select>
 
-                <label for="conta" class="col-sm-1 col-form-label">Conta</label>
-                <!-- {!! Form::text('conta', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <select name="conta" id="conta" class="col-sm-6 form-control js-example-basic-multiple">
-                    @foreach ($listaContas as $contas)
+            </td>
+            <td>
+                {!! Form::text('valorreceita[]', '', ['placeholder' => 'Preencha o valor', 'class' => 'form-control', 'maxlength' => '100', 'value' => '0,00', 'required']) !!}
 
-                    <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
-
-                    @endforeach
-                </select>
-            </div>
-
-
-        </div>
-
-        <div class="form-group row">
-            <label for="nRegistro" class="col-sm-2 col-form-label">N° Registro</label>
-            <div class="col-sm-2">
-                {!! Form::text('nRegistro', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            </div>
-
-            <label for="valorEstornado" class="col-sm-2 col-form-label">Valor Estornado</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::text('valorEstornado', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'value' => 'NAO', 'maxlength' => '100']) !!} -->
-                <input type="text" id="valorEstornado" class="form-control" name="valorEstornado" value="0,00" placeholder="Preencha o valor estornado" /><br>
-
-            </div>
-
-            <label for="data" class="col-sm-1 col-form-label">Data Despesa</label>
-            <div class="col-sm-3">
-                {!! Form::date('data', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="totalPrecoReal" class="col-sm-2 col-form-label">Total Preço Real</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::number('totalPrecoReal', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <input type="text" id="totalPrecoReal" class="form-control" name="totalPrecoReal" value="0,00" placeholder="Preencha o preço real" /><br>
-            </div>
-
-
-            <label for="totalPrecoCliente" class="col-sm-2 col-form-label">Total Preço Cliente</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::text('totalPrecoCliente', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <input type="text" id="totalPrecoCliente" class="form-control" name="totalPrecoCliente" value="0,00" placeholder="Preencha o Total do Preço Cliente" /><br>
-
-            </div>
-
-
-            <label for="lucro" class="col-sm-1 col-form-label">Lucro</label>
-            <div class="col-sm-3">
-                <!-- {!! Form::text('lucro', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <input type="text" id="lucro" class="form-control" name="lucro" value="0,00" placeholder="Preencha o Lucro" /><br>
-
-            </div>
-        </div>
-        <!-- <div class="form-group row">
-            <label for="atuacao" class="col-sm-2 col-form-label">Atuação</label>
-            <div class="col-sm-10"> -->
-                {!! Form::hidden('atuacao', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-            <!-- </div>
-        </div> -->
-
-        {!! Form::hidden('idOS', 'null', ['placeholder' => 'Id OS ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idOS']) !!}
-        {!! Form::hidden('excluidoDespesa', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
-
-    </div>
-</div>
-
-
-<hr>
-<input class="btn btn-primary"  id="revealreceita" value="Cadastrar Receita" readonly style="cursor:pointer;">
-<input class="btn btn-danger"   id="escondereceita" value="Remover Receita" readonly style="cursor:pointer;">
-
-<div id="ajax-content-receita">
-
-    <div id="div_cadastro_receita">
-
-        <div class="pull-left">
-            <h2>Cadastro de Receitas</h2>
-        </div>
-
-        <!-- Seção Receitas -->
-
-        <div class="form-group row">
-            <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
-            <div class="col-sm-3">
-                <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="form-control col-sm-8 js-example-basic-multiple">
-                    <option value="0" selected="selected">Sem Receita</option>
-                    @foreach ($formapagamento as $formaPG)
-                        <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-                <label for="datapagamentoreceita" class="col-sm-1 col-form-label">Data de Pagamento</label>
-                <div class="col-sm-3">
-                    {!! Form::date('datapagamentoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
-
-                </div>
-
-            <label for="pagoreceita" class="col-sm-1 col-form-label">Pago</label>
-            <div class="col-sm-2">
-                <!-- {!! Form::text('pagoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <!-- {!! Form::text('pago', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-                <select name="pagoreceita" id="pagoreceita" style="padding:4px;" class="form-control">
+            </td>
+            <td>
+                <select name="pagoreceita[]" id="pagoreceita" style="padding:0px;" class="form-control">
                     <option value="S">Sim</option>
                     <option value="N">Não</option>
                 </select>
-            </div>
-        </div>
-        <div class="form-group row">
-
-                <label for="dataemissaoreceita" class="col-sm-2 col-form-label">Data de Emissão</label>
-                <div class="col-sm-3">
-                    {!! Form::date('dataemissaoreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
-
-                </div>
-                <label for="valorreceita" class="col-sm-1 col-form-label">Valor</label>
-                <div class="col-sm-3">
-                    <input type="text" id="valorreceita" class="col-sm-8 form-control" name="valorreceita" value="0,00" placeholder="Preencha o valor" /><br>
-                </div>
-
-                <label for="contareceita" class="col-sm-1 col-form-label">Conta</label>
-                <div class="col-sm-2">
-
-                <select name="contareceita" id="contaReceita" class="col-sm-12 form-control js-example-basic-multiple">
+            </td>
+            <td>
+                {!! Form::date('dataemissaoreceita[]', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
+            </td>
+            <td>
+                {!! Form::date('datapagamentoreceita[]', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
+            </td>
+            <td>
+                <select name="contareceita[]" id="contaReceita" class="form-control js-example-basic-multiple">
                     @foreach ($listaContas as $contas)
-
                     <option value="{{ $contas->id }}">Agência {{ $contas->agenciaConta }} - Conta {{ $contas->numeroConta }}</option>
-
                     @endforeach
                 </select>
-                </div>
+            </td>
+            {{-- <td>
+                {!! Form::text('nfreceita', '', ['placeholder' => 'N° Nota', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
+            </td> --}}
+        </tr>
 
-        </div>
+
+    </tbody>
 
 
-
-        <div class="form-group row">
-            <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
-            <div class="col-sm-3">
-                {!! Form::text('registroreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
-
-            </div>
-
-            <label for="emissaoreceita" class="col-sm-1 col-form-label">Emissão</label>
-            <div class="col-sm-3">
-                <input type="text" id="emissaoreceita" class="col-sm-8 form-control" name="emissaoreceita"  placeholder="Emissão" /><br>
-            </div>
-
-            <label for="nfreceita" class="col-sm-1 col-form-label">NF</label>
-            <div class="col-sm-2">
-                {!! Form::text('nfreceita', '', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
-
-            </div>
-        </div>
-              {!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!}
-
-    </div>
+</table>
+<div class="novaDivReceita styled-table" id="novaDivReceita">
 </div>
+
+
+{!! Form::hidden('registroreceita', '0', ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100']) !!}
+
+{!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!}
 
 <input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
 <input type="hidden" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
@@ -556,12 +201,48 @@
 {!! Form::hidden('ativoOrdemdeServico', '1', ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoOrdemdeServico']) !!}
 {!! Form::hidden('excluidoOrdemdeServico', '0', ['placeholder' => 'Excluído', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoOrdemdeServico']) !!}
 
+
+
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
- 
+
+<div id="tooltest0" class="tooltest0">
+    <label>Tool Name :</label>
+    <select class="toollist" name="FSR_tool_id[]" id="FSR_tool_id0" style="width: 350px" />
+    <option></option>
+    <option value="1">bla 1</option>
+    </select>
+    antes
+</div>
+<div id="tool-placeholder"></div>
+depois
+<div>
+    <input type="button" value="Add another" />
+</div>
+
+<script>
+    $('.toollist').select2({ //apply select2 to my element
+        placeholder: "Search your Tool",
+        allowClear: true
+    });
 
 
+    $('input[type=button]').click(function() {
 
+        $('.toollist').select2("destroy");
+        var noOfDivs = $('.tooltest0').length;
+        var clonedDiv = $('.tooltest0').first().clone(true);
+        clonedDiv.insertBefore("#tool-placeholder");
+        clonedDiv.attr('id', 'tooltest' + noOfDivs);
+
+
+        $('.toollist').select2({ //apply select2 to my element
+            placeholder: "Search your Tool",
+            allowClear: true
+        });
+
+    });
+</script>
 
 @endsection

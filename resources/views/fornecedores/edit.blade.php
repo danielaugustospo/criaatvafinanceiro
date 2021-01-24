@@ -202,7 +202,7 @@
     </div>
 </div>
 <div class="d-flex justify-content-center">
-        <img src="../img/logo_pix.png" class="mb-3" width="200px;" alt="">
+        <img src="../../img/logo_pix.png" class="mb-3" width="200px;" alt="">
     </div>
 <div class="form-group row">
 

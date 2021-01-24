@@ -35,6 +35,7 @@ Route::get('/tabelacodigodespesas', 'CodigoDespesaController@basicLaratableData'
 Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('tabelaorgaosrg');
 Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
 Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
+Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
 
 
 Route::group(['middleware' => ['auth']], function() {
@@ -58,5 +59,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('verbas','VerbasController');
     Route::resource('tabelapercentual','TabelaPercentualController');
     Route::resource('receita','ReceitaController');
+    Route::resource('grupodespesas','GrupoDespesaController');
 
 });

@@ -70,13 +70,18 @@ class OrdemdeServicoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        $ultimaOS = DB::select('select max(id) idMaximo from ordemdeservico');
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $cliente = DB::select('select id, nomeCliente from clientes where ativoCliente = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
-        return view('ordemdeservicos.create', compact('cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa'));
+       
+        $dataInicio = date("d/m/Y");        
+        // var_dump($ultimaOS);
+
+        return view('ordemdeservicos.create', compact('cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio' ));
     }
 
 
@@ -89,11 +94,17 @@ class OrdemdeServicoController extends Controller
     public function store(Request $request)
     {
         $ordemdeservico = new OrdemdeServico();
+        $temReceita = $request->get('idformapagamentoreceita');
+
+        // $recebe = $request->get('valorreceita');
+        $tamanhoArrayReceita = count($temReceita);
+        // var_dump($tamanhoArrayReceita);
+        // exit;
 
         $request->validate([
-            'nomeFormaPagamento'             => 'required',
+            // 'nomeFormaPagamento'             => 'required',
             'idClienteOrdemdeServico'         => 'required',
-            'dataVendaOrdemdeServico'        => 'required|min:3',
+            // 'dataVendaOrdemdeServico'        => 'required|min:3',
             'valorTotalOrdemdeServico'       => 'required|min:3',
             'valorProjetoOrdemdeServico'     => 'required|min:3',
             'valorOrdemdeServico'            => 'required|min:3',
@@ -110,11 +121,12 @@ class OrdemdeServicoController extends Controller
 
         ]);
 
+ 
 
 
-        $ordemdeservico->nomeFormaPagamento               = $request->get('nomeFormaPagamento');
+        // $ordemdeservico->nomeFormaPagamento               = $request->get('nomeFormaPagamento');
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
-        $ordemdeservico->dataVendaOrdemdeServico          = $request->get('dataVendaOrdemdeServico');
+        // $ordemdeservico->dataVendaOrdemdeServico          = $request->get('dataVendaOrdemdeServico');
         $ordemdeservico->valorTotalOrdemdeServico         = $request->get('valorTotalOrdemdeServico');
         $ordemdeservico->valorProjetoOrdemdeServico       = $request->get('valorProjetoOrdemdeServico');
         $ordemdeservico->valorOrdemdeServico              = $request->get('valorOrdemdeServico');
@@ -132,119 +144,128 @@ class OrdemdeServicoController extends Controller
 
         $idDaOS = $salvaOS->id;
 
-        $temDespesa = $request->get('idCodigoDespesas');
-        $temReceita = $request->get('idformapagamentoreceita');
+        // $temDespesa = $request->get('idCodigoDespesas');
 
 
-        if ($temDespesa != '0') {
+        // if ($temDespesa != '0') {
 
-            $despesa = new Despesa();
+        //     $despesa = new Despesa();
 
-            $request->validate([
-                'idCodigoDespesas'          => 'required',
-                'descricaoDespesa'          => 'required',
-                'despesaCodigoDespesas'     => 'required',
-                'idFornecedor'              => 'required',
-                'precoReal'                 => 'required',
-                'atuacao'                   => 'required',
-                'precoCliente'              => 'required',
-                'pago'                      => 'required',
-                'quempagou'                 => 'required',
-                'idFormaPagamento'          => 'required',
-                'conta'                     => 'required',
-                'nRegistro'                 => 'required',
-                'valorEstornado'            => 'required',
-                'data'                      => 'required',
-                'totalPrecoReal'            => 'required',
-                'totalPrecoCliente'         => 'required',
-                'lucro'                     => 'required',
-                'ativoDespesa'              => 'required',
-                'excluidoDespesa'           => 'required',
-            ]);
+        //     $request->validate([
+        //         'idCodigoDespesas'          => 'required',
+        //         'descricaoDespesa'          => 'required',
+        //         'despesaCodigoDespesas'     => 'required',
+        //         'idFornecedor'              => 'required',
+        //         'precoReal'                 => 'required',
+        //         'atuacao'                   => 'required',
+        //         'precoCliente'              => 'required',
+        //         'pago'                      => 'required',
+        //         'quempagou'                 => 'required',
+        //         'idFormaPagamento'          => 'required',
+        //         'conta'                     => 'required',
+        //         'nRegistro'                 => 'required',
+        //         'valorEstornado'            => 'required',
+        //         'data'                      => 'required',
+        //         'totalPrecoReal'            => 'required',
+        //         'totalPrecoCliente'         => 'required',
+        //         'lucro'                     => 'required',
+        //         'ativoDespesa'              => 'required',
+        //         'excluidoDespesa'           => 'required',
+        //     ]);
 
-            $despesa->idCodigoDespesas          = $request->get('idCodigoDespesas');
-            $despesa->descricaoDespesa          = $request->get('descricaoDespesa');
-            $despesa->despesaCodigoDespesas     = $request->get('despesaCodigoDespesas');
-            $despesa->idFornecedor              = $request->get('idFornecedor');
-            $despesa->precoReal                 = $request->get('precoReal');
-            $despesa->atuacao                   = $request->get('atuacao');
-            $despesa->precoCliente              = $request->get('precoCliente');
-            $despesa->pago                      = $request->get('pago');
-            $despesa->quempagou                 = $request->get('quempagou');
-            $despesa->idFormaPagamento          = $request->get('idFormaPagamento');
-            $despesa->conta                     = $request->get('conta');
-            $despesa->nRegistro                 = $request->get('nRegistro');
-            $despesa->valorEstornado            = $request->get('valorEstornado');
-            $despesa->data                      = $request->get('data');
-            $despesa->totalPrecoReal            = $request->get('totalPrecoReal');
-            $despesa->totalPrecoCliente         = $request->get('totalPrecoCliente');
-            $despesa->lucro                     = $request->get('lucro');
+        //     $despesa->idCodigoDespesas          = $request->get('idCodigoDespesas');
+        //     $despesa->descricaoDespesa          = $request->get('descricaoDespesa');
+        //     $despesa->despesaCodigoDespesas     = $request->get('despesaCodigoDespesas');
+        //     $despesa->idFornecedor              = $request->get('idFornecedor');
+        //     $despesa->precoReal                 = $request->get('precoReal');
+        //     $despesa->atuacao                   = $request->get('atuacao');
+        //     $despesa->precoCliente              = $request->get('precoCliente');
+        //     $despesa->pago                      = $request->get('pago');
+        //     $despesa->quempagou                 = $request->get('quempagou');
+        //     $despesa->idFormaPagamento          = $request->get('idFormaPagamento');
+        //     $despesa->conta                     = $request->get('conta');
+        //     $despesa->nRegistro                 = $request->get('nRegistro');
+        //     $despesa->valorEstornado            = $request->get('valorEstornado');
+        //     $despesa->data                      = $request->get('data');
+        //     $despesa->totalPrecoReal            = $request->get('totalPrecoReal');
+        //     $despesa->totalPrecoCliente         = $request->get('totalPrecoCliente');
+        //     $despesa->lucro                     = $request->get('lucro');
 
-            $despesa->ativoDespesa              = $request->get('ativoDespesa');
-            $despesa->excluidoDespesa           = $request->get('excluidoDespesa');
-            $despesa['idOS'] = "$idDaOS";
+        //     $despesa->ativoDespesa              = $request->get('ativoDespesa');
+        //     $despesa->excluidoDespesa           = $request->get('excluidoDespesa');
+        //     $despesa['idOS'] = "$idDaOS";
 
-            $idDespesa = $despesa->id;
+        //     $idDespesa = $despesa->id;
 
-            $despesa->save();
+        //     $despesa->save();
 
-        }
+        // }
 
         if ($temReceita != '0') {
 
-            $receita = new Receita();
-
-            $request->validate([
-                'idformapagamentoreceita'   => 'required',
-                'datapagamentoreceita'      => 'required',
-                'dataemissaoreceita'        => 'required',
-                'valorreceita'              => 'required',
-                'pagoreceita'               => 'required',
-                'contareceita'              => 'required',
-                'registroreceita'           => 'required',
-                'emissaoreceita'            => 'required',
-                'nfreceita'                 => 'required',
-                // 'idosreceita'               => 'required',
-
-            ]);
-
-            $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
-            $receita->datapagamentoreceita          = $request->get('datapagamentoreceita');
-            $receita->dataemissaoreceita            = $request->get('dataemissaoreceita');
-            $receita->valorreceita                  = $request->get('valorreceita');
-            $receita->pagoreceita                   = $request->get('pagoreceita');
-            $receita->contareceita                  = $request->get('contareceita');
-            $receita->registroreceita               = $request->get('registroreceita');
-            $receita->emissaoreceita                = $request->get('emissaoreceita');
-            $receita->nfreceita                     = $request->get('nfreceita');
-            // $receita->idosreceita                   = $request->get('idosreceita');
-
-            $receita['idosreceita'] = "$idDaOS";
-
-            $receita->save();
-            $idReceita = $receita->id;
-
-    }
-
-
-    if (($temDespesa != '0') && ($temReceita != '0')){
-                return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' e Receita n°'. $idReceita .' cadastrados com êxito.');
-
-    }
-    else if (($temDespesa != '0') && ($temReceita === '0')){
-                return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' cadastrados com êxito. Nenhuma receita foi cadastrada');
+            // $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
+            // var_dump($request->get('idformapagamentoreceita')[0]);
+            // exit;
+            for($i = 0; $i < $tamanhoArrayReceita; $i++)
+            {
+                $receita = new Receita();
+                $request->validate([
+                    'idformapagamentoreceita'   => 'required',
+                    'datapagamentoreceita'      => 'required',
+                    'dataemissaoreceita'        => 'required',
+                    'valorreceita'              => 'required',
+                    'pagoreceita'               => 'required',
+                    'contareceita'              => 'required',
+                    // 'registroreceita'           => 'required',
+                    // 'emissaoreceita'            => 'required',
+                    'nfreceita'                 => 'required',
+                    // 'idosreceita'               => 'required',
+    
+                ]);
+    
+                $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
+                $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
+                $receita->dataemissaoreceita            = $request->get('dataemissaoreceita')[$i];
+                $receita->valorreceita                  = $request->get('valorreceita')[$i];
+                $receita->pagoreceita                   = $request->get('pagoreceita')[$i];
+                $receita->contareceita                  = $request->get('contareceita')[$i];
+                // $receita->registroreceita            = $request->get('registroreceita');
+                // $receita->emissaoreceita             = $request->get('emissaoreceita');
+                $receita->nfreceita                     = $request->get('nfreceita')[0];
+                // $receita->idosreceita                = $request->get('idosreceita');
+    
+                $receita['idosreceita'] = "$idDaOS";
+    
+                
+    
+                $receita->save();
+                $idReceita = $receita->id;
+    
+            }
 
     }
-    else if (($temDespesa === '0') && ($temReceita != '0')){
+
+
+    // if (($temDespesa != '0') && ($temReceita != '0')){
+    if ($temReceita != '0'){
                 return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Receita n°' . $idReceita . ' cadastrados com êxito. Nenhuma despesa foi cadastrada');
+                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id  .' com '. $tamanhoArrayReceita .' parcelas cadastrada com êxito.');
 
     }
-    else if (($temDespesa === '0') && ($temReceita === '0')){
+    // else if (($temDespesa != '0') && ($temReceita === '0')){
+    //             return redirect()->route('ordemdeservicos.index')
+    //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' cadastrados com êxito. Nenhuma receita foi cadastrada');
+
+    // }
+    // else if (($temDespesa === '0') && ($temReceita != '0')){
+    //             return redirect()->route('ordemdeservicos.index')
+    //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Receita n°' . $idReceita . ' cadastrados com êxito. Nenhuma despesa foi cadastrada');
+
+    // }
+    // else if (($temDespesa === '0') && ($temReceita === '0')){
+    else if ($temReceita === '0'){
                 return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ' cadastrada com êxito. Não foram cadastradas receitas e despesas');
+                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ' cadastrada com êxito. Não foram cadastradas receitas.');
 
     }
 

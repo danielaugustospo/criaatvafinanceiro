@@ -22,7 +22,7 @@ class Lines
         foreach ($lines as $line) {
             list($multiline, $line, $multilineBuffer) = self::multilineProcess($multiline, $line, $multilineBuffer);
 
-            if (!$multiline && !self::isCommentOrWhitespace($line)) {
+            if (!$multiline && !self::isComment($line) && self::isSetter($line)) {
                 $output[] = $line;
             }
         }
@@ -42,14 +42,14 @@ class Lines
     private static function multilineProcess($multiline, $line, array $buffer)
     {
         // check if $line can be multiline variable
-        if ($started = self::looksLikeMultilineStart($line)) {
+        if (self::looksLikeMultilineStart($line)) {
             $multiline = true;
         }
 
         if ($multiline) {
             array_push($buffer, $line);
 
-            if (self::looksLikeMultilineStop($line, $started)) {
+            if (self::looksLikeMultilineStop($line)) {
                 $multiline = false;
                 $line = implode("\n", $buffer);
                 $buffer = [];
@@ -72,32 +72,29 @@ class Lines
             return false;
         }
 
-        return self::looksLikeMultilineStop($line, true) === false;
+        return self::looksLikeMultilineStop($line) === false;
     }
 
     /**
      * Determine if the given line can be the start of a multiline variable.
      *
      * @param string $line
-     * @param bool   $started
      *
      * @return bool
      */
-    private static function looksLikeMultilineStop($line, $started)
+    private static function looksLikeMultilineStop($line)
     {
         if ($line === '"') {
             return true;
         }
 
-        $seen = $started ? 0 : 1;
-
         foreach (self::getCharPairs(str_replace('\\\\', '', $line)) as $pair) {
-            if ($pair[0] !== '\\' && $pair[1] === '"') {
-                $seen++;
+            if ($pair[0] !== '\\' && $pair[0] !== '=' && $pair[1] === '"') {
+                return true;
             }
         }
 
-        return $seen > 1;
+        return false;
     }
 
     /**
@@ -115,20 +112,28 @@ class Lines
     }
 
     /**
-     * Determine if the line in the file is a comment or whitespace.
+     * Determine if the line in the file is a comment, e.g. begins with a #.
      *
      * @param string $line
      *
      * @return bool
      */
-    private static function isCommentOrWhitespace($line)
+    private static function isComment($line)
     {
-        if (trim($line) === '') {
-            return true;
-        }
-
         $line = ltrim($line);
 
         return isset($line[0]) && $line[0] === '#';
+    }
+
+    /**
+     * Determine if the given line looks like it's setting a variable.
+     *
+     * @param string $line
+     *
+     * @return bool
+     */
+    private static function isSetter($line)
+    {
+        return strpos($line, '=') !== false;
     }
 }

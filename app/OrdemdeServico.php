@@ -24,9 +24,9 @@ class OrdemdeServico extends Model
      * @var array
      */
     protected $fillable = [
-    'nomeFormaPagamento',
+    // 'nomeFormaPagamento',
     'idClienteOrdemdeServico',
-    'dataVendaOrdemdeServico',
+    // 'dataVendaOrdemdeServico',
     'valorTotalOrdemdeServico',
     'valorProjetoOrdemdeServico',
     'valorOrdemdeServico',

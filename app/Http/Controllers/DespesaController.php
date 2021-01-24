@@ -74,25 +74,28 @@ class DespesaController extends Controller
 
             'idCodigoDespesas'          => 'required',
             'idOS'                      => 'required',
+            'idDespesaPai'              => 'required',
             'descricaoDespesa'          => 'required',
             'despesaCodigoDespesas'     => 'required',
             'idFornecedor'              => 'required',
             'precoReal'                 => 'required',
             'atuacao'                   => 'required',
-            'precoCliente'              => 'required',
             'pago'                      => 'required',
             'quempagou'                 => 'required',
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
             'nRegistro'                 => 'required',
             'valorEstornado'            => 'required',
-            'data'                      => 'required',
+            'vencimento'                => 'required',
             'totalPrecoReal'            => 'required',
             'totalPrecoCliente'         => 'required',
-            'lucro'                     => 'required',
             'ativoDespesa'              => 'required',
             'excluidoDespesa'           => 'required',
 
+            'despesaFixa'               => 'required',
+            'notaFiscal'                => 'required',
+            'idBanco'                   => 'required',
+            'cheque'                    => 'required',
         ]);
 
 
@@ -177,12 +180,16 @@ class DespesaController extends Controller
             'conta'                     => 'required',
             'nRegistro'                 => 'required',
             'valorEstornado'            => 'required',
-            'data'                      => 'required',
+            'vencimento'                => 'required',
             'totalPrecoReal'            => 'required',
             'totalPrecoCliente'         => 'required',
             'lucro'                     => 'required',
             'ativoDespesa'              => 'required',
             'excluidoDespesa'           => 'required',
+            'despesaFixa'               => 'required',
+            'notaFiscal'                => 'required',
+            'idBanco'                   => 'required',
+            'cheque'                    => 'required',
         ]);
 
         $despesa->update($request->all());

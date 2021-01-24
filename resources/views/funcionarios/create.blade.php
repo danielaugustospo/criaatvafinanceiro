@@ -260,7 +260,7 @@
             @endforeach
         </select>
     </div>
-    <label for="valor2" class="col-sm-2 col-form-label">Banco</label>
+    <!-- <label for="valor2" class="col-sm-2 col-form-label">Banco</label> -->
 
 </div>
 <div class="form-group row">
@@ -280,11 +280,11 @@
 
 <br>
 <br>
-<input class="btn btn-primary" id="reveal" value="Cadastrar Favorecido" style="cursor:pointer;">
-<input class="btn btn-danger" id="esconde" value="Remover Favorecido" style="cursor:pointer;">
+<input class="btn btn-primary" id="reveal" value="Cadastro de Terceiros" style="cursor:pointer;">
+<input class="btn btn-danger" id="esconde" value="Remover Terceiros" style="cursor:pointer;">
 <div id="ajax-content">
     <div id="div_dados_favorecido">
-        <h2>Cadastro de Favorecido</h2>
+        <h2>Cadastro de Terceiros</h2>
         <div class="form-group row">
 
             <label for="valor1" class="col-sm-2 col-form-label">Nome Completo do Favorecido</label>

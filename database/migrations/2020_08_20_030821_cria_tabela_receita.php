@@ -24,8 +24,8 @@ class CriaTabelaReceita extends Migration
             $table->string('valorreceita');
             $table->string('pagoreceita');
             $table->string('contareceita');
-            $table->string('registroreceita');
-            $table->string('emissaoreceita');
+            // $table->string('registroreceita');
+            // $table->string('emissaoreceita');
             $table->string('nfreceita');
             $table->string('idosreceita');
 

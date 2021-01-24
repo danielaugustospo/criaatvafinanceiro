@@ -5,11 +5,11 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Gerenciamento de Contas Cadastradas</h2>
+            <h2>Gerenciamento de Grupo de Despesas</h2>
         </div>
         <div class="pull-right">
-            @can('conta-create')
-            <a class="btn btn-success" href="{{ route('contas.create') }}"> Criar Novo Cadastro de Conta</a>
+            @can('codigodespesa-create')
+            <a class="btn btn-success" href="{{ route('grupodespesas.create') }}">Cadastrar Grupo de Despesas</a>
             @endcan
         </div>
     </div>
@@ -24,20 +24,20 @@
 
 
 
+
 <script>
 
 
 $(document).ready(function(){
 
 
-    $("#contasModel").DataTable({
+    $("#grupoDespesaModel").DataTable({
         serverSide: true,
-        ajax: "{{ route('tabelacontas') }}",
+        ajax: "{{ route('tabelagrupodespesas') }}",
 
         columns: [
             { name: 'id' },
-            { name: 'agenciaConta' },
-            { name: 'numeroConta' },
+            { name: 'grupoDespesa' },
             { name: 'action', orderable: false, searchable:false},
 
         ],
@@ -58,21 +58,18 @@ $(document).ready(function(){
 
 
 
-    var table = $('#contasModel').DataTable();
+    var table = $('#grupoDespesaModel').DataTable();
 
 
-     $('#contasModel tbody').on( 'click', '#visualizar', function () {
+     $('#grupoDespesaModel tbody').on( 'click', '#visualizar', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        location.href = "contas/"+data[0];
+        location.href = "grupodespesas/"+data[0];
     } );
-     $('#contasModel tbody').on( 'click', '#editar', function () {
+     $('#grupoDespesaModel tbody').on( 'click', '#editar', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        location.href = "contas/"+ data[0] + "/edit";
+        location.href = "grupodespesas/"+ data[0] + "/edit";
     } );
-    //  $('#contasModel tbody').on( 'click', '#excluir', function () {
-    //     var data = table.row( $(this).parents('tr') ).data();
-    //     location.href = "bancos/destroy/" + data[0]);
-    // } );
+
 
 
 });
@@ -80,13 +77,12 @@ $(document).ready(function(){
 
 
 <div class="container">
-        <table id="contasModel" class="table table-bordered table-striped">
+        <table id="grupoDespesaModel" class="table table-bordered table-striped">
             <thead class="thead-dark">
 
             <tr>
                     <th>Id</th>
-                    <th>Agência Conta</th>
-                    <th>Conta</th>
+                    <th>Grupo</th>
                     <th>Ações</th>
                 </tr>
 
@@ -94,31 +90,35 @@ $(document).ready(function(){
         </table>
     </div>
 
+
+
 <!--
 
+
 <table class="table table-bordered mt-2">
-        <tr class="trTituloTabela">
+
+<tr class="trTituloTabela">
             <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Agência Conta</th>
-            <th class="thTituloTabela">Conta</th>
+            <th class="thTituloTabela">Nome Código Despesa</th>
+            <th class="thTituloTabela">Grupo Código Despesa</th>
             <th class="thTituloTabela" width="280px">Ação</th>
         </tr>
-        @foreach ($data as $conta)
+        @foreach ($data as $grupodespesa)
 
         <tr>
-	        <td>{{ $conta->id }}</td>
-	        <td>{{ $conta->agenciaConta }}</td>
-	        <td>{{ $conta->numeroConta }}</td>
+	        <td>{{ $grupodespesa->id }}</td>
+	        <td>{{ $grupodespesa->despesaCodigoDespesa }}</td>
+	        <td>{{ $grupodespesa->idGrupoCodigoDespesa }}</td>
 	        <td>
-                <form action="{{ route('contas.destroy',$conta->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('contas.show',$conta->id) }}">Visualizar</a>
-                    @can('conta-edit')
-                        <a class="btn btn-primary" href="{{ route('contas.edit',$conta->id) }}">Editar</a>
+                <form action="{{ route('grupodespesas.destroy',$grupodespesa->id) }}" method="POST">
+                    <a class="btn btn-info" href="{{ route('grupodespesas.show',$grupodespesa->id) }}">Visualizar</a>
+                    @can('codigodespesa-edit')
+                        <a class="btn btn-primary" href="{{ route('grupodespesas.edit',$grupodespesa->id) }}">Editar</a>
                     @endcan
 
                     @csrf
                     @method('DELETE')
-                    @can('conta-delete')
+                    @can('codigodespesa-delete')
                         <button type="submit" class="btn btn-danger">Excluir</button>
                     @endcan
                 </form>
