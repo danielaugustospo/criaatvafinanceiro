@@ -186,4 +186,12 @@ class ContaController extends Controller
         return redirect()->route('contas.index')
             ->with('success', 'Conta excluída com êxito!');
     }
+
+    public function resumoFinanceiro(Request $request)
+    {
+        $data = Conta::orderBy('id', 'DESC')->paginate(5);
+        return view('contacorrente.resumofinanceiro', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+
+    }
 }

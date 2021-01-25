@@ -1,17 +1,8 @@
 @extends('layouts.app')
 
-
 @section('content')
 <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
-
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.3/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.3/js/buttons.html5.min.js"></script> -->
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -43,7 +34,6 @@
 
 <script>
     $(document).ready(function() {
-        //this calculates values automatically
         sum();
         $("#num1, #num2").on("keydown keyup", function() {
             sum();
@@ -68,14 +58,11 @@
         var receita = (formatarValor(parseFloat(num3)));
         var despesa = (formatarValor(parseFloat(num2)));
         var lucro = (formatarValor(result1));
-        // var result3 = (((parseFloat(num3) * 100 - parseFloat(num2) * 100) / 100) * -1);
         if (!isNaN(result)) {
-            // document.getElementById('sum').value = result;
             document.getElementById('subt').value = lucro;
             document.getElementById('despesa').value = despesa;
             document.getElementById('receita').value = receita;
 
-            // document.getElementById('recmenosdesp').value = result3;
         }
     }
 </script>
@@ -83,55 +70,32 @@
 
 
 <div class="row d-flex justify-content-center mb-3 pt-2 text-lg-center" style="background-color: lightslategray; color:white;">
-    <h4 for="" class="col-sm-2" style="color: gold;">
-        Valor OS: R${{ $ordemdeservico->valorTotalOrdemdeServico }}
-    </h4>
-
-    <h5 for="" class="col-sm-2">Quantidade de Despesas:
-        @foreach($qtdDespesas as $numeroDespesas)
-        {{$numeroDespesas->numerodespesas}}
-        @endforeach
-    </h5>
-
-
-
-    <h5 for="" class="col-sm-2">Quantidade de Receitas:
-        @foreach($qtdReceitas as $numeroReceitas)
-        {{$numeroReceitas->numeroreceitas}}
-        @endforeach
-    </h5>
     <form name="form1" method="post" action="">
         <input class="form-control" type="hidden" name="num1" id="num1" value="{{ $ordemdeservico->valorTotalOrdemdeServico }}" readonly />
         <table>
-            @foreach($totalreceitas as $valorreceita)
-            <input type="hidden" name="" value="{{$valorreceita->totalreceita}}">
-            @endforeach
-            @foreach($totaldespesas as $valordespesa)
-            <input type="hidden" name="" value="{{$valordespesa->totaldespesa}}">
-
-
+                      
             <tr>
-                <td style="color:darkorange;">Despesa:</td>
                 <td>
-                    <input class="form-control" type="hidden" name="num2" id="num2" value="{{$valordespesa->totaldespesa}}" readonly />
-                    <input class="form-control" type="text" name="despesa" id="despesa" readonly />
+                    <label class="btn badge-danger" style="cursor: unset;">Despesa</label>
+                </td>
+                <td>
+                    <input class="form-control" type="text" value="{{$totaldespesas}}" readonly />
                 </td>
             </tr>
-            @endforeach
             <tr>
-                <td style="color:aqua;">Receita:</td>
-                @foreach($totalreceitas as $valorreceita)
-
                 <td>
-                    <input class="form-control" type="hidden" name="num3" id="num3" value="{{$valorreceita->totalreceita}}" readonly />
-                    <input class="form-control" type="text" name="receita" id="receita" readonly />
+                    <label class="btn badge-primary" style="cursor: unset;" >Receita</label>
                 </td>
-                @endforeach
+                <td>
+                    <input class="form-control" type="text" value="{{$totalreceitas}}" readonly />
 
+                </td>
             </tr>
             <tr>
-                <td style="color:chartreuse;">Lucro:</td>
-                <td><input class="form-control" type="text" name="subt" id="subt" readonly /></td>
+                <td>
+                    <label class="btn badge-success" style="cursor: unset;" >Lucro</label>
+                </td>
+                <td><input class="form-control" type="text" value="{{ $lucro }}" readonly /></td>
             </tr>
 
         </table>

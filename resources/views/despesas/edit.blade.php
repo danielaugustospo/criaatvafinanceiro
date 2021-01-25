@@ -186,7 +186,7 @@
         <label for="valorEstornado" class="col-form-label pr-2">Despesa Fixa</label>
         <input type="checkbox" class="mt-2" value="0">
     @else
-        <label for="valorEstornado" class="col-form-label pr-2" style="color:red;">Esta despesa já é uma despesa fixa. Despesa Pai id {{$despesa->idDespesaPai}}</label>  
+        <label for="valorEstornado" class="text-center col-sm-12 mt-5 pr-2" style="color:red;">Esta despesa já é uma despesa fixa. Despesa Pai id n°{{$despesa->idDespesaPai}}</label>  
     @endif
 
 </div>

@@ -36,6 +36,7 @@ Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('ta
 Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
 Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
 Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
+Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
 
 
 Route::group(['middleware' => ['auth']], function() {

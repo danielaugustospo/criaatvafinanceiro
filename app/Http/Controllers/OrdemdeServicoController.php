@@ -296,12 +296,31 @@ class OrdemdeServicoController extends Controller
         $percentualPorOS = DB::select('select distinct * from tabelapercentual  where  idostabelapercentual = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $getArrayTotalDespesas = $totaldespesas[0]->totaldespesa;
+        $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
+        
         $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        // var_dump($totalreceitas);
+        // exit;
+        $tamanhoArrayReceita = count($totalreceitas);
+        if ($tamanhoArrayReceita == 0){
+            $getArrayTotalReceitas = 0.00;
+        }
+        else{
+        $getArrayTotalReceitas = $totalreceitas[0]->totalreceita;
+        }
+        $totalreceitas = number_format($getArrayTotalReceitas, 2, ',', '.');
+
+
+        $totalOS = $totalreceitas = number_format($ordemdeservico->valorTotalOrdemdeServico, 2, ',', '.');
+        $lucro = 2 + $totalreceitas;
+        var_dump($lucro);
+        exit;
 
         $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        return view('ordemdeservicos.show', compact('ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas'));
+        return view('ordemdeservicos.show', compact('lucro','ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas'));
     }
 
 

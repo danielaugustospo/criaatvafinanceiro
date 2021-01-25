@@ -69,12 +69,9 @@ function removerCampos() {
         </select>
     </div>
 
-
     <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        <!-- {!! Form::text('valorTotalOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="0,00" placeholder="Preencha o preço real" required/><br>
-
+        {!! Form::number('valorTotalOrdemdeServico','',['class' => 'form-control','step'=>'any']) !!}
     </div>
 </div>
 
@@ -103,15 +100,9 @@ function removerCampos() {
 {!! Form::hidden('idOS', 'null', ['placeholder' => 'Id OS ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idOS']) !!}
 {!! Form::hidden('excluidoDespesa', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
 
-
-
-
-
-
 <div class="pull-left">
     <h4>Forma de Pagamento</h4>
 </div>
-
 
 <hr>
 <div class="row mb-4">
@@ -147,7 +138,7 @@ function removerCampos() {
 
             </td>
             <td>
-                {!! Form::text('valorreceita[]', '', ['placeholder' => 'Preencha o valor', 'class' => 'form-control', 'maxlength' => '100', 'value' => '0,00', 'required']) !!}
+                {!! Form::number('valorreceita[]', '', ['placeholder' => 'Preencha o valor', 'class' => 'form-control', 'maxlength' => '100', 'step'=>'any', 'required']) !!}
 
             </td>
             <td>
@@ -169,12 +160,7 @@ function removerCampos() {
                     @endforeach
                 </select>
             </td>
-            {{-- <td>
-                {!! Form::text('nfreceita', '', ['placeholder' => 'N° Nota', 'class' => 'col-sm-12 form-control', 'maxlength' => '100']) !!}
-            </td> --}}
         </tr>
-
-
     </tbody>
 
 
@@ -187,8 +173,8 @@ function removerCampos() {
 
 {!! Form::hidden('idosreceita', 'null', ['placeholder' => 'Id OS Receita', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idosreceita']) !!}
 
-<input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
-<input type="hidden" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="0,00" placeholder="Preencha o preço real" /><br>
+<input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0.00" placeholder="Preencha o preço real" /><br>
+<input type="hidden" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="0.00" placeholder="Preencha o preço real" /><br>
 
 {!! Form::hidden('dataOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('dataCriacaoOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}

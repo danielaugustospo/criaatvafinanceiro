@@ -51,7 +51,6 @@
 </div>
 
 
-
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
     <div class="col-sm-6">
@@ -60,8 +59,8 @@
 
     <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        <!-- {!! Form::text('valorTotalOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
-        <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="{{$ordemdeservico->valorTotalOrdemdeServico}}" placeholder="Preencha o preço real" /><br>
+        {!! Form::number('valorTotalOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'step'=>'any']) !!}
+        {{-- <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="{{$ordemdeservico->valorTotalOrdemdeServico}}" placeholder="Preencha o preço real" /><br> --}}
 
     </div>
 </div>
@@ -71,7 +70,6 @@
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
     <div class="col-sm-10">
         {!! Form::text('eventoOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
     </div>
 </div>
 
