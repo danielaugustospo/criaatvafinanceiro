@@ -297,7 +297,6 @@ class OrdemdeServicoController extends Controller
 
         $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
         $getArrayTotalDespesas = $totaldespesas[0]->totaldespesa;
-        $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
         
         $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
         // var_dump($totalreceitas);
@@ -309,18 +308,43 @@ class OrdemdeServicoController extends Controller
         else{
         $getArrayTotalReceitas = $totalreceitas[0]->totalreceita;
         }
+
+        $totalOS = $ordemdeservico->valorTotalOrdemdeServico;
+
+        bcscale(2);
+        $lucro = bcsub($getArrayTotalReceitas, $getArrayTotalDespesas);
+
+        $porcentagemDespesa = bcmul($getArrayTotalDespesas, 100); //cem por cento da regra de tres
+        $porcentagemDespesa = bcdiv($porcentagemDespesa, $totalOS); // divido pelo total da OS
+        
+        $porcentagemReceita = bcmul($getArrayTotalReceitas, 100); //cem por cento da regra de tres
+        $porcentagemReceita = bcdiv($porcentagemReceita, $totalOS); // divido pelo total da OS
+        
+        $porcentagemLucro = bcmul($lucro, 100); //cem por cento da regra de tres
+        $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
+        
+        
+        
+        // $porcentagemDespesa = bcmul($porcentagemDespesa, 100); //multiplica por 100 para obter porcentagem
+
+        // var_dump($porcentagemDespesa);
+        // exit;
+
+        
         $totalreceitas = number_format($getArrayTotalReceitas, 2, ',', '.');
+        $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
+        $totalOS = number_format($ordemdeservico->valorTotalOrdemdeServico, 2, ',', '.');
+        $lucro = number_format($lucro, 2, ',', '.');
 
 
-        $totalOS = $totalreceitas = number_format($ordemdeservico->valorTotalOrdemdeServico, 2, ',', '.');
-        $lucro = 2 + $totalreceitas;
-        var_dump($lucro);
-        exit;
+        
+        // var_dump($lucro);
+        // exit;
 
         $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        return view('ordemdeservicos.show', compact('lucro','ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas'));
+        return view('ordemdeservicos.show', compact('ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas','lucro','totalOS','porcentagemDespesa','porcentagemReceita','porcentagemLucro'));
     }
 
 
@@ -342,10 +366,10 @@ class OrdemdeServicoController extends Controller
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
 
-        $roles = OrdemdeServico::pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
-        $bancoRole = $ordemdeservico->roles->pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
+        // $roles = OrdemdeServico::pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
+        // $bancoRole = $ordemdeservico->roles->pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
 
-        return view('ordemdeservicos.edit', compact('ordemdeservico', 'roles', 'bancoRole','listaContas','listaForncedores','cliente', 'formapagamento', 'codigoDespesa'));
+        return view('ordemdeservicos.edit', compact('ordemdeservico','listaContas','listaForncedores','cliente', 'formapagamento', 'codigoDespesa'));
 
     }
 

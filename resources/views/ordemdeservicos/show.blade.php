@@ -71,60 +71,48 @@
 
 <div class="row d-flex justify-content-center mb-3 pt-2 text-lg-center" style="background-color: lightslategray; color:white;">
     <form name="form1" method="post" action="">
+
         <input class="form-control" type="hidden" name="num1" id="num1" value="{{ $ordemdeservico->valorTotalOrdemdeServico }}" readonly />
-        <table>
-                      
-            <tr>
-                <td>
-                    <label class="btn badge-danger" style="cursor: unset;">Despesa</label>
-                </td>
-                <td>
-                    <input class="form-control" type="text" value="{{$totaldespesas}}" readonly />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="btn badge-primary" style="cursor: unset;" >Receita</label>
-                </td>
-                <td>
-                    <input class="form-control" type="text" value="{{$totalreceitas}}" readonly />
+        <div class="row ">
+            <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Despesa:</label>
+            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totaldespesas}}" readonly />
+            <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }} %</label>
+        </div>
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="btn badge-success" style="cursor: unset;" >Lucro</label>
-                </td>
-                <td><input class="form-control" type="text" value="{{ $lucro }}" readonly /></td>
-            </tr>
-
-        </table>
-    </form>
-
+        <div class="row">
+            <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">Receita</label>
+            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitas}}" readonly />
+            <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }} %</label>
+        </div>
+        <div class="row">
+            <label class="btn badge-success col-sm-4 mr-2" style="cursor: unset;">Lucro</label>
+            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{ $lucro }}" readonly />
+            <label class="btn badge-success col-sm-3" style="cursor: unset;">{{ $porcentagemLucro }} %</label>
+        </div>
 </div>
 
 
 
 <div class="form-group row">
-    <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
+    {{-- <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
     <div class="col-sm-4">
         @foreach($formapagamento as $pg)
         <label class="form-control">{{ $pg->nomeFormaPagamento }}</label>
+    @endforeach
+
+</div> --}}
+<label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
+<div class="col-sm-5">
+
+    <label class="form-control">
+        @foreach ($cliente as $listaCliente)
+
+        {{ $listaCliente->nomeCliente }}
         @endforeach
-
-    </div>
-    <label for="idClienteOrdemdeServico" class="col-sm-1 col-form-label">Cliente</label>
-    <div class="col-sm-5">
-
-        <label class="form-control">
-            @foreach ($cliente as $listaCliente)
-
-            {{ $listaCliente->nomeCliente }}
-            @endforeach
-        </label>
+    </label>
 
 
-    </div>
+</div>
 </div>
 
 
@@ -132,12 +120,12 @@
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
     <div class="col-sm-6">
-        <label class="col-sm-4 form-control">{{ $ordemdeservico->dataVendaOrdemdeServico }}</label>
+        <label class="col-sm-4 form-control">{{ $ordemdeservico->created_at->format('d/m/Y') }}</label>
     </div>
 
     <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        <label class="form-control">{{ $ordemdeservico->valorTotalOrdemdeServico }}</label>
+        <label class="form-control">{{ $totalOS }}</label>
 
     </div>
 </div>
@@ -640,5 +628,5 @@
 
 
 
- 
+
 @endsection

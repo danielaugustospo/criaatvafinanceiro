@@ -189,9 +189,69 @@ class ContaController extends Controller
 
     public function resumoFinanceiro(Request $request)
     {
+        $receitasTotais =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotais from receita r where pagoreceita = 'S'");
+        $despesasTotais =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasTotais from despesas d where pago = 'S'");
+        $getContas      =  DB::select("SELECT c.id id, c.numeroConta from conta c where ativoConta = 1 and excluidoConta = 0");
+        $tamanhoArrayGetContas = count($getContas);
+
+        //SALDO DAS CONTAS
+        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+            new Conta();
+            $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+            $propridadesDasContas = $receitasPorConta[$i][0];
+            $dadosConta[$i] = [ $propridadesDasContas->agenciaPorConta,number_format($propridadesDasContas->receitasTotaisPorConta, 2, ',', '.')];
+        }
+
+        //CONTAS A RECEBER
+        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+            new Conta();
+            $receitasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'N' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+            $propridadesDasContasAReceber = $receitasPendentesPorConta[$i];
+            $tamanhoArrayReceitasPendetes = count($propridadesDasContasAReceber);
+
+
+            if ($tamanhoArrayReceitasPendetes == 0){$propridadesDasContasAReceber[$i] = 0.00; $dadosContaAReceber[$i] = 0.00;}
+            else{ 
+                $propridadesDasContasAReceber = $receitasPendentesPorConta[$i][0];
+                $dadosContaAReceber[$i] = [ $propridadesDasContasAReceber->agenciaPorConta,number_format($propridadesDasContasAReceber->receitasPendentesPorConta, 2, ',', '.')];
+            }
+        }
+
+        //CONTAS A PAGAR
+        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+            new Conta();
+            $despesasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from despesas d, conta c where d.pago = 'N' and d.conta = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+            $propridadesDasContasAPagar = $despesasPendentesPorConta[$i];
+            $tamanhoArrayDespesasPendetes = count($propridadesDasContasAPagar);
+
+
+            if ($tamanhoArrayDespesasPendetes == 0){$propridadesDasContasAPagar[$i] = 0.00; $dadosContaAPagar[$i] = 0.00;}
+            else{ 
+                $propridadesDasContasAPagar = $despesasPendentesPorConta[$i][0];
+                $dadosContaAPagar[$i] = [ $propridadesDasContasAPagar->agenciaPorConta,number_format($propridadesDasContasAPagar->despesasPendentesPorConta, 2, ',', '.')];
+            }
+        }
+
+        $tamanhoArrayReceita = count($receitasTotais);
+        if ($tamanhoArrayReceita == 0){$getArrayTotalReceitas = 0.00;}  else{ $getArrayTotalReceitas = $receitasTotais[0]->receitasTotais; }
+
+        $tamanhoArrayDespesa = count($despesasTotais);
+        if ($tamanhoArrayDespesa == 0){$getArrayTotalDespesa = 0.00;}   else{ $getArrayTotalDespesa = $despesasTotais[0]->despesasTotais; }
+
+
+        bcscale(2);
+        $saldo = bcsub($getArrayTotalReceitas, $getArrayTotalDespesa);
+        $saldo = number_format($saldo, 2, ',', '.');
+
+        $contasAtuais =  DB::select("select id, numeroConta from conta c where ativoConta = 1 and excluidoConta = 0");
+
+
         $data = Conta::orderBy('id', 'DESC')->paginate(5);
-        return view('contacorrente.resumofinanceiro', compact('data'))
+
+        return view('contacorrente.resumofinanceiro', compact('data', 'saldo','contasAtuais','dadosConta','dadosContaAReceber','dadosContaAPagar'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
+
+        
 
     }
 }

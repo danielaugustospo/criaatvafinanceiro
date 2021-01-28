@@ -131,6 +131,7 @@
                 @endcan
 
                 <li class="nav-item dropdown">
+
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Configurações <span class="caret"></span>
                     </a>
@@ -161,9 +162,10 @@
                         <a class="dropdown-item" href="{{ route('orgaosrg.index') }}">Órgãos RG</a>
                         @endcan
 
+                        @can('benspatrimoniais-list')    
                         <a class="dropdown-item" href="{{ route('products.index') }}">Tipo de Bens Patrimoniais</a>
-
-                    </div>
+                        @endcan
+                    </div> 
                 </li>
 
                 <li class="nav-item dropdown">
