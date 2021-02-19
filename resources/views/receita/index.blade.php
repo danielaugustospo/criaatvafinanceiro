@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Gerenciamento de Receitas Cadastradas</h2>
+            <h2 class="text-center">Gerenciamento de Receitas Cadastradas</h2>
         </div>
         <div class="pull-right">
             @can('receita-create')

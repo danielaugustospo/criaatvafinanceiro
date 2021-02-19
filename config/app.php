@@ -177,6 +177,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Geekcom\ValidatorDocs\ValidatorProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class, //DataTables
+
     ],
 
     /*
@@ -191,6 +193,8 @@ return [
     */
 
     'aliases' => [
+
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class, //DataTables
 
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,

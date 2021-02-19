@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Gerenciamento de Bancos Cadastrados</h2>
+            <h2 class="text-center">Gerenciamento de Bancos Cadastrados</h2>
         </div>
         <div class="pull-right">
             @can('banco-create')

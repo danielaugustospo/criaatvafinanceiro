@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Gerenciamento de Tabelas Porcentuais Cadastradas</h2>
+            <h2 class="text-center">Gerenciamento de Tabelas Porcentuais Cadastradas</h2>
         </div>
         <div class="pull-right">
             @can('tabelapercentual-create')

@@ -37,7 +37,9 @@ Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData'
 Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
 Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
 Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
+Route::get('/filtraDados', 'DespesaController@filtraDados')->name('filtraDados');
 
+Route::get('filtrodespesas', ['despesas'=>'DespesaController@index', 'as'=>'filtrodespesas']);
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Gerenciamento de Fornecedor</h2>
+            <h2 class="text-center">Gerenciamento de Fornecedor</h2>
         </div>
         <div class="pull-right">
             @can('fornecedor-create')
@@ -23,11 +23,8 @@
 @endif
 
 
-
-
 <script>
     $(document).ready(function() {
-
 
         $("#tabelaFornecedoresModel").DataTable({
             serverSide: true,
