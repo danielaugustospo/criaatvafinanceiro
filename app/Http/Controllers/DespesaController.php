@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Despesa;
 use Illuminate\Http\Request;
@@ -86,7 +84,6 @@ class DespesaController extends Controller
                         });
                     }
 
-
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
@@ -135,10 +132,15 @@ class DespesaController extends Controller
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
-        $todasOSAtivas = DB::select('SELECT x.* FROM `dbo.financeirocriaatvahm`.ordemdeservico x
-        WHERE ativoOrdemdeServico = 1');
-
-        return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas'));
+        $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
+        $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
+        $precoReal = " ";
+        $valorInput = " ";
+        $valorSemCadastro = "0";
+        $variavelReadOnlyNaView = "";
+        $variavelDisabledNaView = "";
+        
+        return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -150,7 +152,7 @@ class DespesaController extends Controller
      */
     public function store(Request $request)
     {
-
+        $despesa = new Despesa();
         $request->validate([
 
             'idCodigoDespesas'          => 'required',
@@ -178,11 +180,38 @@ class DespesaController extends Controller
             'idBanco'                   => 'required',
             'cheque'                    => 'required',
         ]);
+        $valorMonetario                  = $request->get('precoReal');
+        $quantia = $this->validaValores($valorMonetario);
+    
+
+        $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
+        $despesa->idOS                       = $request->get('idOS');
+        $despesa->idDespesaPai               = $request->get('idDespesaPai');
+        $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
+        $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+        $despesa->idFornecedor               = $request->get('idFornecedor');
+        $despesa->precoReal                  = $quantia;
+        $despesa->atuacao                    = $request->get('atuacao');
+        $despesa->pago                       = $request->get('pago');
+        $despesa->quempagou                  = $request->get('quempagou');
+        $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
+        $despesa->conta                      = $request->get('conta');
+        $despesa->nRegistro                  = $request->get('nRegistro');
+        $despesa->valorEstornado             = $request->get('valorEstornado');
+        $despesa->vencimento                 = $request->get('vencimento');
+        $despesa->totalPrecoReal             = $request->get('totalPrecoReal');
+        $despesa->totalPrecoCliente          = $request->get('totalPrecoCliente');
+        // $despesa->lucro                      = $request->get('lucro');
+        $despesa->despesaFixa                = $request->get('despesaFixa');
+        $despesa->notaFiscal                 = $request->get('notaFiscal');
+        $despesa->idBanco                    = $request->get('idBanco');
+        $despesa->cheque                     = $request->get('cheque');
+        $despesa->ativoDespesa               = $request->get('ativoDespesa');
+        $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
 
 
-
-        Despesa::create($request->all());
-
+        $despesa->save();
+        // Despesa::create($request->all());
 
         return redirect()->route('despesas.index')
             ->with('success', 'Despesa cadastrada com êxito.');
@@ -204,12 +233,19 @@ class DespesaController extends Controller
         $listaContas  = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
 
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1 order by id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);
-        $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
+        $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1 order by id = :idFornecedor desc', ['idFornecedor' => $despesa->idFornecedor]);
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
-        $todasOSAtivas = DB::select('SELECT x.* FROM `dbo.financeirocriaatvahm`.ordemdeservico x
-        WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
+        $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
+        $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
+        $valorMonetario = $despesa->precoReal;
+        $precoReal = $this->validaValoresParaView($valorMonetario);
 
-        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas'));
+
+        $valorInput = null; 
+        $valorSemCadastro = null; 
+        $variavelReadOnlyNaView = "readonly";
+        $variavelDisabledNaView = 'disabled';
+        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -228,10 +264,19 @@ class DespesaController extends Controller
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1 order by id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
-        $todasOSAtivas = DB::select('SELECT x.* FROM `dbo.financeirocriaatvahm`.ordemdeservico x
-        WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
+        $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
+        $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas'));
+        $valorMonetario = $despesa->precoReal;
+        $precoReal = $this->validaValoresParaView($valorMonetario);
+
+        $valorInput = null;
+        $valorSemCadastro = null;
+        $variavelReadOnlyNaView = "";
+        $variavelDisabledNaView = '';
+
+
+        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
 
         // return view('despesas.edit',compact('banco'));
     }
@@ -254,7 +299,7 @@ class DespesaController extends Controller
             'idFornecedor'              => 'required',
             'precoReal'                 => 'required',
             'atuacao'                   => 'required',
-            'precoCliente'              => 'required',
+            // 'precoCliente'              => 'required',
             'pago'                      => 'required',
             'quempagou'                 => 'required',
             'idFormaPagamento'          => 'required',
@@ -264,7 +309,7 @@ class DespesaController extends Controller
             'vencimento'                => 'required',
             'totalPrecoReal'            => 'required',
             'totalPrecoCliente'         => 'required',
-            'lucro'                     => 'required',
+            // 'lucro'                     => 'required',
             'ativoDespesa'              => 'required',
             'excluidoDespesa'           => 'required',
             'despesaFixa'               => 'required',
@@ -272,8 +317,37 @@ class DespesaController extends Controller
             'idBanco'                   => 'required',
             'cheque'                    => 'required',
         ]);
+        
+        $valorMonetario                  = $request->get('precoReal');
+        $quantia = $this->validaValores($valorMonetario);
 
-        $despesa->update($request->all());
+        $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
+        $despesa->idOS                       = $request->get('idOS');
+        $despesa->idDespesaPai               = $request->get('idDespesaPai');
+        $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
+        $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+        $despesa->idFornecedor               = $request->get('idFornecedor');
+        $despesa->precoReal                  = $quantia;
+        $despesa->atuacao                    = $request->get('atuacao');
+        $despesa->pago                       = $request->get('pago');
+        $despesa->quempagou                  = $request->get('quempagou');
+        $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
+        $despesa->conta                      = $request->get('conta');
+        $despesa->nRegistro                  = $request->get('nRegistro');
+        $despesa->valorEstornado             = $request->get('valorEstornado');
+        $despesa->vencimento                 = $request->get('vencimento');
+        $despesa->totalPrecoReal             = $request->get('totalPrecoReal');
+        $despesa->totalPrecoCliente          = $request->get('totalPrecoCliente');
+        // $despesa->lucro                      = $request->get('lucro');
+        $despesa->despesaFixa                = $request->get('despesaFixa');
+        $despesa->notaFiscal                 = $request->get('notaFiscal');
+        $despesa->idBanco                    = $request->get('idBanco');
+        $despesa->cheque                     = $request->get('cheque');
+        $despesa->ativoDespesa               = $request->get('ativoDespesa');
+        $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
+
+
+        $despesa->update();
 
         return redirect()->route('despesas.index')
             ->with('success', 'Despesa atualizada com êxito');
@@ -288,10 +362,24 @@ class DespesaController extends Controller
      */
     public function destroy($id)
     {
-
         Despesa::find($id)->delete();
 
         return redirect()->route('despesas.index')
             ->with('success', 'Despesa excluída com êxito!');
+    }
+
+    public function validaValores($valorMonetario){
+        $SemPonto  = str_replace('.', '', $valorMonetario );
+        $SemVirgula  = str_replace(',', '.', $SemPonto );
+        $valorMonetario = $SemVirgula;
+        return $valorMonetario;
+
+    }
+    public function validaValoresParaView($valorMonetario){
+        $ComPonto  = str_replace('', '.', $valorMonetario );
+        $ComVirgula  = str_replace('.', ',', $ComPonto );
+        $valorMonetario = $ComVirgula;
+        return $valorMonetario;
+
     }
 }

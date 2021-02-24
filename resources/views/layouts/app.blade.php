@@ -51,7 +51,7 @@
      {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> --}}
 
 
-     <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
     <script src="{{ asset('js/viacep.js') }}" defer></script>
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
@@ -72,15 +72,16 @@
     <script>
         $(document).ready(function() {
             $(".padraoReal").inputmask('decimal', {
+                // 'rightAlign': false,                
                 'alias': 'numeric',
-                // 'groupSeparator': '.',
-                'autoGroup': true,
+                'groupSeparator': '.',
+                'autoGroup': false,
                 'digits': 2,
-                'radixPoint': ".",
+                'radixPoint': ",",
                 'digitsOptional': false,
                 'allowMinus': false,
                 // 'prefix': 'R$ ',
-                'placeholder': ''
+                'placeholder': '0',
             });
         });
 

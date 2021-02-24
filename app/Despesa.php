@@ -42,7 +42,7 @@ class Despesa extends Model
     'vencimento',
     'totalPrecoReal',
     'totalPrecoCliente',
-    'lucro',
+    // 'lucro',
     'despesaFixa',
     'notaFiscal',
     'idBanco',

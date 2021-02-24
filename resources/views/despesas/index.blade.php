@@ -31,13 +31,13 @@
 <table class="table table-bordered data-table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Descrição Despesa</th>
-                <th>Valor</th>
-                <th>Vencimento</th>
-                <th>Cód Despesa</th>
-                <th>Registro</th>
-                <th>N° OS</th>
+                <th class="text-center">Id</th>
+                <th class="text-center">Descrição Despesa</th>
+                <th class="text-center">Valor</th>
+                <th class="text-center">Vencimento</th>
+                <th class="text-center">Cód Despesa</th>
+                <th class="text-center">Registro</th>
+                <th class="text-center">N° OS</th>
 
                 <th width="100px" class="noExport">Ações</th>
             </tr>
