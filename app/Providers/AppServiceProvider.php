@@ -46,6 +46,12 @@ class AppServiceProvider extends ServiceProvider
         $listaReceitas = DB::select('SELECT * FROM receita');
         view()->share('listaReceitas', $listaReceitas);
 
+        $listaTabela = DB::select('SELECT * FROM tabelapercentual');
+        view()->share('listaTabela', $listaTabela);
+
+        $listaUsuarios =  DB::select('SELECT * FROM users');
+        view()->share('listaUsuarios', $listaUsuarios);
+
     }
 
 }

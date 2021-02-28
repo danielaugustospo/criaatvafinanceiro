@@ -30,8 +30,8 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Name:</strong>
-            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+            <strong>Nome:</strong>
+            {!! Form::text('name', null, array('placeholder' => 'Nome do usuário','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -43,25 +43,30 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Senha:</strong>
-            {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+            {!! Form::password('password', array('placeholder' => 'Senha','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Confirme a Senha:</strong>
-            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+            {!! Form::password('confirm-password', array('placeholder' => 'Repita a senha','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Regra:</strong>
+            <strong>Permissões:</strong>
             {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Ativo:</strong>
-            {!! Form::text('ativoUser', null, array('placeholder' => 'Ativo','class' => 'form-control')) !!}
+            <select name="ativoUser" id="ativoUser" style="padding:4px;" class="selecionaComInput form-control">
+
+            <option value="1" {{$user->ativoUser == '1'?' selected':''}}>Sim</option>
+            <option value="0" {{$user->ativoUser == '0'?' selected':''}}>Não</option>
+            </select>
+            {{-- {!! Form::text('ativoUser', null, array('placeholder' => 'Ativo','class' => 'form-control')) !!} --}}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

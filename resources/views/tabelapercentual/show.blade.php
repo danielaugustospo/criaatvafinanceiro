@@ -21,7 +21,6 @@
                         <button type="submit" class="btn btn-danger">Excluir</button>
                     @endcan
             </form>
-
         </div>
     </div>
 </div>

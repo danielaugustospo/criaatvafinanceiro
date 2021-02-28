@@ -10,8 +10,8 @@ use App\User;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
-use Freshbitsweb\Laratables\Laratables;
-
+use DataTables;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -32,16 +32,68 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        if ($request->ajax()) {
+
+            $data = User::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $name = $request->get('name');
+                    $email = $request->get('email');
+                    $ativoUser = $request->get('ativoUser');
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($name)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['name'], $request->get('name')) ? true : false;
+                        });
+                    }
+                    if (!empty($email)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['email'], $request->get('email')) ? true : false;
+                        });
+                    }
+                    if (!empty($ativoUser)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['ativoUser'], $request->get('ativoUser')) ? true : false;
+                        });
+                    }
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['email']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['ativoUser']), Str::lower($request->get('search')))) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="users/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+            $data = User::orderBy('id','DESC')->paginate(5);
+            return view('users.index',compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+    
+        }
     }
 
-
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(User::class);
-    }
 
     /**
      * Show the form for creating a new resource.

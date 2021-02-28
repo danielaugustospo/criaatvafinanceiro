@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2> Dados Usuário {{ $user->name }}</h2>
+            <h2> Dados do Usuário: <b>{{ $user->name }}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('users.index') }}"> Voltar</a>
@@ -13,7 +13,7 @@
             <br>
             <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Editar</a>
             {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                {!! Form::submit('Remover', ['class' => 'btn btn-danger']) !!}
             {!! Form::close() !!}
         </div>
     </div>
