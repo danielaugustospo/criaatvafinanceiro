@@ -5,13 +5,14 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados do Código de Despesas {{$grupodespesa->despesaCodigoDespesa}}</h2>
+            <h2>Editar Dados do Grupo de Despesas {{$grupodespesa->grupoDespesa}}</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('grupodespesas.index') }}"> Voltar</a>
         </div>
     </div>
 </div>
+<hr>
 
 
 @if (count($errors) > 0)
@@ -35,7 +36,13 @@
 <div class="form-group row">
 
 <label for="grupoDespesa" class="col-sm-2 col-form-label">Ativo</label>
-{!! Form::text('ativoDespesa', null, ['placeholder' => 'Ativo', 'class' => 'form-control col-sm-2', 'maxlength' => '1']) !!}
+
+<div class="col-sm-2 pl-0 pr-0">
+  <select name="ativoDespesa" id="ativoDespesa" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple">
+      <option value="0" {{$grupodespesa->ativoDespesa == '0'?' selected':''}}>Não</option>
+      <option value="1" {{$grupodespesa->ativoDespesa == '1'?' selected':''}}>Sim</option>
+  </select>
+</div>
 </div>
 
 {!! Form::hidden('excluidoDespesa', null, ['placeholder' => 'Excluído', 'class' => 'form-control', 'maxlength' => '1']) !!}

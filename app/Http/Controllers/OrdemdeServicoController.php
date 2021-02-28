@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use Freshbitsweb\Laratables\Laratables;
+// use Freshbitsweb\Laratables\Laratables;
+use DataTables;
+use Illuminate\Support\Str;
 
 
 class OrdemdeServicoController extends Controller
@@ -35,32 +37,66 @@ class OrdemdeServicoController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
 
-        $data = OrdemdeServico::orderBy('id', 'DESC')->paginate(5);
+            $data = OrdemdeServico::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $idClienteOrdemdeServico = $request->get('idClienteOrdemdeServico');
+                    $eventoOrdemdeServico = $request->get('eventoOrdemdeServico');
+                    $valorTotalOrdemdeServico = $request->get('valorTotalOrdemdeServico');
 
-        // $cliente =  DB::select('select id, nomeCliente from clientes where ativoCliente = 1 and id = :clienteOrdemdeServico', ['clienteOrdemdeServico' => $data->clienteOrdemdeServico]);
-        // $id = $data->id;
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($idClienteOrdemdeServico)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['idClienteOrdemdeServico'], $request->get('idClienteOrdemdeServico')) ? true : false;
+                        });
+                    }
+                    if (!empty($eventoOrdemdeServico)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['eventoOrdemdeServico'], $request->get('eventoOrdemdeServico')) ? true : false;
+                        });
+                    }
+                    if (!empty($valorTotalOrdemdeServico)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['valorTotalOrdemdeServico'], $request->get('valorTotalOrdemdeServico')) ? true : false;
+                        });
+                    }
+                    
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-        // $idClienteOSJoinConta = OrdemdeServico::join("clientes", "ordemdeservico.clienteOrdemdeServico", "=", "clientes.id")
-        // ->where("ordemdeservico.clienteOrdemdeServico", $id)
-        // ->get();
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['idClienteOrdemdeServico']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['eventoOrdemdeServico']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['valorTotalOrdemdeServico']), Str::lower($request->get('search')))) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
 
-
-        return view('ordemdeservicos.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
-
-
-
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(OrdemdeServico::class);
-    }
-
-    public function basicLaratableDataReceita()
-    {
-
-        return Laratables::recordsOf(Receita::class);
+                    $btnVisualizar = '<a href="ordemdeservicos/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+            $data = OrdemdeServico::orderBy('id', 'DESC')->paginate(5);
+            return view('ordemdeservicos.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
 
 
@@ -153,10 +189,10 @@ class OrdemdeServicoController extends Controller
 
         //     $request->validate([
         //         'idCodigoDespesas'          => 'required',
-        //         'descricaoDespesa'          => 'required',
+        //         'idClienteOrdemdeServico'          => 'required',
         //         'despesaCodigoDespesas'     => 'required',
         //         'idFornecedor'              => 'required',
-        //         'precoReal'                 => 'required',
+        //         'eventoOrdemdeServico'                 => 'required',
         //         'atuacao'                   => 'required',
         //         'precoCliente'              => 'required',
         //         'pago'                      => 'required',
@@ -166,7 +202,7 @@ class OrdemdeServicoController extends Controller
         //         'nRegistro'                 => 'required',
         //         'valorEstornado'            => 'required',
         //         'data'                      => 'required',
-        //         'totalPrecoReal'            => 'required',
+        //         'totaleventoOrdemdeServico'            => 'required',
         //         'totalPrecoCliente'         => 'required',
         //         'lucro'                     => 'required',
         //         'ativoDespesa'              => 'required',
@@ -174,10 +210,10 @@ class OrdemdeServicoController extends Controller
         //     ]);
 
         //     $despesa->idCodigoDespesas          = $request->get('idCodigoDespesas');
-        //     $despesa->descricaoDespesa          = $request->get('descricaoDespesa');
+        //     $despesa->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
         //     $despesa->despesaCodigoDespesas     = $request->get('despesaCodigoDespesas');
         //     $despesa->idFornecedor              = $request->get('idFornecedor');
-        //     $despesa->precoReal                 = $request->get('precoReal');
+        //     $despesa->eventoOrdemdeServico                 = $request->get('eventoOrdemdeServico');
         //     $despesa->atuacao                   = $request->get('atuacao');
         //     $despesa->precoCliente              = $request->get('precoCliente');
         //     $despesa->pago                      = $request->get('pago');
@@ -187,7 +223,7 @@ class OrdemdeServicoController extends Controller
         //     $despesa->nRegistro                 = $request->get('nRegistro');
         //     $despesa->valorEstornado            = $request->get('valorEstornado');
         //     $despesa->data                      = $request->get('data');
-        //     $despesa->totalPrecoReal            = $request->get('totalPrecoReal');
+        //     $despesa->totaleventoOrdemdeServico            = $request->get('totaleventoOrdemdeServico');
         //     $despesa->totalPrecoCliente         = $request->get('totalPrecoCliente');
         //     $despesa->lucro                     = $request->get('lucro');
 
@@ -295,7 +331,7 @@ class OrdemdeServicoController extends Controller
         $receitasPorOS = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $percentualPorOS = DB::select('select distinct * from tabelapercentual  where  idostabelapercentual = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesas = DB::select('select sum(despesas.eventoOrdemdeServico) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
         $getArrayTotalDespesas = $totaldespesas[0]->totaldespesa;
         
         $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
@@ -341,7 +377,7 @@ class OrdemdeServicoController extends Controller
         // var_dump($lucro);
         // exit;
 
-        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $qtdDespesas = DB::select('select COUNT(eventoOrdemdeServico) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         return view('ordemdeservicos.show', compact('ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas','lucro','totalOS','porcentagemDespesa','porcentagemReceita','porcentagemLucro'));

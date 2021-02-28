@@ -23,23 +23,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/tabelabanco', 'BancoController@basicLaratableData')->name('tabelabanco');
-Route::get('/tabelaOS', 'OrdemdeServicoController@basicLaratableData')->name('tabelaOS');
-Route::get('/tabelausuarios', 'UserController@basicLaratableData')->name('tabelausuarios');
-Route::get('/tabelapercentualajax', 'TabelaPercentualController@basicLaratableData')->name('tabelapercentualajax');
-Route::get('/tabelareceita', 'ReceitaController@basicLaratableData')->name('tabelareceita');
-Route::get('/tabeladespesa', 'DespesaController@basicLaratableData')->name('tabeladespesa');
-Route::get('/tabelaformapagamento', 'FormaPagamentoController@basicLaratableData')->name('tabelaformapagamento');
-Route::get('/tabelacontas', 'ContaController@basicLaratableData')->name('tabelacontas');
-Route::get('/tabelacodigodespesas', 'CodigoDespesaController@basicLaratableData')->name('tabelacodigodespesas');
-Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('tabelaorgaosrg');
-Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
-Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
-Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
-Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
-Route::get('/filtraDados', 'DespesaController@filtraDados')->name('filtraDados');
+// Route::get('/tabelabanco', 'BancoController@basicLaratableData')->name('tabelabanco');
+// Route::get('/tabelaOS', 'OrdemdeServicoController@basicLaratableData')->name('tabelaOS');
+// Route::get('/tabelausuarios', 'UserController@basicLaratableData')->name('tabelausuarios');
+// Route::get('/tabelapercentualajax', 'TabelaPercentualController@basicLaratableData')->name('tabelapercentualajax');
+// Route::get('/tabelareceita', 'ReceitaController@basicLaratableData')->name('tabelareceita');
+// Route::get('/tabeladespesa', 'DespesaController@basicLaratableData')->name('tabeladespesa');
+// Route::get('/tabelaformapagamento', 'FormaPagamentoController@basicLaratableData')->name('tabelaformapagamento');
+// Route::get('/tabelacontas', 'ContaController@basicLaratableData')->name('tabelacontas');
+// Route::get('/tabelacodigodespesas', 'CodigoDespesaController@basicLaratableData')->name('tabelacodigodespesas');
+// Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('tabelaorgaosrg');
+// Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
+// Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
+// Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
+// Route::get('/filtraDados', 'DespesaController@filtraDados')->name('filtraDados');
 
-Route::get('filtrodespesas', ['despesas'=>'DespesaController@index', 'as'=>'filtrodespesas']);
+Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');

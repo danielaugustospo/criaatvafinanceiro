@@ -7,9 +7,11 @@ namespace App\Http\Controllers;
 use App\CodigoDespesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshbitsweb\Laratables\Laratables;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+// use Freshbitsweb\Laratables\Laratables;
+use DataTables;
+use Illuminate\Support\Str;
 
 class CodigoDespesaController extends Controller
 {
@@ -32,14 +34,59 @@ class CodigoDespesaController extends Controller
      */
     public function index(Request $request)
     {
-        $data = CodigoDespesa::orderBy('id','DESC')->paginate(5);
-        return view('codigodespesas.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
+        if ($request->ajax()) {
 
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(CodigoDespesa::class);
+            $data = CodigoDespesa::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $despesaCodigoDespesa = $request->get('despesaCodigoDespesa');
+                    $idGrupoCodigoDespesa = $request->get('idGrupoCodigoDespesa');
+
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($despesaCodigoDespesa)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['despesaCodigoDespesa'], $request->get('despesaCodigoDespesa')) ? true : false;
+                        });
+                    }
+                    if (!empty($idGrupoCodigoDespesa)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['idGrupoCodigoDespesa'], $request->get('idGrupoCodigoDespesa')) ? true : false;
+                        });
+                    }
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['despesaCodigoDespesa']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['idGrupoCodigoDespesa']), Str::lower($request->get('search')))) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="codigodespesas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        else {
+            $data = CodigoDespesa::orderBy('id', 'DESC')->paginate(5);
+            return view('codigodespesas.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        } 
     }
 
     /**

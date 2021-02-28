@@ -1,19 +1,22 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2 class="text-center">Gerenciamento de Grupo de Despesas</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('codigodespesa-create')
-            <a class="btn btn-success" href="{{ route('grupodespesas.create') }}">Cadastrar Grupo de Despesas</a>
+                <a class="btn btn-success" href="{{ route('grupodespesas.create') }}">Cadastrar Grupo de Despesas</a>
             @endcan
+
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada">
+            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca">
         </div>
     </div>
 </div>
+<hr>
 
 
 @if ($message = Session::get('success'))
@@ -23,110 +26,151 @@
 @endif
 
 
+@include('grupodespesas/filtroindex')
+
+    <table class="table table-bordered data-table">
+        <thead >
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">Grupo Despesa</th>
+                <th class="noExport">Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+    </table>
 
 
-<script>
+<script type="text/javascript">
 
 
-$(document).ready(function(){
+    $('#btnReveal').hide();
 
+    $('#btnReveal').on('click', function () {
+        $('#areaTabela').show('#div_BuscaPersonalizada');
+        $('#btnReveal').hide();
+        $('#btnEsconde').show();
+        $('#div_BuscaPersonalizada').show();
+    })
 
-    $("#grupoDespesaModel").DataTable({
+    $('#btnEsconde').on('click', function () {
+        $('#areaTabela').hide('#div_BuscaPersonalizada');
+        $('#btnEsconde').hide();
+        $('#btnReveal').show();
+        $('input[name=id]').val('');
+        $('input[name=grupoDespesa]').val('');
+        $('input[name=pesquisar]').click();
+    })
+
+    var table = $('.data-table').DataTable({
+        processing: true,
         serverSide: true,
-        ajax: "{{ route('tabelagrupodespesas') }}",
+        "iDisplayLength": 10,
+        "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
+        
+
+        "language": {
+            "sProcessing": "Processando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+            "sInfoPostFix": "",
+            "sSearch": "Procurar:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Primeiro",
+                "sPrevious": "Anterior",
+                "sNext": "Seguinte",
+                "sLast": "Último"
+            },
+            "buttons": {
+            "copy": "Copiar",
+            "csv": "Exportar em CSV",
+            "excel": "Exportar para Excel (.xlsx)",
+            "pdf": "Salvar em PDF",
+            "print": "Imprimir",
+            "pageLength": "Exibir por página" 
+            }
+        },
+
+        ajax: {
+            url: "{{ route('grupodespesas.index') }}",
+            data: function(d) {
+                d.id = $('.buscaIdGrupo').val(),
+                d.grupoDespesa = $('.buscaGrupoDespesa').val(),
+                d.search = $('input[type="search"]').val()
+            }
+        },
 
         columns: [
-            { name: 'id' },
-            { name: 'grupoDespesa' },
-            { name: 'action', orderable: false, searchable:false},
-
+            // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'grupoDespesa',
+                name: 'grupoDespesa'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                exportOptions: {
+                visible: false
+                },
+            },
         ],
-        "language": {
-        "lengthMenu": "Exibindo _MENU_ registros por página",
-        "zeroRecords": "Nenhum dado cadastrado",
-        "info": "Exibindo página _PAGE_ de _PAGES_",
-        "infoEmpty": "Nenhum registro encontrado",
-        "infoFiltered": "(filtered from _MAX_ total records)",
-        "search": "Pesquisar",
-        "paginate": {
-            "previous": "Anterior",
-            "next":"Próximo",
-        },
-    },
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'pageLength', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },{
+            extend: 'copy', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'csv', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'excel', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'pdf', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'print', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }
+                }
+        ],
 
     });
 
-
-
-    var table = $('#grupoDespesaModel').DataTable();
-
-
-     $('#grupoDespesaModel tbody').on( 'click', '#visualizar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "grupodespesas/"+data[0];
-    } );
-     $('#grupoDespesaModel tbody').on( 'click', '#editar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "grupodespesas/"+ data[0] + "/edit";
-    } );
-
-
-
-});
+    $("#pesquisar").click(function() {
+        table.draw();
+    });
 </script>
 
 
-<div class="container">
-        <table id="grupoDespesaModel" class="table table-bordered table-striped">
-            <thead class="thead-dark">
 
-            <tr>
-                    <th>Id</th>
-                    <th>Grupo</th>
-                    <th>Ações</th>
-                </tr>
-
-            </thead>
-        </table>
-    </div>
-
-
-
-<!--
-
-
-<table class="table table-bordered mt-2">
-
-<tr class="trTituloTabela">
-            <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Nome Código Despesa</th>
-            <th class="thTituloTabela">Grupo Código Despesa</th>
-            <th class="thTituloTabela" width="280px">Ação</th>
-        </tr>
-        @foreach ($data as $grupodespesa)
-
-        <tr>
-	        <td>{{ $grupodespesa->id }}</td>
-	        <td>{{ $grupodespesa->despesaCodigoDespesa }}</td>
-	        <td>{{ $grupodespesa->idGrupoCodigoDespesa }}</td>
-	        <td>
-                <form action="{{ route('grupodespesas.destroy',$grupodespesa->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('grupodespesas.show',$grupodespesa->id) }}">Visualizar</a>
-                    @can('codigodespesa-edit')
-                        <a class="btn btn-primary" href="{{ route('grupodespesas.edit',$grupodespesa->id) }}">Editar</a>
-                    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('codigodespesa-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
-
-    </table> -->
-
- 
 @endsection

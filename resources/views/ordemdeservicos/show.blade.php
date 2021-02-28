@@ -358,87 +358,6 @@
 
 
 
-<!-- <script>
-    $(document).ready(function() {
-
-
-        $("#receitaModel").DataTable({
-            serverSide: true,
-            ajax: "{{ route('tabelareceita') }}",
-
-            columns: [{
-                    name: 'id'
-                },
-                {
-                    name: 'idosreceita'
-                },
-                {
-                    name: 'valorreceita'
-                },
-                {
-                    name: 'pagoreceita'
-                },
-                {
-                    name: 'contareceita'
-                },
-                {
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-
-            ],
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nada localizado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "A consulta não retornou nenhum resultado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
-                },
-            },
-
-
-        });
-
-
-
-        $('#receitaModel tbody').on('click', '#visualizar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "receita/" + data[0];
-        });
-        $('#receitaModel tbody').on('click', '#editar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "receita/" + data[0] + "/edit";
-        });
-
-
-    });
-</script>
-
-
-<div class="container">
-    <table id="receitaModel" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-
-            <tr>
-                <input type="text" id="idDaOS" name="idDaOS" value="{{ $ordemdeservico->id }}">
-
-                <th>Id</th>
-                <th>OS Receita</th>
-                <th>Id OS</th>
-                <th>Descrição Despesa</th>
-                <th>Conta Receita</th>
-                <th>Ações</th>
-            </tr>
-
-        </thead>
-    </table>
-</div> -->
-
 <hr />
 <br>
 
@@ -487,9 +406,6 @@
 
 <script>
     function createFilter(table, columns) {
-        // var input = $('<input type="text"/>').on("keyup", function() {
-        //     table.draw();
-        // });
 
         $.fn.dataTable.ext.search.push(function(
             settings,
@@ -533,8 +449,6 @@
 
         var table = $("#tabelaPercentualPorOS").DataTable();
 
-        // var filter1 = createFilter(table, [0, 1]);
-        // filter1.appendTo("body");
     });
 </script>
 
@@ -542,89 +456,6 @@
 
 
 
-<!--
-
-<script>
-    $(document).ready(function() {
-
-
-        $("#tabelapercentual").DataTable({
-            serverSide: true,
-            ajax: "{{ route('tabelapercentualajax') }}",
-
-            columns: [{
-                    name: 'id'
-                },
-                {
-                    name: 'nometabelapercentual'
-                },
-                {
-                    name: 'percentualtabelapercentual'
-                },
-                {
-                    name: 'pgtabelapercentual'
-                },
-                {
-                    name: 'idostabelapercentual'
-                },
-                {
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-
-            ],
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nenhum dado cadastrado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro encontrado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
-                },
-            },
-
-        });
-
-
-
-        var table = $('#tabelapercentual').DataTable();
-
-
-        $('#tabelapercentual tbody').on('click', '#visualizar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "tabelapercentual/" + data[0];
-        });
-        $('#tabelapercentual tbody').on('click', '#editar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "tabelapercentual/" + data[0] + "/edit";
-        });
-
-
-
-    });
-</script>
-
-
-<div class="container">
-    <table id="tabelapercentual" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-
-            <tr>
-                <th>Id</th>
-                <th>Nome Parte</th>
-                <th>Percentual</th>
-                <th>Pago</th>
-                <th>Id OS</th>
-                <th>Ações</th>
-            </tr>
-
-        </thead>
-    </table>
-</div> -->
 
 
 

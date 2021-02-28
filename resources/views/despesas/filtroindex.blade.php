@@ -29,7 +29,6 @@
                     @endforeach
                 </select>
 
-
             </div>
             <div class="row">
                 <label for="" class="col-sm-1">Vencimento</label><input type="date" name="vencimento" class="col-sm-2 form-control buscaVencimento" placeholder="Vencimento">
@@ -64,6 +63,5 @@
             </div>
         </div>
         <hr>
-
     </div>
     <br>

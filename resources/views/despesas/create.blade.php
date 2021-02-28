@@ -26,8 +26,6 @@
 @endif
 
 
-
-
 {!! Form::open(array('route' => 'despesas.store','method'=>'POST')) !!}
 
 @include('despesas/campos')

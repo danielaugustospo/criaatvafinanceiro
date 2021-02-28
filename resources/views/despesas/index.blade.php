@@ -1,18 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+
+
 <div class="row">
 
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2 class="text-center">Consulta de Despesas</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('despesa-create')
-                <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada">
-                <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca">
                 <a class="btn btn-success" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
             @endcan
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
+            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
     </div>
 </div>
@@ -26,7 +28,9 @@
 
 <hr>
 
+
 @include('despesas/filtroindex')
+
 
 <table class="table table-bordered data-table">
         <thead>
@@ -45,9 +49,6 @@
         <tbody>
         </tbody>
     </table>
-</div>
-
-</body>
 
 <script type="text/javascript">
 
@@ -220,182 +221,6 @@
         table.draw();
     });
 </script>
-
-
-{{-- <script>
-    $(document).ready(function(){
-    
-        fill_datatable();
-    
-        function fill_datatable(filtraCodigoDespesa = '', filtraIdOS = '')
-        {
-            var dataTable = $('#despesaModel').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax:{
-                    url: "{{ route('filtraDados') }}",
-                data:{filtraCodigoDespesa:filtraCodigoDespesa, filtraIdOS:filtraIdOS}
-                },
-                    columns: [{
-                    name: 'id',
-                    data: 'id'
-                },
-                {
-                    name: 'idCodigoDespesas',
-                    data: 'idCodigoDespesas'
-                },
-                {
-                    name: 'idOS',
-                    data: 'idOS'
-                },
-                {
-                    name: 'descricaoDespesa',
-                    data: 'descricaoDespesa'
-                },
-                {
-                    name: 'action',
-                    // data: 'action',
-                    orderable: false,
-                    searchable: false,
-                }
-            ]});
-        }
-
-    $('#filter').click(function(){
-        var filtraCodigoDespesa = $('#filtraCodigoDespesa').val();
-        var filtraIdOS = $('#filtraIdOS').val();
-    if(filtraCodigoDespesa != '' || filtraCodigoDespesa != '')
-    {
-        $('#despesaModel').DataTable().destroy();
-        fill_datatable(filtraCodigoDespesa, filtraIdOS);
-    }
-    else
-    {
-        alert('Select Both filter option');
-    }
-    });
-
-    $('#reset').click(function(){
-        $('#filtraCodigoDespesa').val('');
-        $('#filtraIdOS').val('');
-        $('#despesaModel').DataTable().destroy();
-        fill_datatable();
-    });
-
-    $('#despesaModel tbody').on('click', '#visualizar', function() {
-        var data = table.row($(this).parents('tr')).data();
-        location.href = "despesas/" + data[0];
-    });
-    $('#despesaModel tbody').on('click', '#editar', function() {
-        var data = table.row($(this).parents('tr')).data();
-        location.href = "despesas/" + data[0] + "/edit";
-    });
-
-
-    });
-    </script> --}}
-
-<script>
-    // $(document).ready(function() {
-
-    //         $("#despesaModel").DataTable({
-    //         serverSide: true,
-    //         ajax: "{{ route('tabeladespesa') }}",
-
-    //         columns: [{
-    //                 name: 'id'
-    //             },
-    //             {
-    //                 name: 'idCodigoDespesas'
-    //             },
-    //             {
-    //                 name: 'idOS'
-    //             },
-    //             {
-    //                 name: 'descricaoDespesa'
-    //             },
-    //             {
-    //                 name: 'action',
-    //                 orderable: false,
-    //                 searchable: false,
-
-    //             },
-
-    //         ],
-    //         "language": {
-    //             "lengthMenu": "Exibindo _MENU_ registros por página",
-    //             "zeroRecords": "Nenhum dado cadastrado",
-    //             "info": "Exibindo página _PAGE_ de _PAGES_",
-    //             "infoEmpty": "Nenhum registro encontrado",
-    //             "infoFiltered": "(filtered from _MAX_ total records)",
-    //             "search": "Pesquisar",
-    //             "paginate": {
-    //                 "previous": "Anterior",
-    //                 "next": "Próximo",
-    //             },
-    //         },
-
-    //     });
-
-
-    // var table = $('#despesaModel').DataTable();
-
-    // $('#despesaModel thead tr').clone(true).appendTo( '#despesaModel thead' );
-    // $('#despesaModel thead tr:eq(1) th').each( function (i) {
-    // var title = $(this).text();
-    // $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-
-    // $( 'input', this ).on( 'keyup change', function () {
-    //     if ( table.column(i).search() !== this.value ) {
-    //         table
-    //             .column(i)
-    //             .search( this.value )
-    //             .draw();
-    //             }
-    //         });
-    // });
-
-
-    //     $('#despesaModel tbody').on('click', '#visualizar', function() {
-    //         var data = table.row($(this).parents('tr')).data();
-    //         location.href = "despesas/" + data[0];
-    //     });
-    //     $('#despesaModel tbody').on('click', '#editar', function() {
-    //         var data = table.row($(this).parents('tr')).data();
-    //         location.href = "despesas/" + data[0] + "/edit";
-    //     });
-
-
-    // });
-</script>
-
-
-
-{{-- <div class="container">
-    <input type="text" name="filtraCodigoDespesa" id="filtraCodigoDespesa">
-    <input type="text" name="filtraIdOS" id="filtraIdOS">
-
-    <div class="form-group" align="center">
-        <button type="button" name="filter" id="filter" class="btn btn-info">Filter</button>
-
-        <button type="button" name="reset" id="reset" class="btn btn-default">Reset</button>
-    </div>
-    <table id="despesaModel" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-
-            <tr>
-                <th>Id</th>
-                <th>Código Despesas</th>
-                <th>Id OS</th>
-                <th>Descrição Despesa</th>
-                <th>Ações</th>
-            </tr>
-
-        </thead>
-    </table>
-</div> --}}
-
-
 
 
 

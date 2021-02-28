@@ -2,15 +2,16 @@
 
 namespace App;
 
-use App\Http\Controllers\OrdemdeServicoController;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 // use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
 use App\OrdemdeServico;
+use App\Http\Controllers\OrdemdeServicoController;
 
 
 
@@ -36,8 +37,7 @@ class Receita extends Model
         'valorreceita',
         'pagoreceita',
         'contareceita',
-        // 'registroreceita',
-        // 'emissaoreceita',
+        'registroreceita',
         'nfreceita',
         'idosreceita',
 
@@ -61,22 +61,22 @@ class Receita extends Model
     //     return $query->where('idosreceita', '57');
     // }
 
-    public function listaReceitas($id){
-        $ordemdeservico = OrdemdeServico::find($id);
+    // public function listaReceitas($id){
+    //     $ordemdeservico = OrdemdeServico::find($id);
 
-        $query = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
-        return $query;
-    }
+    //     $query = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+    //     return $query;
+    // }
 
-    public static function condicoesCustomizadas($query,$id)
-    {
-        $ordemdeservico = OrdemdeServico::find($id);
+    // public static function condicoesCustomizadas($query,$id)
+    // {
+    //     $ordemdeservico = OrdemdeServico::find($id);
 
-        $query = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
-        return $query;
+    //     $query = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+    //     return $query;
 
-        // return $query->where('idosreceita', '57');
-    }
+    //     // return $query->where('idosreceita', '57');
+    // }
 
     public static function laratablesCustomAction($receitaModel)
     {

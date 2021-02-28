@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 // use Freshbitsweb\Laratables\Laratables;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
+use App\Providers\AppServiceProvider;
+
 
 class DespesaController extends Controller
 {
@@ -18,15 +21,39 @@ class DespesaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:despesa-list|despesa-create|despesa-edit|despesa-delete', ['only' => ['index', 'show']]);
         $this->middleware('permission:despesa-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:despesa-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:despesa-delete', ['only' => ['destroy']]);
 
+        $this->acao =  request()->segment(count(request()->segments()));
+        $this->valorInput = null;
+        $this->valorSemCadastro = null;
+
+        if ($this->acao == 'create'){
+            $this->valorInput = " ";
+            $this->valorSemCadastro = "0";
+            $this->variavelReadOnlyNaView = "";        
+            $this->variavelDisabledNaView = "";
+  
+        } 
+        elseif ($this->acao == 'edit'){
+            $this->variavelReadOnlyNaView = "";        
+            $this->variavelDisabledNaView = "";
+  
+        } 
+        elseif ($this->acao != 'edit' && $this->acao != 'create'){
+            $this->variavelReadOnlyNaView = "readonly";        
+            $this->variavelDisabledNaView = 'disabled';
+
+        }
+
+
         //its just a dummy data object.
     }
+
 
     /**
      * Display a listing of the resource.
@@ -135,11 +162,10 @@ class DespesaController extends Controller
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
         $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
         $precoReal = " ";
-        $valorInput = " ";
-        $valorSemCadastro = "0";
-        $variavelReadOnlyNaView = "";
-        $variavelDisabledNaView = "";
-        
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
         return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
@@ -226,8 +252,6 @@ class DespesaController extends Controller
      */
     public function show($id)
     {
-
-
         $despesa = Despesa::find($id);
 
         $listaContas  = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
@@ -241,10 +265,10 @@ class DespesaController extends Controller
         $precoReal = $this->validaValoresParaView($valorMonetario);
 
 
-        $valorInput = null; 
-        $valorSemCadastro = null; 
-        $variavelReadOnlyNaView = "readonly";
-        $variavelDisabledNaView = 'disabled';
+        $valorInput = $this->valorInput; 
+        $valorSemCadastro = $this->valorSemCadastro; 
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
         return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
@@ -270,10 +294,10 @@ class DespesaController extends Controller
         $valorMonetario = $despesa->precoReal;
         $precoReal = $this->validaValoresParaView($valorMonetario);
 
-        $valorInput = null;
-        $valorSemCadastro = null;
-        $variavelReadOnlyNaView = "";
-        $variavelDisabledNaView = '';
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
         return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));

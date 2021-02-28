@@ -7,10 +7,10 @@ namespace App\Http\Controllers;
 use App\GrupoDespesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshbitsweb\Laratables\Laratables;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-
+use Illuminate\Support\Facades\DB;
+use DataTables;
+use Illuminate\Support\Str;
 class GrupoDespesaController extends Controller
 {
     /**
@@ -30,17 +30,67 @@ class GrupoDespesaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+   
     public function index(Request $request)
     {
-        $data = GrupoDespesa::orderBy('id','DESC')->paginate(5);
-        return view('grupodespesas.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        if ($request->ajax()) {
+
+            $data = GrupoDespesa::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $grupoDespesa = $request->get('grupoDespesa');
+                    $excluidoDespesa = '0';
+                    
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($grupoDespesa)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['grupoDespesa'], $request->get('grupoDespesa')) ? true : false;
+                        });
+                    }
+                    if (!empty($excluidoDespesa)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['excluidoDespesa'], $this->excluidoDespesa) ? true : false;
+                        });
+                    }
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['grupoDespesa']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['excluidoDespesa']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="grupodespesas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+            return view('grupodespesas.index')
+            ->with('error', 'Ocorreu um erro na solicitação. Tente novamente');
+        }
     }
 
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(GrupoDespesa::class);
-    }
+    // public function basicLaratableData()
+    // {
+    //     return Laratables::recordsOf(GrupoDespesa::class);
+    // }
 
     /**
      * Show the form for creating a new resource.
