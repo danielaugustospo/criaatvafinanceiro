@@ -21,10 +21,10 @@ class CreateTableCodigoDespesa extends Migration
 
 
             $table->unsignedBigInteger('idGrupoCodigoDespesa');
-            $table->foreign('idGrupoCodigoDespesa')
-            ->references('id')
-            ->on('grupodespesas')
-            ->onDelete('cascade');
+            // $table->foreign('idGrupoCodigoDespesa')
+            // ->references('id')
+            // ->on('grupodespesas')
+            // ->onDelete('cascade');
 
             $table->string('ativoCodigoDespesa');
             $table->string('excluidoCodigoDespesa');
