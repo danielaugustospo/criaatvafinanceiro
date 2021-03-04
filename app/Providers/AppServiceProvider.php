@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         $listaTiposBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
         view()->share('listaTiposBensPatrimoniais', $listaTiposBensPatrimoniais);
 
-        $listaBensPatrimoniais = DB::select('SELECT * FROM bensPatrimoniais where ativadobenspatrimoniais = 1');
+        $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
         view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
 
         $listaEntradas = DB::select('SELECT * FROM  entradas where ativoentrada = 1');
