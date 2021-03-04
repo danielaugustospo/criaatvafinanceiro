@@ -22,10 +22,10 @@ class CriaTabelaSaidas extends Migration
 
 
             $table->unsignedBigInteger('idbenspatrimoniais');
-            $table->foreign('idbenspatrimoniais')
-            ->references('id')
-            ->on('bens_patrimoniais')
-            ->onDelete('cascade');
+            // $table->foreign('idbenspatrimoniais')
+            // ->references('id')
+            // ->on('bens_patrimoniais')
+            // ->onDelete('cascade');
 
             $table->boolean('ativadosaida');
             $table->boolean('excluidosaida');

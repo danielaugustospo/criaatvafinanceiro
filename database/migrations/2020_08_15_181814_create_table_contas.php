@@ -23,10 +23,10 @@ class CreateTableContas extends Migration
 
 
             $table->unsignedBigInteger('idBanco');
-            $table->foreign('idBanco')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
+            // $table->foreign('idBanco')
+            // ->references('id')
+            // ->on('banco')
+            // ->onDelete('cascade');
 
             $table->boolean('ativoConta');
             $table->boolean('excluidoConta');

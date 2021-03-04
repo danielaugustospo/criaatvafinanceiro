@@ -22,10 +22,10 @@ class CriaTabelaBensPatrimoniais extends Migration
 
 
             $table->unsignedBigInteger('idTipoBensPatrimoniais');
-            $table->foreign('idTipoBensPatrimoniais')
-            ->references('id')
-            ->on('products')
-            ->onDelete('cascade');
+            // $table->foreign('idTipoBensPatrimoniais')
+            // ->references('id')
+            // ->on('products')
+            // ->onDelete('cascade');
 
             $table->boolean('ativadobenspatrimoniais');
             $table->boolean('excluidobenspatrimoniais');

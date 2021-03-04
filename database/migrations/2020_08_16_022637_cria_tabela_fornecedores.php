@@ -49,10 +49,10 @@ class CriaTabelaFornecedores extends Migration
             $table->boolean('excluidoFornecedor');
 
             $table->unsignedBigInteger('bancoFornecedor');
-            $table->foreign('bancoFornecedor')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
+            // $table->foreign('bancoFornecedor')
+            // ->references('id')
+            // ->on('banco')
+            // ->onDelete('cascade');
 
             // $table->string('bancoFuncionario');
 

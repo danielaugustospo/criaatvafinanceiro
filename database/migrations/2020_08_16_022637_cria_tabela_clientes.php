@@ -37,10 +37,10 @@ class CriaTabelaClientes extends Migration
 
 
             $table->unsignedBigInteger('bancoCliente');
-            $table->foreign('bancoCliente')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
+            // $table->foreign('bancoCliente')
+            // ->references('id')
+            // ->on('banco')
+            // ->onDelete('cascade');
 
             // $table->string('bancoFuncionario');
             $table->string('nrcontaCliente');
@@ -48,10 +48,10 @@ class CriaTabelaClientes extends Migration
 
 
             $table->unsignedBigInteger('bancoFavorecidoCliente');
-            $table->foreign('bancoFavorecidoCliente')
-            ->references('id')
-            ->on('banco')
-            ->onDelete('cascade');
+            // $table->foreign('bancoFavorecidoCliente')
+            // ->references('id')
+            // ->on('banco')
+            // ->onDelete('cascade');
 
             $table->string('nomefavorecidoCliente');
             $table->string('cpffavorecidoCliente');
