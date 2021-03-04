@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 
@@ -45,9 +44,4 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
- 
-
-
-
-
-@endsection
+ @endsection

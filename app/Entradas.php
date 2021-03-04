@@ -14,9 +14,10 @@ class Entradas extends Model
     protected $fillable = [
         'descricaoentrada',
         'qtdeEntrada',
-        'idBensPatrimoniais',
+        'idbenspatrimoniais',
         'valorunitarioentrada',
-        'excluidoentrada',
+        'ativoentrada',
+        'excluidoentrada'
         ];
 }
 

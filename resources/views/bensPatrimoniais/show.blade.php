@@ -5,11 +5,24 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2> Dados do Bem Patrimonial {{ $benspatrimoniais->nomeBensPatrimoniais }}</h2>
+            <h2> Dados do Bem Patrimonial: <b>{{ $benspatrimoniais->nomeBensPatrimoniais }}</b></h2>
         </div>
-        <div class="pull-right">
+        <div class="pull-right mb-3">
             <a class="btn btn-primary" href="{{ route('benspatrimoniais.index') }}"> Voltar</a>
         </div>
+        <hr>
+        <form action="{{ route('benspatrimoniais.destroy',$benspatrimoniais->id) }}" method="POST">
+            @can('benspatrimoniais-edit')
+                <a class="btn btn-primary" href="{{ route('benspatrimoniais.edit',$benspatrimoniais->id) }}">Editar</a>
+            @endcan
+
+            @csrf
+            @method('DELETE')
+            @can('benspatrimoniais-delete')
+                <button type="submit" class="btn btn-danger">Excluir</button>
+            @endcan
+        </form>
+
     </div>
 </div>
 

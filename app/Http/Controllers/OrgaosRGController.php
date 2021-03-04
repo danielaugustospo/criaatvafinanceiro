@@ -7,9 +7,11 @@ namespace App\Http\Controllers;
 use App\OrgaoRG;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshbitsweb\Laratables\Laratables;
+// use Freshbitsweb\Laratables\Laratables;
 use Spatie\Permission\Models\Role;
-
+use DataTables;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 class OrgaosRGController extends Controller
 {
     /**
@@ -31,16 +33,59 @@ class OrgaosRGController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+            $data = OrgaoRG::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $nome = $request->get('nome');
+                    $estadoOrgaoRG = $request->get('estadoOrgaoRG');
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($nome)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['nome'], $request->get('nome')) ? true : false;
+                        });
+                    }
+                    if (!empty($estadoOrgaoRG)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['estadoOrgaoRG'], $request->get('estadoOrgaoRG')) ? true : false;
+                        });
+                    }
+                    
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['nome']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['estadoOrgaoRG']), Str::lower($request->get('search')))) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="orgaosrg/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+
         $data = OrgaoRG::orderBy('id','DESC')->paginate(5);
         return view('orgaosrg.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
-
-
-
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(OrgaoRG::class);
+        }
     }
 
 
@@ -117,15 +162,17 @@ class OrgaosRGController extends Controller
      * @param  \App\OrgaoRG  $orgaorg
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrgaoRG $orgaorg)
+    public function update(Request $request, $id)
     {
-         request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+         $request->validate([
+            'nome' => 'required|min:3',
+            'estadoOrgaoRG'  => 'required'
         ]);
 
-
-        $orgaorg->update($request->all());
+        $orgaorg = OrgaoRG::find($id);
+        $orgaorg->nome = $request->input('nome');
+        $orgaorg->estadoOrgaoRG = $request->input('estadoOrgaoRG');
+        $orgaorg->save();
 
 
         return redirect()->route('orgaosrg.index')

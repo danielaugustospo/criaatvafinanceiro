@@ -7,9 +7,10 @@ namespace App\Http\Controllers;
 use App\Conta;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshbitsweb\Laratables\Laratables;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
+use DataTables;
+use Illuminate\Support\Str;
 
 
 class ContaController extends Controller
@@ -33,16 +34,65 @@ class ContaController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
 
-        $data = Conta::orderBy('id', 'DESC')->paginate(5);
-        return view('contas.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
+            $data = Conta::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $numeroConta = $request->get('numeroConta');
+                    $agenciaConta = $request->get('agenciaConta');
+                    $idBanco = $request->get('idBanco');
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($numeroConta)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                        });
+                    }
+                    if (!empty($agenciaConta)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                        });
+                    }
+                    if (!empty($idBanco)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['idBanco'], $request->get('idBanco')) ? true : false;
+                        });
+                    }
+                   
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
 
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(Conta::class);
+                    $btnVisualizar = '<a href="contas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+            $data = Conta::orderBy('id', 'DESC')->paginate(5);
+            return view('contas.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
 
     /**
@@ -100,8 +150,7 @@ class ContaController extends Controller
         // return view('contas.show',compact('conta'));
 
 
-        {
-            $role = Role::find($id);
+            // $role = Role::find($id);
             // $idBancoJoinConta ='';
             // $idBancoJoinConta = Conta::join("banco", "conta.idBanco", "=", "banco.id")
             //     ->where("conta.idbanco", $id)
@@ -109,18 +158,15 @@ class ContaController extends Controller
 
 
             $banco =
-            DB::select('SELECT b.id, b.nomeBanco 
+                DB::select('SELECT b.id, b.nomeBanco 
                 FROM banco b
                     WHERE  b.ativoBanco = 1
                     AND b.excluidoBanco = 0
-                    AND b.id = :id', ['id' => $conta->idBanco ]);
+                    AND b.id = :id', ['id' => $conta->idBanco]);
 
             // $banco =  DB::select('select * from banco where id = :id', ['id' => $conta->idBanco]);
 
-
-
             return view('contas.show', compact('conta', 'banco'));
-        }
     }
 
 
@@ -195,48 +241,60 @@ class ContaController extends Controller
         $tamanhoArrayGetContas = count($getContas);
 
         //SALDO DAS CONTAS
-        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+        for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
             new Conta();
             $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
             $propridadesDasContas = $receitasPorConta[$i][0];
-            $dadosConta[$i] = [ $propridadesDasContas->agenciaPorConta,number_format($propridadesDasContas->receitasTotaisPorConta, 2, ',', '.')];
+            $dadosConta[$i] = [$propridadesDasContas->agenciaPorConta, number_format($propridadesDasContas->receitasTotaisPorConta, 2, ',', '.')];
         }
 
         //CONTAS A RECEBER
-        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+        for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
             new Conta();
             $receitasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'N' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
             $propridadesDasContasAReceber = $receitasPendentesPorConta[$i];
             $tamanhoArrayReceitasPendetes = count($propridadesDasContasAReceber);
 
 
-            if ($tamanhoArrayReceitasPendetes == 0){$propridadesDasContasAReceber[$i] = 0.00; $dadosContaAReceber[$i] = 0.00;}
-            else{ 
+            if ($tamanhoArrayReceitasPendetes == 0) {
+                $propridadesDasContasAReceber[$i] = 0.00;
+                $dadosContaAReceber[$i] = 0.00;
+            } else {
                 $propridadesDasContasAReceber = $receitasPendentesPorConta[$i][0];
-                $dadosContaAReceber[$i] = [ $propridadesDasContasAReceber->agenciaPorConta,number_format($propridadesDasContasAReceber->receitasPendentesPorConta, 2, ',', '.')];
+                $dadosContaAReceber[$i] = [$propridadesDasContasAReceber->agenciaPorConta, number_format($propridadesDasContasAReceber->receitasPendentesPorConta, 2, ',', '.')];
             }
         }
 
         //CONTAS A PAGAR
-        for($i=0; $i < $tamanhoArrayGetContas; $i++){
+        for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
             new Conta();
             $despesasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from despesas d, conta c where d.pago = 'N' and d.conta = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
             $propridadesDasContasAPagar = $despesasPendentesPorConta[$i];
             $tamanhoArrayDespesasPendetes = count($propridadesDasContasAPagar);
 
 
-            if ($tamanhoArrayDespesasPendetes == 0){$propridadesDasContasAPagar[$i] = 0.00; $dadosContaAPagar[$i] = 0.00;}
-            else{ 
+            if ($tamanhoArrayDespesasPendetes == 0) {
+                $propridadesDasContasAPagar[$i] = 0.00;
+                $dadosContaAPagar[$i] = 0.00;
+            } else {
                 $propridadesDasContasAPagar = $despesasPendentesPorConta[$i][0];
-                $dadosContaAPagar[$i] = [ $propridadesDasContasAPagar->agenciaPorConta,number_format($propridadesDasContasAPagar->despesasPendentesPorConta, 2, ',', '.')];
+                $dadosContaAPagar[$i] = [$propridadesDasContasAPagar->agenciaPorConta, number_format($propridadesDasContasAPagar->despesasPendentesPorConta, 2, ',', '.')];
             }
         }
 
         $tamanhoArrayReceita = count($receitasTotais);
-        if ($tamanhoArrayReceita == 0){$getArrayTotalReceitas = 0.00;}  else{ $getArrayTotalReceitas = $receitasTotais[0]->receitasTotais; }
+        if ($tamanhoArrayReceita == 0) {
+            $getArrayTotalReceitas = 0.00;
+        } else {
+            $getArrayTotalReceitas = $receitasTotais[0]->receitasTotais;
+        }
 
         $tamanhoArrayDespesa = count($despesasTotais);
-        if ($tamanhoArrayDespesa == 0){$getArrayTotalDespesa = 0.00;}   else{ $getArrayTotalDespesa = $despesasTotais[0]->despesasTotais; }
+        if ($tamanhoArrayDespesa == 0) {
+            $getArrayTotalDespesa = 0.00;
+        } else {
+            $getArrayTotalDespesa = $despesasTotais[0]->despesasTotais;
+        }
 
 
         bcscale(2);
@@ -248,10 +306,7 @@ class ContaController extends Controller
 
         $data = Conta::orderBy('id', 'DESC')->paginate(5);
 
-        return view('contacorrente.resumofinanceiro', compact('data', 'saldo','contasAtuais','dadosConta','dadosContaAReceber','dadosContaAPagar'))
+        return view('contacorrente.resumofinanceiro', compact('data', 'saldo', 'contasAtuais', 'dadosConta', 'dadosContaAReceber', 'dadosContaAPagar'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
-
-        
-
     }
 }

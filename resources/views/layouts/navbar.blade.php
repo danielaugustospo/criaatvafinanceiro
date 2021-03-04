@@ -17,12 +17,8 @@
             <ul class="navbar-nav ml-auto">
                 @guest
                 <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>   --}}
                 @else
 
-                  @can('usuario-list')  
-                <li><a class="nav-link" href="{{ route('users.index') }}">Usuários</a></li>
-                  @endcan  
                 
                 <li class="nav-item dropdown">
                     @can('ordemdeservico-list')
@@ -104,6 +100,10 @@
                 @can('cliente-list')
                 <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
                 @endcan
+                
+                @can('funcionario-list')
+                <li><a class="nav-link" href="{{ route('funcionarios.index') }}">Funcionários</a></li>
+                @endcan
 
                 @can('benspatrimoniais-list')    
                 <li class="nav-item dropdown">
@@ -116,16 +116,16 @@
                         @endcan
 
                         @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas</a>
+                        <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas de Materiais</a>
                         @endcan
 
                         @can('saidas-list')
-                        <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas</a>
-                        @endcan
-                        @can('estoque-list')
-                        <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque</a>
+                        <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
                         @endcan
 
+                        @can('estoque-list')
+                        <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
+                        @endcan
                     </div>
                 </li>
                 @endcan
@@ -137,7 +137,10 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
+                        @can('usuario-list')  
+                        <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
+                        @endcan
+                        
                         @can('banco-list')
                         <a class="dropdown-item" href="{{ route('bancos.index') }}">Bancos</a>
                         @endcan

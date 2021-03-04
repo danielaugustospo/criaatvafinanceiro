@@ -14,9 +14,14 @@ class Saidas extends Model
     protected $fillable = [
         'nomesaida',
         'descricaosaida',
-        'idTipoBensPatrimoniais',
+        'idbenspatrimoniais',
+        'portadorsaida',
+        'datapararetiradasaida',
+        'dataretiradasaida',
+        'dataretornoretiradasaida',
+        'ocorrenciasaida',
         'ativadosaida',
-        'excluidosaida',
+        'excluidosaida'
         ];
 }
 

@@ -7,10 +7,11 @@ namespace App\Http\Controllers;
 use App\FormaPagamento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshbitsweb\Laratables\Laratables;
+// use Freshbitsweb\Laratables\Laratables;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-
+use DataTables;
+use Illuminate\Support\Str;
 class FormaPagamentoController extends Controller
 {
     /**
@@ -32,16 +33,54 @@ class FormaPagamentoController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+            $data = FormaPagamento::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $nomeFormaPagamento = $request->get('nomeFormaPagamento');
+
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($nomeFormaPagamento)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['nomeFormaPagamento'], $request->get('nomeFormaPagamento')) ? true : false;
+                        });
+                    }
+
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['nomeFormaPagamento']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="formapagamentos/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+
         $data = FormaPagamento::orderBy('id','DESC')->paginate(5);
         return view('formapagamentos.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
+}
 
-
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(FormaPagamento::class);
-    }
 
 
     /**

@@ -35,30 +35,23 @@
     <div class="col-sm-10">
         {!! Form::text('agenciaConta', '', ['placeholder' => 'Agência Conta', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
     </div>
 </div>
 <div class="form-group row">
     <label for="codigoBanco" class="col-sm-2 col-form-label">Número Conta</label>
     <div class="col-sm-2">
         {!! Form::text('numeroConta', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'numeroConta']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
     </div>
 </div>
 
 <div class="form-group row">
     <label for="codigoBanco" class="col-sm-2 col-form-label">Selcione o Banco</label>
-    <div class="col-sm-12">
-        <!-- {!! Form::text('idBanco', '', ['placeholder' => 'Id Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idBanco']) !!} -->
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-        <select class="selecionaComInput form-control" name="idBanco" id="idBanco">
+       <select class="selecionaComInput col-sm-10 form-control " name="idBanco" id="idBanco">
             @foreach ($banco as $dadosBanco)
-
-            <option value="{{ $dadosBanco->id }}">Código: {{ $dadosBanco->codigoBanco }} - Banco: {{ $dadosBanco->nomeBanco }}</option>
+                <option value="{{ $dadosBanco->id }}"> {{ $dadosBanco->codigoBanco }}   |  {{ $dadosBanco->nomeBanco }}</option>
             @endforeach
 
         </select>
-    </div>
 </div>
 
 {!! Form::hidden('ativoConta', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoConta']) !!}

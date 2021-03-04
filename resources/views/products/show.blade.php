@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2> Dados do Tipo de Bem Patrimonial {{ $product->name }}</h2>
+                <h2> Dados do Tipo de Bem Patrimonial: <b>{{ $product->name }}</b></h2>
             </div>
             <div class="pull-right">
                 <a class="btn btn-primary" href="{{ route('products.index') }}"> Voltar</a>

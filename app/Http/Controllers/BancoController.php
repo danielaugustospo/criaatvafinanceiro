@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use Freshbitsweb\Laratables\Laratables;
+use DataTables;
+use Illuminate\Support\Str;
+// use Freshbitsweb\Laratables\Laratables;
 
 
 
@@ -22,10 +24,10 @@ class BancoController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:banco-list|banco-create|banco-edit|banco-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:banco-create', ['only' => ['create','store']]);
-         $this->middleware('permission:banco-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:banco-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:banco-list|banco-create|banco-edit|banco-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:banco-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:banco-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:banco-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -34,18 +36,59 @@ class BancoController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Banco::orderBy('id','DESC')->paginate(5);
+        if ($request->ajax()) {
 
-        return view('bancos.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            $data = Banco::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $nomeBanco = $request->get('nomeBanco');
+                    $codigoBanco = $request->get('codigoBanco');
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($nomeBanco)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['nomeBanco'], $request->get('nomeBanco')) ? true : false;
+                        });
+                    }
+                    if (!empty($codigoBanco)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['codigoBanco'], $request->get('codigoBanco')) ? true : false;
+                        });
+                    }
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['nomeBanco']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['codigoBanco']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
 
+                    $btnVisualizar = '<a href="bancos/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+            $data = Banco::orderBy('id', 'DESC')->paginate(5);
+
+            return view('bancos.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
 
-    public function basicLaratableData()
-    {
-        return Laratables::recordsOf(Banco::class);
-    }
 
 
     /**
@@ -79,7 +122,7 @@ class BancoController extends Controller
 
 
         return redirect()->route('bancos.index')
-                        ->with('success','Banco cadastrado com êxito.');
+            ->with('success', 'Banco cadastrado com êxito.');
     }
 
 
@@ -92,7 +135,7 @@ class BancoController extends Controller
     public function show($id)
     {
         $banco = Banco::find($id);
-        return view('bancos.show',compact('banco'));
+        return view('bancos.show', compact('banco'));
     }
 
 
@@ -105,10 +148,10 @@ class BancoController extends Controller
     public function edit($id)
     {
         $banco = Banco::find($id);
-        $roles = Banco::pluck('nomeBanco','nomeBanco')->all();
-        $bancoRole = $banco->roles->pluck('nomeBanco','nomeBanco')->all();
+        $roles = Banco::pluck('nomeBanco', 'nomeBanco')->all();
+        $bancoRole = $banco->roles->pluck('nomeBanco', 'nomeBanco')->all();
 
-        return view('bancos.edit',compact('banco','roles','bancoRole'));
+        return view('bancos.edit', compact('banco', 'roles', 'bancoRole'));
 
         // return view('bancos.edit',compact('banco'));
     }
@@ -123,7 +166,7 @@ class BancoController extends Controller
      */
     public function update(Request $request, Banco $banco)
     {
-         request()->validate([
+        request()->validate([
             'nomeBanco' => 'required',
             'codigoBanco' => 'required',
         ]);
@@ -133,7 +176,7 @@ class BancoController extends Controller
 
 
         return redirect()->route('bancos.index')
-                        ->with('success','Banco atualizado com êxito');
+            ->with('success', 'Banco atualizado com êxito');
     }
 
 
@@ -149,6 +192,6 @@ class BancoController extends Controller
         Banco::find($id)->delete();
 
         return redirect()->route('bancos.index')
-                        ->with('success','Banco excluído com êxito!');
+            ->with('success', 'Banco excluído com êxito!');
     }
 }

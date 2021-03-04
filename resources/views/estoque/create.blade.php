@@ -8,7 +8,7 @@
             <h2>Cadastro de Estoque</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
+            <a class="btn btn-primary" href="{{ route('estoque.index') }}"> Voltar</a>
         </div>
     </div>
 </div>
@@ -28,38 +28,37 @@
 
 
 
-{!! Form::open(array('route' => 'contas.store','method'=>'POST')) !!}
+{!! Form::open(array('route' => 'estoque.store','method'=>'POST')) !!}
 
 <div class="form-group row">
-    <label for="nomeBanco" class="col-sm-2 col-form-label">Agência Conta</label>
+    <label for="nomeestoque" class="col-sm-2 col-form-label">Nome</label>
     <div class="col-sm-10">
-        {!! Form::text('agenciaConta', '', ['placeholder' => 'Agência Conta', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+        {!! Form::text('nomeestoque', '', ['placeholder' => 'Nome', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </div>
 </div>
 <div class="form-group row">
-    <label for="codigoBanco" class="col-sm-2 col-form-label">Número Conta</label>
-    <div class="col-sm-2">
-        {!! Form::text('numeroConta', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'numeroConta']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+    <label for="descricaoestoque" class="col-sm-2 col-form-label">Descrição</label>
+    <div class="col-sm-10">
+        {!! Form::text('descricaoestoque', '', ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'descricaoestoque']) !!}
     </div>
 </div>
 
 <div class="form-group row">
-    <label for="codigoBanco" class="col-sm-2 col-form-label">Id Conta</label>
-    <div class="col-sm-2">
-        <!-- {!! Form::text('idBanco', '', ['placeholder' => 'Id Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idBanco']) !!} -->
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-        <select class="form-control" name="idBanco" id="idBanco">
-            @foreach ($banco as $dadosBanco)
+    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label mr-3">Bem Patrimonial</label>
+    
+        <select class="selecionaComInput form-control col-sm-9" name="idbenspatrimoniais" id="idbenspatrimoniais">
+            @foreach ($listaBensPatrimoniais as $bensPatrimoniais)
 
-            <option value="{{ $dadosBanco->id }}">{{ $dadosBanco->nomeBanco }}</option>
+            <option value="{{ $bensPatrimoniais->id }}">{{ $bensPatrimoniais->nomeBensPatrimoniais }}</option>
             @endforeach
 
         </select>
-    </div>
+    
 </div>
+
+{!! Form::hidden('ativadoestoque', '1', ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'ativadoestoque']) !!}
+{!! Form::hidden('excluidoestoque', '0', ['placeholder' => 'Excluído', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'excluidoestoque']) !!}
+
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 

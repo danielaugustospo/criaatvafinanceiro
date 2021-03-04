@@ -8,7 +8,7 @@
             <h2>Cadastro de Saídas</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
+            <a class="btn btn-primary" href="{{ route('saidas.index') }}"> Voltar</a>
         </div>
     </div>
 </div>
@@ -28,79 +28,65 @@
 
 
 
-{!! Form::open(array('route' => 'contas.store','method'=>'POST')) !!}
+{!! Form::open(array('route' => 'saidas.store','method'=>'POST')) !!}
 
 <div class="form-group row">
     <label for="nomeBanco" class="col-sm-2 col-form-label">Nome da Saída</label>
     <div class="col-sm-10">
-        {!! Form::text('nomesaida', '', ['placeholder' => 'Agência Conta', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+        {!! Form::text('nomesaida', '', ['placeholder' => 'Informe um nome para identificar esta saída', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </div>
 </div>
+
 <div class="form-group row">
     <label for="descricaosaida" class="col-sm-2 col-form-label">Descrição da Saída</label>
-    <div class="col-sm-2">
-        {!! Form::text('descricaosaida', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'descricaosaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+    <div class="col-sm-10">
+        {!! Form::text('descricaosaida', '', ['placeholder' => 'Descrição da Saída', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'descricaosaida']) !!}
     </div>
 </div>
+
 <div class="form-group row">
-    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Bens Patrimoniais</label>
-    <div class="col-sm-2">
-        {!! Form::text('idbenspatrimoniais', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idbenspatrimoniais']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Bem Patrimonial</label>
+    <div class="col-sm-10">
+            <select name="idbenspatrimoniais" id="idbenspatrimoniais"  class="selecionaComInput form-control">
+                @foreach ($listaBensPatrimoniais as $bemPatrimonial)
+                    <option value=" {{$bemPatrimonial->id}} ">{{$bemPatrimonial->nomeBensPatrimoniais}}</option>
+                @endforeach
+        </select>
     </div>
 </div>
-<div class="form-group row">
-    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Ativo</label>
-    <div class="col-sm-2">
-        {!! Form::text('ativadosaida', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'ativadosaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-    </div>
-</div>
-<div class="form-group row">
-    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Excluído Saída</label>
-    <div class="col-sm-2">
-        {!! Form::text('excluidosaida', '', ['placeholder' => 'Excluído Saída', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'excluidosaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
-    </div>
-</div>
+
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Portador Saída</label>
-    <div class="col-sm-2">
-        {!! Form::text('portadorsaida', '', ['placeholder' => 'Portador Saída', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'portadorsaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+    <div class="col-sm-10">
+        {!! Form::text('portadorsaida', '', ['placeholder' => 'Portador Saída', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'portadorsaida']) !!}
     </div>
 </div>
+
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data Para Retirada</label>
     <div class="col-sm-2">
-        {!! Form::text('datapararetiradasaida', '', ['placeholder' => 'Data Para Retirada', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'datapararetiradasaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+        {!! Form::date('datapararetiradasaida', '', ['placeholder' => 'Data Para Retirada', 'class' => 'form-control', 'id' => 'datapararetiradasaida']) !!}
     </div>
-</div>
-<div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data da Retirada Saída</label>
     <div class="col-sm-2">
-        {!! Form::text('dataretiradasaida', '', ['placeholder' => 'Data da Retirada Saída', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'portadorsaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+        {!! Form::date('dataretiradasaida', '', ['placeholder' => 'Data da Retirada Saída', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'portadorsaida']) !!}
     </div>
-</div>
-<div class="form-group row">
-    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data da Retorno Saída</label>
+    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data de Retorno Saída</label>
     <div class="col-sm-2">
-        {!! Form::text('dataretornoretiradasaida', '', ['placeholder' => 'Data de Retorno Saída', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'dataretornoretiradasaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+        {!! Form::date('dataretornoretiradasaida', '', ['placeholder' => 'Data de Retorno Saída', 'class' => 'form-control',  'id' => 'dataretornoretiradasaida']) !!}
     </div>
 </div>
+
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Ocorrências</label>
-    <div class="col-sm-2">
-        {!! Form::text('ocorrenciasaida', '', ['placeholder' => 'Ocorrências', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'ocorrenciasaida']) !!}
-        <!-- <input type="text" class="form-control" id="enderecoFuncionario" placeholder="Endereço"> -->
+    <div class="col-sm-12">
+        {!! Form::textarea('ocorrenciasaida', '', ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrenciasaida']) !!}
     </div>
 </div>
+
+
+{!! Form::hidden('ativadosaida', '1', ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativadosaida']) !!}
+{!! Form::hidden('excluidosaida', '0', ['placeholder' => 'Excluído Saída', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidosaida']) !!}
 
 
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}

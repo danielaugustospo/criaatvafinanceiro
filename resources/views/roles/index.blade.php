@@ -5,11 +5,11 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Regras</h2>
+            <h2 class="text-center">Permissões de Perfil de Usuário</h2>
         </div>
         <div class="pull-right">
         @can('role-create')
-            <a class="btn btn-success" href="{{ route('roles.create') }}"> Criar Nova Regra</a>
+            <a class="btn btn-success" href="{{ route('roles.create') }}"> Criar Permissão</a>
             @endcan
         </div>
     </div>
@@ -40,7 +40,7 @@
             @endcan
             @can('role-delete')
                 {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::submit('Excluir', ['class' => 'btn btn-danger']) !!}
                 {!! Form::close() !!}
             @endcan
         </td>

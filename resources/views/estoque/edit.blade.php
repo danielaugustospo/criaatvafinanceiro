@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Conta {{$conta->numeroConta}}</h2>
+            <h2>Editar Dados do Inventário N° <b>{{$estoque->id}}<b></h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
+            <a class="btn btn-primary" href="{{ route('estoque.index') }}"> Voltar</a>
         </div>
     </div>
 </div>
@@ -26,41 +26,35 @@
 @endif
 
 
-{!! Form::model($conta, ['method' => 'PATCH','route' => ['contas.update', $conta->id]]) !!}
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Número Conta:</strong>
-            {!! Form::text('numeroConta', null, array('placeholder' => 'Número Conta','class' => 'form-control')) !!}
-        </div>
+{!! Form::model($estoque, ['method' => 'PATCH','route' => ['estoque.update', $estoque->id]]) !!}
+<div class="form-group row">
+    <label for="nomeestoque" class="col-sm-2 col-form-label">Nome</label>
+    <div class="col-sm-10">
+        {!! Form::text('nomeestoque', null, ['placeholder' => 'Nome', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Agência Conta:</strong>
-            {!! Form::text('agenciaConta', null, array('placeholder' => 'Agência','class' => 'form-control')) !!}
-        </div>
+</div>
+<div class="form-group row">
+    <label for="descricaoestoque" class="col-sm-2 col-form-label">Descrição</label>
+    <div class="col-sm-10">
+        {!! Form::text('descricaoestoque', null, ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'descricaoestoque']) !!}
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Banco:</strong>
-            <select class="form-control" name="idBanco" id="idBanco">
-            <!-- @foreach ($banco as $dadosBanco) -->
-                @foreach ($todososbancos as $listabancos)
+</div>
 
-                <!-- <option value="{{$dadosBanco->id}}">
-                    {{$dadosBanco->nomeBanco}}
-                </option> -->
-                <option value="{{$listabancos->id}}">
-                    {{$listabancos->nomeBanco}}
-                </option>
-                @endforeach
-            <!-- @endforeach -->
+<div class="form-group row">
+    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label mr-3">Bem Patrimonial</label>
+    
+        <select class="selecionaComInput form-control col-sm-9" name="idbenspatrimoniais" id="idbenspatrimoniais">
+            @foreach ($bempatrimonial as $bensPatrimoniais)
 
-            </select>
+            <option value="{{ $bensPatrimoniais->id }}">{{ $bensPatrimoniais->nomeBensPatrimoniais }}</option>
+            @endforeach
 
-        </div>
-    </div>
+        </select>
+    
+</div>
 
+{!! Form::hidden('ativadoestoque', null, ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'ativadoestoque']) !!}
+{!! Form::hidden('excluidoestoque', null, ['placeholder' => 'Excluído', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'excluidoestoque']) !!}
 
 
 

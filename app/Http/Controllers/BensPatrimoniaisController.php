@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-
+use DataTables;
+use Illuminate\Support\Str;
 
 class BensPatrimoniaisController extends Controller
 {
@@ -32,10 +33,76 @@ class BensPatrimoniaisController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+            $data = BensPatrimoniais::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $nomeBensPatrimoniais = $request->get('nomeBensPatrimoniais');
+                    $descricaoBensPatrimoniais = $request->get('descricaoBensPatrimoniais');
+                    $idTipoBensPatrimoniais = $request->get('idTipoBensPatrimoniais');
+                    $statusbenspatrimoniais = $request->get('statusbenspatrimoniais');
+
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($nomeBensPatrimoniais)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['nomeBensPatrimoniais'], $request->get('nomeBensPatrimoniais')) ? true : false;
+                        });
+                    }
+                    if (!empty($descricaoBensPatrimoniais)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['descricaoBensPatrimoniais'], $request->get('descricaoBensPatrimoniais')) ? true : false;
+                        });
+                    }
+                    if (!empty($idTipoBensPatrimoniais)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['idTipoBensPatrimoniais'], $request->get('idTipoBensPatrimoniais')) ? true : false;
+                        });
+                    }
+                    if (!empty($statusbenspatrimoniais)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['statusbenspatrimoniais'], $request->get('statusbenspatrimoniais')) ? true : false;
+                        });
+                    }
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['nomeBensPatrimoniais']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['descricaoBensPatrimoniais']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['idTipoBensPatrimoniais']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['statusbenspatrimoniais']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="benspatrimoniais/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+
         $data = BensPatrimoniais::orderBy('id','DESC')->paginate(5);
         return view('benspatrimoniais.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
+}
 
 
     /**
@@ -118,20 +185,27 @@ class BensPatrimoniaisController extends Controller
      * @param  \App\BensPatrimoniais  $benspatrimoniais
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BensPatrimoniais $benspatrimoniais)
+    public function update(Request $request, $id)
     {
-         request()->validate([
+         $request->validate([
 
             'nomeBensPatrimoniais'          => 'required',
             'idTipoBensPatrimoniais'        => 'required',
             'descricaoBensPatrimoniais'     => 'required',
-            'ativadoBensPatrimoniais'       => 'required',
-            'excluidoBensPatrimoniais'      => 'required',
+            // 'ativadoBensPatrimoniais'       => 'required',
+            // 'excluidoBensPatrimoniais'      => 'required',
             'statusbenspatrimoniais'        => 'required',
         ]);
 
+        $benspatrimoniais = BensPatrimoniais::find($id);
+        $benspatrimoniais->nomeBensPatrimoniais         = $request->input('nomeBensPatrimoniais');
+        $benspatrimoniais->idTipoBensPatrimoniais       = $request->input('idTipoBensPatrimoniais');
+        $benspatrimoniais->descricaoBensPatrimoniais    = $request->input('descricaoBensPatrimoniais');
+        $benspatrimoniais->statusbenspatrimoniais       = $request->input('statusbenspatrimoniais');
+        $benspatrimoniais->save();
 
-        $benspatrimoniais->update($request->all());
+
+        // $benspatrimoniais->update($request->all());
 
 
         return redirect()->route('benspatrimoniais.index')

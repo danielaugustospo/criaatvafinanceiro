@@ -5,12 +5,14 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Formas de Pagamento Cadastradas</h2>
+            <h2 class="text-center">Formas de Pagamento</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('formapagamento-create')
-            <a class="btn btn-success" href="{{ route('formapagamentos.create') }}"> Criar Novo Cadastro de Formas de Pagamento</a>
+            <a class="btn btn-success" href="{{ route('formapagamentos.create') }}">Cadastrar Formas de Pagamento</a>
             @endcan
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
+            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
     </div>
 </div>
@@ -22,115 +24,153 @@
     </div>
 @endif
 
+<hr>
+
+@include('formapagamentos/filtroindex')
 
 
+<table class="table table-bordered data-table">
+        <thead>
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">Nome Forma Pagamento</th>
+
+                <th width="100px" class="noExport">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+<script type="text/javascript">
 
 
-<script>
+    $('#btnReveal').hide();
 
+    $('#btnReveal').on('click', function () {
+        $('#areaTabela').show('#div_BuscaPersonalizada');
+        $('#btnReveal').hide();
+        $('#btnEsconde').show();
+        $('#div_BuscaPersonalizada').show();
+    })
 
-$(document).ready(function(){
+    $('#btnEsconde').on('click', function () {
+        $('#areaTabela').hide('#div_BuscaPersonalizada');
+        $('#btnEsconde').hide();
+        $('#btnReveal').show();
+        $('input[name=id]').val('');
+        $('input[name=nomeFormaPagamento]').val('');
 
+        $('input[name=pesquisar]').click();
+    })
 
-    $("#formaPagamentoModel").DataTable({
+    var table = $('.data-table').DataTable({
+        processing: true,
         serverSide: true,
-        ajax: "{{ route('tabelaformapagamento') }}",
+        "iDisplayLength": 10,
+        "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
+        
+
+        "language": {
+            "sProcessing": "Processando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+            "sInfoPostFix": "",
+            "sSearch": "Procurar:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Primeiro",
+                "sPrevious": "Anterior",
+                "sNext": "Seguinte",
+                "sLast": "Último"
+            },
+            "buttons": {
+            "copy": "Copiar",
+            "csv": "Exportar em CSV",
+            "excel": "Exportar para Excel (.xlsx)",
+            "pdf": "Salvar em PDF",
+            "print": "Imprimir",
+            "pageLength": "Exibir por página" 
+            }
+        },
+
+        ajax: {
+            url: "{{ route('formapagamentos.index') }}",
+            data: function(d) {
+                    d.id = $('.buscaId').val(),
+                    d.nomeFormaPagamento = $('.buscanomeFormaPagamento').val(),
+
+                    d.search = $('input[type="search"]').val()
+            }
+        },
 
         columns: [
-            { name: 'id' },
-            { name: 'nomeFormaPagamento' },
-            { name: 'ativoFormaPagamento' },
-            { name: 'action', orderable: false, searchable:false},
-
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'nomeFormaPagamento',
+                name: 'nomeFormaPagamento'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                exportOptions: {
+                visible: false
+                },
+            },
         ],
-        "language": {
-        "lengthMenu": "Exibindo _MENU_ registros por página",
-        "zeroRecords": "Nenhum dado cadastrado",
-        "info": "Exibindo página _PAGE_ de _PAGES_",
-        "infoEmpty": "Nenhum registro encontrado",
-        "infoFiltered": "(filtered from _MAX_ total records)",
-        "search": "Pesquisar",
-        "paginate": {
-            "previous": "Anterior",
-            "next":"Próximo",
-        },
-    },
-
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'pageLength', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },{
+            extend: 'copy', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'csv', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'excel', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'pdf', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'print', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }
+                }
+        ],
     });
 
-
-
-    var table = $('#formaPagamentoModel').DataTable();
-
-
-     $('#formaPagamentoModel tbody').on( 'click', '#visualizar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "formapagamentos/"+data[0];
-    } );
-     $('#formaPagamentoModel tbody').on( 'click', '#editar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "formapagamentos/"+ data[0] + "/edit";
-    } );
-
-
-
-});
+    $("#pesquisar").click(function() {
+        table.draw();
+    });
 </script>
 
 
-<div class="container">
-        <table id="formaPagamentoModel" class="table table-bordered table-striped">
-            <thead class="thead-dark">
-
-            <tr>
-                    <th>Id</th>
-                    <th>Nome Forma Pagamento</th>
-                    <th>Ativo</th>
-                    <th>Ações</th>
-                </tr>
-
-            </thead>
-        </table>
-    </div>
-
-
-
-
-
-
-<!--
-<table class="table table-bordered mt-2">
-
-<tr class="trTituloTabela">
-            <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Nome Forma de Pagamento</th>
-            <th class="thTituloTabela">Ativo ?</th>
-            <th class="thTituloTabela" width="280px">Ação</th>
-        </tr>
-        @foreach ($data as $formadepagamento)
-
-        <tr>
-	        <td>{{ ++$i }}</td>
-	        <td>{{ $formadepagamento->nomeFormaPagamento }}</td>
-	        <td>{{ $formadepagamento->ativoFormaPagamento }}</td>
-	        <td>
-                <form action="{{ route('formapagamentos.destroy',$formadepagamento->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('formapagamentos.show',$formadepagamento->id) }}">Visualizar</a>
-                    @can('formapagamento-edit')
-                        <a class="btn btn-primary" href="{{ route('formapagamentos.edit',$formadepagamento->id) }}">Editar</a>
-                    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('formapagamento-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
-
-    </table> -->
 
  
 @endsection

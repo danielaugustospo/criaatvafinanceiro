@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Conta {{$conta->numeroConta}}</h2>
+            <h2>Editar Dados da Conta: <b>{{$conta->numeroConta}}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>

@@ -47,9 +47,13 @@
 
             <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Ativo:</strong>
-                    <input type="text" name="ativotipobenspatrimoniais" value="{{$product->ativotipobenspatrimoniais}}" class="form-control" placeholder="Ativo">
-		        </div>
+		            <strong>Ativo (Exibido na consulta):</strong>
+                    <select name="ativotipobenspatrimoniais" id="ativotipobenspatrimoniais" style="padding:4px;" class="selecionaComInput form-control">
+                        <option value="1" {{$product->ativotipobenspatrimoniais == 'S'?' selected':''}}>Sim</option>
+                        <option value="0" {{$product->ativotipobenspatrimoniais == 'N'?' selected':''}}>Não</option>
+                    </select>
+            
+                </div>
 		        <!-- <div class="form-group">
 		            <strong>Excluido:</strong> -->
                     <input type="hidden" name="excluidotipobenspatrimoniais" value="{{$product->excluidotipobenspatrimoniais}}" class="form-control" placeholder="Excluido">

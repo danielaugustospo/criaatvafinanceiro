@@ -52,6 +52,34 @@ class AppServiceProvider extends ServiceProvider
         $listaUsuarios =  DB::select('SELECT * FROM users');
         view()->share('listaUsuarios', $listaUsuarios);
 
+        $listaBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
+        view()->share('listaBancos', $listaBancos);
+
+        $listaContas = DB::select('SELECT * FROM conta WHERE ativoConta = 1');
+        view()->share('listaContas', $listaContas);
+
+        $listaOrgaosRG = DB::select('SELECT * FROM orgaorg where ativoOrgaoRG = 1');
+        view()->share('listaOrgaosRG', $listaOrgaosRG);
+
+        $listaFormaPG = DB::select('SELECT * FROM formapagamento where ativoFormaPagamento = 1');
+        view()->share('listaFormaPG', $listaFormaPG);
+
+        $listaTiposBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
+        view()->share('listaTiposBensPatrimoniais', $listaTiposBensPatrimoniais);
+
+        $listaBensPatrimoniais = DB::select('SELECT * FROM bensPatrimoniais where ativadobenspatrimoniais = 1');
+        view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
+
+        $listaEntradas = DB::select('SELECT * FROM  entradas where ativoentrada = 1');
+        view()->share('listaEntradas', $listaEntradas);
+
+        $listaSaidas = DB::select('SELECT * FROM  saidas where ativadosaida = 1');
+        view()->share('listaSaidas', $listaSaidas);
+
+
+        $listaInventario = DB::select('SELECT * FROM estoques where ativadoestoque = 1');
+        view()->share('listaInventario', $listaInventario);
+
     }
 
 }

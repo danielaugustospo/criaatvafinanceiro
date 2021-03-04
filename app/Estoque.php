@@ -14,7 +14,7 @@ class Estoque extends Model
     protected $fillable = [
         'nomeestoque',
         'descricaoestoque',
-        'idTipoBensPatrimoniais',
+        'idbenspatrimoniais',
         'ativadoestoque',
         'excluidoestoque'
         ];

@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-
+use DataTables;
+use Illuminate\Support\Str;
 
 class SaidasController extends Controller
 {
@@ -31,12 +32,109 @@ class SaidasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {        if ($request->ajax()) {
+
+        $data = Saidas::latest()->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                $id                             = $request->get('id');
+                $nomesaida                      = $request->get('nomesaida');
+                $descricaosaida                 = $request->get('descricaosaida');
+                $idbenspatrimoniais             = $request->get('idbenspatrimoniais');
+                $portadorsaida                  = $request->get('portadorsaida');
+                $datapararetiradasaida          = $request->get('datapararetiradasaida');
+                $dataretiradasaida              = $request->get('dataretiradasaida');
+                $dataretornoretiradasaida       = $request->get('dataretornoretiradasaida');
+                $ocorrenciasaida                = $request->get('ocorrenciasaida');
+                if (!empty($id)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['id'], $request->get('id')) ? true : false;
+                    });
+                }
+                if (!empty($nomesaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['nomesaida'], $request->get('nomesaida')) ? true : false;
+                    });
+                }
+                if (!empty($descricaosaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['descricaosaida'], $request->get('descricaosaida')) ? true : false;
+                    });
+                }
+                if (!empty($idbenspatrimoniais)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
+                    });
+                }
+                if (!empty($portadorsaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['portadorsaida'], $request->get('portadorsaida')) ? true : false;
+                    });
+                }
+                if (!empty($datapararetiradasaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['datapararetiradasaida'], $request->get('datapararetiradasaida')) ? true : false;
+                    });
+                }
+                if (!empty($dataretiradasaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['dataretiradasaida'], $request->get('dataretiradasaida')) ? true : false;
+                    });
+                }
+                if (!empty($dataretornoretiradasaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['dataretornoretiradasaida'], $request->get('dataretornoretiradasaida')) ? true : false;
+                    });
+                }
+                if (!empty($ocorrenciasaida)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['ocorrenciasaida'], $request->get('ocorrenciasaida')) ? true : false;
+                    });
+                }
+
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                        if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['nomesaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['descricaosaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['portadorsaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['datapararetiradasaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['dataretiradasaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                        else if (Str::contains(Str::lower($row['dataretornoretiradasaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                        else if (Str::contains(Str::lower($row['ocorrenciasaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+            })
+            ->addColumn('action', function ($row) {
+
+                $btnVisualizar = '<a href="saidas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                return $btnVisualizar;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    } else {
+
         $data = Saidas::orderBy('id','DESC')->paginate(5);
         return view('saidas.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
-
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -45,10 +143,7 @@ class SaidasController extends Controller
      */
     public function create()
     {
-
-        $banco =  DB::select('select * from banco');
-
-        return view('saidas.create', compact('banco'));
+        return view('saidas.create');
     }
 
 
@@ -63,11 +158,17 @@ class SaidasController extends Controller
 
         $request->validate([
 
-            'nomeBensPatrimoniais'      => 'required|min:3',
-            'idTipoBensPatrimoniais'    => 'required',
-            'descricaoBensPatrimoniais' => 'required',
-            'ativadoBensPatrimoniais'   => 'required',
-            'excluidoBensPatrimoniais'  => 'required',
+            'nomesaida'                 => 'required', 
+            'descricaosaida'            => 'required',    
+            'idbenspatrimoniais'        => 'required',    
+            'portadorsaida'             => 'required', 
+            'datapararetiradasaida'     => 'required', 
+            // 'dataretiradasaida'         => 'required', 
+            'dataretornoretiradasaida'  => 'required',  
+            'ocorrenciasaida'           => 'required',
+            'ativadosaida'              => 'required',    
+            'excluidosaida'             => 'required'    
+
 
 
         ]);
@@ -90,7 +191,9 @@ class SaidasController extends Controller
     public function show($id)
     {
         $saidas = Saidas::find($id);
-        return view('saidas.show',compact('saidas'));
+        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id ='. $saidas->idbenspatrimoniais .' desc');
+
+        return view('saidas.show',compact('saidas','bensPatrimoniais'));
     }
 
 
@@ -103,12 +206,9 @@ class SaidasController extends Controller
     public function edit($id)
     {
         $saidas = Saidas::find($id);
-        $roles = Saidas::pluck('nomeFuncionario','nomeFuncionario')->all();
-        $saidaRole = $saidas->roles->pluck('nomeFuncionario','nomeFuncionario')->all();
+        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id ='. $saidas->idbenspatrimoniais .' desc');
 
-        return view('saidas.edit',compact('saidas','roles','saidaRole'));
-
-        // return view('saidas.edit',compact('saidas'));
+        return view('saidas.edit',compact('saidas','bensPatrimoniais'));
     }
 
 
@@ -119,16 +219,36 @@ class SaidasController extends Controller
      * @param  \App\Saidas  $saidas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Saidas $saidas)
+    public function update(Request $request, $id)
     {
-         request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+        $request->validate([
+
+            'nomesaida'                 => 'required', 
+            'descricaosaida'            => 'required',    
+            'idbenspatrimoniais'        => 'required',    
+            'portadorsaida'             => 'required', 
+            'datapararetiradasaida'     => 'required', 
+            // 'dataretiradasaida'         => 'required', 
+            'dataretornoretiradasaida'  => 'required',  
+            'ocorrenciasaida'           => 'required',
+            'ativadosaida'              => 'required',    
+            'excluidosaida'             => 'required'    
         ]);
 
+        $saidas = Saidas::find($id);
+        $saidas->nomesaida                  = $request->input('nomesaida');
+        $saidas->descricaosaida             = $request->input('descricaosaida');
+        $saidas->idbenspatrimoniais         = $request->input('idbenspatrimoniais');
+        $saidas->portadorsaida              = $request->input('portadorsaida');
+        $saidas->datapararetiradasaida      = $request->input('datapararetiradasaida');
+        $saidas->dataretiradasaida          = $request->input('dataretiradasaida');
+        $saidas->dataretornoretiradasaida   = $request->input('dataretornoretiradasaida');
+        $saidas->ocorrenciasaida            = $request->input('ocorrenciasaida');
+        $saidas->ativadosaida               = $request->input('ativadosaida');
+        $saidas->excluidosaida              = $request->input('excluidosaida');
+        $saidas->save();
 
-        $saidas->update($request->all());
-
+        // $saidas->update($request->all());
 
         return redirect()->route('saidas.index')
                         ->with('success','Saída atualizada com sucesso');

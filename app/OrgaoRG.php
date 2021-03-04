@@ -29,10 +29,5 @@ class Orgaorg extends Model
     'excluidoOrgaoRG'
     ];
 
-    public static function laratablesCustomAction($orgaosrgModel)
-    {
-        return view('orgaosrg.action', compact('orgaosrgModel'))->render();
-    }
-
 
 }

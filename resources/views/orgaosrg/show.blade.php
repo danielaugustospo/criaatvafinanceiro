@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2> Dados do Orgão Emissor {{ $orgaorg->nome }}</h2>
+            <h2> Dados do Orgão Emissor: <b>{{ $orgaorg->nome }}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('orgaosrg.index') }}"> Voltar</a>

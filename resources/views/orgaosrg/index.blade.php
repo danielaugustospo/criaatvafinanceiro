@@ -5,11 +5,11 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Órgãos Emissores de Registro Geral (RG)</h2>
+            <h2 class="text-center">Órgãos Emissores de Registro Geral (RG)</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('orgaorg-create')
-            <a class="btn btn-success" href="{{ route('orgaosrg.create') }}"> Cadastrar Novo Órgão Emissor de Registro Geral (RG)</a>
+            <a class="btn btn-success" href="{{ route('orgaosrg.create') }}">Cadastrar Órgão Emissor</a>
             @endcan
         </div>
     </div>
@@ -22,111 +22,160 @@
     </div>
 @endif
 
+<hr>
+
+@include('orgaosrg/filtroindex')
 
 
+<table class="table table-bordered data-table">
+        <thead>
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">Nome</th>
+                <th class="text-center">Estado</th>
+                <th width="100px" class="noExport">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
-<script>
+<script type="text/javascript">
 
 
-$(document).ready(function(){
+    $('#btnReveal').hide();
 
+    $('#btnReveal').on('click', function () {
+        $('#areaTabela').show('#div_BuscaPersonalizada');
+        $('#btnReveal').hide();
+        $('#btnEsconde').show();
+        $('#div_BuscaPersonalizada').show();
+    })
 
-    $("#orgaosrgModel").DataTable({
+    $('#btnEsconde').on('click', function () {
+        $('#areaTabela').hide('#div_BuscaPersonalizada');
+        $('#btnEsconde').hide();
+        $('#btnReveal').show();
+        $('input[name=id]').val('');
+        $('input[name=nome]').val('');
+        $('input[name=estadoOrgaoRG]').val('');
+        $('input[name=vencimento]').val('');
+        $('input[name=idCodigoDespesas]').val('');
+        $('input[name=nRegistro]').val('');
+        $('input[name=idOS]').val('');
+        $('input[name=pesquisar]').click();
+    })
+
+    var table = $('.data-table').DataTable({
+        processing: true,
         serverSide: true,
-        ajax: "{{ route('tabelaorgaosrg') }}",
+        "iDisplayLength": 10,
+        "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
+        
+
+        "language": {
+            "sProcessing": "Processando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+            "sInfoPostFix": "",
+            "sSearch": "Procurar:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Primeiro",
+                "sPrevious": "Anterior",
+                "sNext": "Seguinte",
+                "sLast": "Último"
+            },
+            "buttons": {
+            "copy": "Copiar",
+            "csv": "Exportar em CSV",
+            "excel": "Exportar para Excel (.xlsx)",
+            "pdf": "Salvar em PDF",
+            "print": "Imprimir",
+            "pageLength": "Exibir por página" 
+            }
+        },
+
+        ajax: {
+            url: "{{ route('orgaosrg.index') }}",
+            data: function(d) {
+                    d.id = $('.buscaId').val(),
+                    d.nome = $('.buscanome').val(),
+                    d.estadoOrgaoRG = $('.buscaestadoOrgaoRG').val(),
+                    d.search = $('input[type="search"]').val()
+            }
+        },
 
         columns: [
-            { name: 'id' },
-            { name: 'nome' },
-            { name: 'estadoOrgaoRG' },
-            { name: 'action', orderable: false, searchable:false},
-
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'nome',
+                name: 'nome'
+            },
+            {
+                data: 'estadoOrgaoRG',
+                name: 'estadoOrgaoRG',
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                exportOptions: {
+                visible: false
+                },
+            },
         ],
-        "language": {
-        "lengthMenu": "Exibindo _MENU_ registros por página",
-        "zeroRecords": "Nenhum dado cadastrado",
-        "info": "Exibindo página _PAGE_ de _PAGES_",
-        "infoEmpty": "Nenhum registro encontrado",
-        "infoFiltered": "(filtered from _MAX_ total records)",
-        "search": "Pesquisar",
-        "paginate": {
-            "previous": "Anterior",
-            "next":"Próximo",
-        },
-    },
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'pageLength', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },{
+            extend: 'copy', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'csv', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'excel', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'pdf', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    },
+                },
+                {
+            extend: 'print', 
+                    exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }
+                }
+        ],
 
     });
 
-
-
-    var table = $('#orgaosrgModel').DataTable();
-
-
-     $('#orgaosrgModel tbody').on( 'click', '#visualizar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "orgaosrg/"+data[0];
-    } );
-     $('#orgaosrgModel tbody').on( 'click', '#editar', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        location.href = "orgaosrg/"+ data[0] + "/edit";
-    } );
-
-
-
-});
+    $("#pesquisar").click(function() {
+        table.draw();
+    });
 </script>
-
-
-<div class="container">
-        <table id="orgaosrgModel" class="table table-bordered table-striped">
-            <thead class="thead-dark">
-
-            <tr>
-                    <th>Id</th>
-                    <th>Nome Órgão</th>
-                    <th>Unidade Federativa (Estado)</th>
-                    <th>Ações</th>
-                </tr>
-
-            </thead>
-        </table>
-    </div>
-
-
-
-<!--
-
-
-<table class="table table-bordered mt-2">
-        <tr>
-            <th>Id</th>
-            <th>Nome Órgão</th>
-            <th>Unidade Federativa (Estado)</th>
-            <th width="280px">Ação</th>
-        </tr>
-        @foreach ($data as $orgao)
-
-        <tr>
-	        <td>{{ $orgao->id }}</td>
-	        <td>{{ $orgao->nome }}</td>
-	        <td>{{ $orgao->estadoOrgaoRG }}</td>
-	        <td>
-                <form action="{{ route('orgaosrg.destroy',$orgao->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('orgaosrg.show',$orgao->id) }}">Visualizar</a>
-                    @can('orgaorg-edit')
-                        <a class="btn btn-primary" href="{{ route('orgaosrg.edit',$orgao->id) }}">Editar</a>
-                    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('orgaorg-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
-    </table> -->
 
 
  

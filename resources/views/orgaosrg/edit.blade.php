@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados do Usuário {{$orgaorg->nomeFuncionario}}</h2>
+            <h2>Editar Dados do Órgão Emissor: <b>{{$orgaorg->nome}}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('orgaosrg.index') }}"> Voltar</a>
@@ -41,8 +41,11 @@
         </div>
     </div>
 
+    
+    {!! Form::hidden('ativoOrgaoRG', null, array('placeholder' => 'Ativo','class' => 'form-control')) !!}
+    {!! Form::hidden('excluidoOrgaoRG', null, array('placeholder' => 'Excluido','class' => 'form-control')) !!}
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
     </div>
 </div>
 {!! Form::close() !!}

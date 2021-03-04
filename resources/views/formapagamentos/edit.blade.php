@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Forma de Pagamento {{$formapagamento->nomeFormaPagamento}}</h2>
+            <h2>Editando Forma de Pagamento: <b>{{$formapagamento->nomeFormaPagamento}}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('formapagamentos.index') }}"> Voltar</a>
@@ -30,7 +30,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Nome da Forma de Pagamento:</strong>
+            <strong>Alterar Nome Para:</strong>
             {!! Form::text('nomeFormaPagamento', null, array('placeholder' => 'Nome','class' => 'form-control')) !!}
         </div>
     </div>
@@ -39,7 +39,7 @@
     {!! Form::hidden('excluidoFormaPagamento', null, ['placeholder' => 'Excluído?', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoFormaPagamento']) !!}
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
     </div>
 </div>
 {!! Form::close() !!}
