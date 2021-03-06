@@ -100,7 +100,7 @@
     </div>
     <label for="dataCadastroFornecedor" class="col-sm-1 col-form-label">Data de Contrato</label>
     <div class="col-sm-3">
-        {!! Form::text('dataCadastroFornecedor', $valorInput, ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView ]) !!}
+        {!! Form::date('dataCadastroFornecedor', $valorInput, ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView ]) !!}
     </div>
 </div>
 

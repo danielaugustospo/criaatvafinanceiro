@@ -94,11 +94,11 @@
 <div class="form-group row">
     <label for="contatoCliente" class="col-sm-1 col-form-label">Contato</label>
     <div class="col-sm-2">
-        {!! Form::text('contatoCliente', $valorInput, ['placeholder' => 'Contato', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView]) !!}
+        {!! Form::text('contatoCliente', $valorInput, ['placeholder' => 'Contato', 'class' => 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
     </div>
     <label for="siteCliente" class="col-sm-1 col-form-label">Site</label>
     <div class="col-sm-6">
-        {!! Form::text('siteCliente', $valorInput, ['placeholder' => 'Site', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView]) !!}
+        {!! Form::text('siteCliente', $valorInput, ['placeholder' => 'Site', 'class' => 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
     </div>
 
 </div>
