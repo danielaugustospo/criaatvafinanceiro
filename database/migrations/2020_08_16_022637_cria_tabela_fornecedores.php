@@ -40,10 +40,10 @@ class CriaTabelaFornecedores extends Migration
             $table->string('agenciaFornecedor');
 
 
-            $table->string('chavePix1Fornecedor');
-            $table->string('chavePix2Fornecedor');
-            $table->string('chavePix3Fornecedor');
-            $table->string('chavePix4Fornecedor');
+            $table->string('chavePix1Fornecedor')->nullable();
+            $table->string('chavePix2Fornecedor')->nullable();
+            $table->string('chavePix3Fornecedor')->nullable();
+            $table->string('chavePix4Fornecedor')->nullable();
 
             $table->boolean('ativoFornecedor');
             $table->boolean('excluidoFornecedor');
