@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
+use DataTables;
+use Illuminate\Support\Str;
 
 class ClientesController extends Controller
 {
@@ -23,6 +25,29 @@ class ClientesController extends Controller
          $this->middleware('permission:cliente-create', ['only' => ['create','store']]);
          $this->middleware('permission:cliente-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:cliente-delete', ['only' => ['destroy']]);
+    
+         $this->acao =  request()->segment(count(request()->segments()));
+         $this->valorInput = null;
+         $this->valorSemCadastro = null;
+ 
+         if ($this->acao == 'create'){
+             $this->valorInput = "";
+             $this->valorSemCadastro = "0";
+             $this->variavelReadOnlyNaView = "";        
+             $this->variavelDisabledNaView = "";
+   
+         } 
+         elseif ($this->acao == 'edit'){
+             $this->variavelReadOnlyNaView = "";        
+             $this->variavelDisabledNaView = "";
+   
+         } 
+         elseif ($this->acao != 'edit' && $this->acao != 'create'){
+             $this->variavelReadOnlyNaView = "readonly";        
+             $this->variavelDisabledNaView = 'disabled';
+ 
+         }
+    
     }
     /**
      * Display a listing of the resource.
@@ -31,12 +56,86 @@ class ClientesController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
 
-        $listaClientes = Clientes::orderBy('id','DESC')->paginate(5);
-        return view('clientes.index',compact('listaClientes'))
+        $data = Clientes::latest()->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                $id = $request->get('id');
+                $nomeCliente = $request->get('nomeCliente');
+                $razaosocialCliente = $request->get('razaosocialCliente');
+                $cnpjCliente = $request->get('cnpjCliente');
+                $contatoCliente = $request->get('contatoCliente');
+                $telefone1Cliente = $request->get('telefone1Cliente');
+                if (!empty($id)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['id'], $request->get('id')) ? true : false;
+                    });
+                }
+                if (!empty($nomeCliente)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['nomeCliente'], $request->get('nomeCliente')) ? true : false;
+                    });
+                }
+                if (!empty($razaosocialCliente)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['razaosocialCliente'], $request->get('razaosocialCliente')) ? true : false;
+                    });
+                }
+                if (!empty($cnpjCliente)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['cnpjCliente'], $request->get('cnpjCliente')) ? true : false;
+                    });
+                }
+                if (!empty($contatoCliente)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['contatoCliente'], $request->get('contatoCliente')) ? true : false;
+                    });
+                }
+                if (!empty($telefone1Cliente)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['telefone1Cliente'], $request->get('telefone1Cliente')) ? true : false;
+                    });
+                }
+
+
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                        if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['nomeCliente']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['razaosocialCliente']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['cnpjCliente']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['contatoCliente']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['telefone1Cliente']), Str::lower($request->get('search')))) {
+                            return true;
+                        } 
+
+                        return false;
+                    });
+                }
+            })
+            ->addColumn('action', function ($row) {
+
+                $btnVisualizar = '<a href="clientes/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                return $btnVisualizar;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    } else {
+        
+
+        $data = Clientes::orderBy('id','DESC')->paginate(5);
+        return view('clientes.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
-
+}
 
     /**
      * Show the form for creating a new resource.
@@ -47,8 +146,15 @@ class ClientesController extends Controller
     {
 
         $todososbancos =  DB::select('select distinct * from banco where ativoBanco = 1;');
+        
+        $precoReal = " ";
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('clientes.create', compact('todososbancos'));
+
+        return view('clientes.create', compact('todososbancos','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -113,7 +219,13 @@ class ClientesController extends Controller
         $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
         $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
 
-        return view('clientes.show',compact('cliente','todososbancosCliente','todososbancosFavorecidoCliente'));
+        $precoReal = " ";
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
+
+        return view('clientes.show',compact('cliente','todososbancosCliente','todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -131,8 +243,13 @@ class ClientesController extends Controller
         $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
         $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
 
+        $precoReal = " ";
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('clientes.edit',compact('cliente','roles','clienteRole','todososbancosCliente','todososbancosFavorecidoCliente'));
+        return view('clientes.edit',compact('cliente','roles','clienteRole','todososbancosCliente','todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
 
         // return view('clientes.edit',compact('cliente'));
     }

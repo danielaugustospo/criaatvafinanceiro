@@ -37,7 +37,6 @@
     <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
     <div class="col-sm-10">
         {!! Form::text('descricaoDespesa', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
-
     </div>
 </div>
 
@@ -99,7 +98,6 @@
 
     <label for="notaFiscal" class="col-sm-2 col-form-label">Nota Fiscal</label>
     <div class="col-sm-2">
-        <!-- <input type="text" id="precoCliente" class="padraoReal form-control" name="precoCliente" value="0,00" placeholder="Preencha o preço cliente" /><br> -->
         {!! Form::text('notaFiscal', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
     </div>
 </div>

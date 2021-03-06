@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-
+use DataTables;
+use Illuminate\Support\Str;
 
 class FuncionarioController extends Controller
 {
@@ -24,6 +25,30 @@ class FuncionarioController extends Controller
         $this->middleware('permission:funcionario-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:funcionario-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:funcionario-delete', ['only' => ['destroy']]);
+    
+        $this->acao =  request()->segment(count(request()->segments()));
+        $this->valorInput = null;
+        $this->valorSemCadastro = null;
+
+        if ($this->acao == 'create'){
+            $this->valorInput = " ";
+            $this->valorSemCadastro = "0";
+            $this->variavelReadOnlyNaView = "";        
+            $this->variavelDisabledNaView = "";
+  
+        } 
+        elseif ($this->acao == 'edit'){
+            $this->variavelReadOnlyNaView = "";        
+            $this->variavelDisabledNaView = "";
+  
+        } 
+        elseif ($this->acao != 'edit' && $this->acao != 'create'){
+            $this->variavelReadOnlyNaView = "readonly";        
+            $this->variavelDisabledNaView = 'disabled';
+
+        }
+
+
     }
     /**
      * Display a listing of the resource.
@@ -32,11 +57,75 @@ class FuncionarioController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+            $data = Funcionario::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($instance) use ($request) {
+                    $id = $request->get('id');
+                    $cpfFuncionario = $request->get('cpfFuncionario');
+                    $nomeFuncionario = $request->get('nomeFuncionario');
+                    $celularFuncionario = $request->get('celularFuncionario');
+                    $emailFuncionario = $request->get('emailFuncionario');
+                    if (!empty($id)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        });
+                    }
+                    if (!empty($cpfFuncionario)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['cpfFuncionario'], $request->get('cpfFuncionario')) ? true : false;
+                        });
+                    }
+                    if (!empty($nomeFuncionario)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['nomeFuncionario'], $request->get('nomeFuncionario')) ? true : false;
+                        });
+                    }
+                    if (!empty($celularFuncionario)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['celularFuncionario'], $request->get('celularFuncionario')) ? true : false;
+                        });
+                    }
+                    if (!empty($emailFuncionario)) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['emailFuncionario'], $request->get('emailFuncionario')) ? true : false;
+                        });
+                    }
+
+                    if (!empty($request->get('search'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+
+                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['cpfFuncionario']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['nomeFuncionario']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['celularFuncionario']), Str::lower($request->get('search')))) {
+                                return true;
+                            } else if (Str::contains(Str::lower($row['emailFuncionario']), Str::lower($request->get('search')))) {
+                                return true;
+                            } 
+                            return false;
+                        });
+                    }
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btnVisualizar = '<a href="funcionarios/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    return $btnVisualizar;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        } else {
+
         $data = Funcionario::orderBy('id', 'DESC')->paginate(5);
         return view('funcionarios.index', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
-
+}
 
     /**
      * Show the form for creating a new resource.
@@ -44,11 +133,17 @@ class FuncionarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-
+    {   
         $todosorgaosrg = DB::select('select * from orgaorg');
         $todososbancos = DB::select('select distinct * from banco');
-        return view('funcionarios.create', compact('todosorgaosrg', 'todososbancos'));
+        
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
+
+        
+        return view('funcionarios.create', compact('todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
     /**
@@ -208,7 +303,14 @@ class FuncionarioController extends Controller
 
         $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
-        return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos'));
+
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
+
+
+        return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -227,7 +329,13 @@ class FuncionarioController extends Controller
 
         $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
 
-        return view('funcionarios.edit', compact('funcionario', 'roles', 'funcionarioRole', 'todosorgaosrg', 'todososbancos'));
+        $valorInput = $this->valorInput;
+        $valorSemCadastro = $this->valorSemCadastro;
+        $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
+        $variavelDisabledNaView = $this->variavelDisabledNaView;
+
+
+        return view('funcionarios.edit', compact('funcionario', 'roles', 'funcionarioRole', 'todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
 
         // return view('funcionarios.edit',compact('funcionario'));
     }
@@ -240,9 +348,9 @@ class FuncionarioController extends Controller
      * @param  \App\Funcionario  $funcionario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Funcionario $funcionario)
+    public function update(Request $request, $id)
     {
-        request()->validate([
+        $request->validate([
             'nomeFuncionario' => 'required|min:3',
             'cpfFuncionario'  => 'required|cpf',
 
@@ -285,6 +393,10 @@ class FuncionarioController extends Controller
             // 'agenciafavorecidoFuncionario' => 'required',
 
         ]);
+
+        $funcionario = Funcionario::find($id);
+
+
         $funcionario->nomeFuncionario                                   = $request->get('nomeFuncionario');
         $funcionario->cpfFuncionario                                    = $request->get('cpfFuncionario');
         $funcionario->cepFuncionario                                    = $request->get('cepFuncionario');
@@ -327,17 +439,18 @@ class FuncionarioController extends Controller
         $funcionario->ativoFuncionario                                  = $request->get('ativoFuncionario');
         $funcionario->excluidoFuncionario                               = $request->get('excluidoFuncionario');
 
-        $fotoFuncionario                                                = $request->get('fotoFuncionario');
+        $funcionario->fotoFuncionario                                                = $request->get('fotoFuncionario');
 
         $mensagemSucesso = 'Cadastro do funcionário ' . $funcionario->nomeFuncionario . ' foi alterado com êxito.';
 
-        if ($request->fotoFuncionario = "" || $request->fotoFuncionario = null) {
+        if ($funcionario->fotoFuncionario = "" || $funcionario->fotoFuncionario = null) {
             $funcionario->save();
             return redirect()->route('funcionarios.index')
                 ->with('success', $mensagemSucesso);
         }
+
         // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
+         $nameFile = null;
 
         // Verifica se informou o arquivo e se é válido
         if ($request->hasFile('fotoFuncionario') && $request->file('fotoFuncionario')->isValid()) {
@@ -355,21 +468,22 @@ class FuncionarioController extends Controller
             // Faz o upload:
             $upload = $request->file('fotoFuncionario')->storeAs('fotosFuncionarios', $nameFile, 'public');
             // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+            $funcionario->fotoFuncionario = $nameFile;
 
             // Verifica se NÃO deu certo o upload (Redireciona de volta)
             if (!$upload) {
                 return redirect()->back()
                     ->with('error', 'Falha ao fazer upload')
                     ->withInput();
-            } else {
-                //Funcionario::create($request->all());
-                $funcionario->fotoFuncionario = $nameFile;
+            } 
+           
+        }
+        else{
+            unset($funcionario->fotoFuncionario);
+        }
                 $funcionario->save();
                 return redirect()->route('funcionarios.index')
                     ->with('success', $mensagemSucesso);
-            }
-            //Funcionario::create($request->all());
-        }
     }
 
 

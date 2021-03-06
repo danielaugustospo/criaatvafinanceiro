@@ -5,12 +5,14 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Cliente</h2>
+            <h2 class="text-center">Clientes</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('cliente-create')
-            <a class="btn btn-success" href="{{ route('clientes.create') }}"> Criar Novo Cadastro de Cliente</a>
+            <a class="btn btn-success" href="{{ route('clientes.create') }}">Cadastrar Cliente</a>
             @endcan
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
+            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
     </div>
 </div>
@@ -22,94 +24,187 @@
 </div>
 @endif
 
+<hr>
+
+@include('clientes/filtroindex')
 
 
-<table id="tabelaClientes" class="table table-bordered table-striped">
+<table class="table table-bordered data-table">
+    <thead>
+        <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nome Fantasia</th>
+            <th class="text-center">Razão Social</th>
+            <th class="text-center">CNPJ Cliente</th>
+            <th class="text-center">Contato Cliente</th>
+            <th class="text-center">Telefone</th>
 
-    <thead class="thead-dark">
-        <th class="thTituloTabela">Id</th>
-        <th class="thTituloTabela">Nome Fantasia</th>
-        <th class="thTituloTabela">CNPJ Cliente</th>
-        <th class="thTituloTabela">Contato Cliente</th>
-        <th class="thTituloTabela" width="280px">Ação</th>
+            <th width="100px" class="noExport">Ações</th>
+        </tr>
     </thead>
-    @foreach ($listaClientes as $cliente)
-
-    <tr>
-        <td>{{ $cliente->id  }}</td>
-        <td>{{ $cliente->nomeCliente }}</td>
-        <td>{{ $cliente->cnpjCliente }}</td>
-        <td>{{ $cliente->contatoCliente }}</td>
-        <td>
-            <form action="{{ route('clientes.destroy',$cliente->id) }}" method="POST">
-                <a class="btn btn-info btn-sm" href="{{ route('clientes.show',$cliente->id) }}">Visualizar</a>
-                @can('cliente-edit')
-                <a class="btn btn-primary btn-sm" href="{{ route('clientes.edit',$cliente->id) }}">Editar</a>
-                @endcan
-
-                @csrf
-                @method('DELETE')
-                @can('cliente-delete')
-                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                @endcan
-            </form>
-        </td>
-    </tr>
-    @endforeach
-
+    <tbody>
+    </tbody>
 </table>
-<script>
-    function createFilter(table, columns) {
-        // var input = $('<input type="text"/>').on("keyup", function() {
-        //     table.draw();
-        // });
 
-        $.fn.dataTable.ext.search.push(function(
-            settings,
-            searchData,
-            index,
-            rowData,
-            counter
-        ) {
-            var val = input.val().toLowerCase();
-
-            for (var i = 0, ien = columns.length; i < ien; i++) {
-                if (searchData[columns[i]].toLowerCase().indexOf(val) !== -1) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-        return input;
-    }
-
-    $(document).ready(function() {
+<script type="text/javascript">
 
 
-        $("#tabelaClientes").DataTable({
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nenhum dado cadastrado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro encontrado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
+$('#btnReveal').hide();
+
+$('#btnReveal').on('click', function () {
+    $('#areaTabela').show('#div_BuscaPersonalizada');
+    $('#btnReveal').hide();
+    $('#btnEsconde').show();
+    $('#div_BuscaPersonalizada').show();
+})
+
+$('#btnEsconde').on('click', function () {
+    $('#areaTabela').hide('#div_BuscaPersonalizada');
+    $('#btnEsconde').hide();
+    $('#btnReveal').show();
+    $('input[name=id]').val('');
+    $('input[name=nomeCliente]').val('');
+    $('input[name=razaosocialCliente]').val('');
+    $('input[name=cnpjCliente]').val('');
+    $('input[name=contatoCliente]').val('');
+    $('input[name=telefone1Cliente]').val('');
+    // $('input[name=telefone2Cliente]').val('');
+    $('input[name=pesquisar]').click();
+})
+
+var table = $('.data-table').DataTable({
+    processing: true,
+    serverSide: true,
+    "iDisplayLength": 10,
+    "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
+    
+
+    "language": {
+        "sProcessing": "Processando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "Não foram encontrados resultados",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+        "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+        "sInfoPostFix": "",
+        "sSearch": "Procurar:",
+        "sUrl": "",
+        "oPaginate": {
+            "sFirst": "Primeiro",
+            "sPrevious": "Anterior",
+            "sNext": "Seguinte",
+            "sLast": "Último"
+        },
+        "buttons": {
+        "copy": "Copiar",
+        "csv": "Exportar em CSV",
+        "excel": "Exportar para Excel (.xlsx)",
+        "pdf": "Salvar em PDF",
+        "print": "Imprimir",
+        "pageLength": "Exibir por página" 
+        }
+    },
+
+    ajax: {
+        url: "{{ route('clientes.index') }}",
+        data: function(d) {
+            d.id                    = $('.id').val(),
+            d.nomeCliente           = $('.nomeCliente').val(),
+            d.razaosocialCliente    = $('.razaosocialCliente').val(),
+            d.cnpjCliente           = $('.cnpjCliente').val(),
+            d.contatoCliente        = $('.contatoCliente').val(),
+            d.telefone1Cliente      = $('.telefone1Cliente').val(),
+            // d.telefone2Cliente      = $('.telefone2Cliente').val(),
+            d.search                = $('input[type="search"]').val()
+        }
+    },
+
+    columns: [
+        {
+            data: 'id',
+            name: 'id'
+        },
+        {
+            data: 'nomeCliente',
+            name: 'nomeCliente'
+        },
+        {
+            data: 'razaosocialCliente',
+            name: 'razaosocialCliente'
+        },
+        // {
+        //     data: 'razaosocialCliente',
+        //     name: 'razaosocialCliente'
+
+        // },
+        {
+            data: 'cnpjCliente',
+            name: 'cnpjCliente'
+        },
+        {
+            data: 'contatoCliente',
+            name: 'contatoCliente'
+        },
+        {
+            data: 'telefone1Cliente',
+            name: 'telefone1Cliente'
+        },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            exportOptions: {
+            visible: false
+            },
+        },
+    ],
+    dom: 'Bfrtip',
+    buttons: [{
+        extend: 'pageLength', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },{
+        extend: 'copy', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
                 },
             },
-        })
+            {
+        extend: 'csv', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'excel', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'pdf', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'print', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                }
+            }
+    ],
 
 
-        var table = $("#tabelaClientes").DataTable();
+});
 
-        // var filter1 = createFilter(table, [0, 1]);
-        // filter1.appendTo("body");
-    });
+$("#pesquisar").click(function() {
+    table.draw();
+});
 </script>
+
 
  
 @endsection

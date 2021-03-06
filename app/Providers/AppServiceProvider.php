@@ -76,9 +76,17 @@ class AppServiceProvider extends ServiceProvider
         $listaSaidas = DB::select('SELECT * FROM  saidas where ativadosaida = 1');
         view()->share('listaSaidas', $listaSaidas);
 
-
         $listaInventario = DB::select('SELECT * FROM estoques where ativadoestoque = 1');
         view()->share('listaInventario', $listaInventario);
+
+        $listaFornecedores =  DB::select('SELECT * from fornecedores where ativoFornecedor = 1');
+        view()->share('listaFornecedores', $listaFornecedores);
+
+        $listaClientes =  DB::select('SELECT * from clientes where ativoCliente = 1');
+        view()->share('listaClientes', $listaClientes);
+
+        $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
+        view()->share('listaFuncionarios', $listaFuncionarios);
 
     }
 

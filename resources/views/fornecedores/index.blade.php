@@ -5,12 +5,14 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Fornecedor</h2>
+            <h2 class="text-center">Dados de Fornecedores</h2>
         </div>
-        <div class="pull-right">
+        <div class="d-flex justify-content-between pull-right">
             @can('fornecedor-create')
-            <a class="btn btn-success" href="{{ route('fornecedores.create') }}"> Criar Novo Cadastro de Fornecedor</a>
+            <a class="btn btn-success" href="{{ route('fornecedores.create') }}">Cadastrar Fornecedor</a>
             @endcan
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
+            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
     </div>
 </div>
@@ -22,121 +24,221 @@
 </div>
 @endif
 
+<hr>
 
-<script>
-    $(document).ready(function() {
+@include('fornecedores/filtroindex')
 
-        $("#tabelaFornecedoresModel").DataTable({
-            serverSide: true,
-            ajax: "{{ route('tabelafornecedores') }}",
 
-            columns: [{
-                    name: 'id'
-                },
-                {
-                    name: 'nomeFornecedor'
-                },
-                {
-                    name: 'cnpjFornecedor'
-                },
-                {
-                    name: 'contatoFornecedor'
-                },
-                {
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+<table class="table table-bordered data-table">
+    <thead>
+        <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nome Fantasia</th>
+            <th class="text-center">Razão Social</th>
+            <th class="text-center">CNPJ</th>
+            <th class="text-center">CPF</th>
+            <th class="text-center">Telefone 1</th>
+            <th class="text-center">Telefone 2</th>
+            <th class="text-center">Banco</th>
+            <th class="text-center">N° Conta</th>
+            <th class="text-center">Agência</th>
+            <th class="text-center">Chave Pix 1</th>
+            <th class="text-center">Chave Pix 2</th>
 
-            ],
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nenhum dado cadastrado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro encontrado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
+            <th width="100px" class="noExport">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+
+$('#btnReveal').hide();
+
+$('#btnReveal').on('click', function () {
+    $('#areaTabela').show('#div_BuscaPersonalizada');
+    $('#btnReveal').hide();
+    $('#btnEsconde').show();
+    $('#div_BuscaPersonalizada').show();
+})
+
+$('#btnEsconde').on('click', function () {
+    $('#areaTabela').hide('#div_BuscaPersonalizada');
+    $('#btnEsconde').hide();
+    $('#btnReveal').show();
+    $('input[name=id]').val('');
+    $('input[name=nomeFornecedor]').val('');
+    $('input[name=razaosocialFornecedor]').val('');
+    $('input[name=cnpjFornecedor]').val('');
+    $('input[name=cpfFornecedor]').val('');
+    $('input[name=telefone1Fornecedor]').val('');
+    $('input[name=telefone2Fornecedor]').val('');
+    $('input[name=nrcontaFornecedor]').val('');
+    $('input[name=agenciaFornecedor]').val('');
+    $('input[name=chavePix1Fornecedor]').val('');
+    $('input[name=chavePix2Fornecedor]').val('');
+    $('input[name=bancoFornecedor]').val('');
+    $('input[name=pesquisar]').click();
+})
+
+var table = $('.data-table').DataTable({
+    processing: true,
+    serverSide: true,
+    "iDisplayLength": 10,
+    "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
+    
+
+    "language": {
+        "sProcessing": "Processando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "Não foram encontrados resultados",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+        "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+        "sInfoPostFix": "",
+        "sSearch": "Procurar:",
+        "sUrl": "",
+        "oPaginate": {
+            "sFirst": "Primeiro",
+            "sPrevious": "Anterior",
+            "sNext": "Seguinte",
+            "sLast": "Último"
+        },
+        "buttons": {
+        "copy": "Copiar",
+        "csv": "Exportar em CSV",
+        "excel": "Exportar para Excel (.xlsx)",
+        "pdf": "Salvar em PDF",
+        "print": "Imprimir",
+        "pageLength": "Exibir por página" 
+        }
+    },
+
+    ajax: {
+        url: "{{ route('fornecedores.index') }}",
+        data: function(d) {
+                d.id                    = $('#id').val(),
+                d.nomeFornecedor        = $('#nomeFornecedor').val(),
+                d.razaosocialFornecedor = $('#razaosocialFornecedor').val(),
+                d.cnpjFornecedor        = $('#cnpjFornecedor').val(),
+                d.cpfFornecedor         = $('#cpfFornecedor').val(),
+                d.telefone1Fornecedor   = $('#telefone1Fornecedor').val(),
+                d.telefone2Fornecedor   = $('#telefone2Fornecedor').val(),
+                d.bancoFornecedor       = $('#bancoFornecedor').val(),
+                d.nrcontaFornecedor     = $('#nrcontaFornecedor').val(),
+                d.agenciaFornecedor     = $('#agenciaFornecedor').val(),
+                d.chavePix1Fornecedor   = $('#chavePix1Fornecedor').val(),
+                d.chavePix2Fornecedor   = $('#chavePix2Fornecedor').val(),
+                d.search                = $('input[type="search"]').val()
+        }
+    },
+
+    columns: [
+        {
+            data: 'id',
+            name: 'id'
+        },
+        {
+            data: 'nomeFornecedor',
+            name: 'nomeFornecedor'
+        },
+        {
+            data: 'razaosocialFornecedor',
+            name: 'razaosocialFornecedor'
+        },
+        {
+            data: 'cnpjFornecedor',
+            name: 'cnpjFornecedor'
+        },
+        {
+            data: 'cpfFornecedor',
+            name: 'cpfFornecedor'
+        },
+        {
+            data: 'telefone1Fornecedor',
+            name: 'telefone1Fornecedor'
+        },
+        {
+            data: 'telefone2Fornecedor',
+            name: 'telefone2Fornecedor'
+        },
+        {
+            data: 'bancoFornecedor',
+            name: 'bancoFornecedor'
+        },
+        {
+            data: 'nrcontaFornecedor',
+            name: 'nrcontaFornecedor'
+        },
+        {
+            data: 'agenciaFornecedor',
+            name: 'agenciaFornecedor'
+        },
+        {
+            data: 'chavePix1Fornecedor',
+            name: 'chavePix1Fornecedor'
+        },
+        {
+            data: 'chavePix2Fornecedor',
+            name: 'chavePix2Fornecedor'
+        },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            exportOptions: {
+            visible: false
+            },
+        },
+    ],
+    dom: 'Bfrtip',
+    buttons: [{
+        extend: 'pageLength', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },{
+        extend: 'copy', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
                 },
             },
+            {
+        extend: 'csv', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'excel', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'pdf', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                },
+            },
+            {
+        extend: 'print', 
+                exportOptions: {
+                    columns: "thead th:not(.noExport)"
+                }
+            }
+    ],
 
-        });
 
+});
 
-
-        var table = $('#tabelaFornecedoresModel').DataTable();
-
-
-        $('#tabelaFornecedoresModel tbody').on('click', '#visualizar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "fornecedores/" + data[0];
-        });
-        $('#tabelaFornecedoresModel tbody').on('click', '#editar', function() {
-            var data = table.row($(this).parents('tr')).data();
-            location.href = "fornecedores/" + data[0] + "/edit";
-        });
-
-
-    });
+$("#pesquisar").click(function() {
+    table.draw();
+});
 </script>
 
 
-<div class="container">
-    <table id="tabelaFornecedoresModel" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-
-            <tr>
-                <th>Id</th>
-                <th>Nome Fornecedor</th>
-                <th>CNPJ Fornecedor</th>
-                <th>Contato Fornecedor</th>
-                <th>Ações</th>
-            </tr>
-
-        </thead>
-    </table>
-</div>
-
-
-
-
-
-<!-- <table class="table table-bordered mt-2">
-
-        <tr class="trTituloTabela">
-            <th class="thTituloTabela">Id</th>
-            <th class="thTituloTabela">Nome Fornecedor</th>
-            <th class="thTituloTabela">CNPJ Fornecedor</th>
-            <th class="thTituloTabela">Contato Fornecedor</th>
-            <th class="thTituloTabela" width="280px">Ação</th>
-        </tr>
-        @foreach ($listaFornecedores as $fornecedor)
-
-        <tr>
-	        <td>{{ ++$i }}</td>
-	        <td>{{ $fornecedor->nomeFornecedor }}</td>
-	        <td>{{ $fornecedor->cnpjFornecedor }}</td>
-	        <td>{{ $fornecedor->contatoFornecedor }}</td>
-	        <td>
-                <form action="{{ route('fornecedores.destroy',$fornecedor->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('fornecedores.show',$fornecedor->id) }}">Visualizar</a>
-                    @can('fornecedor-edit')
-                        <a class="btn btn-primary" href="{{ route('fornecedores.edit',$fornecedor->id) }}">Editar</a>
-                    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('fornecedor-delete')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    @endcan
-                </form>
-	        </td>
-	    </tr>
-        @endforeach
-
-    </table> -->
-
- 
 @endsection
