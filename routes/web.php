@@ -38,7 +38,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
 // Route::get('/filtraDados', 'DespesaController@filtraDados')->name('filtraDados');
 
+
 Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
+Route::get('/contasAReceber', 'ContaController@contasAReceber')->name('contasAReceber');
+Route::get('/contasAPagar', 'ContaController@contasAPagar')->name('contasAPagar');
+
+Route::get('/tabelaContasAReceber', 'ContaController@tabelaContasAReceber')->name('tabelaContasAReceber');
+Route::get('/tabelaContasAPagar', 'ContaController@tabelaContasAPagar')->name('tabelaContasAPagar');
+Route::get('/extratoConta', 'ContaController@extratoConta')->name('extratoConta');
+Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('tabelaExtratoConta');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');

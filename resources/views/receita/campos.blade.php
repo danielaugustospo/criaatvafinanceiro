@@ -11,6 +11,14 @@
         </select>
     </div>
 </div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">Descrição</label>
+    <div class="col-sm-10">
+
+        {!! Form::text('descricaoreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+    </div>
+
+</div>
 
 <div class="form-group row">
 
@@ -23,6 +31,7 @@
     <div class="col-sm-3">
         {!! Form::date('datapagamentoreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
     </div>
+
 
     <label for="pagoreceita" class="col-sm-1 col-form-label">Pago</label>
     <div class="col-sm-2">

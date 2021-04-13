@@ -33,6 +33,7 @@ class Receita extends Model
 
         'idformapagamentoreceita',
         'datapagamentoreceita',
+        'descricaoreceita',
         'dataemissaoreceita',
         'valorreceita',
         'pagoreceita',

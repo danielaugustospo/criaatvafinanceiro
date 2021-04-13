@@ -10,8 +10,7 @@
             @can('conta-create')
             <a class="btn btn-success" href="{{ route('contas.create') }}">Cadastrar Conta Bancária</a>
             @endcan
-            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
-            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
+            @include('layouts/exibeFiltro')
 
         </div>
     </div>

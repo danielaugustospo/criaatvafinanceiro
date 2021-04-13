@@ -88,6 +88,24 @@ class AppServiceProvider extends ServiceProvider
         $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
         view()->share('listaFuncionarios', $listaFuncionarios);
 
+        $listaContasAPagar =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
+        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.clienteOrdemdeServico,
+        cli.id as idCliente, cli.nomeCliente,  cli.agenciaCliente as agencia
+        from despesas d, ordemdeservico os, clientes cli
+        where (os.clienteOrdemdeServico = cli.id)
+        and (d.idOS = os.id) 
+        and (d.pago = "N")');
+        view()->share('listaContasAPagar', $listaContasAPagar);
+
+        $listaContasAReceber = DB::select("SELECT r.valorreceita as preco, r.datapagamentoreceita as vencimento, c.id as idConta, c.agenciaConta as agencia, r.idosreceita as idOS, cli.nomeCliente, os.idClienteOrdemdeServico as idCliente, os.eventoOrdemdeServico as evento, r.nfreceita as notaFiscal
+        from receita r, conta c, ordemdeservico os, clientes cli
+        where pagoreceita = 'N' and r.contareceita = c.id 
+        and r.idosreceita = os.id
+        and os.clienteOrdemdeServico = cli.id");
+        view()->share('listaContasAReceber', $listaContasAReceber);
+
+        $listaReceitasEDespesas = DB::select('SELECT r.id, r.valorreceita from receita r union all (select d.id, d.precoReal  from despesas d)');
+        view()->share('listaReceitasEDespesas', $listaReceitasEDespesas);
     }
 
 }

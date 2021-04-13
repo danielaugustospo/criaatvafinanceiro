@@ -11,6 +11,8 @@
             @can('orgaorg-create')
             <a class="btn btn-success" href="{{ route('orgaosrg.create') }}">Cadastrar Órgão Emissor</a>
             @endcan
+            @include('layouts/exibeFiltro')
+
         </div>
     </div>
 </div>

@@ -59,6 +59,7 @@ class ClientesController extends Controller
         if ($request->ajax()) {
 
         $data = Clientes::latest()->get();
+
         return Datatables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {

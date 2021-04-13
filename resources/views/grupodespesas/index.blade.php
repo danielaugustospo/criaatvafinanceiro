@@ -11,8 +11,7 @@
                 <a class="btn btn-success" href="{{ route('grupodespesas.create') }}">Cadastrar Grupo de Despesas</a>
             @endcan
 
-            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada">
-            <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca">
+            @include('layouts/exibeFiltro')
         </div>
     </div>
 </div>

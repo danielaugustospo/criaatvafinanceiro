@@ -164,6 +164,7 @@ class ReceitaController extends Controller
             'valorreceita'              => 'required',
             'pagoreceita'               => 'required',
             'contareceita'              => 'required',
+            // 'descricaoreceita'          => 'required',
             'registroreceita'           => 'required',
             'nfreceita'                 => 'required',
             'idosreceita'               => 'required',
@@ -179,6 +180,7 @@ class ReceitaController extends Controller
         $receita->valorreceita                  = $quantia;
         $receita->pagoreceita                   = $request->get('pagoreceita');
         $receita->contareceita                  = $request->get('contareceita');
+        $receita->descricaoreceita               = $request->get('descricaoreceita');
         $receita->registroreceita               = $request->get('registroreceita');
         // $receita->emissaoreceita                = $request->get('emissaoreceita');
         $receita->nfreceita                     = $request->get('nfreceita');
@@ -262,6 +264,7 @@ class ReceitaController extends Controller
             'valorreceita'              => 'required',
             'pagoreceita'               => 'required',
             'contareceita'              => 'required',
+            // 'descricaoreceita'          => 'required',
             'registroreceita'           => 'required',
             'nfreceita'                 => 'required',
             'idosreceita'               => 'required'
@@ -278,6 +281,7 @@ class ReceitaController extends Controller
         $receita->valorreceita                  = $quantia;
         $receita->pagoreceita                   = $request->get('pagoreceita');
         $receita->contareceita                  = $request->get('contareceita');
+        $receita->descricaoreceita               = $request->get('descricaoreceita');
         $receita->registroreceita               = $request->get('registroreceita');
         // $receita->emissaoreceita                = $request->get('emissaoreceita');
         $receita->nfreceita                     = $request->get('nfreceita');
@@ -290,6 +294,7 @@ class ReceitaController extends Controller
         valorreceita                = '$receita->valorreceita',                   
         pagoreceita                 = '$receita->pagoreceita',                    
         contareceita                = '$receita->contareceita',                   
+        descricaoreceita             = '$receita->descricaoreceita',                
         registroreceita             = '$receita->registroreceita',                
         nfreceita                   = '$receita->nfreceita',                      
         idosreceita                 = '$receita->idosreceita'                  

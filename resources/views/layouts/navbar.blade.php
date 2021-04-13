@@ -18,7 +18,6 @@
                 @guest
                 <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                 @else
-
                 
                 <li class="nav-item dropdown">
                     @can('ordemdeservico-list')
@@ -69,9 +68,15 @@
                         Relatórios <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('benspatrimoniais-list')
-                        <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
+                        @can('conta-list')
+                        <a class="dropdown-item" href="{{ route('contasAPagar') }}">Contas a Pagar</a>
                         @endcan
+                        @can('conta-list')
+                        <a class="dropdown-item" href="{{ route('contasAReceber') }}">Contas a Receber</a>
+                        @endcan
+                        {{-- @can('conta-list')
+                        <a class="dropdown-item" href="{{ route('contacorrente.relatorioFornecedores') }}">Relatório de Fornecedores</a>
+                        @endcan --}}
                     </div>
                 </li>    
 
@@ -89,7 +94,7 @@
                         <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
                         @endcan
                         @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('entradas.index') }}">Extrato Por Período</a>
+                        <a class="dropdown-item" href="{{ route('extratoConta') }}">Extrato Por Período</a>
                         @endcan
                     </div>
                 </li>

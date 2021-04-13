@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 // use Freshbitsweb\Laratables\Laratables;
 use DataTables;
 use Illuminate\Support\Str;
-
+use PhpParser\Node\Stmt\TryCatch;
 
 class OrdemdeServicoController extends Controller
 {
@@ -28,7 +28,6 @@ class OrdemdeServicoController extends Controller
         $this->middleware('permission:ordemdeservico-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:ordemdeservico-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:ordemdeservico-delete', ['only' => ['destroy']]);
-
     }
     /**
      * Display a listing of the resource.
@@ -68,7 +67,7 @@ class OrdemdeServicoController extends Controller
                             return Str::contains($row['valorTotalOrdemdeServico'], $request->get('valorTotalOrdemdeServico')) ? true : false;
                         });
                     }
-                    
+
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
@@ -106,18 +105,18 @@ class OrdemdeServicoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         $ultimaOS = DB::select('select max(id) idMaximo from ordemdeservico');
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $cliente = DB::select('select id, nomeCliente from clientes where ativoCliente = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
-       
-        $dataInicio = date("d/m/Y");        
+
+        $dataInicio = date("d/m/Y");
         // var_dump($ultimaOS);
 
-        return view('ordemdeservicos.create', compact('cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio' ));
+        return view('ordemdeservicos.create', compact('cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio'));
     }
 
 
@@ -157,7 +156,7 @@ class OrdemdeServicoController extends Controller
 
         ]);
 
- 
+
 
 
         // $ordemdeservico->nomeFormaPagamento               = $request->get('nomeFormaPagamento');
@@ -188,47 +187,47 @@ class OrdemdeServicoController extends Controller
         //     $despesa = new Despesa();
 
         //     $request->validate([
-        //         'idCodigoDespesas'          => 'required',
-        //         'idClienteOrdemdeServico'          => 'required',
-        //         'despesaCodigoDespesas'     => 'required',
-        //         'idFornecedor'              => 'required',
-        //         'eventoOrdemdeServico'                 => 'required',
-        //         'atuacao'                   => 'required',
-        //         'precoCliente'              => 'required',
-        //         'pago'                      => 'required',
-        //         'quempagou'                 => 'required',
-        //         'idFormaPagamento'          => 'required',
-        //         'conta'                     => 'required',
-        //         'nRegistro'                 => 'required',
-        //         'valorEstornado'            => 'required',
-        //         'data'                      => 'required',
-        //         'totaleventoOrdemdeServico'            => 'required',
-        //         'totalPrecoCliente'         => 'required',
-        //         'lucro'                     => 'required',
-        //         'ativoDespesa'              => 'required',
-        //         'excluidoDespesa'           => 'required',
+        //         'idCodigoDespesas'               => 'required',
+        //         'idClienteOrdemdeServico'        => 'required',
+        //         'despesaCodigoDespesas'          => 'required',
+        //         'idFornecedor'                   => 'required',
+        //         'eventoOrdemdeServico'           => 'required',
+        //         'atuacao'                        => 'required',
+        //         'precoCliente'                   => 'required',
+        //         'pago'                           => 'required',
+        //         'quempagou'                      => 'required',
+        //         'idFormaPagamento'               => 'required',
+        //         'conta'                          => 'required',
+        //         'nRegistro'                      => 'required',
+        //         'valorEstornado'                 => 'required',
+        //         'data'                           => 'required',
+        //         'totaleventoOrdemdeServico'      => 'required',
+        //         'totalPrecoCliente'              => 'required',
+        //         'lucro'                          => 'required',
+        //         'ativoDespesa'                   => 'required',
+        //         'excluidoDespesa'                => 'required',
         //     ]);
 
-        //     $despesa->idCodigoDespesas          = $request->get('idCodigoDespesas');
-        //     $despesa->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
-        //     $despesa->despesaCodigoDespesas     = $request->get('despesaCodigoDespesas');
-        //     $despesa->idFornecedor              = $request->get('idFornecedor');
-        //     $despesa->eventoOrdemdeServico                 = $request->get('eventoOrdemdeServico');
-        //     $despesa->atuacao                   = $request->get('atuacao');
-        //     $despesa->precoCliente              = $request->get('precoCliente');
-        //     $despesa->pago                      = $request->get('pago');
-        //     $despesa->quempagou                 = $request->get('quempagou');
-        //     $despesa->idFormaPagamento          = $request->get('idFormaPagamento');
-        //     $despesa->conta                     = $request->get('conta');
-        //     $despesa->nRegistro                 = $request->get('nRegistro');
-        //     $despesa->valorEstornado            = $request->get('valorEstornado');
-        //     $despesa->data                      = $request->get('data');
-        //     $despesa->totaleventoOrdemdeServico            = $request->get('totaleventoOrdemdeServico');
-        //     $despesa->totalPrecoCliente         = $request->get('totalPrecoCliente');
-        //     $despesa->lucro                     = $request->get('lucro');
+        //     $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
+        //     $despesa->idClienteOrdemdeServico    = $request->get('idClienteOrdemdeServico');
+        //     $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+        //     $despesa->idFornecedor               = $request->get('idFornecedor');
+        //     $despesa->eventoOrdemdeServico       = $request->get('eventoOrdemdeServico');
+        //     $despesa->atuacao                    = $request->get('atuacao');
+        //     $despesa->precoCliente               = $request->get('precoCliente');
+        //     $despesa->pago                       = $request->get('pago');
+        //     $despesa->quempagou                  = $request->get('quempagou');
+        //     $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
+        //     $despesa->conta                      = $request->get('conta');
+        //     $despesa->nRegistro                  = $request->get('nRegistro');
+        //     $despesa->valorEstornado             = $request->get('valorEstornado');
+        //     $despesa->data                       = $request->get('data');
+        //     $despesa->totaleventoOrdemdeServico  = $request->get('totaleventoOrdemdeServico');
+        //     $despesa->totalPrecoCliente          = $request->get('totalPrecoCliente');
+        //     $despesa->lucro                      = $request->get('lucro');
 
-        //     $despesa->ativoDespesa              = $request->get('ativoDespesa');
-        //     $despesa->excluidoDespesa           = $request->get('excluidoDespesa');
+        //     $despesa->ativoDespesa               = $request->get('ativoDespesa');
+        //     $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
         //     $despesa['idOS'] = "$idDaOS";
 
         //     $idDespesa = $despesa->id;
@@ -242,71 +241,64 @@ class OrdemdeServicoController extends Controller
             // $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
             // var_dump($request->get('idformapagamentoreceita')[0]);
             // exit;
-            for($i = 0; $i < $tamanhoArrayReceita; $i++)
-            {
+            for ($i = 0; $i < $tamanhoArrayReceita; $i++) {
                 $receita = new Receita();
                 $request->validate([
-                    'idformapagamentoreceita'   => 'required',
-                    'datapagamentoreceita'      => 'required',
-                    'dataemissaoreceita'        => 'required',
-                    'valorreceita'              => 'required',
-                    'pagoreceita'               => 'required',
-                    'contareceita'              => 'required',
-                    // 'registroreceita'           => 'required',
-                    // 'emissaoreceita'            => 'required',
-                    'nfreceita'                 => 'required',
-                    // 'idosreceita'               => 'required',
-    
+                    'idformapagamentoreceita'       => 'required',
+                    'datapagamentoreceita'          => 'required',
+                    'dataemissaoreceita'            => 'required',
+                    'valorreceita'                  => 'required',
+                    'pagoreceita'                   => 'required',
+                    'contareceita'                  => 'required',
+                    // 'registroreceita'            => 'required',
+                    // 'emissaoreceita'             => 'required',
+                    'nfreceita'                     => 'required',
+                    // 'idosreceita'                => 'required',
+
                 ]);
-    
+
                 $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
                 $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
                 $receita->dataemissaoreceita            = $request->get('dataemissaoreceita')[$i];
                 $receita->valorreceita                  = $request->get('valorreceita')[$i];
                 $receita->pagoreceita                   = $request->get('pagoreceita')[$i];
                 $receita->contareceita                  = $request->get('contareceita')[$i];
-                // $receita->registroreceita            = $request->get('registroreceita');
+                $receita->registroreceita               = $request->get('registroreceita');
                 // $receita->emissaoreceita             = $request->get('emissaoreceita');
                 $receita->nfreceita                     = $request->get('nfreceita')[0];
                 // $receita->idosreceita                = $request->get('idosreceita');
-    
+
                 $receita['idosreceita'] = "$idDaOS";
-    
-                
-    
+
+
+
                 $receita->save();
                 $idReceita = $receita->id;
-    
             }
+        }
 
-    }
 
+        // if (($temDespesa != '0') && ($temReceita != '0')){
+        if ($temReceita != '0') {
+            return redirect()->route('ordemdeservicos.index')
+                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id  . ' com ' . $tamanhoArrayReceita . ' parcelas cadastrada com êxito.');
+        }
+        // else if (($temDespesa != '0') && ($temReceita === '0')){
+        //             return redirect()->route('ordemdeservicos.index')
+        //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' cadastrados com êxito. Nenhuma receita foi cadastrada');
 
-    // if (($temDespesa != '0') && ($temReceita != '0')){
-    if ($temReceita != '0'){
-                return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $salvaOS->id  .' com '. $tamanhoArrayReceita .' parcelas cadastrada com êxito.');
+        // }
+        // else if (($temDespesa === '0') && ($temReceita != '0')){
+        //             return redirect()->route('ordemdeservicos.index')
+        //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Receita n°' . $idReceita . ' cadastrados com êxito. Nenhuma despesa foi cadastrada');
 
-    }
-    // else if (($temDespesa != '0') && ($temReceita === '0')){
-    //             return redirect()->route('ordemdeservicos.index')
-    //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' cadastrados com êxito. Nenhuma receita foi cadastrada');
-
-    // }
-    // else if (($temDespesa === '0') && ($temReceita != '0')){
-    //             return redirect()->route('ordemdeservicos.index')
-    //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Receita n°' . $idReceita . ' cadastrados com êxito. Nenhuma despesa foi cadastrada');
-
-    // }
-    // else if (($temDespesa === '0') && ($temReceita === '0')){
-    else if ($temReceita === '0'){
-                return redirect()->route('ordemdeservicos.index')
+        // }
+        // else if (($temDespesa === '0') && ($temReceita === '0')){
+        else if ($temReceita === '0') {
+            return redirect()->route('ordemdeservicos.index')
                 ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ' cadastrada com êxito. Não foram cadastradas receitas.');
-
+        }
     }
-
-
-}
 
 
 
@@ -316,13 +308,13 @@ class OrdemdeServicoController extends Controller
      * @param  \App\OrdemdeServico  $ordemdeservico
      * @return \Illuminate\Http\Response
      */
-    public  function show($id )
+    public  function show($id)
     {
         $ordemdeservico = OrdemdeServico::find($id);
 
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
-        $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 and id = :idFormaPagamento',['idFormaPagamento' => $ordemdeservico->nomeFormaPagamento ]);
+        $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 and id = :idFormaPagamento', ['idFormaPagamento' => $ordemdeservico->nomeFormaPagamento]);
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
 
@@ -331,18 +323,23 @@ class OrdemdeServicoController extends Controller
         $receitasPorOS = DB::select('select distinct * from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $percentualPorOS = DB::select('select distinct * from tabelapercentual  where  idostabelapercentual = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        $totaldespesas = DB::select('select sum(despesas.eventoOrdemdeServico) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $getArrayTotalDespesas = $totaldespesas[0]->totaldespesa;
-        
+        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $contadorDespesas = count($totaldespesas);
+
+        if ($contadorDespesas == 0) {
+            $getArrayTotalDespesas = 0.00;
+        } else {
+            $getArrayTotalDespesas = $totaldespesas[0]->totaldespesa;
+        }
+
         $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
         // var_dump($totalreceitas);
         // exit;
         $tamanhoArrayReceita = count($totalreceitas);
-        if ($tamanhoArrayReceita == 0){
+        if ($tamanhoArrayReceita == 0) {
             $getArrayTotalReceitas = 0.00;
-        }
-        else{
-        $getArrayTotalReceitas = $totalreceitas[0]->totalreceita;
+        } else {
+            $getArrayTotalReceitas = $totalreceitas[0]->totalreceita;
         }
 
         $totalOS = $ordemdeservico->valorTotalOrdemdeServico;
@@ -351,36 +348,42 @@ class OrdemdeServicoController extends Controller
         $lucro = bcsub($getArrayTotalReceitas, $getArrayTotalDespesas);
 
         $porcentagemDespesa = bcmul($getArrayTotalDespesas, 100); //cem por cento da regra de tres
-        $porcentagemDespesa = bcdiv($porcentagemDespesa, $totalOS); // divido pelo total da OS
-        
+        if (($porcentagemDespesa > 0 ) && ($totalOS > 0)){
+            $porcentagemDespesa = bcdiv($porcentagemDespesa, $totalOS); // divido pelo total da OS
+        }
+
         $porcentagemReceita = bcmul($getArrayTotalReceitas, 100); //cem por cento da regra de tres
-        $porcentagemReceita = bcdiv($porcentagemReceita, $totalOS); // divido pelo total da OS
-        
+        if (($porcentagemReceita > 0 ) && ($totalOS > 0)){
+            $porcentagemReceita = bcdiv($porcentagemReceita, $totalOS); // divido pelo total da OS
+        }
+
         $porcentagemLucro = bcmul($lucro, 100); //cem por cento da regra de tres
-        $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
-        
-        
-        
+
+        if (($porcentagemLucro > 0 ) && ($totalOS > 0)){
+            $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
+        }
+
+
         // $porcentagemDespesa = bcmul($porcentagemDespesa, 100); //multiplica por 100 para obter porcentagem
 
         // var_dump($porcentagemDespesa);
         // exit;
 
-        
+
         $totalreceitas = number_format($getArrayTotalReceitas, 2, ',', '.');
         $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
         $totalOS = number_format($ordemdeservico->valorTotalOrdemdeServico, 2, ',', '.');
         $lucro = number_format($lucro, 2, ',', '.');
 
 
-        
+
         // var_dump($lucro);
         // exit;
 
-        $qtdDespesas = DB::select('select COUNT(eventoOrdemdeServico) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        return view('ordemdeservicos.show', compact('ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa','despesaPorOS','receitasPorOS','percentualPorOS','totaldespesas','totalreceitas','qtdDespesas','qtdReceitas','lucro','totalOS','porcentagemDespesa','porcentagemReceita','porcentagemLucro'));
+        return view('ordemdeservicos.show', compact('ordemdeservico', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'despesaPorOS', 'receitasPorOS', 'percentualPorOS', 'totaldespesas', 'totalreceitas', 'qtdDespesas', 'qtdReceitas', 'lucro', 'totalOS', 'porcentagemDespesa', 'porcentagemReceita', 'porcentagemLucro'));
     }
 
 
@@ -405,8 +408,7 @@ class OrdemdeServicoController extends Controller
         // $roles = OrdemdeServico::pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
         // $bancoRole = $ordemdeservico->roles->pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
 
-        return view('ordemdeservicos.edit', compact('ordemdeservico','listaContas','listaForncedores','cliente', 'formapagamento', 'codigoDespesa'));
-
+        return view('ordemdeservicos.edit', compact('ordemdeservico', 'listaContas', 'listaForncedores', 'cliente', 'formapagamento', 'codigoDespesa'));
     }
 
 

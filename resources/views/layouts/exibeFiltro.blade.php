@@ -1,0 +1,2 @@
+<button class="btn btn-primary" id="btnReveal" type="button"><i class="fas fa-eye"></i> Exibir Filtros</button>
+<button class="btn btn-secondary" id="btnEsconde" type="button"><i class="fa fa-eye-slash"></i> Ocultar Filtros</button>

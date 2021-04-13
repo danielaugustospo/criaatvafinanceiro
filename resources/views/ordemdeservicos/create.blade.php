@@ -4,20 +4,6 @@
 @section('content')
 @extends('ordemdeservicos.estilo')
 
-<script>
-$(function() {
-    addColumn = function() {
-        $("#habilita_receita").clone().appendTo("#novaDivReceita");
-    }
-
-    $('#btnAddColumn').click(addColumn);
-});
-
-function removerCampos() {
-    $('.novaDivReceita').empty();
-}
-</script>
-
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -193,42 +179,19 @@ function removerCampos() {
 {!! Form::close() !!}
 
 
-<div id="tooltest0" class="tooltest0">
-    <label>Tool Name :</label>
-    <select class="toollist" name="FSR_tool_id[]" id="FSR_tool_id0" style="width: 350px" />
-    <option></option>
-    <option value="1">bla 1</option>
-    </select>
-    antes
-</div>
-<div id="tool-placeholder"></div>
-depois
-<div>
-    <input type="button" value="Add another" />
-</div>
 
 <script>
-    $('.toollist').select2({ //apply select2 to my element
-        placeholder: "Search your Tool",
-        allowClear: true
+    $("#btnAddColumn").click(function() {
+        // addColumn = function() {
+            $("#habilita_receita").clone().appendTo("#novaDivReceita");
+        // }
+
+        // $('#btnAddColumn').click(addColumn);
     });
 
-
-    $('input[type=button]').click(function() {
-
-        $('.toollist').select2("destroy");
-        var noOfDivs = $('.tooltest0').length;
-        var clonedDiv = $('.tooltest0').first().clone(true);
-        clonedDiv.insertBefore("#tool-placeholder");
-        clonedDiv.attr('id', 'tooltest' + noOfDivs);
-
-
-        $('.toollist').select2({ //apply select2 to my element
-            placeholder: "Search your Tool",
-            allowClear: true
-        });
-
-    });
+    function removerCampos() {
+        $('.novaDivReceita').empty();
+    }
 </script>
 
 @endsection
