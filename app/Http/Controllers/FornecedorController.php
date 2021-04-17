@@ -399,4 +399,101 @@ class FornecedorController extends Controller
                         ->with('success','Fornecedor excluído com êxito!');
     }
 
+    public function relatorioFornecedores(Request $request)
+    {
+        $consulta = $this->retornaConsultaRelatorio();
+
+        if ($request->ajax()) {
+
+        return Datatables::of($consulta)
+            ->addIndexColumn()
+            // ->rawColumns(['action'])
+            ->make(true);
+        } else {
+            // $data = Conta::orderBy('id', 'DESC')->paginate(5);
+            return view('fornecedores.relatorioFornecedores', compact('consulta'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
+    }
+
+    public function tabelaRelatorioFornecedores(Request $request)
+    {
+        $consulta = DB::table('despesas')
+        ->join('fornecedores', 'despesas.idFornecedor', 'fornecedores.id')
+        ->join('ordemdeservico', 'despesas.idOS', 'ordemdeservico.id')
+
+        ->select(['despesas.idOS','ordemdeservico.eventoOrdemdeServico', 'despesas.descricaoDespesa', 'fornecedores.nomeFornecedor', 'fornecedores.razaosocialFornecedor', 'despesas.nRegistro', 'despesas.vencimento', 'despesas.precoReal', 'despesas.pago'])
+        ->where('despesas.ativoDespesa', '=', '1');
+
+        // ->where(function ($consulta) {
+        //     $consulta->where('ativoDespesa', '=', '1')
+        //      ->orWhere('excluidoDespesa', '=', '0');
+        // })
+        ;
+
+        // $consulta = $this->retornaConsultaRelatorio();
+
+        return Datatables::of($consulta)
+        ->filter(function ($query) use ($request) {
+
+
+
+            $idOS = $request->get('buscaIdOS');
+
+            if ($request->has('buscaIdOS')) {
+                $query->where('idOS', 'like', "%{$idOS}%");
+            }
+            if ($request->has('buscaEventoOrdemdeServico')) {
+                $query->where('eventoOrdemdeServico', 'like', "%{$request->get('buscaEventoOrdemdeServico')}%");
+            }
+            if ($request->has('buscaDescricaoDespesa')) {
+                $query->where('descricaoDespesa', 'like', "%{$request->get('buscaDescricaoDespesa')}%");
+            }
+            if ($request->has('buscaNomeFornecedor')) {
+                $query->where('nomeFornecedor', 'like', "%{$request->get('buscaNomeFornecedor')}%");
+            }
+            if ($request->has('buscaRazaosocialFornecedor')) {
+                $query->where('razaosocialFornecedor', 'like', "%{$request->get('buscaRazaosocialFornecedor')}%");
+            }
+            if ($request->has('buscaNRegistro')) {
+                $query->where('nRegistro', 'like', "%{$request->get('buscaNRegistro')}%");
+            }
+            if ($request->has('buscaVencimento')) {
+                $query->where('vencimento', 'like', "%{$request->get('buscaVencimento')}%");
+            }
+
+            if ($request->has('buscaPrecoReal')) {
+                $query->where('precoReal', 'like', "%{$request->get('buscaPrecoReal')}%");
+            }
+
+            if ($request->has('buscaPago')) {
+                $query->where('pago', 'like', "%{$request->get('buscaPago')}%");
+            }
+
+            // if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
+            //     $query->whereDate('vencimento', ">", "{$request->buscaDataInicio}")
+            //         ->whereDate('vencimento', "<", "{$request->buscaDataFim}");
+            // }
+
+        })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function retornaConsultaRelatorio()
+    {
+        DB::table('despesas')
+        ->join('fornecedores', 'despesas.idFornecedor', 'fornecedores.id')
+        ->join('ordemdeservico', 'despesas.idOS', 'ordemdeservico.id')
+
+        ->select(['despesas.idOS','ordemdeservico.eventoOrdemdeServico', 'despesas.descricaoDespesa', 'fornecedores.nomeFornecedor', 'fornecedores.razaosocialFornecedor', 'despesas.nRegistro', 'despesas.vencimento', 'despesas.precoReal', 'despesas.pago'])
+        // ->where(function ($consulta) {
+        //     $consulta->where('ativoDespesa', '=', '1')
+        //      ->orWhere('excluidoDespesa', '=', '0');
+        // })
+        ;
+        
+
+   }
+
 }

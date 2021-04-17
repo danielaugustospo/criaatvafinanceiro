@@ -138,8 +138,8 @@
             <option value="N">Não</option>
             <option value="S">Sim</option>
             @else
-            <option value="S" {{$despesa->pago == 'S'?' selected':''}}>Sim</option>
-            <option value="N" {{$despesa->pago == 'N'?' selected':''}}>Não</option>
+            <option value="1" {{$despesa->pago == '1'?' selected':''}}>Sim</option>
+            <option value="0" {{$despesa->pago == '0'?' selected':''}}>Não</option>
             @endif
         </select>
     </div>

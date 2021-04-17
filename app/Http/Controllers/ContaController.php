@@ -254,16 +254,52 @@ class ContaController extends Controller
         $dadosContaAPagar[0] = 0.00;
         $dadosContaAPagar[1] = 0.00;
 
-
-
-        // $dadosContaAReceber[0] = 4.0;
-        //SALDO DAS CONTAS
-        for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
+        for($i=0; $i < $tamanhoArrayGetContas; $i++){
             new Conta();
             $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
-            $propridadesDasContas = $receitasPorConta[$i][0];
-            $dadosConta[$i] = [$propridadesDasContas->agenciaPorConta, number_format($propridadesDasContas->receitasTotaisPorConta, 2, ',', '.')];
+            $propridadesDasContas[$i] = $receitasPorConta[$i];
+            if ((sizeof($propridadesDasContas[$i]) != 0) || (sizeof($propridadesDasContas[$i]) != null)){
+                $dadosConta[$i] = [ $propridadesDasContas[$i][0]->agenciaPorConta,number_format($propridadesDasContas[$i][0]->receitasTotaisPorConta, 2, ',', '.')];
+            }
         }
+        // var_dump($propridadesDasContas[1][0]);
+        // exit;
+        // $dadosContaAReceber[0] = 4.0;
+        //SALDO DAS CONTAS
+        // for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
+        //     new Conta();
+        //     $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+        //     $propridadesDasContas[$i] = $receitasPorConta[$i];
+
+
+        //     if ((sizeOf($receitasPorConta[$i]) == 0) || (sizeOf($receitasPorConta[$i]) == null)) {
+        //         // var_dump($receitasPorConta[$i]);
+        //         // exit;
+        //         $propridadesDasContas[$i]->receitasTotaisPorConta = 0.00;
+        //         $propridadesDasContas[$i]->agenciaPorConta = 0;
+        //         $dadosConta[$i] = 0.00;
+               
+
+        //     }
+        //     else{
+
+        //         var_dump($propridadesDasContas[$i]);
+               
+        //         // $propridadesDasContas[$i]->receitasTotaisPorConta  = $receitasPorConta[$i]->receitasTotaisPorConta;
+        //         // $propridadesDasContas[$i]->agenciaPorConta = $receitasPorConta[$i]->agenciaPorConta;
+        //         // $dadosConta[$i] = 0.00;
+
+        //     } 
+        //         // $propridadesDasContas = $receitasPorConta[$i];
+        //         // $dadosConta[$i] = [$propridadesDasContas[$i]->agenciaPorConta, number_format($propridadesDasContas[$i]->receitasTotaisPorConta, 2, ',', '.')];
+        //     // 
+        //     // $propridadesDasContas[$i]->agenciaPorConta = $receitasPendentesPorConta[$i]->agenciaPorConta;
+        //     // $propridadesDasContas[$i]->receitasPendentesPorConta =  number_format($propridadesDasContasAReceber[$i]->receitasPendentesPorConta, 2, ',', '.');
+        // }
+        // exit;
+
+        // var_dump($propridadesDasContas);
+        // exit;
 
         if ($tamanhoArrayGetContas == 0) {
             $receitasPorConta[0] =  0;
@@ -588,89 +624,82 @@ class ContaController extends Controller
     }
     public function extratoConta(Request $request)
     {
-        $tabelaReceitas = $this->consultaExtratoConta();
+        $consulta = $this->consultaExtratoConta();
 
         if ($request->ajax()) {
 
 
-            return Datatables::of(  $tabelaReceitas)
+            return Datatables::of($consulta)
                 ->addIndexColumn()
                 // ->rawColumns(['action'])
                 ->make(true);
         } else {
             // $data = Conta::orderBy('id', 'DESC')->paginate(5);
-            return view('contacorrente.extratoConta', compact('tabelaReceitas'))
+            return view('contacorrente.extratoConta', compact('consulta'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
         }
     }
     public function tabelaExtratoConta(Request $request)
     {
 
+        $consulta = $this->consultaExtratoConta();
 
+        return Datatables::of($consulta)
+            ->filter(function ($query) use ($request) {
 
+                $buscaData = $request->get('buscaData');
 
+                if ($request->has('buscaData')) {
+                    // $query->where('datapagamentoreceita', "{$request->get('buscaData')}");
+                    $query->where('datapagamentoreceita', 'like', "%{$buscaData}%");
+                }
 
-        $tabelaReceitas = $this->consultaExtratoConta();
+                if ($request->has('buscaOS')) {
+                    $query->where('idosreceita', 'like', "%{$request->get('buscaOS')}%");
+                }
 
+                if ($request->has('buscaValor')) {
+                    $query->where('valorreceita', 'like', "%{$request->get('buscaValor')}%");
+                }
 
-        // var_dump($tabelaReceitas);
-        // exit;
+                if ($request->has('buscaConta')) {
+                    $query->where('agenciaConta', 'like', "%{$request->get('buscaConta')}%");
+                }
 
-        return Datatables::of($tabelaReceitas)
-        ->filter(function ($query) use ($request) {
-
-            $buscaData = $request->get('buscaData');
-
-            if ($request->has('buscaData')) {
-                // $query->where('datapagamentoreceita', "{$request->get('buscaData')}");
-                $query->where('datapagamentoreceita', 'like', "%{$buscaData}%");
-                // var_dump($query);
-                // exit;
-                            }
-
-            if ($request->has('buscaOS')) {
-                $query->where('idosreceita', 'like', "%{$request->get('buscaOS')}%");
-            }
-
-            if ($request->has('buscaValor')) {
-                $query->where('valorreceita', 'like', "%{$request->get('buscaValor')}%");
-            }
-
-            if ($request->has('buscaConta')) {
-                $query->where('agenciaConta', 'like', "%{$request->get('buscaConta')}%");
-            }
-
-            if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
-                $query->whereDate('datapagamentoreceita', ">", "{$request->buscaDataInicio}")
-                    ->whereDate('datapagamentoreceita', "<", "{$request->buscaDataFim}");
-            }
-
-        })
+                if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
+                    $query->whereDate('datapagamentoreceita', ">", "{$request->buscaDataInicio}")
+                        ->whereDate('datapagamentoreceita', "<", "{$request->buscaDataFim}");
+                }
+            })
 
             ->addIndexColumn()
             ->make(true);
-        // $tabelaReceitas = 1;
-        // return view('contacorrente.extratoConta', compact('tabelaReceitas'));
-
     }
 
-    public function consultaExtratoConta(){
+    public function consultaExtratoConta()
+    {
 
         $tabelaDespesas = DB::table('despesas')
-        ->join('conta', 'despesas.conta', 'conta.id')
+            ->join('conta', 'despesas.conta', 'conta.id')
 
-        ->select(['despesas.id','despesas.vencimento as datapagamentoreceita', 'conta.agenciaConta', 'despesas.precoReal', 'despesas.descricaoDespesa', 'despesas.idOS', 'despesas.idCodigoDespesas'])
-        ->where('despesas.pago', '=', 'S');
+            ->select(['despesas.id', 'despesas.vencimento', 'conta.agenciaConta', 'despesas.precoReal', 'despesas.descricaoDespesa', 'despesas.idOS', 'despesas.pago as pagoreceita']);
+        // ->where('despesas.pago', '=', "S");
 
         $tabelaReceitas = DB::table('receita')
-        ->join('conta', 'receita.contareceita', 'conta.id')
+            ->join('conta', 'receita.contareceita', 'conta.id')
 
-        ->select(['receita.id','receita.datapagamentoreceita', 'conta.agenciaConta','receita.valorreceita','receita.descricaoReceita', 'receita.idosreceita', 'receita.pagoreceita'])
-        ->where('receita.pagoreceita', '=', 'S')
-        ->unionAll($tabelaDespesas);
+            ->select(['receita.id', 'receita.datapagamentoreceita', 'conta.agenciaConta', 'receita.valorreceita', 'receita.descricaoReceita', 'receita.idosreceita', 'receita.pagoreceita'])
+            // ->where('receita.pagoreceita', '=', "S")
+            ->unionAll($tabelaDespesas);
         // ->get();
 
-        
-        return $tabelaReceitas;
+        $consulta = DB::table(DB::raw("({$tabelaReceitas->toSql()}) as x"))
+            ->select(['id', 'datapagamentoreceita', 'agenciaConta', 'valorreceita', 'descricaoReceita', 'idosreceita', 'pagoreceita'])
+            ->where(function ($consulta) {
+                $consulta->where('pagoreceita', '=', 'S')
+                    ->orWhere('pagoreceita', '=', '1');
+            });
+
+        return $consulta;
     }
 }

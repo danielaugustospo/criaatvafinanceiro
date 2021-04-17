@@ -74,9 +74,9 @@
                         @can('conta-list')
                         <a class="dropdown-item" href="{{ route('contasAReceber') }}">Contas a Receber</a>
                         @endcan
-                        {{-- @can('conta-list')
-                        <a class="dropdown-item" href="{{ route('contacorrente.relatorioFornecedores') }}">Relatório de Fornecedores</a>
-                        @endcan --}}
+                        @can('fornecedor-list')
+                        <a class="dropdown-item" href="{{ route('relatorioFornecedores') }}">Relatório de Fornecedores</a>
+                        @endcan
                     </div>
                 </li>    
 
@@ -87,9 +87,6 @@
                     </a>
                     @endcan
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('benspatrimoniais-list')
-                        <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Saldo das Contas</a>
-                        @endcan
                         @can('entradas-list')
                         <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
                         @endcan

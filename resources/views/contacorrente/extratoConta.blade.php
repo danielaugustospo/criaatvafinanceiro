@@ -7,9 +7,12 @@
             <h2 class="text-center">Consulta de Extrato</h2>
         </div>
         <div class="d-flex justify-content-between pull-right">
+            <div class="col-sm-6">
             @can('receita-create')
             <a class="btn btn-success" href="{{ route('receita.create') }}">Cadastrar Receita</a>
+            <a class="btn btn-dark" href="{{ route('despesas.create') }}">Cadastrar Despesa</a>
             @endcan
+        </div>
             @include('layouts/exibeFiltro')
         </div>
     </div>

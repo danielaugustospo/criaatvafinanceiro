@@ -34,8 +34,8 @@
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th class="text-center">Código</th>
                 <th class="text-center">Nome</th>
+                <th class="text-center">Código</th>
 
                 <th width="100px" class="noExport">Ações</th>
             </tr>

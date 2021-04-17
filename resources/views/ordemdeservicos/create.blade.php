@@ -50,14 +50,14 @@
         <!-- {!! Form::text('idClienteOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
         <select name="idClienteOrdemdeServico" id="idClienteOrdemdeServico" class="form-control  js-example-basic-multiple">
             @foreach ($cliente as $clientes)
-            <option value="{{ $clientes->id }}">{{ $clientes->nomeCliente }}</option>
+            <option value="{{ $clientes->id }}">{{ $clientes->razaosocialCliente }}</option>
             @endforeach
         </select>
     </div>
 
     <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        {!! Form::number('valorTotalOrdemdeServico','',['class' => 'form-control','step'=>'any']) !!}
+        {!! Form::text('valorTotalOrdemdeServico','',['class' => 'padraoReal form-control','step'=>'any', 'id'=>'padraoReal']) !!}
     </div>
 </div>
 

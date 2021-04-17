@@ -42,11 +42,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
 Route::get('/contasAReceber', 'ContaController@contasAReceber')->name('contasAReceber');
 Route::get('/contasAPagar', 'ContaController@contasAPagar')->name('contasAPagar');
+Route::get('/relatorioFornecedores', 'FornecedorController@relatorioFornecedores')->name('relatorioFornecedores');
 
 Route::get('/tabelaContasAReceber', 'ContaController@tabelaContasAReceber')->name('tabelaContasAReceber');
 Route::get('/tabelaContasAPagar', 'ContaController@tabelaContasAPagar')->name('tabelaContasAPagar');
 Route::get('/extratoConta', 'ContaController@extratoConta')->name('extratoConta');
 Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('tabelaExtratoConta');
+Route::get('/tabelaRelatorioFornecedores', 'FornecedorController@tabelaRelatorioFornecedores')->name('tabelaRelatorioFornecedores');
+
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');

@@ -109,7 +109,7 @@ class OrdemdeServicoController extends Controller
         $ultimaOS = DB::select('select max(id) idMaximo from ordemdeservico');
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
-        $cliente = DB::select('select id, nomeCliente from clientes where ativoCliente = 1');
+        $cliente = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
@@ -157,12 +157,14 @@ class OrdemdeServicoController extends Controller
         ]);
 
 
+        // $valorMonetario                  = $request->get('valorTotalOrdemdeServico');
+        // $quantia = $this->validaValores($valorMonetario);
 
 
         // $ordemdeservico->nomeFormaPagamento               = $request->get('nomeFormaPagamento');
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
         // $ordemdeservico->dataVendaOrdemdeServico          = $request->get('dataVendaOrdemdeServico');
-        $ordemdeservico->valorTotalOrdemdeServico         = $request->get('valorTotalOrdemdeServico');
+        $ordemdeservico->valorTotalOrdemdeServico         =  $request->get('valorTotalOrdemdeServico');
         $ordemdeservico->valorProjetoOrdemdeServico       = $request->get('valorProjetoOrdemdeServico');
         $ordemdeservico->valorOrdemdeServico              = $request->get('valorOrdemdeServico');
         $ordemdeservico->dataOrdemdeServico               = $request->get('dataOrdemdeServico');
@@ -370,6 +372,11 @@ class OrdemdeServicoController extends Controller
         // exit;
 
 
+        // $totalreceitas  = "";
+        // $totaldespesas  = "";
+        // $totalOS        = "";
+        // $lucro          = "";
+
         $totalreceitas = number_format($getArrayTotalReceitas, 2, ',', '.');
         $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
         $totalOS = number_format($ordemdeservico->valorTotalOrdemdeServico, 2, ',', '.');
@@ -465,4 +472,20 @@ class OrdemdeServicoController extends Controller
         return redirect()->route('ordemdeservicos.index')
             ->with('success', 'Ordem de Serviço excluída com êxito!');
     }
+
+    // public function validaValores($valorMonetario){
+    //     $SemPonto  = str_replace('.', '', $valorMonetario );
+    //     $SemVirgula  = str_replace(',', '.', $SemPonto );
+    //     $valorMonetario = $SemVirgula;
+    //     return $valorMonetario;
+
+    // }
+    // public function validaValoresParaView($valorMonetario){
+    //     $ComPonto  = str_replace('', '.', $valorMonetario );
+    //     $ComVirgula  = str_replace('.', ',', $ComPonto );
+    //     $valorMonetario = $ComVirgula;
+    //     return $valorMonetario;
+
+    // }
+
 }
