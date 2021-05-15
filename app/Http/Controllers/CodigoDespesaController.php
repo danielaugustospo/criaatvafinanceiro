@@ -46,28 +46,28 @@ class CodigoDespesaController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($despesaCodigoDespesa)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['despesaCodigoDespesa'], $request->get('despesaCodigoDespesa')) ? true : false;
+                            return Str::is($row['despesaCodigoDespesa'], $request->get('despesaCodigoDespesa')) ? true : false;
                         });
                     }
                     if (!empty($idGrupoCodigoDespesa)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idGrupoCodigoDespesa'], $request->get('idGrupoCodigoDespesa')) ? true : false;
+                            return Str::is($row['idGrupoCodigoDespesa'], $request->get('idGrupoCodigoDespesa')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['despesaCodigoDespesa']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['despesaCodigoDespesa']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idGrupoCodigoDespesa']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idGrupoCodigoDespesa']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;

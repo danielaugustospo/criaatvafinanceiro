@@ -46,28 +46,28 @@ class GrupoDespesaController extends Controller
                     
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($grupoDespesa)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['grupoDespesa'], $request->get('grupoDespesa')) ? true : false;
+                            return Str::is($row['grupoDespesa'], $request->get('grupoDespesa')) ? true : false;
                         });
                     }
                     if (!empty($excluidoDespesa)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['excluidoDespesa'], $this->excluidoDespesa) ? true : false;
+                            return Str::is($row['excluidoDespesa'], $this->excluidoDespesa) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['grupoDespesa']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['grupoDespesa']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['excluidoDespesa']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['excluidoDespesa']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

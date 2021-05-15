@@ -28,7 +28,10 @@
 
 {!! Form::model($ordemdeservico, ['method' => 'PATCH','route' => ['ordemdeservicos.update', $ordemdeservico->id]]) !!}
 
-<div class="form-group row">
+@include('ordemdeservicos/campos')
+
+
+{{-- <div class="form-group row">
     <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
     <div class="col-sm-4">
         <!-- {!! Form::text('nomeFormaPagamento', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
@@ -57,16 +60,16 @@
         {!! Form::date('dataVendaOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100']) !!}
     </div>
 
-    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
+    <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        {!! Form::number('valorTotalOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'step'=>'any']) !!}
-        {{-- <input type="text" id="valorTotalOrdemdeServico" class="form-control" name="valorTotalOrdemdeServico" value="{{$ordemdeservico->valorTotalOrdemdeServico}}" placeholder="Preencha o preço real" /><br> --}}
+        {!! Form::number('valorOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'step'=>'any']) !!}
+        {{-- <input type="text" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="{{$ordemdeservico->valorOrdemdeServico}}" placeholder="Preencha o preço real" /><br> --}}
 
-    </div>
-</div>
+    {{-- </div>
+</div> --}}
 
 
-<div class="form-group row">
+{{-- <div class="form-group row">
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
     <div class="col-sm-10">
         {!! Form::text('eventoOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
@@ -79,10 +82,9 @@
         {!! Form::text('obsOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
     </div>
-</div>
+</div> --}}
 
 <input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="{{$ordemdeservico->valorProjetoOrdemdeServico}}" placeholder="Preencha o preço real" /><br>
-<input type="hidden" id="valorOrdemdeServico" class="form-control" name="valorOrdemdeServico" value="{{$ordemdeservico->valorOrdemdeServico}}" placeholder="Preencha o preço real" /><br>
 
 {!! Form::hidden('dataOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('dataCriacaoOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}

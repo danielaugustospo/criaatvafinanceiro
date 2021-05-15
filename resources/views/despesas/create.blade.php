@@ -31,7 +31,8 @@
 @include('despesas/campos')
 
 <!-- Seção Despesas -->
-
+{!! Form::hidden('idAlteracaoUsuario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
+{!! Form::hidden('idAutor', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 

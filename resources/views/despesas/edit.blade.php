@@ -37,6 +37,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
     <button type="submit" class="btn btn-primary">Salvar</button>
 </div>
+{!! Form::hidden('idAlteracaoUsuario', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
 
 {!! Form::close() !!}
 

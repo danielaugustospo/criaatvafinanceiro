@@ -12,6 +12,10 @@ use DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use App\Providers\AppServiceProvider;
+use App\Providers\FormatacoesServiceProvider;
+use Illuminate\Support\Facades\App;
+
+
 
 
 class DespesaController extends Controller
@@ -32,6 +36,7 @@ class DespesaController extends Controller
         $this->valorInput = null;
         $this->valorSemCadastro = null;
 
+        
         if ($this->acao == 'create'){
             $this->valorInput = " ";
             $this->valorSemCadastro = "0";
@@ -77,56 +82,56 @@ class DespesaController extends Controller
                     $idOS = $request->get('idOS');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($descricaoDespesa)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['descricaoDespesa'], $request->get('descricaoDespesa')) ? true : false;
+                            return Str::is($row['descricaoDespesa'], $request->get('descricaoDespesa')) ? true : false;
                         });
                     }
                     if (!empty($precoReal)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['precoReal'], $request->get('precoReal')) ? true : false;
+                            return Str::is($row['precoReal'], $request->get('precoReal')) ? true : false;
                         });
                     }
                     if (!empty($vencimento)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['vencimento'], $request->get('vencimento')) ? true : false;
+                            return Str::is($row['vencimento'], $request->get('vencimento')) ? true : false;
                         });
                     }
                     if (!empty($idCodigoDespesas)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idCodigoDespesas'], $request->get('idCodigoDespesas')) ? true : false;
+                            return Str::is($row['idCodigoDespesas'], $request->get('idCodigoDespesas')) ? true : false;
                         });
                     }
                     if (!empty($nRegistro)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nRegistro'], $request->get('nRegistro')) ? true : false;
+                            return Str::is($row['nRegistro'], $request->get('nRegistro')) ? true : false;
                         });
                     }
                     if (!empty($idOS)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idOS'], $request->get('idOS')) ? true : false;
+                            return Str::is($row['idOS'], $request->get('idOS')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['descricaoDespesa']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['descricaoDespesa']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['precoReal']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['precoReal']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['vencimento']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['vencimento']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idCodigoDespesas']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idCodigoDespesas']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nRegistro']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nRegistro']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idOS']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idOS']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;
@@ -155,8 +160,12 @@ class DespesaController extends Controller
      */
     public function create()
     {
+
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
-        $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
+        // $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
+        $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
+        where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
+
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
@@ -179,6 +188,8 @@ class DespesaController extends Controller
     public function store(Request $request)
     {
         $despesa = new Despesa();
+
+        var_dump($request);
         $request->validate([
 
             'idCodigoDespesas'          => 'required',
@@ -207,7 +218,7 @@ class DespesaController extends Controller
             'cheque'                    => 'required',
         ]);
         $valorMonetario                  = $request->get('precoReal');
-        $quantia = $this->validaValores($valorMonetario);
+        $quantia = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
     
 
         $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
@@ -215,6 +226,7 @@ class DespesaController extends Controller
         $despesa->idDespesaPai               = $request->get('idDespesaPai');
         $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
         $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+        $despesa->tipoFornecedor             = $request->get('tipoFornecedor');
         $despesa->idFornecedor               = $request->get('idFornecedor');
         $despesa->precoReal                  = $quantia;
         $despesa->atuacao                    = $request->get('atuacao');
@@ -234,6 +246,8 @@ class DespesaController extends Controller
         $despesa->cheque                     = $request->get('cheque');
         $despesa->ativoDespesa               = $request->get('ativoDespesa');
         $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
+        $despesa->idAlteracaoUsuario         = $request->get('idAlteracaoUsuario');
+        $despesa->idAutor                    = $request->get('idAutor');
 
 
         $despesa->save();
@@ -256,13 +270,15 @@ class DespesaController extends Controller
 
         $listaContas  = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
 
-        $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1 order by id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);
+        $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
+        where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);        
+        
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1 order by id = :idFornecedor desc', ['idFornecedor' => $despesa->idFornecedor]);
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
         $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
         $valorMonetario = $despesa->precoReal;
-        $precoReal = $this->validaValoresParaView($valorMonetario);
+        $precoReal = FormatacoesServiceProvider::validaValoresParaView($valorMonetario);
 
 
         $valorInput = $this->valorInput; 
@@ -285,14 +301,16 @@ class DespesaController extends Controller
 
         $listaContas  = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
 
-        $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1 order by id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);
+        $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
+        where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id = :codigoCadastrado desc', ['codigoCadastrado' => $despesa->idCodigoDespesas]);
+
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
         $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
 
         $valorMonetario = $despesa->precoReal;
-        $precoReal = $this->validaValoresParaView($valorMonetario);
+        $precoReal = FormatacoesServiceProvider::validaValoresParaView($valorMonetario);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
@@ -343,13 +361,17 @@ class DespesaController extends Controller
         ]);
         
         $valorMonetario                  = $request->get('precoReal');
-        $quantia = $this->validaValores($valorMonetario);
+
+        // $quantia = $this->validaValores($valorMonetario);
+        $quantia = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
+        
 
         $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
         $despesa->idOS                       = $request->get('idOS');
         $despesa->idDespesaPai               = $request->get('idDespesaPai');
         $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
         $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+        $despesa->tipoFornecedor             = $request->get('tipoFornecedor');
         $despesa->idFornecedor               = $request->get('idFornecedor');
         $despesa->precoReal                  = $quantia;
         $despesa->atuacao                    = $request->get('atuacao');
@@ -369,6 +391,8 @@ class DespesaController extends Controller
         $despesa->cheque                     = $request->get('cheque');
         $despesa->ativoDespesa               = $request->get('ativoDespesa');
         $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
+        $despesa->idAlteracaoUsuario         = $request->get('idAlteracaoUsuario');
+        // $despesa->idAutor                    = $request->get('idAutor');
 
 
         $despesa->update();
@@ -392,18 +416,5 @@ class DespesaController extends Controller
             ->with('success', 'Despesa excluída com êxito!');
     }
 
-    public function validaValores($valorMonetario){
-        $SemPonto  = str_replace('.', '', $valorMonetario );
-        $SemVirgula  = str_replace(',', '.', $SemPonto );
-        $valorMonetario = $SemVirgula;
-        return $valorMonetario;
 
-    }
-    public function validaValoresParaView($valorMonetario){
-        $ComPonto  = str_replace('', '.', $valorMonetario );
-        $ComVirgula  = str_replace('.', ',', $ComPonto );
-        $valorMonetario = $ComVirgula;
-        return $valorMonetario;
-
-    }
 }

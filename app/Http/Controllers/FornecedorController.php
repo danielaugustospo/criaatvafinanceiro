@@ -72,91 +72,91 @@ class FornecedorController extends Controller
                 $bancoFornecedor        = $request->get('bancoFornecedor');
                 if (!empty($id)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        return Str::is($row['id'], $request->get('id')) ? true : false;
                     });
                 }
                 if (!empty($nomeFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['nomeFornecedor'], $request->get('nomeFornecedor')) ? true : false;
+                        return Str::is($row['nomeFornecedor'], $request->get('nomeFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($razaosocialFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['razaosocialFornecedor'], $request->get('razaosocialFornecedor')) ? true : false;
+                        return Str::is($row['razaosocialFornecedor'], $request->get('razaosocialFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($cnpjFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['cnpjFornecedor'], $request->get('cnpjFornecedor')) ? true : false;
+                        return Str::is($row['cnpjFornecedor'], $request->get('cnpjFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($cpfFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['cpfFornecedor'], $request->get('cpfFornecedor')) ? true : false;
+                        return Str::is($row['cpfFornecedor'], $request->get('cpfFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($telefone1Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['telefone1Fornecedor'], $request->get('telefone1Fornecedor')) ? true : false;
+                        return Str::is($row['telefone1Fornecedor'], $request->get('telefone1Fornecedor')) ? true : false;
                     });
                 }
                 if (!empty($telefone2Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['telefone2Fornecedor'], $request->get('telefone2Fornecedor')) ? true : false;
+                        return Str::is($row['telefone2Fornecedor'], $request->get('telefone2Fornecedor')) ? true : false;
                     });
                 }
                 if (!empty($nrcontaFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['nrcontaFornecedor'], $request->get('nrcontaFornecedor')) ? true : false;
+                        return Str::is($row['nrcontaFornecedor'], $request->get('nrcontaFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($agenciaFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['agenciaFornecedor'], $request->get('agenciaFornecedor')) ? true : false;
+                        return Str::is($row['agenciaFornecedor'], $request->get('agenciaFornecedor')) ? true : false;
                     });
                 }
                 if (!empty($chavePix1Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['chavePix1Fornecedor'], $request->get('chavePix1Fornecedor')) ? true : false;
+                        return Str::is($row['chavePix1Fornecedor'], $request->get('chavePix1Fornecedor')) ? true : false;
                     });
                 }
                 if (!empty($chavePix2Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['chavePix2Fornecedor'], $request->get('chavePix2Fornecedor')) ? true : false;
+                        return Str::is($row['chavePix2Fornecedor'], $request->get('chavePix2Fornecedor')) ? true : false;
                     });
                 }
                 if (!empty($bancoFornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['bancoFornecedor'], $request->get('bancoFornecedor')) ? true : false;
+                        return Str::is($row['bancoFornecedor'], $request->get('bancoFornecedor')) ? true : false;
                     });
                 }
 
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                        if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                        if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['nomeFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['nomeFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['razaosocialFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['razaosocialFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['cnpjFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['cnpjFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['cpfFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['cpfFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['telefone1Fornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['telefone1Fornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['telefone2Fornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['telefone2Fornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['nrcontaFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['nrcontaFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['agenciaFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['agenciaFornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['chavePix1Fornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['chavePix1Fornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['chavePix2Fornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['chavePix2Fornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['bancoFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['bancoFornecedor']), Str::lower($request->get('search')))) {
                             return true;
                         }
                         return false;
@@ -224,7 +224,7 @@ class FornecedorController extends Controller
             'cpfFornecedor'           => 'required|min:1|cpf|unique:fornecedores',
             'identidadeFornecedor'    => 'required|min:1',
             'emailFornecedor'         => 'required|min:5',
-            'dataCadastroFornecedor'  => 'required|min:1',
+            // 'dataContratoFornecedor'  => 'required|min:1',
             'bancoFornecedor'         => 'required|min:1',
             'nrcontaFornecedor'       => 'required|min:1',
             'agenciaFornecedor'       => 'required|min:1',
@@ -323,7 +323,7 @@ class FornecedorController extends Controller
             'cpfFornecedor'                         => 'required|min:1|cpf',
             'identidadeFornecedor'                  => 'required|min:1',
             'emailFornecedor'                       => 'required|min:5',
-            'dataCadastroFornecedor'                => 'required|min:1',
+            // 'dataContratoFornecedor'                => 'required|min:1',
             'bancoFornecedor'                       => 'required|min:1',
             'nrcontaFornecedor'                     => 'required|min:1',
             'agenciaFornecedor'                     => 'required|min:1',
@@ -357,10 +357,11 @@ class FornecedorController extends Controller
         $fornecedor->telefone2Fornecedor                  =  $request->input('telefone2Fornecedor');
         $fornecedor->cnpjFornecedor                       =  $request->input('cnpjFornecedor');
         $fornecedor->inscEstadualFornecedor               =  $request->input('inscEstadualFornecedor');
+        $fornecedor->inscMunicipalFornecedor               =  $request->input('inscMunicipalFornecedor');
         $fornecedor->cpfFornecedor                        =  $request->input('cpfFornecedor');
         $fornecedor->identidadeFornecedor                 =  $request->input('identidadeFornecedor');
         $fornecedor->emailFornecedor                      =  $request->input('emailFornecedor');
-        $fornecedor->dataCadastroFornecedor               =  $request->input('dataCadastroFornecedor');
+        $fornecedor->dataContratoFornecedor               =  $request->input('dataContratoFornecedor');
         $fornecedor->bancoFornecedor                      =  $request->input('bancoFornecedor');
         $fornecedor->nrcontaFornecedor                    =  $request->input('nrcontaFornecedor');
         $fornecedor->agenciaFornecedor                    =  $request->input('agenciaFornecedor');

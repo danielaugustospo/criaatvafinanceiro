@@ -1,4 +1,4 @@
-<div class="form-group row">
+{{-- <div class="form-group row">
 
     <label for="idosreceita" class="col-sm-2 col-form-label">Vincular a OS:</label>
     <div class="col-sm-10 mb-3">
@@ -10,6 +10,27 @@
             @endforeach
         </select>
     </div>
+</div> --}}
+<div class="form-group row">
+    <label for="idclientereceita" class="col-sm-2 col-form-label">Cliente/Receita</label>
+    <div class="col-sm-10 mb-3">
+        <select name="idclientereceita" id="idclientereceita" class="selecionaComInput form-control" style="width: -webkit-fill-available;" {{$variavelDisabledNaView}}>
+            @foreach ($todosClientesAtivos as $listaClientes)
+            <option value="{{$listaClientes->id}}">
+                {{$listaClientes->razaosocialCliente}}
+            </option>
+            @endforeach
+        </select>
+    </div>
+
+</div>
+
+<div class="form-group row">
+    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
+    <div class="col-sm-2">
+
+        {!! Form::text('registroreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+    </div>
 </div>
 <div class="form-group row">
     <label class="col-sm-2 col-form-label">Descrição</label>
@@ -20,20 +41,46 @@
 
 </div>
 
-<div class="form-group row">
 
-    <label for="registroreceita" class="col-sm-2 col-form-label">N° Registro</label>
+
+<div class="form-group row">
+    <label for="idformapagamentoreceita" class="col-sm-2 col-form-label">Forma Pagamento</label>
+    <div class="col-sm-4">
+        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-12 js-example-basic-multiple" {{$variavelDisabledNaView}}>
+            {{-- <option value="0" selected="selected">Sem Receita</option> --}}
+            @foreach ($formapagamento as $formaPG)
+            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>    
+<div class="form-group row">
+    <label for="contareceita" class="col-sm-2 col-form-label">Conta</label>
     <div class="col-sm-2">
 
-        {!! Form::text('registroreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+        <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-14 form-control js-example-basic-multiple" {{$variavelDisabledNaView}}>
+            @foreach ($listaContas as $contas)
+            <option value="{{ $contas->id }}">{{ $contas->numeroConta }}</option>
+            @endforeach
+        </select>
     </div>
-    <label for="datapagamentoreceita" class="col-sm-2 col-form-label">Data de Pagamento</label>
-    <div class="col-sm-3">
-        {!! Form::date('datapagamentoreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-8 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+</div>    
+<div class="form-group row">
+    <label for="valorreceita" class="col-sm-2 col-form-label">Valor</label>
+    <div class="col-sm-2">
+        {!! Form::text('valorreceita', $valorReceita, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal col-sm-12 form-control', 'maxlength' => '100', 'id' => 'valorreceita', 'valor' => '0,00', $variavelReadOnlyNaView]) !!}
+        {{-- <input type="text" id="valorreceita" class="padraoReal col-sm-8 form-control" name="valorreceita" value="0,00" placeholder="Preencha o valor" /><br> --}}
     </div>
+</div>
+    <div class="form-group row">
+    <label for="datapagamentoreceita" class="col-sm-2 col-form-label">Vencimento</label>
+    <div class="col-sm-2">
+        {!! Form::date('datapagamentoreceita', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-12 form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+    </div>
+</div>  
+<div class="form-group row">
 
-
-    <label for="pagoreceita" class="col-sm-1 col-form-label">Pago</label>
+    <label for="pagoreceita" class="col-sm-2 col-form-label">Pago</label>
     <div class="col-sm-2">
         <select name="pagoreceita" id="pagoreceita" style="padding:4px;" class="form-control" {{$variavelDisabledNaView}}>
             @if (Request::path() == 'receita/create')
@@ -48,32 +95,12 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="valorreceita" class="col-sm-2 col-form-label">Valor</label>
-    <div class="col-sm-2">
-        {!! Form::text('valorreceita', $valorReceita, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal col-sm-12 form-control', 'maxlength' => '100', 'id' => 'valorreceita', 'valor' => '0,00', $variavelReadOnlyNaView]) !!}
-        {{-- <input type="text" id="valorreceita" class="padraoReal col-sm-8 form-control" name="valorreceita" value="0,00" placeholder="Preencha o valor" /><br> --}}
-    </div>
-
-    <label for="idformapagamentoreceita" class="col-sm-1 col-form-label">Forma Pagamento</label>
-    <div class="col-sm-4">
-        <select name="idformapagamentoreceita" id="idFormaPagamentoReceita" class="selecionaComInput form-control col-sm-10 js-example-basic-multiple" {{$variavelDisabledNaView}}>
-            {{-- <option value="0" selected="selected">Sem Receita</option> --}}
-            @foreach ($formapagamento as $formaPG)
-            <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
-            @endforeach
-        </select>
-    </div>
 
 
-    <label for="contareceita" class="col-sm-1 col-form-label">Conta</label>
-    <div class="col-sm-2">
 
-        <select name="contareceita" id="contaReceita" class="selecionaComInput col-sm-14 form-control js-example-basic-multiple" {{$variavelDisabledNaView}}>
-            @foreach ($listaContas as $contas)
-            <option value="{{ $contas->id }}">{{ $contas->numeroConta }}</option>
-            @endforeach
-        </select>
-    </div>
+
+
+
 
 </div>
 

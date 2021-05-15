@@ -48,42 +48,42 @@ class EntradasController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($descricaoentrada)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['descricaoentrada'], $request->get('descricaoentrada')) ? true : false;
+                            return Str::is($row['descricaoentrada'], $request->get('descricaoentrada')) ? true : false;
                         });
                     }
                     if (!empty($qtdeEntrada)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['qtdeEntrada'], $request->get('qtdeEntrada')) ? true : false;
+                            return Str::is($row['qtdeEntrada'], $request->get('qtdeEntrada')) ? true : false;
                         });
                     }
                     if (!empty($idbenspatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
+                            return Str::is($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
                         });
                     }
                     if (!empty($valorunitarioentrada)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['valorunitarioentrada'], $request->get('valorunitarioentrada')) ? true : false;
+                            return Str::is($row['valorunitarioentrada'], $request->get('valorunitarioentrada')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['descricaoentrada']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['descricaoentrada']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['qtdeEntrada']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['qtdeEntrada']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['valorunitarioentrada']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['valorunitarioentrada']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;

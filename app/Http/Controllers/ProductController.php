@@ -43,28 +43,28 @@ class ProductController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($name)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['name'], $request->get('name')) ? true : false;
+                            return Str::is($row['name'], $request->get('name')) ? true : false;
                         });
                     }
                     if (!empty($detail)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['detail'], $request->get('detail')) ? true : false;
+                            return Str::is($row['detail'], $request->get('detail')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['name']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['detail']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['detail']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

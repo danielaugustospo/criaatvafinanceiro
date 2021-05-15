@@ -44,17 +44,17 @@ class OrgaosRGController extends Controller
                     $estadoOrgaoRG = $request->get('estadoOrgaoRG');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nome)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nome'], $request->get('nome')) ? true : false;
+                            return Str::is($row['nome'], $request->get('nome')) ? true : false;
                         });
                     }
                     if (!empty($estadoOrgaoRG)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['estadoOrgaoRG'], $request->get('estadoOrgaoRG')) ? true : false;
+                            return Str::is($row['estadoOrgaoRG'], $request->get('estadoOrgaoRG')) ? true : false;
                         });
                     }
                     
@@ -62,11 +62,11 @@ class OrgaosRGController extends Controller
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nome']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nome']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['estadoOrgaoRG']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['estadoOrgaoRG']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;

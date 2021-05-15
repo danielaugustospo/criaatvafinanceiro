@@ -50,41 +50,41 @@ class TabelaPercentualController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nometabelapercentual)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nometabelapercentual'], $request->get('nometabelapercentual')) ? true : false;
+                            return Str::is($row['nometabelapercentual'], $request->get('nometabelapercentual')) ? true : false;
                         });
                     }
                     if (!empty($percentualtabelapercentual)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['percentualtabelapercentual'], $request->get('percentualtabelapercentual')) ? true : false;
+                            return Str::is($row['percentualtabelapercentual'], $request->get('percentualtabelapercentual')) ? true : false;
                         });
                     }
                     if (!empty($pgtabelapercentual)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['pgtabelapercentual'], $request->get('pgtabelapercentual')) ? true : false;
+                            return Str::is($row['pgtabelapercentual'], $request->get('pgtabelapercentual')) ? true : false;
                         });
                     }
                     if (!empty($idostabelapercentual)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idostabelapercentual'], $request->get('idostabelapercentual')) ? true : false;
+                            return Str::is($row['idostabelapercentual'], $request->get('idostabelapercentual')) ? true : false;
                         });
                     }
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nometabelapercentual']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nometabelapercentual']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['percentualtabelapercentual']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['percentualtabelapercentual']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['pgtabelapercentual']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['pgtabelapercentual']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idostabelapercentual']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idostabelapercentual']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

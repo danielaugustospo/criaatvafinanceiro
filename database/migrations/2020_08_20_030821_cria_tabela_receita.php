@@ -17,7 +17,8 @@ class CriaTabelaReceita extends Migration
         Schema::create('receita', function (Blueprint $table) {
             $table->bigincrements('id');
 
-
+            $table->string('idosreceita')->nullable();
+            $table->string('idclientereceita')->nullable();
             $table->string('idformapagamentoreceita');
             $table->string('datapagamentoreceita');
             $table->string('dataemissaoreceita');
@@ -28,7 +29,6 @@ class CriaTabelaReceita extends Migration
             $table->string('registroreceita');
             // $table->string('emissaoreceita');
             $table->string('nfreceita');
-            $table->string('idosreceita');
 
 
             $table->timestamps();

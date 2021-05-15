@@ -36,4 +36,8 @@
         font-weight: bold;
         color: #3490dc;
     }
+
+    p,label,h1,h2,h3,h4,h5,th {
+        text-transform: uppercase; 
+    }
 </style>

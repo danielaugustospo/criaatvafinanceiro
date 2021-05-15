@@ -1,4 +1,6 @@
-<div class="container" id="container">
+<div class="container shadowDiv mb-5 rounded" style="background-color: lightslategray !important; color:white;" id="container">
+
+    {{-- <div class="container" id="container"> --}}
     <div id="areaTabela">
         <div id="div_BuscaPersonalizada">
             <h4 class="text-center">Busca Personalizada</h4>
@@ -31,16 +33,16 @@
                 </select>
 
                 <label for="" class="col-sm-2">Valor Projeto</label>
-                <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaValor" name="valorTotalOrdemdeServico" id="valorTotalOrdemdeServico">
+                <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaValor" name="valorOrdemdeServico" id="valorOrdemdeServico">
                     <option value="">Listar todos</option>
                     @foreach ($listaOrdemDeServicos as $ordemDeServicos)
-                    <option value="{{ $ordemDeServicos->valorTotalOrdemdeServico }}">{{ $ordemDeServicos->valorTotalOrdemdeServico }}</option>
+                    <option value="{{ $ordemDeServicos->valorOrdemdeServico }}">{{ $ordemDeServicos->valorOrdemdeServico }}</option>
                     @endforeach
                 </select>
 
                 <input class="btn btn-primary ml-2" type="button" name="pesquisar" id="pesquisar" value="Pesquisar">
             </div>
         </div>
-        <hr>
     </div>
     <br>
+</div>

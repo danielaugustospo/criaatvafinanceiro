@@ -49,72 +49,72 @@ class SaidasController extends Controller
                 $ocorrenciasaida                = $request->get('ocorrenciasaida');
                 if (!empty($id)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        return Str::is($row['id'], $request->get('id')) ? true : false;
                     });
                 }
                 if (!empty($nomesaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['nomesaida'], $request->get('nomesaida')) ? true : false;
+                        return Str::is($row['nomesaida'], $request->get('nomesaida')) ? true : false;
                     });
                 }
                 if (!empty($descricaosaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['descricaosaida'], $request->get('descricaosaida')) ? true : false;
+                        return Str::is($row['descricaosaida'], $request->get('descricaosaida')) ? true : false;
                     });
                 }
                 if (!empty($idbenspatrimoniais)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
+                        return Str::is($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
                     });
                 }
                 if (!empty($portadorsaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['portadorsaida'], $request->get('portadorsaida')) ? true : false;
+                        return Str::is($row['portadorsaida'], $request->get('portadorsaida')) ? true : false;
                     });
                 }
                 if (!empty($datapararetiradasaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['datapararetiradasaida'], $request->get('datapararetiradasaida')) ? true : false;
+                        return Str::is($row['datapararetiradasaida'], $request->get('datapararetiradasaida')) ? true : false;
                     });
                 }
                 if (!empty($dataretiradasaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['dataretiradasaida'], $request->get('dataretiradasaida')) ? true : false;
+                        return Str::is($row['dataretiradasaida'], $request->get('dataretiradasaida')) ? true : false;
                     });
                 }
                 if (!empty($dataretornoretiradasaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['dataretornoretiradasaida'], $request->get('dataretornoretiradasaida')) ? true : false;
+                        return Str::is($row['dataretornoretiradasaida'], $request->get('dataretornoretiradasaida')) ? true : false;
                     });
                 }
                 if (!empty($ocorrenciasaida)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['ocorrenciasaida'], $request->get('ocorrenciasaida')) ? true : false;
+                        return Str::is($row['ocorrenciasaida'], $request->get('ocorrenciasaida')) ? true : false;
                     });
                 }
 
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                        if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                        if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['nomesaida']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['nomesaida']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['descricaosaida']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['descricaosaida']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['portadorsaida']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['portadorsaida']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['datapararetiradasaida']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['datapararetiradasaida']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['dataretiradasaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
-                        else if (Str::contains(Str::lower($row['dataretornoretiradasaida']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['dataretiradasaida']), Str::lower($request->get('search')))) {
                             return true;
                         }
-                        else if (Str::contains(Str::lower($row['ocorrenciasaida']), Str::lower($request->get('search')))) {
+                        else if (Str::is(Str::lower($row['dataretornoretiradasaida']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                        else if (Str::is(Str::lower($row['ocorrenciasaida']), Str::lower($request->get('search')))) {
                             return true;
                         }
                         return false;

@@ -47,27 +47,27 @@ class BancoController extends Controller
                     $codigoBanco = $request->get('codigoBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nomeBanco)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nomeBanco'], $request->get('nomeBanco')) ? true : false;
+                            return Str::is($row['nomeBanco'], $request->get('nomeBanco')) ? true : false;
                         });
                     }
                     if (!empty($codigoBanco)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['codigoBanco'], $request->get('codigoBanco')) ? true : false;
+                            return Str::is($row['codigoBanco'], $request->get('codigoBanco')) ? true : false;
                         });
                     }
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nomeBanco']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeBanco']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['codigoBanco']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['codigoBanco']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

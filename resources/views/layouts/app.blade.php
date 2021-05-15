@@ -9,12 +9,19 @@
     <title>{{ config('app.name', 'Gerenciamento Financeiro - Criaatva') }}</title>
     <!-- Scripts -->
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" /> --}}
-    {{-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+
+
+
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>   --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -22,6 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.22/dataRender/datetime.js"></script>
 
+    
     {{-- Exportação Botões Tabela --}}
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -32,22 +40,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
 
 
+
+
      <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
 
      <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>     
      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-
-     {{-- <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>   --}}
-
-    {{-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>  --}}
-
-    
-    {{-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" /> --}}
-     {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> --}}
 
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
@@ -56,6 +54,9 @@
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
     <script src="{{ asset('js/inputmask5x/dist/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('js/inputmask5x/dist/bindings/inputmask.binding.js') }}"></script>
+
+
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -81,6 +82,18 @@
                 'allowMinus': false,
                 // 'prefix': 'R$ ',
                 'placeholder': '0',
+            });
+        });
+        $(document).ready(function() {
+            $(".padraoRealEdicao").inputmask('currency',{"autoUnmask": true,
+            // radixPoint:",",
+            // groupSeparator: ".",
+            allowMinus: false,
+            prefix: 'R$ ',            
+            // digits: 2,
+            digitsOptional: false,
+            rightAlign: true,
+            unmaskAsNumber: true
             });
         });
 
@@ -202,17 +215,6 @@
                 'placeholder': ''
             });
 
-            $("#valorTotalOrdemdeServico").inputmask('decimal', {
-                'alias': 'numeric',
-                // 'groupSeparator': '.',
-                'autoGroup': true,
-                'digits': 2,
-                'radixPoint': ".",
-                'digitsOptional': false,
-                'allowMinus': false,
-                // 'prefix': 'R$ ',
-                'placeholder': ''
-            });
 
             $("#valorProjetoOrdemdeServico").inputmask('decimal', {
                 'alias': 'numeric',
@@ -250,7 +252,9 @@
                 'placeholder': ''
             });
         });
-    </script>
+
+</script>
+
     <style>
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
@@ -259,9 +263,19 @@
             margin: 0;
         }
 
-        /* Firefox */
+
+            /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
+        }
+        .shadowDiv {
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.5)!important;
+        }
+
+         .nav-link,#navbarDropdown {
+            color: yellow !important;
+            /* background-color: brown;
+            background-size: 0.2%; */
         }
     </style>
 </head>

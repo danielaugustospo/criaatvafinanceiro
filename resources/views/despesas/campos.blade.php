@@ -1,15 +1,25 @@
+@include('despesas/script')
+
+<br>
+<hr>
+<div class="form-group row">
+    <h5 for="descricaoDespesa" style="color: red;" class="col-sm-2 "><b>É Compra?</b></h5>
+        <div class="col-sm-10 mt-2">
+            <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" /> SIM</label>
+            <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" /> NÃO</label>
+        </div>
+</div>
+
 <div class="form-group row">
     <label for="idCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
-    <div class="col-sm-4">
-
+    <div class="col-sm-10">
         <select name="idCodigoDespesas" id="idCodigoDespesas" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}}>
             @foreach ($codigoDespesa as $listaCodigoDespesas)
             <option value="{{$listaCodigoDespesas->id}}">
-                Código da Despesa: {{$listaCodigoDespesas->idGrupoCodigoDespesa}} - Tipo de Despesa: {{$listaCodigoDespesas->despesaCodigoDespesa}}
+                {{$listaCodigoDespesas->idGrupoCodigoDespesa}} | {{$listaCodigoDespesas->despesaCodigoDespesa}} | {{ $listaCodigoDespesas->grupoDespesa }}
             </option>
             @endforeach
         </select>
-
     </div>
 </div>
 
@@ -18,13 +28,13 @@
     <div class="col-sm-2">
         {{ Form::text('nRegistro', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '50', $variavelReadOnlyNaView]) }}
     </div>
-    <label for="idOS" class="col-sm-2 col-form-label">Vincular a OS</label>
-    <div class="col-sm-4">
+    <label for="idOS" class="col-sm-1 col-form-label">OS</label>
+    <div class="col-sm-7">
 
         <select name="idOS" id="idOS" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}}>
             @foreach ($todasOSAtivas as $listaOS)
             <option value="{{$listaOS->id}}">
-                Código da OS: {{$listaOS->id}} - Evento: {{$listaOS->eventoOrdemdeServico}}
+                {{$listaOS->id}} - Evento {{$listaOS->eventoOrdemdeServico}}
             </option>
             @endforeach
         </select>
@@ -40,18 +50,43 @@
     </div>
 </div>
 
-<div class="form-group row">
-    <label for="idFornecedor" class="col-sm-2 col-form-label">Fornecedor</label>
-    <div class="col-sm-10">
 
-        <select name="idFornecedor" id="idFornecedor" class="selecionaComInput form-control" {{$variavelDisabledNaView}}>
+<div class="form-group row">
+<label for="tipoFornecedor" class="col-sm-2 col-form-label">Tipo Fornecedor</label>
+<div class="col-sm-10 mt-2">
+    <label for="chkForn" class="mr-2"><input type="radio" value="FOR" name="tipoFornecedor" id="chkForn" /> FORNECEDOR</label>
+    <label for="chkFunc"><input type="radio" value="FUN" name="tipoFornecedor" id="chkFunc" /> PRESTADOR DE SERVIÇO</label>
+
+</div>
+</div>
+
+<input type="hidden" name="idFornecedor" id="idFornecedor">
+
+<div class="form-group row" id="telaFornecedor" >        
+    <label for="" class="col-sm-2 col-form-label">Fornecedor</label>
+    <div class="col-sm-4">
+        
+        <select onchange="pegaIdFornecedor();"  name="selecionaFornecedor" class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{$variavelDisabledNaView}}>
             @foreach ($listaForncedores as $fornecedor)
-                <option value="{{ $fornecedor->id }}">{{ $fornecedor->nomeFornecedor }}</option>
+            <option  value="{{ $fornecedor->id }}">{{ $fornecedor->nomeFornecedor }}</option>
             @endforeach
         </select>
-
     </div>
 </div>
+<div class="form-group row" id="telaFuncionario">        
+    <label for="" class="col-sm-2 col-form-label">Prestador de Serviço</label>
+    <div class="col-sm-4">
+
+    <select onchange="pegaIdFuncionario();" name="selecionaFornecedor" class="selecionaComInput selecionaFuncionario form-control col-sm-12" {{$variavelDisabledNaView}}>
+        @foreach ($listaFuncionarios as $funcionarios)
+            <option value="{{ $funcionarios->id }}">{{ $funcionarios->nomeFuncionario }}</option>
+        @endforeach
+    </select>
+    </div>
+</div>
+
+<br>
+
 <div class="form-group row">
     <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
     <div class="col-sm-4">
@@ -82,17 +117,24 @@
 
     <label for="precoReal" class="col-sm-2 col-form-label">Preço</label>
     <div class="col-sm-2">
-         {{-- <input type="text" id="precoReal" class="padraoReal form-control" name="precoReal" value="{{ $despesa->precoReal }}" placeholder="Preencha o preço cliente" $variavelReadOnlyNaView /><br>  --}}
         {!! Form::text('precoReal', $precoReal, ['class' => 'padraoReal form-control', 'maxlength' => '100', 'id' => 'precoReal',  $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
 <div class="form-group row">
-    <label for="vencimento" class="col-sm-2 col-form-label">Vencimento</label>
+    <label for="vencimento" class="col-sm-2 col-form-label">Data da Compra</label>
     <div class="col-sm-3">
         {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
+
+<div class="form-group row">
+    <label for="vencimento" class="col-sm-2 col-form-label">Data do Pagamento</label>
+    <div class="col-sm-3">
+        {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+    </div>
+</div>
+
 
 <div class="form-group row">
 
@@ -101,10 +143,24 @@
         {!! Form::text('notaFiscal', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
+<div class="form-group row" id="divComprou">
+
+    <label for="quemComprouSelect" class="col-sm-2 col-form-label">Quem Comprou</label>
+    <div class="col-sm-4">
+        <select onchange="alteraIdComprador();" name="quemComprouSelect" id="selecionaComprador" class="selecionaComInput quemComprouSelect form-control" {{$variavelDisabledNaView}}>
+            @foreach ($listaFuncionarios as $funcionario)
+                <option value="{{ $funcionario->id }}">{{ $funcionario->nomeFuncionario }}</option>
+            @endforeach
+        </select>    
+    </div>
+    <input type="hidden" name="quemcomprou" id="quemcomprou">
+
+</div>
+
 <div class="form-group row">
 
     <label for="idBanco" class="col-sm-2 col-form-label">Banco</label>
-    <div class="col-sm-2">
+    <div class="col-sm-4">
 
         <select name="idBanco" id="idBanco"  class="selecionaComInput form-control" {{$variavelDisabledNaView}}>
             @if (Request::path() == 'despesas/create')
@@ -150,8 +206,8 @@
     <div class="col-sm-2">
         <select name="quempagou" id="quempagou" style="padding:4px;" class="selecionaComInput form-control" {{$variavelDisabledNaView}}>
             @if (Request::path() == 'despesas/create')
-            <option value="S">Sim</option>
             <option value="N">Não</option>
+            <option value="S">Sim</option>
             @else
             <option value="S" {{$despesa->quempagou == 'S'?' selected':''}}>Sim</option>
             <option value="N" {{$despesa->quempagou == 'N'?' selected':''}}>Não</option>
@@ -161,15 +217,14 @@
 
 </div>
 
-
 <div class="form-group row">
 
     <label for="valorEstornado" class="col-sm-2 col-form-label">Valor Estornado</label>
     <div class="col-sm-2">
         <select name="valorEstornado" id="valorEstornado" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple" {{$variavelDisabledNaView}}>
             @if (Request::path() == 'despesas/create')
-            <option value="1">Sim</option>
             <option value="0">Não</option>
+            <option value="1">Sim</option>
             @else
             <option value="0" {{$despesa->valorEstornado == '0'?' selected':''}}>Não</option>
             <option value="1" {{$despesa->valorEstornado == '1'?' selected':''}}>Sim</option>
@@ -183,8 +238,8 @@
     <label for="despesaFixa" class="col-sm-2 col-form-label">Despesa Fixa?</label>
     <div class="col-sm-2">
         <select name="despesaFixa" id="despesaFixa" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple" {{$variavelDisabledNaView}}>
-            <option value="1">Sim</option>
             <option value="0">Não</option>
+            <option value="1">Sim</option>
         </select>
     </div>
     @elseif ($despesa->idDespesaPai == 0)
@@ -200,8 +255,6 @@
     @endif
 </div>
 
-
-
 {!! Form::hidden('despesaCodigoDespesas', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 
@@ -214,3 +267,4 @@
 
 {!! Form::hidden('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!}
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
+

@@ -21,6 +21,7 @@ class CreateTableDespesas extends Migration
             $table->string('idDespesaPai');
             $table->string('descricaoDespesa');
             $table->string('despesaCodigoDespesas');
+            $table->string('tipoFornecedor');
             $table->string('idFornecedor');
             $table->string('precoReal');
             $table->string('valorEstornado');
@@ -42,7 +43,8 @@ class CreateTableDespesas extends Migration
             $table->string('cheque');
             $table->string('idBanco');
 
-
+            $table->string('idAlteracaoUsuario')->nullable();
+            $table->string('idAutor')->nullable();
 
 
             $table->string('ativoDespesa');

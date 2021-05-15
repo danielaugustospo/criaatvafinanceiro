@@ -27,7 +27,6 @@ class OrdemdeServico extends Model
     // 'nomeFormaPagamento',
     'idClienteOrdemdeServico',
     // 'dataVendaOrdemdeServico',
-    'valorTotalOrdemdeServico',
     'valorProjetoOrdemdeServico',
     'valorOrdemdeServico',
     'dataOrdemdeServico',

@@ -68,42 +68,42 @@ class ReceitaController extends Controller
                     $idosreceita = $request->get('idosreceita');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($valorreceita)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['valorreceita'], $request->get('valorreceita')) ? true : false;
+                            return Str::is($row['valorreceita'], $request->get('valorreceita')) ? true : false;
                         });
                     }
                     if (!empty($datapagamentoreceita)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['datapagamentoreceita'], $request->get('datapagamentoreceita')) ? true : false;
+                            return Str::is($row['datapagamentoreceita'], $request->get('datapagamentoreceita')) ? true : false;
                         });
                     }
                     if (!empty($contareceita)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['contareceita'], $request->get('contareceita')) ? true : false;
+                            return Str::is($row['contareceita'], $request->get('contareceita')) ? true : false;
                         });
                     }
                     if (!empty($idosreceita)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idosreceita'], $request->get('idosreceita')) ? true : false;
+                            return Str::is($row['idosreceita'], $request->get('idosreceita')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['valorreceita']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['valorreceita']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['datapagamentoreceita']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['datapagamentoreceita']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['contareceita']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['contareceita']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idosreceita']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idosreceita']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;
@@ -134,6 +134,8 @@ class ReceitaController extends Controller
     {
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1');
+        $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1');
+
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
 
         $valorReceita = " ";
@@ -142,7 +144,7 @@ class ReceitaController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('receita.create', compact('listaContas', 'todasOSAtivas', 'formapagamento', 'valorInput', 'valorReceita', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('receita.create', compact('listaContas', 'todasOSAtivas', 'todosClientesAtivos', 'formapagamento', 'valorInput', 'valorReceita', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -168,6 +170,7 @@ class ReceitaController extends Controller
             'registroreceita'           => 'required',
             'nfreceita'                 => 'required',
             'idosreceita'               => 'required',
+            'idclientereceita'          => 'required',
 
 
         ]);
@@ -185,6 +188,7 @@ class ReceitaController extends Controller
         // $receita->emissaoreceita                = $request->get('emissaoreceita');
         $receita->nfreceita                     = $request->get('nfreceita');
         $receita->idosreceita                   = $request->get('idosreceita');
+        $receita->idclientereceita              = $request->get('idclientereceita');
 
         $receita->save();
 
@@ -204,6 +208,7 @@ class ReceitaController extends Controller
     {
         $receita = Receita::find($id);
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1 order by id = :idosreceita desc', ['idosreceita' => $receita->idosreceita]);
+        $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1 order by id = :idclientereceita desc', ['idclientereceita' => $receita->idclientereceita]);
         $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
         $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :idConta', ['idConta' => $receita->contareceita]);
 
@@ -216,7 +221,7 @@ class ReceitaController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('receita.show', compact('receita', 'todasOSAtivas', 'formapagamento', 'listaContas', 'valorReceita', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('receita.show', compact('receita', 'todasOSAtivas', 'todosClientesAtivos', 'formapagamento', 'listaContas', 'valorReceita', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -230,6 +235,7 @@ class ReceitaController extends Controller
     {
         $receita = Receita::find($id);
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1 order by id = :idosreceita desc', ['idosreceita' => $receita->idosreceita]);
+        $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1 order by id = :idclientereceita desc', ['idclientereceita' => $receita->idclientereceita]);
 
 
         $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
@@ -244,7 +250,7 @@ class ReceitaController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('receita.edit', compact('receita', 'todasOSAtivas', 'formapagamento', 'listaContas', 'valorReceita', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('receita.edit', compact('receita', 'todasOSAtivas', 'todosClientesAtivos', 'formapagamento', 'listaContas', 'valorReceita', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -267,7 +273,7 @@ class ReceitaController extends Controller
             // 'descricaoreceita'          => 'required',
             'registroreceita'           => 'required',
             'nfreceita'                 => 'required',
-            'idosreceita'               => 'required'
+            // 'idosreceita'               => 'required'
         ]);
 
 
@@ -285,7 +291,7 @@ class ReceitaController extends Controller
         $receita->registroreceita               = $request->get('registroreceita');
         // $receita->emissaoreceita                = $request->get('emissaoreceita');
         $receita->nfreceita                     = $request->get('nfreceita');
-        $receita->idosreceita                   = $request->get('idosreceita');
+        // $receita->idosreceita                   = $request->get('idosreceita');
 
         DB::update("UPDATE receita
         SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
@@ -296,8 +302,8 @@ class ReceitaController extends Controller
         contareceita                = '$receita->contareceita',                   
         descricaoreceita             = '$receita->descricaoreceita',                
         registroreceita             = '$receita->registroreceita',                
-        nfreceita                   = '$receita->nfreceita',                      
-        idosreceita                 = '$receita->idosreceita'                  
+        nfreceita                   = '$receita->nfreceita'                      
+        -- idosreceita                 = '$receita->idosreceita'                  
         WHERE id                    = '$receita->id'"
         );
 

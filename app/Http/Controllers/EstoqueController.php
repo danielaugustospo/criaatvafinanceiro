@@ -46,35 +46,35 @@ class EstoqueController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nomeestoque)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nomeestoque'], $request->get('nomeestoque')) ? true : false;
+                            return Str::is($row['nomeestoque'], $request->get('nomeestoque')) ? true : false;
                         });
                     }
                     if (!empty($descricaoestoque)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['descricaoestoque'], $request->get('descricaoestoque')) ? true : false;
+                            return Str::is($row['descricaoestoque'], $request->get('descricaoestoque')) ? true : false;
                         });
                     }
                     if (!empty($idbenspatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
+                            return Str::is($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nomeestoque']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeestoque']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['descricaoestoque']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['descricaoestoque']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

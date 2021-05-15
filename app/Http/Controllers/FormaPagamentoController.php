@@ -44,12 +44,12 @@ class FormaPagamentoController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nomeFormaPagamento)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nomeFormaPagamento'], $request->get('nomeFormaPagamento')) ? true : false;
+                            return Str::is($row['nomeFormaPagamento'], $request->get('nomeFormaPagamento')) ? true : false;
                         });
                     }
 
@@ -57,9 +57,9 @@ class FormaPagamentoController extends Controller
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nomeFormaPagamento']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeFormaPagamento']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

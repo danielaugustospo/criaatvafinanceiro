@@ -47,42 +47,42 @@ class BensPatrimoniaisController extends Controller
 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($nomeBensPatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nomeBensPatrimoniais'], $request->get('nomeBensPatrimoniais')) ? true : false;
+                            return Str::is($row['nomeBensPatrimoniais'], $request->get('nomeBensPatrimoniais')) ? true : false;
                         });
                     }
                     if (!empty($descricaoBensPatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['descricaoBensPatrimoniais'], $request->get('descricaoBensPatrimoniais')) ? true : false;
+                            return Str::is($row['descricaoBensPatrimoniais'], $request->get('descricaoBensPatrimoniais')) ? true : false;
                         });
                     }
                     if (!empty($idTipoBensPatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idTipoBensPatrimoniais'], $request->get('idTipoBensPatrimoniais')) ? true : false;
+                            return Str::is($row['idTipoBensPatrimoniais'], $request->get('idTipoBensPatrimoniais')) ? true : false;
                         });
                     }
                     if (!empty($statusbenspatrimoniais)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['statusbenspatrimoniais'], $request->get('statusbenspatrimoniais')) ? true : false;
+                            return Str::is($row['statusbenspatrimoniais'], $request->get('statusbenspatrimoniais')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nomeBensPatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeBensPatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['descricaoBensPatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['descricaoBensPatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idTipoBensPatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idTipoBensPatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['statusbenspatrimoniais']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['statusbenspatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

@@ -32,7 +32,7 @@
 
 
 @include('receita/campos')
-
+<input type="hidden" name="idosreceita" value="CRIAATVA">
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 

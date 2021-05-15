@@ -48,35 +48,35 @@ class ContaController extends Controller
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($numeroConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
                         });
                     }
                     if (!empty($agenciaConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idBanco'], $request->get('idBanco')) ? true : false;
+                            return Str::is($row['idBanco'], $request->get('idBanco')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;
@@ -511,35 +511,35 @@ class ContaController extends Controller
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($numeroConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
                         });
                     }
                     if (!empty($agenciaConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idBanco'], $request->get('idBanco')) ? true : false;
+                            return Str::is($row['idBanco'], $request->get('idBanco')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;
@@ -574,35 +574,35 @@ class ContaController extends Controller
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($numeroConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
                         });
                     }
                     if (!empty($agenciaConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['idBanco'], $request->get('idBanco')) ? true : false;
+                            return Str::is($row['idBanco'], $request->get('idBanco')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;

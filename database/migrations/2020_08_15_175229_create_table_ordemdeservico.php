@@ -19,19 +19,18 @@ class CreateTableOrdemdeServico extends Migration
             // $table->string('nomeFormaPagamento');
             $table->string('idClienteOrdemdeServico');
             $table->timestamp('dataVendaOrdemdeServico')->nullable();
-            $table->string('valorTotalOrdemdeServico');
-            $table->string('valorProjetoOrdemdeServico');
-            $table->string('valorOrdemdeServico');
-            $table->string('dataOrdemdeServico');
-            $table->string('clienteOrdemdeServico');
+            $table->string('valorProjetoOrdemdeServico')->default('0.0');
+            $table->string('valorOrdemdeServico')->default('0.0');
+            $table->string('dataOrdemdeServico')->nullable();
+            $table->string('clienteOrdemdeServico')->nullable();
             $table->string('eventoOrdemdeServico');
-            $table->string('servicoOrdemdeServico');
-            $table->string('obsOrdemdeServico');
-            $table->string('dataCriacaoOrdemdeServico');
-            $table->string('dataExclusaoOrdemdeServico');
+            $table->string('servicoOrdemdeServico')->nullable();
+            $table->string('obsOrdemdeServico')->nullable();
+            $table->string('dataCriacaoOrdemdeServico')->nullable();
+            $table->string('dataExclusaoOrdemdeServico')->nullable();
 
-            $table->boolean('ativoOrdemdeServico');
-            $table->boolean('excluidoOrdemdeServico');
+            $table->boolean('ativoOrdemdeServico')->default('1');
+            $table->boolean('excluidoOrdemdeServico')->default('0');
 
 
             $table->timestamps();

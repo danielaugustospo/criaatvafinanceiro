@@ -71,32 +71,32 @@ class ClientesController extends Controller
                 $telefone1Cliente = $request->get('telefone1Cliente');
                 if (!empty($id)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['id'], $request->get('id')) ? true : false;
+                        return Str::is($row['id'], $request->get('id')) ? true : false;
                     });
                 }
                 if (!empty($nomeCliente)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['nomeCliente'], $request->get('nomeCliente')) ? true : false;
+                        return Str::is($row['nomeCliente'], $request->get('nomeCliente')) ? true : false;
                     });
                 }
                 if (!empty($razaosocialCliente)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['razaosocialCliente'], $request->get('razaosocialCliente')) ? true : false;
+                        return Str::is($row['razaosocialCliente'], $request->get('razaosocialCliente')) ? true : false;
                     });
                 }
                 if (!empty($cnpjCliente)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['cnpjCliente'], $request->get('cnpjCliente')) ? true : false;
+                        return Str::is($row['cnpjCliente'], $request->get('cnpjCliente')) ? true : false;
                     });
                 }
                 if (!empty($contatoCliente)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['contatoCliente'], $request->get('contatoCliente')) ? true : false;
+                        return Str::is($row['contatoCliente'], $request->get('contatoCliente')) ? true : false;
                     });
                 }
                 if (!empty($telefone1Cliente)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['telefone1Cliente'], $request->get('telefone1Cliente')) ? true : false;
+                        return Str::is($row['telefone1Cliente'], $request->get('telefone1Cliente')) ? true : false;
                     });
                 }
 
@@ -104,17 +104,17 @@ class ClientesController extends Controller
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                        if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                        if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['nomeCliente']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['nomeCliente']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['razaosocialCliente']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['razaosocialCliente']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['cnpjCliente']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['cnpjCliente']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['contatoCliente']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['contatoCliente']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::contains(Str::lower($row['telefone1Cliente']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['telefone1Cliente']), Str::lower($request->get('search')))) {
                             return true;
                         } 
 

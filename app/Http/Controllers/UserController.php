@@ -44,35 +44,35 @@ class UserController extends Controller
                     $ativoUser = $request->get('ativoUser');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($name)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['name'], $request->get('name')) ? true : false;
+                            return Str::is($row['name'], $request->get('name')) ? true : false;
                         });
                     }
                     if (!empty($email)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['email'], $request->get('email')) ? true : false;
+                            return Str::is($row['email'], $request->get('email')) ? true : false;
                         });
                     }
                     if (!empty($ativoUser)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['ativoUser'], $request->get('ativoUser')) ? true : false;
+                            return Str::is($row['ativoUser'], $request->get('ativoUser')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['name']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['email']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['email']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['ativoUser']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['ativoUser']), Str::lower($request->get('search')))) {
                                 return true;
                             }
                             return false;

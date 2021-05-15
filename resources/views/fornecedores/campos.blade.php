@@ -73,6 +73,10 @@
     <div class="col-sm-3">
         {!! Form::text('inscEstadualFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView ]) !!}
     </div>
+    <label for="inscMunicipalFornecedor" class="col-sm-1 col-form-label">Insc. Municipal</label>
+    <div class="col-sm-3">
+        {!! Form::text('inscMunicipalFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView ]) !!}
+    </div>
 </div>
 
 
@@ -98,9 +102,9 @@
     <div class="col-sm-3">
         {!! Form::text('siteFornecedor', $valorInput, ['placeholder' => 'Site', 'class' => 'form-control', 'maxlength' => '30', $variavelReadOnlyNaView ]) !!}
     </div>
-    <label for="dataCadastroFornecedor" class="col-sm-1 col-form-label">Data de Contrato</label>
+    <label for="dataContratoFornecedor" class="col-sm-1 col-form-label">Data de Contrato</label>
     <div class="col-sm-3">
-        {!! Form::date('dataCadastroFornecedor', $valorInput, ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView ]) !!}
+        {!! Form::date('dataContratoFornecedor', $valorInput, ['placeholder' => 'Data Contrato', 'class' => 'form-control', 'maxlength' => '8', $variavelReadOnlyNaView ]) !!}
     </div>
 </div>
 
@@ -132,7 +136,7 @@
     <div class="col-sm-2">
         {!! Form::text('agenciaFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView ]) !!}
     </div>
-    <label for="nrcontaFornecedor" class="col-sm-2 col-form-label">Número Conta Fornecedor</label>
+    <label for="nrcontaFornecedor" class="col-sm-2 col-form-label">Conta</label>
     <div class="col-sm-2">
         {!! Form::text('nrcontaFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView ]) !!}
     </div>

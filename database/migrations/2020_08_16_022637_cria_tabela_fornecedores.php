@@ -29,11 +29,12 @@ class CriaTabelaFornecedores extends Migration
             $table->string('telefone1Fornecedor');
             $table->string('telefone2Fornecedor');
             $table->string('cnpjFornecedor');
-            $table->string('inscEstadualFornecedor');
+            $table->string('inscEstadualFornecedor')->nullable();
+            $table->string('inscMunicipalFornecedor')->nullable();
             $table->string('cpfFornecedor');
             $table->string('identidadeFornecedor');
             $table->string('emailFornecedor');
-            $table->string('dataCadastroFornecedor');
+            $table->string('dataContratoFornecedor')->nullable();
 
 
             $table->string('nrcontaFornecedor');

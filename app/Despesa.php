@@ -49,6 +49,9 @@ class Despesa extends Model
     'cheque',
     'ativoDespesa',
     'excluidoDespesa',
+    'tipoFornecedor',
+    'idAlteracaoUsuario',
+    'idAutor',
 
 
     ];

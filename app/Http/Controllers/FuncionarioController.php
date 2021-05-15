@@ -70,42 +70,42 @@ class FuncionarioController extends Controller
                     $emailFuncionario = $request->get('emailFuncionario');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['id'], $request->get('id')) ? true : false;
+                            return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
                     if (!empty($cpfFuncionario)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['cpfFuncionario'], $request->get('cpfFuncionario')) ? true : false;
+                            return Str::is($row['cpfFuncionario'], $request->get('cpfFuncionario')) ? true : false;
                         });
                     }
                     if (!empty($nomeFuncionario)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['nomeFuncionario'], $request->get('nomeFuncionario')) ? true : false;
+                            return Str::is($row['nomeFuncionario'], $request->get('nomeFuncionario')) ? true : false;
                         });
                     }
                     if (!empty($celularFuncionario)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['celularFuncionario'], $request->get('celularFuncionario')) ? true : false;
+                            return Str::is($row['celularFuncionario'], $request->get('celularFuncionario')) ? true : false;
                         });
                     }
                     if (!empty($emailFuncionario)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['emailFuncionario'], $request->get('emailFuncionario')) ? true : false;
+                            return Str::is($row['emailFuncionario'], $request->get('emailFuncionario')) ? true : false;
                         });
                     }
 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
 
-                            if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['cpfFuncionario']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['cpfFuncionario']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['nomeFuncionario']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeFuncionario']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['celularFuncionario']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['celularFuncionario']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::contains(Str::lower($row['emailFuncionario']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['emailFuncionario']), Str::lower($request->get('search')))) {
                                 return true;
                             } 
                             return false;

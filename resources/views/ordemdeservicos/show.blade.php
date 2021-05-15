@@ -3,7 +3,11 @@
 @section('content')
 <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
-
+<style>
+    .shadowDiv {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
@@ -66,34 +70,61 @@
         }
     }
 </script>
+<h3 class="text-center">Resumo Financeiro</h3>
 
+{{-- <div class="shadow-lg p-3 mb-5 bg-white rounded" style="background-color: lightslategray; color:white;"> --}}
+<div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center" style="background-color: lightslategray !important; color:white;">
 
-
-<div class="row d-flex justify-content-center mb-3 pt-2 text-lg-center" style="background-color: lightslategray; color:white;">
     <form name="form1" method="post" action="">
-
-        <input class="form-control" type="hidden" name="num1" id="num1" value="{{ $ordemdeservico->valorTotalOrdemdeServico }}" readonly />
-        <div class="row ">
-            <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Despesa:</label>
-            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totaldespesas}}" readonly />
-            <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }} %</label>
-        </div>
-
         <div class="row">
-            <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">Receita</label>
-            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitas}}" readonly />
-            <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }} %</label>
+
+            <div class="shadowDiv bg-white rounded col-sm-5 p-2 mr-3" style="background-color: white !important;">
+                <input class="form-control" type="hidden" name="num1" id="num1" value="{{ $ordemdeservico->valorOrdemdeServico }}" readonly />
+
+                <div class="row">
+                    <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">Receita</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitas}}" readonly />
+                    <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }} %</label>
+                </div>
+                <div class="row ">
+                    <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Despesa:</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totaldespesas}}" readonly />
+                    <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }} %</label>
+                </div>
+                <div class="row">
+                    <label class="btn badge-success col-sm-4 mr-2" style="cursor: unset;">Lucro</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{ $lucro }}" readonly />
+                    <label class="btn badge-success col-sm-3" style="cursor: unset;">{{ $porcentagemLucro }} %</label>
+                </div>
+            </div>
+
+            <div class="shadowDiv bg-white rounded col-sm-5 p-2 ml-2" style="background-color: white !important;">
+                <input class="form-control" type="hidden" name="num1" id="num1" value="{{ $ordemdeservico->valorOrdemdeServico }}" readonly />
+
+                <div class="row">
+                    <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">A Receber</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitas}}" readonly />
+                    <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }} %</label>
+                </div>
+                <div class="row ">
+                    <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">A Pagar</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totaldespesasAPagar}}" readonly />
+                    <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }} %</label>
+                </div>
+                {{-- <div class="row">
+                    <label class="btn badge-success col-sm-4 mr-2" style="cursor: unset;">Lucro</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{ $lucro }}" readonly />
+                    <label class="btn badge-success col-sm-3" style="cursor: unset;">{{ $porcentagemLucro }} %</label>
+                </div> --}}
+            </div>
         </div>
-        <div class="row">
-            <label class="btn badge-success col-sm-4 mr-2" style="cursor: unset;">Lucro</label>
-            <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{ $lucro }}" readonly />
-            <label class="btn badge-success col-sm-3" style="cursor: unset;">{{ $porcentagemLucro }} %</label>
-        </div>
+
 </div>
+{{-- </div> --}}
 
+<div class="shadowDiv p-3 mb-5 bg-white rounded pt-2 text-lg-center" style="background-color: white !important; color:black;">
 
-
-<div class="form-group row">
+{{-- <div class="form-group row"> --}}
     {{-- <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
     <div class="col-sm-4">
         @foreach($formapagamento as $pg)
@@ -101,16 +132,14 @@
     @endforeach
 
 </div> --}}
+<div class="form-group row">
 <label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
-<div class="col-sm-5">
-
+<div class="col-sm-6">
     <label class="form-control">
         @foreach ($cliente as $listaCliente)
-
-        {{ $listaCliente->nomeCliente }}
+            {{ $listaCliente->razaosocialCliente }}
         @endforeach
     </label>
-
 
 </div>
 </div>
@@ -123,7 +152,7 @@
         <label class="col-sm-4 form-control">{{ $ordemdeservico->created_at->format('d/m/Y') }}</label>
     </div>
 
-    <label for="valorTotalOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
+    <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         <label class="form-control">{{ $totalOS }}</label>
 
@@ -145,13 +174,13 @@
 
     </div>
 </div>
-
+</div>
 
 
 <hr />
 <br>
 
-<h2 class="text-center">Despesas associadas a esta OS:</h2>
+<h2 class="text-center">Despesas</h2>
 
 
 <table id="tabelaDespesaPorOS" class="table table-bordered table-striped">
@@ -250,7 +279,7 @@
 
 <hr />
 <br>
-<h2 class="text-center">Receitas associadas a esta OS:</h2>
+<h2 class="text-center">Receitas</h2>
 
 
 
@@ -361,7 +390,9 @@
 <hr />
 <br>
 
-<h2 class="text-center">Tabela Percentual desta OS:</h2>
+
+{{-- Tabela Percentual sendo comentada em  24/04/2021 a pedido do Nélio em reunião no dia 17/04/2021
+<h2 class="text-center">Tabela Percentual</h2>
 
 
 <table id="tabelaPercentualPorOS" class="table table-bordered table-striped">
@@ -381,29 +412,29 @@
 
     <tr>
         <td>{{ $tabelapercentual->id }}</td>
-        <td>{{ $tabelapercentual->nometabelapercentual }}</td>
-        <td>{{ $tabelapercentual->percentualtabelapercentual }}</td>
-        <td>{{ $tabelapercentual->pgtabelapercentual }}</td>
-        <td>{{ $tabelapercentual->idostabelapercentual }}</td>
-        <td>
-            <form action="{{ route('tabelapercentual.destroy',$tabelapercentual->id) }}" method="POST">
-                <a class="btn btn-info btn-sm" href="{{ route('tabelapercentual.show',$tabelapercentual->id) }}">Visualizar</a>
-                @can('tabelapercentual-edit')
-                <a class="btn btn-primary btn-sm" href="{{ route('tabelapercentual.edit',$tabelapercentual->id) }}">Editar</a>
-                @endcan
+<td>{{ $tabelapercentual->nometabelapercentual }}</td>
+<td>{{ $tabelapercentual->percentualtabelapercentual }}</td>
+<td>{{ $tabelapercentual->pgtabelapercentual }}</td>
+<td>{{ $tabelapercentual->idostabelapercentual }}</td>
+<td>
+    <form action="{{ route('tabelapercentual.destroy',$tabelapercentual->id) }}" method="POST">
+        <a class="btn btn-info btn-sm" href="{{ route('tabelapercentual.show',$tabelapercentual->id) }}">Visualizar</a>
+        @can('tabelapercentual-edit')
+        <a class="btn btn-primary btn-sm" href="{{ route('tabelapercentual.edit',$tabelapercentual->id) }}">Editar</a>
+        @endcan
 
-                @csrf
-                @method('DELETE')
-                @can('tabelapercentual-delete')
-                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                @endcan
-            </form>
-        </td>
-    </tr>
-    @endforeach
+        @csrf
+        @method('DELETE')
+        @can('tabelapercentual-delete')
+        <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+        @endcan
+    </form>
+</td>
+</tr>
+@endforeach
 
 </table>
-
+--}}
 <script>
     function createFilter(table, columns) {
 
