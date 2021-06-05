@@ -135,7 +135,9 @@ class FuncionarioController extends Controller
     public function create()
     {   
         $todosorgaosrg = DB::select('select * from orgaorg');
-        $todososbancos = DB::select('select distinct * from banco');
+        $todososbancos1 = DB::select('select distinct * from banco');
+        $todososbancos2 = $todososbancos1;
+        $todososbancos3 = $todososbancos1;
         
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
@@ -143,7 +145,7 @@ class FuncionarioController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
         
-        return view('funcionarios.create', compact('todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('funcionarios.create', compact('todosorgaosrg', 'todososbancos1', 'todososbancos2', 'todososbancos3','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
     /**
@@ -160,50 +162,6 @@ class FuncionarioController extends Controller
         $request->validate([
             'nomeFuncionario' => 'required|min:3',
             'cpfFuncionario'  => 'required|cpf|unique:funcionarios',
-
-            'cepFuncionario'      => 'required',
-            'enderecoFuncionario' => 'required',
-            'bairroFuncionario'   => 'required',
-            'cidadeFuncionario'   => 'required',
-            'ufFuncionario'       => 'required',
-            'celularFuncionario'  => 'required',
-            'fotoFuncionario'     => 'required',
-            'bancoFuncionario'    => 'required',
-
-
-
-
-            // 'telresidenciaFuncionario' => 'required',
-            // 'contatoemergenciaFuncionario' => 'required',
-            // 'emailFuncionario' => 'required',
-            // 'redesocialFuncionario' => 'required',
-            // 'facebookFuncionario' => 'required',
-            // 'telegramFuncionario' => 'required',
-            // 'rgFuncionario' => 'required',
-            // 'orgaoRGFuncionario' => 'required',
-            // 'expedicaoRGFuncionario' => 'required',
-            // 'tituloFuncionario' => 'required|titulo_eleitor',
-            // 'maeFuncionario' => 'required',
-            // 'paiFuncionario' => 'required',
-            // 'profissaoFuncionario' => 'required',
-            // 'cargoEmpresaFuncionario' => 'required',
-            // 'tipocontratoFuncionario' => 'required',
-            // 'grauescolaridadeFuncionario' => 'required',
-            // 'descformacaoFuncionario' => 'required',
-            // 'certficFuncionario' => 'required',
-            // 'uncertificadoraFuncionario' => 'required',
-            // 'anocertificacaoFuncionario' => 'required',
-            // 'contacorrenteFuncionario' => 'required',
-            // 'bancoFuncionario' => 'required',
-            // 'nrcontaFuncionario' => 'required',
-            // 'agenciaFuncionario' => 'required',
-            // 'nomefavorecidoFuncionario' => 'required',
-            // 'cpffavorecidoFuncionario' => 'required',
-            // 'contacorrentefavorecidoFuncionario' => 'required',
-            // 'bancofavorecidoFuncionario' => 'required',
-            // 'nrcontafavorecidoFuncionario' => 'required',
-            // 'agenciafavorecidoFuncionario' => 'required',
-
         ]);
 
 
@@ -236,10 +194,19 @@ class FuncionarioController extends Controller
         $funcionario->certficFuncionario                                = $request->get('certficFuncionario');
         $funcionario->uncertificadoraFuncionario                        = $request->get('uncertificadoraFuncionario');
         $funcionario->anocertificacaoFuncionario                        = $request->get('anocertificacaoFuncionario');
-        $funcionario->contacorrenteFuncionario                          = $request->get('contacorrenteFuncionario');
-        $funcionario->bancoFuncionario                                  = $request->get('bancoFuncionario');
-        $funcionario->nrcontaFuncionario                                = $request->get('nrcontaFuncionario');
-        $funcionario->agenciaFuncionario                                = $request->get('agenciaFuncionario');
+
+        $funcionario->contacorrenteFuncionario1                          = $request->get('contacorrenteFuncionario1');
+        $funcionario->bancoFuncionario1                                  = $request->get('bancoFuncionario1');
+        $funcionario->nrcontaFuncionario1                                = $request->get('nrcontaFuncionario1');
+        $funcionario->agenciaFuncionario1                                = $request->get('agenciaFuncionario1');
+        $funcionario->chavePixFuncionario1                               = $request->get('chavePixFuncionario1');
+
+        $funcionario->contacorrenteFuncionario2                          = $request->get('contacorrenteFuncionario2');
+        $funcionario->bancoFuncionario2                                  = $request->get('bancoFuncionario2');
+        $funcionario->nrcontaFuncionario2                                = $request->get('nrcontaFuncionario2');
+        $funcionario->agenciaFuncionario2                                = $request->get('agenciaFuncionario2');
+        $funcionario->chavePixFuncionario2                               = $request->get('chavePixFuncionario2');
+
         $funcionario->nomefavorecidoFuncionario                         = $request->get('nomefavorecidoFuncionario');
         $funcionario->cpffavorecidoFuncionario                          = $request->get('cpffavorecidoFuncionario');
         $funcionario->contacorrentefavorecidoFuncionario                = $request->get('contacorrentefavorecidoFuncionario');
@@ -277,14 +244,13 @@ class FuncionarioController extends Controller
             } else {
                 //Funcionario::create($request->all());
                 $funcionario->fotoFuncionario = $nameFile;
-                $funcionario->save();
-                return redirect()->route('funcionarios.index')
-                    ->with('success', 'Funcionário criado com êxito.');
             }
             //Funcionario::create($request->all());
-
-
         }
+        $funcionario->save();
+        return redirect()->route('funcionarios.index')
+            ->with('success', 'Funcionário criado com êxito.');
+
     }
 
 
@@ -301,7 +267,9 @@ class FuncionarioController extends Controller
         $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario', 'nomeFuncionario')->all();
         $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
 
-        $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+        $todososbancos1 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario1]);
+        $todososbancos2 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario2]);
+        $todososbancos3 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario3]);
 
 
         $valorInput = $this->valorInput;
@@ -310,7 +278,7 @@ class FuncionarioController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos1', 'todososbancos2', 'todososbancos3','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -327,7 +295,9 @@ class FuncionarioController extends Controller
         $funcionarioRole = $funcionario->roles->pluck('nomeFuncionario', 'nomeFuncionario')->all();
         $todosorgaosrg = DB::select('select * from orgaorg where ativoOrgaoRG = 1 order by id = :idOrgaoRG desc', ['idOrgaoRG' =>  $funcionario->orgaoRGFuncionario]);
 
-        $todososbancos = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario]);
+        $todososbancos1 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario1]);
+        $todososbancos2 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario2]);
+        $todososbancos3 = DB::select('select distinct * from banco  where ativoBanco = 1 and excluidoBanco = 0 order by codigoBanco = :bancoFuncionario desc', ['bancoFuncionario' => $funcionario->bancoFuncionario3]);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
@@ -335,8 +305,7 @@ class FuncionarioController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        return view('funcionarios.edit', compact('funcionario', 'roles', 'funcionarioRole', 'todosorgaosrg', 'todososbancos','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
-
+        return view('funcionarios.edit', compact('funcionario', 'roles', 'funcionarioRole', 'todosorgaosrg', 'todososbancos1', 'todososbancos2', 'todososbancos3', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
         // return view('funcionarios.edit',compact('funcionario'));
     }
 
@@ -353,45 +322,6 @@ class FuncionarioController extends Controller
         $request->validate([
             'nomeFuncionario' => 'required|min:3',
             'cpfFuncionario'  => 'required|cpf',
-
-            'cepFuncionario' => 'required',
-            'enderecoFuncionario' => 'required',
-            'bairroFuncionario' => 'required',
-            'cidadeFuncionario' => 'required',
-            'ufFuncionario' => 'required',
-            'celularFuncionario' => 'required',
-
-            // 'telresidenciaFuncionario' => 'required',
-            // 'contatoemergenciaFuncionario' => 'required',
-            // 'emailFuncionario' => 'required',
-            // 'redesocialFuncionario' => 'required',
-            // 'facebookFuncionario' => 'required',
-            // 'telegramFuncionario' => 'required',
-            // 'rgFuncionario' => 'required',
-            // 'orgaoRGFuncionario' => 'required',
-            // 'expedicaoRGFuncionario' => 'required',
-            // 'tituloFuncionario' => 'required|titulo_eleitor',
-            // 'maeFuncionario' => 'required',
-            // 'paiFuncionario' => 'required',
-            // 'profissaoFuncionario' => 'required',
-            // 'cargoEmpresaFuncionario' => 'required',
-            // 'tipocontratoFuncionario' => 'required',
-            // 'grauescolaridadeFuncionario' => 'required',
-            // 'descformacaoFuncionario' => 'required',
-            // 'certficFuncionario' => 'required',
-            // 'uncertificadoraFuncionario' => 'required',
-            // 'anocertificacaoFuncionario' => 'required',
-            // 'contacorrenteFuncionario' => 'required',
-            // 'bancoFuncionario' => 'required',
-            // 'nrcontaFuncionario' => 'required',
-            // 'agenciaFuncionario' => 'required',
-            // 'nomefavorecidoFuncionario' => 'required',
-            // 'cpffavorecidoFuncionario' => 'required',
-            // 'contacorrentefavorecidoFuncionario' => 'required',
-            // 'bancofavorecidoFuncionario' => 'required',
-            // 'nrcontafavorecidoFuncionario' => 'required',
-            // 'agenciafavorecidoFuncionario' => 'required',
-
         ]);
 
         $funcionario = Funcionario::find($id);
@@ -426,10 +356,19 @@ class FuncionarioController extends Controller
         $funcionario->certficFuncionario                                = $request->get('certficFuncionario');
         $funcionario->uncertificadoraFuncionario                        = $request->get('uncertificadoraFuncionario');
         $funcionario->anocertificacaoFuncionario                        = $request->get('anocertificacaoFuncionario');
-        $funcionario->contacorrenteFuncionario                          = $request->get('contacorrenteFuncionario');
-        $funcionario->bancoFuncionario                                  = $request->get('bancoFuncionario');
-        $funcionario->nrcontaFuncionario                                = $request->get('nrcontaFuncionario');
-        $funcionario->agenciaFuncionario                                = $request->get('agenciaFuncionario');
+        
+        $funcionario->contacorrenteFuncionario1                          = $request->get('contacorrenteFuncionario1');
+        $funcionario->bancoFuncionario1                                  = $request->get('bancoFuncionario1');
+        $funcionario->nrcontaFuncionario1                                = $request->get('nrcontaFuncionario1');
+        $funcionario->agenciaFuncionario1                                = $request->get('agenciaFuncionario1');
+        $funcionario->chavePixFuncionario1                               = $request->get('chavePixFuncionario1');
+
+        $funcionario->contacorrenteFuncionario2                          = $request->get('contacorrenteFuncionario2');
+        $funcionario->bancoFuncionario2                                  = $request->get('bancoFuncionario2');
+        $funcionario->nrcontaFuncionario2                                = $request->get('nrcontaFuncionario2');
+        $funcionario->agenciaFuncionario2                                = $request->get('agenciaFuncionario2');
+        $funcionario->chavePixFuncionario2                               = $request->get('chavePixFuncionario2');
+
         $funcionario->nomefavorecidoFuncionario                         = $request->get('nomefavorecidoFuncionario');
         $funcionario->cpffavorecidoFuncionario                          = $request->get('cpffavorecidoFuncionario');
         $funcionario->contacorrentefavorecidoFuncionario                = $request->get('contacorrentefavorecidoFuncionario');

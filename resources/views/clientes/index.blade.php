@@ -107,13 +107,13 @@ var table = $('.data-table').DataTable({
     ajax: {
         url: "{{ route('clientes.index') }}",
         data: function(d) {
-            d.id                    = $('.id').val(),
-            d.nomeCliente           = $('.nomeCliente').val(),
-            d.razaosocialCliente    = $('.razaosocialCliente').val(),
-            d.cnpjCliente           = $('.cnpjCliente').val(),
-            d.contatoCliente        = $('.contatoCliente').val(),
-            d.telefone1Cliente      = $('.telefone1Cliente').val(),
-            // d.telefone2Cliente      = $('.telefone2Cliente').val(),
+            d.id                    = $('.buscaIdclientes').val(),
+            d.nomeCliente           = $('.buscanomeCliente').val(),
+            d.razaosocialCliente    = $('.buscarazaosocialCliente').val(),
+            d.cnpjCliente           = $('.buscacnpjCliente').val(),
+            d.contatoCliente        = $('.buscacontatoCliente').val(),
+            d.telefone1Cliente      = $('.buscatelefone1Cliente').val(),
+            // d.telefone2Cliente      = $('.buscatelefone2Cliente').val(),
             d.search                = $('input[type="search"]').val()
         }
     },

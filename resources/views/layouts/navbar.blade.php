@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
     @yield('nav') 
-    <div class="container">
+    <div class="container" style="max-width: fit-content !important;">
        <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>
         <a class="navbar-brand" href="{{ url('/') }}" style="color:white;">
             Criaatva
@@ -21,38 +21,37 @@
                 
                 <li class="nav-item dropdown">
                     @can('ordemdeservico-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         OS <span class="caret"></span>
                     </a>
                     @endcan
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('ordemdeservico-list')
-                        <a class="dropdown-item" href="{{ route('ordemdeservicos.index') }}">OS</a>
+                        <a class="dropdown-item" href="{{ route('ordemdeservicos.index') }}">Consultar OS</a>
                         @endcan
-                        @can('despesa-list')
-                        <a class="dropdown-item" href="{{ route('despesas.index') }}">Despesas</a>
-                        @endcan
-
-                        @can('receita-list')
-                        <a class="dropdown-item" href="{{ route('receita.index') }}">Receitas</a>
+                        @can('ordemdeservico-create')
+                        <a class="dropdown-item" href="{{ route('ordemdeservicos.create') }}">Cadastrar OS</a>
                         @endcan
 
-                        @can('tabelapercentual-list')
+                        {{-- @can('tabelapercentual-list')
                         <a class="dropdown-item" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a>
-                        @endcan
+                        @endcan --}}
                     </div>
                 </li>
 
                 <li class="nav-item dropdown">
                     @can('despesa-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Despesas <span class="caret"></span>
                     </a>
                     @endcan
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('despesa-list')
-                        <a class="dropdown-item" href="{{ route('despesas.index') }}">Despesas</a>
+                        <a class="dropdown-item" href="{{ route('despesas.index') }}">Visualizar Despesas</a>
+                        @endcan
+                        @can('despesa-create')
+                        <a class="dropdown-item" href="{{ route('despesas.create') }}">Cadastrar Despesa</a>
                         @endcan
                         @can('codigodespesa-list')
                         <a class="dropdown-item" href="{{ route('codigodespesas.index') }}">Código Despesas</a>
@@ -60,6 +59,22 @@
                         @can('grupodespesa-list')
                         <a class="dropdown-item" href="{{ route('grupodespesas.index') }}">Grupo Despesas</a>
                         @endcan
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    @can('receita-list')
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Receitas <span class="caret"></span>
+                    </a>
+                    @endcan
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('receita-list')
+                        <a class="dropdown-item" href="{{ route('receita.index') }}">Visualizar Receitas</a>
+                        @endcan
+                        @can('receita-create')
+                        <a class="dropdown-item" href="{{ route('receita.create') }}">Cadastrar Receita</a>
+                        @endcan
+
                     </div>
                 </li>
 
@@ -96,16 +111,59 @@
                     </div>
                 </li>
 
-                @can('fornecedor-list')
-                <li><a class="nav-link" href="{{ route('fornecedores.index') }}">Fornecedores</a></li>
-                @endcan
-                @can('cliente-list')
-                <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
-                @endcan
+                <li class="nav-item dropdown">
+                    @can('fornecedor-list')
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Fornecedores <span class="caret"></span>
+                    </a>
+                    @endcan
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('fornecedor-create')
+                        <a class="dropdown-item" href="{{ route('fornecedores.create') }}">Cadastrar Fornecedor</a>
+                        @endcan
+                        @can('fornecedor-list')
+                        <a class="dropdown-item" href="{{ route('fornecedores.index') }}">Consultar Fornecedor</a>
+                        @endcan
+                    </div>
+                </li>    
+
+                <li class="nav-item dropdown">
+                    @can('cliente-list')
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Clientes <span class="caret"></span>
+                    </a>
+                    @endcan
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('cliente-create')
+                        <a class="dropdown-item" href="{{ route('clientes.create') }}">Cadastrar Clientes</a>
+                        @endcan
+                        @can('cliente-list')
+                        <a class="dropdown-item" href="{{ route('clientes.index') }}">Consultar Clientes</a>
+                        @endcan
+                    </div>
+                </li>    
+
+                <li class="nav-item dropdown">
+                    @can('funcionario-list')
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Prestadores de Serviço <span class="caret"></span>
+                    </a>
+                    @endcan
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('funcionario-create')
+                        <a class="dropdown-item" href="{{ route('funcionarios.create') }}">Cadastrar Prestadores de Serviço</a>
+                        @endcan
+                        @can('funcionario-list')
+                        <a class="dropdown-item" href="{{ route('funcionarios.index') }}">Consultar Prestadores de Serviço</a>
+                        @endcan
+                    </div>
+                </li>    
+
                 
-                @can('funcionario-list')
-                <li><a class="nav-link" href="{{ route('funcionarios.index') }}">Funcionários</a></li>
-                @endcan
+
 
                 @can('benspatrimoniais-list')    
                 <li class="nav-item dropdown">

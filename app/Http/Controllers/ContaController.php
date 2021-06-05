@@ -43,22 +43,22 @@ class ContaController extends Controller
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
                     $id = $request->get('id');
-                    $numeroConta = $request->get('numeroConta');
-                    $agenciaConta = $request->get('agenciaConta');
+                    $nomeConta = $request->get('nomeConta');
+                    $apelidoConta = $request->get('apelidoConta');
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
-                    if (!empty($numeroConta)) {
+                    if (!empty($nomeConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['nomeConta'], $request->get('nomeConta')) ? true : false;
                         });
                     }
-                    if (!empty($agenciaConta)) {
+                    if (!empty($apelidoConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['apelidoConta'], $request->get('apelidoConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
@@ -72,9 +72,9 @@ class ContaController extends Controller
 
                             if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['apelidoConta']), Str::lower($request->get('search')))) {
                                 return true;
                             } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
@@ -124,10 +124,10 @@ class ContaController extends Controller
     {
 
         $request->validate([
-            'idBanco' => 'required',
-            'agenciaConta'  => 'required',
+            // 'idBanco' => 'required',
+            'apelidoConta'  => 'required',
 
-            'numeroConta' => 'required',
+            'nomeConta' => 'required',
 
         ]);
 
@@ -185,8 +185,8 @@ class ContaController extends Controller
     {
 
         $conta = Conta::find($id);
-        $roles = Conta::pluck('numeroConta', 'numeroConta')->all();
-        $contaRole = $conta->roles->pluck('numeroConta', 'numeroConta')->all();
+        $roles = Conta::pluck('nomeConta', 'nomeConta')->all();
+        $contaRole = $conta->roles->pluck('nomeConta', 'nomeConta')->all();
 
         $banco =  DB::select('select * from banco where id = :id', ['id' => $conta->idBanco]);
         $todososbancos =  DB::select('select * from banco where ativoBanco = 1 order by id = :bancoConta desc', ['bancoConta' => $conta->idBanco]);
@@ -208,9 +208,9 @@ class ContaController extends Controller
     {
         $request->validate([
             'idBanco' => 'required',
-            'agenciaConta'  => 'required',
+            'apelidoConta'  => 'required',
 
-            'numeroConta' => 'required',
+            'nomeConta' => 'required',
 
         ]);
 
@@ -242,8 +242,8 @@ class ContaController extends Controller
     {
         $receitasTotais =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotais from receita r where pagoreceita = 'S'");
         $despesasTotais =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasTotais from despesas d where pago = 'S'");
-        $getContas      =  DB::select("SELECT c.id id, c.numeroConta from conta c where ativoConta = 1 and excluidoConta = 0");
-        $receitasPendentesPorConta =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'N' and r.contareceita = c.id GROUP BY idConta, agenciaConta");
+        $getContas      =  DB::select("SELECT c.id id, c.nomeConta from conta c where ativoConta = 1 and excluidoConta = 0");
+        $receitasPendentesPorConta =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasPendentesPorConta, c.id as idConta, c.apelidoConta as agenciaPorConta from receita r, conta c where pagoreceita = 'N' and r.contareceita = c.id GROUP BY idConta, apelidoConta");
 
         $tamanhoArrayReceitasPendentes = count($receitasPendentesPorConta);
         $qtdReceitasPend = $tamanhoArrayReceitasPendentes;
@@ -256,7 +256,7 @@ class ContaController extends Controller
 
         for($i=0; $i < $tamanhoArrayGetContas; $i++){
             new Conta();
-            $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+            $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.apelidoConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, apelidoConta", ['idConta' => $getContas[$i]->id]);
             $propridadesDasContas[$i] = $receitasPorConta[$i];
             if ((sizeof($propridadesDasContas[$i]) != 0) || (sizeof($propridadesDasContas[$i]) != null)){
                 $dadosConta[$i] = [ $propridadesDasContas[$i][0]->agenciaPorConta,number_format($propridadesDasContas[$i][0]->receitasTotaisPorConta, 2, ',', '.')];
@@ -268,7 +268,7 @@ class ContaController extends Controller
         //SALDO DAS CONTAS
         // for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
         //     new Conta();
-        //     $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+        //     $receitasPorConta[$i] =  DB::select("SELECT COALESCE(sum(r.valorreceita),0) as receitasTotaisPorConta, c.id as idConta, c.apelidoConta as agenciaPorConta from receita r, conta c where pagoreceita = 'S' and r.contareceita = c.id and c.id = :idConta GROUP BY idConta, apelidoConta", ['idConta' => $getContas[$i]->id]);
         //     $propridadesDasContas[$i] = $receitasPorConta[$i];
 
 
@@ -339,7 +339,7 @@ class ContaController extends Controller
         //CONTAS A PAGAR
         for ($i = 0; $i < $tamanhoArrayGetContas; $i++) {
             new Conta();
-            $despesasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasPendentesPorConta, c.id as idConta, c.agenciaConta as agenciaPorConta from despesas d, conta c where d.pago = 'N' and d.conta = c.id and c.id = :idConta GROUP BY idConta, agenciaConta", ['idConta' => $getContas[$i]->id]);
+            $despesasPendentesPorConta[$i] =  DB::select("SELECT COALESCE(sum(d.precoreal),0) as despesasPendentesPorConta, c.id as idConta, c.apelidoConta as agenciaPorConta from despesas d, conta c where d.pago = 'N' and d.conta = c.id and c.id = :idConta GROUP BY idConta, apelidoConta", ['idConta' => $getContas[$i]->id]);
             $propridadesDasContasAPagar = $despesasPendentesPorConta[$i];
             $tamanhoArrayDespesasPendetes = count($propridadesDasContasAPagar);
 
@@ -372,7 +372,7 @@ class ContaController extends Controller
         $saldo = bcsub($getArrayTotalReceitas, $getArrayTotalDespesa);
         $saldo = number_format($saldo, 2, ',', '.');
 
-        $contasAtuais =  DB::select("select id, numeroConta from conta c where ativoConta = 1 and excluidoConta = 0");
+        $contasAtuais =  DB::select("select id, nomeConta from conta c where ativoConta = 1 and excluidoConta = 0");
 
 
         $data = Conta::orderBy('id', 'DESC')->paginate(5);
@@ -400,7 +400,7 @@ class ContaController extends Controller
                 'receita.datapagamentoreceita as vencimento', 'receita.idosreceita as idOS', 'receita.nfreceita as notaFiscal', 'receita.valorreceita as preco',
                 'clientes.nomeCliente as nomeCliente',
                 'ordemdeservico.eventoOrdemdeServico as evento',
-                'conta.agenciaConta as agencia'
+                'conta.apelidoConta as agencia'
             ])
 
             ->where('receita.pagoreceita', '=', 'N');
@@ -426,7 +426,7 @@ class ContaController extends Controller
                     $query->where('valorreceita', 'like', "%{$request->get('buscaValor')}%");
                 }
                 if ($request->has('buscaConta')) {
-                    $query->where('agenciaConta', 'like', "%{$request->get('buscaConta')}%");
+                    $query->where('apelidoConta', 'like', "%{$request->get('buscaConta')}%");
                 }
                 if ($request->has('buscaNF')) {
                     $query->where('nfreceita', 'like', "%{$request->get('buscaNF')}%");
@@ -452,7 +452,7 @@ class ContaController extends Controller
                 'despesas.vencimento', 'despesas.idOS', 'despesas.notaFiscal', 'despesas.precoReal',
                 'clientes.nomeCliente',
                 'ordemdeservico.eventoOrdemdeServico',
-                'conta.agenciaConta'
+                'conta.apelidoConta'
             ])
 
             ->where('despesas.pago', '=', 'N');
@@ -479,7 +479,7 @@ class ContaController extends Controller
                     $query->where('precoReal', 'like', "%{$request->get('buscaValor')}%");
                 }
                 if ($request->has('buscaConta')) {
-                    $query->where('agenciaConta', 'like', "%{$request->get('buscaConta')}%");
+                    $query->where('apelidoConta', 'like', "%{$request->get('buscaConta')}%");
                 }
                 if ($request->has('buscaNF')) {
                     $query->where('notaFiscal', 'like', "%{$request->get('buscaNF')}%");
@@ -506,22 +506,22 @@ class ContaController extends Controller
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
                     $id = $request->get('id');
-                    $numeroConta = $request->get('numeroConta');
-                    $agenciaConta = $request->get('agenciaConta');
+                    $nomeConta = $request->get('nomeConta');
+                    $apelidoConta = $request->get('apelidoConta');
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
-                    if (!empty($numeroConta)) {
+                    if (!empty($nomeConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['nomeConta'], $request->get('nomeConta')) ? true : false;
                         });
                     }
-                    if (!empty($agenciaConta)) {
+                    if (!empty($apelidoConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['apelidoConta'], $request->get('apelidoConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
@@ -535,9 +535,9 @@ class ContaController extends Controller
 
                             if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['apelidoConta']), Str::lower($request->get('search')))) {
                                 return true;
                             } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
@@ -569,22 +569,22 @@ class ContaController extends Controller
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
                     $id = $request->get('id');
-                    $numeroConta = $request->get('numeroConta');
-                    $agenciaConta = $request->get('agenciaConta');
+                    $nomeConta = $request->get('nomeConta');
+                    $apelidoConta = $request->get('apelidoConta');
                     $idBanco = $request->get('idBanco');
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['id'], $request->get('id')) ? true : false;
                         });
                     }
-                    if (!empty($numeroConta)) {
+                    if (!empty($nomeConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['numeroConta'], $request->get('numeroConta')) ? true : false;
+                            return Str::is($row['nomeConta'], $request->get('nomeConta')) ? true : false;
                         });
                     }
-                    if (!empty($agenciaConta)) {
+                    if (!empty($apelidoConta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['agenciaConta'], $request->get('agenciaConta')) ? true : false;
+                            return Str::is($row['apelidoConta'], $request->get('apelidoConta')) ? true : false;
                         });
                     }
                     if (!empty($idBanco)) {
@@ -598,9 +598,9 @@ class ContaController extends Controller
 
                             if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['numeroConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['nomeConta']), Str::lower($request->get('search')))) {
                                 return true;
-                            } else if (Str::is(Str::lower($row['agenciaConta']), Str::lower($request->get('search')))) {
+                            } else if (Str::is(Str::lower($row['apelidoConta']), Str::lower($request->get('search')))) {
                                 return true;
                             } else if (Str::is(Str::lower($row['idBanco']), Str::lower($request->get('search')))) {
                                 return true;
@@ -663,7 +663,7 @@ class ContaController extends Controller
                 }
 
                 if ($request->has('buscaConta')) {
-                    $query->where('agenciaConta', 'like', "%{$request->get('buscaConta')}%");
+                    $query->where('apelidoConta', 'like', "%{$request->get('buscaConta')}%");
                 }
 
                 if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
@@ -682,19 +682,19 @@ class ContaController extends Controller
         $tabelaDespesas = DB::table('despesas')
             ->join('conta', 'despesas.conta', 'conta.id')
 
-            ->select(['despesas.id', 'despesas.vencimento', 'conta.agenciaConta', 'despesas.precoReal', 'despesas.descricaoDespesa', 'despesas.idOS', 'despesas.pago as pagoreceita']);
+            ->select(['despesas.id', 'despesas.vencimento', 'conta.apelidoConta', 'despesas.precoReal', 'despesas.descricaoDespesa', 'despesas.idOS', 'despesas.pago as pagoreceita']);
         // ->where('despesas.pago', '=', "S");
 
         $tabelaReceitas = DB::table('receita')
             ->join('conta', 'receita.contareceita', 'conta.id')
 
-            ->select(['receita.id', 'receita.datapagamentoreceita', 'conta.agenciaConta', 'receita.valorreceita', 'receita.descricaoReceita', 'receita.idosreceita', 'receita.pagoreceita'])
+            ->select(['receita.id', 'receita.datapagamentoreceita', 'conta.apelidoConta', 'receita.valorreceita', 'receita.descricaoReceita', 'receita.idosreceita', 'receita.pagoreceita'])
             // ->where('receita.pagoreceita', '=', "S")
             ->unionAll($tabelaDespesas);
         // ->get();
 
         $consulta = DB::table(DB::raw("({$tabelaReceitas->toSql()}) as x"))
-            ->select(['id', 'datapagamentoreceita', 'agenciaConta', 'valorreceita', 'descricaoReceita', 'idosreceita', 'pagoreceita'])
+            ->select(['id', 'datapagamentoreceita', 'apelidoConta', 'valorreceita', 'descricaoReceita', 'idosreceita', 'pagoreceita'])
             ->where(function ($consulta) {
                 $consulta->where('pagoreceita', '=', 'S')
                     ->orWhere('pagoreceita', '=', '1');

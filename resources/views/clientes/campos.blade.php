@@ -5,9 +5,9 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="razaosocialCliente" class="col-sm-2 col-form-label">Razão Social</label>
+    <label for="razaosocialCliente" class="col-sm-2 col-form-label">Razão Social <span style="color:red;">*</span></label>
     <div class="col-sm-10">
-        {!! Form::text('razaosocialCliente', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+        {!! Form::text('razaosocialCliente', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
@@ -106,28 +106,7 @@
 
 <hr />
 <h4>Dados Bancários</h4>
-
+@include('clientes/dadosbancarios')
 <!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="bancoCliente" class="col-sm-1 col-form-label">Banco Cliente</label>
-    <div class="col-sm-3">
-        <select class="selecionaComInput form-control" name="bancoCliente" id="bancoCliente" {{ $variavelDisabledNaView }}>
-            @foreach ($listaBancos as $listabancos)
 
-            <option value="{{$listabancos->id}}">
-                {{$listabancos->nomeBanco}}
-            </option>
-            @endforeach
-
-        </select>
-    </div>
-    <label for="agenciaCliente" class="col-sm-1 col-form-label">Agência</label>
-    <div class="col-sm-2">
-        {!! Form::text('agenciaCliente', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) !!}
-    </div>
-    <label for="nrcontaCliente" class="col-sm-2 col-form-label">Número Conta Cliente</label>
-    <div class="col-sm-3">
-        {!! Form::text('nrcontaCliente', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) !!}
-    </div>
-</div>
 

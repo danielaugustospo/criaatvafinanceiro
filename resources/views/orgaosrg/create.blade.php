@@ -35,7 +35,7 @@
     <div class="col-sm-10">
         {!! Form::text('nome', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Prestador de Serviço"> -->
     </div>
 </div>
 <div class="form-group row">

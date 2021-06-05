@@ -24,7 +24,7 @@
         <div class="card-body">
             <p class="card-text">Saldo Total das Contas: {{ $saldo }} </p>
             {{-- @foreach ($contasAtuais as $listaContas)
-                <p class="card-text">Conta {{ $listaContas->numeroConta }} </p>
+                <p class="card-text">Conta {{ $listaContas->nomeConta }} </p>
             @endforeach --}}
             @foreach ($dadosConta as $resumo)
                 <p class="card-text" style="background-color: cadetblue;">{{ $resumo[0] }} Saldo: {{ $resumo[1] }} </p>

@@ -73,7 +73,7 @@
 <h3 class="text-center">Resumo Financeiro</h3>
 
 {{-- <div class="shadow-lg p-3 mb-5 bg-white rounded" style="background-color: lightslategray; color:white;"> --}}
-<div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center" style="background-color: lightslategray !important; color:white;">
+<div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center" style="background-color: black !important; color:white;">
 
     <form name="form1" method="post" action="">
         <div class="row">
@@ -103,13 +103,13 @@
 
                 <div class="row">
                     <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">A Receber</label>
-                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitas}}" readonly />
-                    <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }} %</label>
+                    <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totalreceitasAPagar}}" readonly />
+                    <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceitaAPagar }} %</label>
                 </div>
                 <div class="row ">
                     <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">A Pagar</label>
                     <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text" value="{{$totaldespesasAPagar}}" readonly />
-                    <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }} %</label>
+                    <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesaAPagar }} %</label>
                 </div>
                 {{-- <div class="row">
                     <label class="btn badge-success col-sm-4 mr-2" style="cursor: unset;">Lucro</label>

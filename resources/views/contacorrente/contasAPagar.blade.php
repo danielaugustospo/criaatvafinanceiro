@@ -100,7 +100,7 @@
             name: 'precoReal',
             render: $.fn.dataTable.render.number( '.', ',', 2)
         },
-        {data: 'agenciaConta', name: 'agenciaConta'},
+        {data: 'apelidoConta', name: 'apelidoConta'},
         {data: 'notaFiscal', name: 'notaFiscal'}
     ],
     @include('layouts/includeTabela')

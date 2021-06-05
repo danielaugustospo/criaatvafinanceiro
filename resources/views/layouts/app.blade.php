@@ -28,7 +28,6 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.22/dataRender/datetime.js"></script>
-
     
     {{-- Exportação Botões Tabela --}}
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
@@ -39,25 +38,22 @@
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
 
-
-
-
      <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
 
      <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>     
      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
-
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
     <script src="{{ asset('js/viacep.js') }}" defer></script>
     <script src="{{ asset('js/funcionarios/validafavorecido.js') }}" defer></script>
     <script src="{{ asset('js/inputmask5x/dist/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('js/inputmask5x/dist/bindings/inputmask.binding.js') }}"></script>
 
-
-
-
+    {{-- <script src="{{ asset('js/jquery.mask.js') }}"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js" integrity="sha512-Rdk63VC+1UYzGSgd3u2iadi0joUrcwX0IWp2rTh6KXFoAmgOjRS99Vynz1lJPT8dLjvo6JZOqpAHJyfCEZ5KoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -68,22 +64,42 @@
     {{-- <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" /> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
-
     <script>
-        $(document).ready(function() {
-            $(".padraoReal").inputmask('decimal', {
-                // 'rightAlign': false,                
-                'alias': 'numeric',
-                'groupSeparator': '.',
-                'autoGroup': false,
-                'digits': 2,
-                'radixPoint': ",",
-                'digitsOptional': false,
-                'allowMinus': false,
-                // 'prefix': 'R$ ',
-                'placeholder': '0',
-            });
+        
+    $(document).ready(function() {
+   
+    jQuery('.campo-moeda')
+      .maskMoney({
+        prefix: 'R$ ',
+        allowNegative: false,
+        thousands: '.',
+        decimal: ',',
+        affixesStay: false
+  });
+    $(".padraoReal").inputmask( 'currency',{"autoUnmask": true,
+                    radixPoint:",",
+                    groupSeparator: ".",
+                    allowMinus: false,
+                    // prefix: 'R$ ',            
+                    digits: 2,
+                    digitsOptional: true,
+                    rightAlign: true,
+                    unmaskAsNumber: true,
+                    removeMaskOnSubmit: true
         });
+    });
+            // $(".padraoReal").inputmask('decimal', {
+            //     // 'rightAlign': false,                
+            //     'alias': 'numeric',
+            //     'groupSeparator': '.',
+            //     'autoGroup': false,
+            //     'digits': 2,
+            //     'radixPoint': ",",
+            //     'digitsOptional': false,
+            //     'allowMinus': false,
+            //     // 'prefix': 'R$ ',
+            //     'placeholder': '0',
+            // });
         $(document).ready(function() {
             $(".padraoRealEdicao").inputmask('currency',{"autoUnmask": true,
             // radixPoint:",",
@@ -256,6 +272,10 @@
 </script>
 
     <style>
+        p,label,h1,h2,h3,h4,h5,th,button,input,select,option,a {
+            text-transform: uppercase; 
+        }
+
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -284,7 +304,7 @@
     <div id="app">
         @include('layouts/navbar')
         <main class="py-4">
-            <div class="container">
+            <div class="container" >
                 @yield('content')
             </div>
         </main>

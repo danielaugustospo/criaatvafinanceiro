@@ -122,8 +122,8 @@
                         render: $.fn.dataTable.render.moment('DD/MM/YYYY'),
                     },
                     {
-                        data: 'agenciaConta',
-                        name: 'agenciaConta'
+                        data: 'apelidoConta',
+                        name: 'apelidoConta'
                     },
                     {
                         data: 'valorreceita',

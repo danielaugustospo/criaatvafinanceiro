@@ -38,9 +38,9 @@
             <th class="text-center">CPF</th>
             <th class="text-center">Telefone 1</th>
             <th class="text-center">Telefone 2</th>
-            <th class="text-center">Banco</th>
-            <th class="text-center">N° Conta</th>
-            <th class="text-center">Agência</th>
+            {{-- <th class="text-center">Banco</th> --}}
+            {{-- <th class="text-center">N° Conta</th> --}}
+            {{-- <th class="text-center">Agência</th> --}}
             <th class="text-center">Chave Pix 1</th>
             <th class="text-center">Chave Pix 2</th>
 
@@ -74,11 +74,11 @@ $('#btnEsconde').on('click', function () {
     $('input[name=cpfFornecedor]').val('');
     $('input[name=telefone1Fornecedor]').val('');
     $('input[name=telefone2Fornecedor]').val('');
-    $('input[name=nrcontaFornecedor]').val('');
-    $('input[name=agenciaFornecedor]').val('');
-    $('input[name=chavePix1Fornecedor]').val('');
-    $('input[name=chavePix2Fornecedor]').val('');
-    $('input[name=bancoFornecedor]').val('');
+    // $('input[name=nrcontaFornecedor]').val('');
+    // $('input[name=agenciaFornecedor]').val('');
+    $('input[name=chavePixFornecedor1]').val('');
+    $('input[name=chavePixFornecedor2]').val('');
+    // $('input[name=bancoFornecedor]').val('');
     $('input[name=pesquisar]').click();
 })
 
@@ -125,11 +125,11 @@ var table = $('.data-table').DataTable({
                 d.cpfFornecedor         = $('#cpfFornecedor').val(),
                 d.telefone1Fornecedor   = $('#telefone1Fornecedor').val(),
                 d.telefone2Fornecedor   = $('#telefone2Fornecedor').val(),
-                d.bancoFornecedor       = $('#bancoFornecedor').val(),
-                d.nrcontaFornecedor     = $('#nrcontaFornecedor').val(),
-                d.agenciaFornecedor     = $('#agenciaFornecedor').val(),
-                d.chavePix1Fornecedor   = $('#chavePix1Fornecedor').val(),
-                d.chavePix2Fornecedor   = $('#chavePix2Fornecedor').val(),
+                // d.bancoFornecedor       = $('#bancoFornecedor').val(),
+                // d.nrcontaFornecedor     = $('#nrcontaFornecedor').val(),
+                // d.agenciaFornecedor     = $('#agenciaFornecedor').val(),
+                d.chavePixFornecedor1   = $('#chavePixFornecedor1').val(),
+                d.chavePixFornecedor2   = $('#chavePixFornecedor2').val(),
                 d.search                = $('input[type="search"]').val()
         }
     },
@@ -163,25 +163,25 @@ var table = $('.data-table').DataTable({
             data: 'telefone2Fornecedor',
             name: 'telefone2Fornecedor'
         },
+        // {
+        //     data: 'bancoFornecedor',
+        //     name: 'bancoFornecedor'
+        // },
+        // {
+        //     data: 'nrcontaFornecedor',
+        //     name: 'nrcontaFornecedor'
+        // },
+        // {
+        //     data: 'agenciaFornecedor',
+        //     name: 'agenciaFornecedor'
+        // },
         {
-            data: 'bancoFornecedor',
-            name: 'bancoFornecedor'
+            data: 'chavePixFornecedor1',
+            name: 'chavePixFornecedor1'
         },
         {
-            data: 'nrcontaFornecedor',
-            name: 'nrcontaFornecedor'
-        },
-        {
-            data: 'agenciaFornecedor',
-            name: 'agenciaFornecedor'
-        },
-        {
-            data: 'chavePix1Fornecedor',
-            name: 'chavePix1Fornecedor'
-        },
-        {
-            data: 'chavePix2Fornecedor',
-            name: 'chavePix2Fornecedor'
+            data: 'chavePixFornecedor2',
+            name: 'chavePixFornecedor2'
         },
         {
             data: 'action',

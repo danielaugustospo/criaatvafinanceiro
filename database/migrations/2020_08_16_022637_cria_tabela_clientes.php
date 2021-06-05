@@ -17,50 +17,56 @@ class CriaTabelaClientes extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->bigincrements('id');
 
-            $table->string('nomeCliente');
+            $table->string('nomeCliente')->nullable();
             $table->string('razaosocialCliente');
-            $table->string('siteCliente');
-            $table->string('contatoCliente');
-            $table->string('cepCliente');
-            $table->string('enderecoCliente');
-            $table->string('bairroCliente');
-            $table->string('cidadeCliente');
-            $table->string('estadoCliente');
-            $table->string('telefone1Cliente');
-            $table->string('telefone2Cliente');
-            $table->string('cnpjCliente');
-            $table->string('inscEstadualCliente');
-            $table->string('cpfCliente');
-            $table->string('identidadeCliente');
-            $table->string('emailCliente');
-            $table->string('dataCadastroCliente');
+            $table->string('siteCliente')->nullable();
+            $table->string('contatoCliente')->nullable();
+            $table->string('cepCliente')->nullable();
+            $table->string('enderecoCliente')->nullable();
+            $table->string('bairroCliente')->nullable();
+            $table->string('cidadeCliente')->nullable();
+            $table->string('estadoCliente')->nullable();
+            $table->string('telefone1Cliente')->nullable();
+            $table->string('telefone2Cliente')->nullable();
+            $table->string('cnpjCliente')->nullable();
+            $table->string('inscEstadualCliente')->nullable();
+            $table->string('cpfCliente')->nullable();
+            $table->string('identidadeCliente')->nullable();
+            $table->string('emailCliente')->nullable();
+            $table->string('dataCadastroCliente')->nullable();
 
+            $table->string('contacorrenteCliente1')->nullable();
+            $table->string('bancoCliente1')->nullable();
+            $table->string('nrcontaCliente1')->nullable();
+            $table->string('agenciaCliente1')->nullable();
+            $table->string('chavePixCliente1')->nullable();
 
-            $table->unsignedBigInteger('bancoCliente');
-            // $table->foreign('bancoCliente')
-            // ->references('id')
-            // ->on('banco')
-            // ->onDelete('cascade');
+            $table->string('contacorrenteCliente2')->nullable();
+            $table->string('bancoCliente2')->nullable();
+            $table->string('nrcontaCliente2')->nullable();
+            $table->string('agenciaCliente2')->nullable();
+            $table->string('chavePixCliente2')->nullable();
 
-            // $table->string('bancoFuncionario');
-            $table->string('nrcontaCliente');
-            $table->string('agenciaCliente');
+            $table->string('contacorrenteCliente3')->nullable();
+            $table->string('bancoCliente3')->nullable();
+            $table->string('nrcontaCliente3')->nullable();
+            $table->string('agenciaCliente3')->nullable();
+            $table->string('chavePixCliente3')->nullable();
 
-
-            $table->unsignedBigInteger('bancoFavorecidoCliente');
+            $table->unsignedBigInteger('bancoFavorecidoCliente')->nullable();
             // $table->foreign('bancoFavorecidoCliente')
             // ->references('id')
             // ->on('banco')
             // ->onDelete('cascade');
 
-            $table->string('nomefavorecidoCliente');
-            $table->string('cpffavorecidoCliente');
-            $table->string('contacorrentefavorecidoCliente');
+            $table->string('nomefavorecidoCliente')->nullable();
+            $table->string('cpffavorecidoCliente')->nullable();
+            $table->string('contacorrentefavorecidoCliente')->nullable();
 
-            $table->string('agenciafavorecidoCliente');
+            $table->string('agenciafavorecidoCliente')->nullable();
 
-            $table->boolean('ativoCliente');
-            $table->boolean('excluidoCliente');
+            $table->boolean('ativoCliente')->default('1');
+            $table->boolean('excluidoCliente')->default('0');
 
             // $table->timestamp('created_at')->nullable(); //Data Criação
 

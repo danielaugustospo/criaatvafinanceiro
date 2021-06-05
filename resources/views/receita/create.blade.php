@@ -2,6 +2,8 @@
 
 
 @section('content')
+<label  class="col-sm-12 text-center col-form-label" style="color:red;">Aviso: Todos os campos são de preenchimento obrigatório!</label>
+
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">

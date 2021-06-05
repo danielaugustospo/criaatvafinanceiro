@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Cadastro de Funcionário</h2>
+            <h2>Cadastro de Prestador de Serviço</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('bancos.index') }}"> Voltar</a>
@@ -36,7 +36,7 @@
     <div class="col-sm-10">
         {!! Form::text('nomeBanco', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Funcionário"> -->
+        <!-- <input type="text" class="form-control" nome="nomeBanco" id="nomeBanco" placeholder="Nome do Prestador de Serviço"> -->
     </div>
 </div>
 <div class="form-group row">

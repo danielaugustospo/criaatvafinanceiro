@@ -24,9 +24,8 @@ class Conta extends Model
      */
     protected $fillable = [
 
-    'idBanco',
-    'agenciaConta',
-    'numeroConta',
+    'apelidoConta',
+    'nomeConta',
     'ativoConta',
     'excluidoConta',
 

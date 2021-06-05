@@ -18,18 +18,17 @@ class CreateTableContas extends Migration
 
             $table->bigIncrements('id');
 
-            $table->string('numeroConta');
-            $table->string('agenciaConta');
+            $table->string('nomeConta');
+            $table->string('apelidoConta');
 
 
-            $table->unsignedBigInteger('idBanco');
             // $table->foreign('idBanco')
             // ->references('id')
             // ->on('banco')
             // ->onDelete('cascade');
 
-            $table->boolean('ativoConta');
-            $table->boolean('excluidoConta');
+            $table->boolean('ativoConta')->default('1');
+            $table->boolean('excluidoConta')->default('0');
 
 
             $table->timestamps();

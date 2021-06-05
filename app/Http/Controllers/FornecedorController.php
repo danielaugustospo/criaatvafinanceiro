@@ -65,8 +65,10 @@ class FornecedorController extends Controller
                 $cpfFornecedor          = $request->get('cpfFornecedor');
                 $telefone1Fornecedor    = $request->get('telefone1Fornecedor');
                 $telefone2Fornecedor    = $request->get('telefone2Fornecedor');
-                $nrcontaFornecedor      = $request->get('nrcontaFornecedor');
-                $agenciaFornecedor      = $request->get('agenciaFornecedor');
+                // $nrcontaFornecedor1     = $request->get('nrcontaFornecedor1');
+                // $nrcontaFornecedor2     = $request->get('nrcontaFornecedor2');
+                // $nrcontaFornecedor3     = $request->get('nrcontaFornecedor3');
+                // $agenciaFornecedor      = $request->get('agenciaFornecedor');
                 $chavePix1Fornecedor    = $request->get('chavePix1Fornecedor');
                 $chavePix2Fornecedor    = $request->get('chavePix2Fornecedor');
                 $bancoFornecedor        = $request->get('bancoFornecedor');
@@ -105,31 +107,31 @@ class FornecedorController extends Controller
                         return Str::is($row['telefone2Fornecedor'], $request->get('telefone2Fornecedor')) ? true : false;
                     });
                 }
-                if (!empty($nrcontaFornecedor)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['nrcontaFornecedor'], $request->get('nrcontaFornecedor')) ? true : false;
-                    });
-                }
-                if (!empty($agenciaFornecedor)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['agenciaFornecedor'], $request->get('agenciaFornecedor')) ? true : false;
-                    });
-                }
+                // if (!empty($nrcontaFornecedor)) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::is($row['nrcontaFornecedor'], $request->get('nrcontaFornecedor')) ? true : false;
+                //     });
+                // }
+                // if (!empty($agenciaFornecedor)) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::is($row['agenciaFornecedor'], $request->get('agenciaFornecedor')) ? true : false;
+                //     });
+                // }
                 if (!empty($chavePix1Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['chavePix1Fornecedor'], $request->get('chavePix1Fornecedor')) ? true : false;
+                        return Str::is($row['chavePixFornecedor1'], $request->get('chavePixFornecedor1')) ? true : false;
                     });
                 }
                 if (!empty($chavePix2Fornecedor)) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['chavePix2Fornecedor'], $request->get('chavePix2Fornecedor')) ? true : false;
+                        return Str::is($row['chavePixFornecedor2'], $request->get('chavePixFornecedor2')) ? true : false;
                     });
                 }
-                if (!empty($bancoFornecedor)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['bancoFornecedor'], $request->get('bancoFornecedor')) ? true : false;
-                    });
-                }
+                // if (!empty($bancoFornecedor)) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::is($row['bancoFornecedor'], $request->get('bancoFornecedor')) ? true : false;
+                //     });
+                // }
 
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
@@ -148,17 +150,20 @@ class FornecedorController extends Controller
                             return true;
                         } else if (Str::is(Str::lower($row['telefone2Fornecedor']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::is(Str::lower($row['nrcontaFornecedor']), Str::lower($request->get('search')))) {
+                        } 
+                        // else if (Str::is(Str::lower($row['nrcontaFornecedor']), Str::lower($request->get('search')))) {
+                        //     return true;
+                        // } else if (Str::is(Str::lower($row['agenciaFornecedor']), Str::lower($request->get('search')))) {
+                        //     return true;
+                        // } 
+                        else if (Str::is(Str::lower($row['chavePixFornecedor1']), Str::lower($request->get('search')))) {
                             return true;
-                        } else if (Str::is(Str::lower($row['agenciaFornecedor']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['chavePix1Fornecedor']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['chavePix2Fornecedor']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['bancoFornecedor']), Str::lower($request->get('search')))) {
+                        } else if (Str::is(Str::lower($row['chavePixFornecedor2']), Str::lower($request->get('search')))) {
                             return true;
                         }
+                        //  else if (Str::is(Str::lower($row['bancoFornecedor']), Str::lower($request->get('search')))) {
+                        //     return true;
+                        // }
                         return false;
                     });
                 }
@@ -171,8 +176,6 @@ class FornecedorController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     } else {
-
-
         $listaFornecedores = Fornecedores::orderBy('id','DESC')->paginate(5);
         return view('fornecedores.index',compact('listaFornecedores'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -192,8 +195,11 @@ class FornecedorController extends Controller
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $todososbancos1 = DB::select('select * from banco');
+        $todososbancos2 = $todososbancos1;
+        $todososbancos3 = $todososbancos1;
 
-        return view('fornecedores.create', compact('precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('fornecedores.create', compact('precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView','todososbancos1','todososbancos2','todososbancos3'));
     }
 
 
@@ -208,38 +214,11 @@ class FornecedorController extends Controller
 
         $request->validate([
 
-            'nomeFornecedor'          => 'required|min:1',
-            'contatoFornecedor'       => 'required|min:1',
             'razaosocialFornecedor'   => 'required|min:1',
-            'siteFornecedor'          => 'required|min:1',
-            'cepFornecedor'           => 'required|min:1',
-            'enderecoFornecedor'      => 'required|min:1',
-            'bairroFornecedor'        => 'required|min:1',
-            'cidadeFornecedor'        => 'required|min:1',
-            'estadoFornecedor'        => 'required|min:1',
-            'telefone1Fornecedor'     => 'required|min:1',
-            'telefone2Fornecedor'     => 'required|min:1',
-            'cnpjFornecedor'          => 'required|min:1|cnpj',
-            'inscEstadualFornecedor'  => 'required|min:1',
-            'cpfFornecedor'           => 'required|min:1|cpf|unique:fornecedores',
-            'identidadeFornecedor'    => 'required|min:1',
-            'emailFornecedor'         => 'required|min:5',
-            // 'dataContratoFornecedor'  => 'required|min:1',
-            'bancoFornecedor'         => 'required|min:1',
-            'nrcontaFornecedor'       => 'required|min:1',
-            'agenciaFornecedor'       => 'required|min:1',
-            'chavePix1Fornecedor'     => 'required|min:1',
-            // 'chavePix2Fornecedor'     => 'required|min:1',
-            // 'chavePix3Fornecedor'     => 'required|min:1',
-            // 'chavePix4Fornecedor'     => 'required|min:1',
-
-            'ativoFornecedor' => 'required|min:1',
-            'excluidoFornecedor' => 'required|min:1',
 
         ]);
 
-
-
+            
         Fornecedores::create($request->all());
 
 
@@ -257,7 +236,9 @@ class FornecedorController extends Controller
     public function show($id)
     {
         $fornecedor = Fornecedores::find($id);
-        $bancos = DB::select('select * from banco order by id = :idBancoFornecedor asc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
+        $todososbancos1 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor1]);
+        $todososbancos2 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor2]);
+        $todososbancos3 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor3]);
 
         $precoReal = " ";
         $valorInput = $this->valorInput;
@@ -265,7 +246,8 @@ class FornecedorController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('fornecedores.show',compact('fornecedor','bancos','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+
+        return view('fornecedores.show',compact('fornecedor','todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -278,19 +260,24 @@ class FornecedorController extends Controller
     public function edit($id)
     {
         $fornecedor = Fornecedores::find($id);
+       
+        $todososbancos1 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor1]);
+        $todososbancos2 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor2]);
+        $todososbancos3 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor3]);
 
-        $bancos = DB::select('select * from banco order by id = :idBancoFornecedor asc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
         $precoReal = " ";
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $todososbancos = DB::select('select * from banco');
+
 
         // $todososbancos = DB::select('select * from banco order by id = :idBancoFornecedor desc', ['idBancoFornecedor' => $fornecedor->bancoFornecedor]);
         // $roles = Fornecedores::pluck('nomeFornecedor','nomeFornecedor')->all();
         // $fornecedorRole = $fornecedor->roles->pluck('nomeFornecedor','nomeFornecedor')->all();
 
-        return view('fornecedores.edit',compact('fornecedor', 'bancos','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('fornecedores.edit',compact('fornecedor', 'todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
 
         // return view('fornecedores.edit',compact('fornecedor'));
     }
@@ -307,38 +294,7 @@ class FornecedorController extends Controller
     {
          request()->validate([
 
-            'nomeFornecedor'                        => 'required|min:1',
-            'contatoFornecedor'                     => 'required|min:1',
             'razaosocialFornecedor'                 => 'required|min:1',
-            'siteFornecedor'                        => 'required|min:1',
-            'cepFornecedor'                         => 'required|min:1',
-            'enderecoFornecedor'                    => 'required|min:1',
-            'bairroFornecedor'                      => 'required|min:1',
-            'cidadeFornecedor'                      => 'required|min:1',
-            'estadoFornecedor'                      => 'required|min:1',
-            'telefone1Fornecedor'                   => 'required|min:1',
-            'telefone2Fornecedor'                   => 'required|min:1',
-            'cnpjFornecedor'                        => 'required|min:1|cnpj',
-            'inscEstadualFornecedor'                => 'required|min:1',
-            'cpfFornecedor'                         => 'required|min:1|cpf',
-            'identidadeFornecedor'                  => 'required|min:1',
-            'emailFornecedor'                       => 'required|min:5',
-            // 'dataContratoFornecedor'                => 'required|min:1',
-            'bancoFornecedor'                       => 'required|min:1',
-            'nrcontaFornecedor'                     => 'required|min:1',
-            'agenciaFornecedor'                     => 'required|min:1',
-            'chavePix1Fornecedor'                   => 'required|min:1',
-            // 'chavePix2Fornecedor'                   => 'required|min:1',
-            // 'chavePix3Fornecedor'                   => 'required|min:1',
-            // 'chavePix4Fornecedor'                   => 'required|min:1',
-
-            // 'bancoFavorecidoFornecedor'             => 'required|min:1',
-            // 'nomefavorecidoFornecedor'              => 'required|min:1',
-            // 'cpffavorecidoFornecedor'               => 'required|min:1',
-            // 'contacorrentefavorecidoFornecedor'     => 'required|min:1',
-            // 'agenciafavorecidoFornecedor'           => 'required|min:1',
-            'ativoFornecedor'                       => 'required|min:1',
-            'excluidoFornecedor'                    => 'required|min:1',
 
         ]);
 
@@ -362,13 +318,22 @@ class FornecedorController extends Controller
         $fornecedor->identidadeFornecedor                 =  $request->input('identidadeFornecedor');
         $fornecedor->emailFornecedor                      =  $request->input('emailFornecedor');
         $fornecedor->dataContratoFornecedor               =  $request->input('dataContratoFornecedor');
-        $fornecedor->bancoFornecedor                      =  $request->input('bancoFornecedor');
-        $fornecedor->nrcontaFornecedor                    =  $request->input('nrcontaFornecedor');
-        $fornecedor->agenciaFornecedor                    =  $request->input('agenciaFornecedor');
-        $fornecedor->chavePix1Fornecedor                  =  $request->input('chavePix1Fornecedor');
-        $fornecedor->chavePix2Fornecedor                  =  $request->input('chavePix2Fornecedor');
-        $fornecedor->chavePix3Fornecedor                  =  $request->input('chavePix3Fornecedor');
-        $fornecedor->chavePix4Fornecedor                  =  $request->input('chavePix4Fornecedor');
+        
+        $fornecedor->bancoFornecedor1                     =  $request->input('bancoFornecedor1');
+        $fornecedor->nrcontaFornecedor1                   =  $request->input('nrcontaFornecedor1');
+        $fornecedor->agenciaFornecedor1                   =  $request->input('agenciaFornecedor1');
+        $fornecedor->chavePixFornecedor1                  =  $request->input('chavePixFornecedor1');
+
+        $fornecedor->bancoFornecedor2                     =  $request->input('bancoFornecedor2');
+        $fornecedor->nrcontaFornecedor2                   =  $request->input('nrcontaFornecedor2');
+        $fornecedor->agenciaFornecedor2                   =  $request->input('agenciaFornecedor2');
+        $fornecedor->chavePixFornecedor2                  =  $request->input('chavePixFornecedor2');
+
+        $fornecedor->bancoFornecedor3                     =  $request->input('bancoFornecedor3');
+        $fornecedor->nrcontaFornecedor3                   =  $request->input('nrcontaFornecedor3');
+        $fornecedor->agenciaFornecedor3                   =  $request->input('agenciaFornecedor3');
+        $fornecedor->chavePixFornecedor3                  =  $request->input('chavePixFornecedor3');
+
         // $fornecedor->bancoFavorecidoFornecedor            =  $request->input('bancoFavorecidoFornecedor');
         // $fornecedor->nomefavorecidoFornecedor             =  $request->input('nomefavorecidoFornecedor');
         // $fornecedor->cpffavorecidoFornecedor              =  $request->input('cpffavorecidoFornecedor');

@@ -90,14 +90,14 @@ class AppServiceProvider extends ServiceProvider
 
         $listaContasAPagar =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
         os.id as idDaOS, os.eventoOrdemdeServico as evento, os.clienteOrdemdeServico,
-        cli.id as idCliente, cli.nomeCliente,  cli.agenciaCliente as agencia
+        cli.id as idCliente, cli.nomeCliente, cli.agenciaCliente1 as agencia1, cli.agenciaCliente2 as agencia2, cli.agenciaCliente3 as agencia3
         from despesas d, ordemdeservico os, clientes cli
         where (os.clienteOrdemdeServico = cli.id)
         and (d.idOS = os.id) 
         and (d.pago = "N")');
         view()->share('listaContasAPagar', $listaContasAPagar);
 
-        $listaContasAReceber = DB::select("SELECT r.valorreceita as preco, r.datapagamentoreceita as vencimento, c.id as idConta, c.agenciaConta as agencia, r.idosreceita as idOS, cli.nomeCliente, os.idClienteOrdemdeServico as idCliente, os.eventoOrdemdeServico as evento, r.nfreceita as notaFiscal
+        $listaContasAReceber = DB::select("SELECT r.valorreceita as preco, r.datapagamentoreceita as vencimento, c.id as idConta, c.apelidoConta as agencia, r.idosreceita as idOS, cli.nomeCliente, os.idClienteOrdemdeServico as idCliente, os.eventoOrdemdeServico as evento, r.nfreceita as notaFiscal
         from receita r, conta c, ordemdeservico os, clientes cli
         where pagoreceita = 'N' and r.contareceita = c.id 
         and r.idosreceita = os.id

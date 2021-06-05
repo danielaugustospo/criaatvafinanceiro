@@ -146,7 +146,9 @@ class ClientesController extends Controller
     public function create()
     {
 
-        $todososbancos =  DB::select('select distinct * from banco where ativoBanco = 1;');
+        $todososbancos1 =  DB::select('select distinct * from banco where ativoBanco = 1;');
+        $todososbancos2 =  $todososbancos1;
+        $todososbancos3 =  $todososbancos1;
         
         $precoReal = " ";
         $valorInput = $this->valorInput;
@@ -155,7 +157,7 @@ class ClientesController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        return view('clientes.create', compact('todososbancos','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('clientes.create', compact('todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -169,34 +171,34 @@ class ClientesController extends Controller
     {
 
         $request->validate([
-            'nomeCliente'                       => 'required',
-            'contatoCliente'                    => 'required',
+            // 'nomeCliente'                       => 'required',
+            // 'contatoCliente'                    => 'required',
             'razaosocialCliente'                => 'required',
-            'siteCliente'                       => 'required',
-            'cepCliente'                        => 'required',
-            'enderecoCliente'                   => 'required',
-            'bairroCliente'                     => 'required',
-            'cidadeCliente'                     => 'required',
-            'estadoCliente'                     => 'required',
-            'telefone1Cliente'                  => 'required',
-            'telefone2Cliente'                  => 'required',
-            'cnpjCliente'                       => 'required',
-            'inscEstadualCliente'               => 'required',
-            'cpfCliente'                        => 'required',
-            'identidadeCliente'                 => 'required',
-            'emailCliente'                      => 'required',
-            'dataCadastroCliente'               => 'required',
-            'bancoCliente'                      => 'required',
-            'nrcontaCliente'                    => 'required',
-            'agenciaCliente'                    => 'required',
-            'bancoFavorecidoCliente'            => 'required',
-            'nomefavorecidoCliente'             => 'required',
-            'cpffavorecidoCliente'              => 'required',
-            'contacorrentefavorecidoCliente'    => 'required',
+            // 'siteCliente'                       => 'required',
+            // 'cepCliente'                        => 'required',
+            // 'enderecoCliente'                   => 'required',
+            // 'bairroCliente'                     => 'required',
+            // 'cidadeCliente'                     => 'required',
+            // 'estadoCliente'                     => 'required',
+            // 'telefone1Cliente'                  => 'required',
+            // 'telefone2Cliente'                  => 'required',
+            // 'cnpjCliente'                       => 'required',
+            // 'inscEstadualCliente'               => 'required',
+            // 'cpfCliente'                        => 'required',
+            // 'identidadeCliente'                 => 'required',
+            // 'emailCliente'                      => 'required',
+            // 'dataCadastroCliente'               => 'required',
+            // 'bancoCliente'                      => 'required',
+            // 'nrcontaCliente'                    => 'required',
+            // 'agenciaCliente'                    => 'required',
+            // 'bancoFavorecidoCliente'            => 'required',
+            // 'nomefavorecidoCliente'             => 'required',
+            // 'cpffavorecidoCliente'              => 'required',
+            // 'contacorrentefavorecidoCliente'    => 'required',
             // 'nrcontafavorecidoCliente'          => 'required',
-            'agenciafavorecidoCliente'          => 'required',
-            'ativoCliente'                      => 'required',
-            'excluidoCliente'                   => 'required',
+            // 'agenciafavorecidoCliente'          => 'required',
+            // 'ativoCliente'                      => 'required',
+            // 'excluidoCliente'                   => 'required',
         ]);
 
 
@@ -217,7 +219,9 @@ class ClientesController extends Controller
     public function show($id)
     {
         $cliente = Clientes::find($id);
-        $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
+        $todososbancos1 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente1]);
+        $todososbancos2 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente2]);
+        $todososbancos3 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente3]);
         $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
 
         $precoReal = " ";
@@ -226,7 +230,7 @@ class ClientesController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('clientes.show',compact('cliente','todososbancosCliente','todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('clientes.show',compact('cliente','todososbancos1', 'todososbancos2', 'todososbancos3', 'todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
 
 
@@ -241,7 +245,9 @@ class ClientesController extends Controller
         $cliente = Clientes::find($id);
         $roles = Clientes::pluck('nomeCliente','nomeCliente')->all();
         $clienteRole = $cliente->roles->pluck('nomeCliente','nomeCliente')->all();
-        $todososbancosCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente]);
+        $todososbancos1 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente1]);
+        $todososbancos2 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente2]);
+        $todososbancos3 =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoCliente3]);
         $todososbancosFavorecidoCliente =  DB::select('select distinct * from banco where ativoBanco = 1 order by id = :idbancoSelecionado desc',['idbancoSelecionado' => $cliente->bancoFavorecidoCliente]);
 
         $precoReal = " ";
@@ -250,7 +256,7 @@ class ClientesController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('clientes.edit',compact('cliente','roles','clienteRole','todososbancosCliente','todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('clientes.edit',compact('cliente','roles','clienteRole','todososbancos1', 'todososbancos2', 'todososbancos3','todososbancosFavorecidoCliente', 'valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
 
         // return view('clientes.edit',compact('cliente'));
     }
@@ -267,34 +273,34 @@ class ClientesController extends Controller
     {
          request()->validate([
 
-            'nomeCliente'                       => 'required',
-            'contatoCliente'                    => 'required',
-            'razaosocialCliente'                => 'required',
-            'siteCliente'                       => 'required',
-            'cepCliente'                        => 'required',
-            'enderecoCliente'                   => 'required',
-            'bairroCliente'                     => 'required',
-            'cidadeCliente'                     => 'required',
-            'estadoCliente'                     => 'required',
-            'telefone1Cliente'                  => 'required',
-            'telefone2Cliente'                  => 'required',
-            'cnpjCliente'                       => 'required',
-            'inscEstadualCliente'               => 'required',
-            'cpfCliente'                        => 'required',
-            'identidadeCliente'                 => 'required',
-            'emailCliente'                      => 'required',
-            'dataCadastroCliente'               => 'required',
-            'bancoCliente'                      => 'required',
-            'nrcontaCliente'                    => 'required',
-            'agenciaCliente'                    => 'required',
-            'bancoFavorecidoCliente'            => 'required',
-            'nomefavorecidoCliente'             => 'required',
-            'cpffavorecidoCliente'              => 'required',
-            'contacorrentefavorecidoCliente'    => 'required',
+            // 'nomeCliente'                       => 'required',
+            // 'contatoCliente'                    => 'required',
+            'razaosocialCliente'                   => 'required',
+            // 'siteCliente'                       => 'required',
+            // 'cepCliente'                        => 'required',
+            // 'enderecoCliente'                   => 'required',
+            // 'bairroCliente'                     => 'required',
+            // 'cidadeCliente'                     => 'required',
+            // 'estadoCliente'                     => 'required',
+            // 'telefone1Cliente'                  => 'required',
+            // 'telefone2Cliente'                  => 'required',
+            // 'cnpjCliente'                       => 'required',
+            // 'inscEstadualCliente'               => 'required',
+            // 'cpfCliente'                        => 'required',
+            // 'identidadeCliente'                 => 'required',
+            // 'emailCliente'                      => 'required',
+            // 'dataCadastroCliente'               => 'required',
+            // 'bancoCliente'                      => 'required',
+            // 'nrcontaCliente'                    => 'required',
+            // 'agenciaCliente'                    => 'required',
+            // 'bancoFavorecidoCliente'            => 'required',
+            // 'nomefavorecidoCliente'             => 'required',
+            // 'cpffavorecidoCliente'              => 'required',
+            // 'contacorrentefavorecidoCliente'    => 'required',
             // 'nrcontafavorecidoCliente'          => 'required',
-            'agenciafavorecidoCliente'          => 'required',
-            'ativoCliente'                      => 'required',
-            'excluidoCliente'                   => 'required',
+            // 'agenciafavorecidoCliente'          => 'required',
+            // 'ativoCliente'                      => 'required',
+            // 'excluidoCliente'                   => 'required',
         ]);
 
 

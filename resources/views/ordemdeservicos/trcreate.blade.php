@@ -1,6 +1,6 @@
-<tr class="linhaTabela">
-    <td>
-        <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput form-control">
+<tr class="linhaTabela" id="linhaTabela">
+    <td data-label="Forma Pagamento">
+        <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput ">
             <option value="0" selected="selected">Sem Receita</option>
             @foreach ($formapagamento as $formaPG)
             <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
@@ -8,28 +8,31 @@
         </select>
 
     </td>
-    <td>
-        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'padraoReal form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'padraoReal','required']) !!}
+    <td data-label="Valor Parcela">
+        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'idReceita padraoReal form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'padraoReal','required']) !!}
 
     </td>
-    <td>
-        <select name="pagoreceita[]" id="pagoreceita" style="padding:0px; width:150%;" class="form-control">
-            <option value="S">Sim</option>
-            <option value="N">Não</option>
+    <td data-label="Pago">
+        <select name="pagoreceita[]" id="pagoreceita" style="padding:0px;" onclick="pegaIdFornecedor()" class="form-control">
+            <option value="S" style="background-color:green;">Sim</option>
+            <option value="N" style="background-color: #e3342f;">Não</option>
         </select>
     </td>
-    <td>
+    <td data-label="Data Emissão">
         {!! Form::date('dataemissaoreceita[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
     </td>
-    <td>
+    <td data-label="Data de Pagamento">
         {!! Form::date('datapagamentoreceita[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
     </td>
-    <td>
-        <select name="contareceita[]" id="contaReceita" class="selecionaComInput form-control js-example-basic-multiple">
+    <td data-label="Conta">
+        <select name="contareceita[]" id="contaReceita" class="selecionaComInput form-control">
             @foreach ($listaContas as $contas)
-            <option value="{{ $contas->id }}">{{ $contas->numeroConta }}</option>
+            <option value="{{ $contas->id }}">{{ $contas->apelidoConta }}</option>
             @endforeach
         </select>
     </td>
-    <td><a href="#tabelaPagamento" class="delete">Excluir</a></td>
+    <td data-label="Nota Fiscal">
+        {!! Form::text('nfreceita[]', $valorInput, ['placeholder' => 'N° Nota', 'class' => ' form-control pl-0 pr-0', 'maxlength' => '100', 'required']) !!}
+    </td>
+    <td><a href="#tabelaPagamento" class="delete"><i class="fa fa-trash" style="color: red;" aria-hidden="true"> Excluir</i></a></td>
 </tr>

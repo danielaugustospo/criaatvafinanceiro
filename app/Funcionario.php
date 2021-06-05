@@ -50,10 +50,19 @@ class Funcionario extends Model
     'certficFuncionario',
     'uncertificadoraFuncionario',
     'anocertificacaoFuncionario',
-    'contacorrenteFuncionario',
-    'bancoFuncionario',
-    'nrcontaFuncionario',
-    'agenciaFuncionario',
+
+    'contacorrenteFuncionario1',
+    'bancoFuncionario1',
+    'nrcontaFuncionario1',
+    'agenciaFuncionario1',
+    'chavePixFuncionario1',
+
+    'contacorrenteFuncionario2',
+    'bancoFuncionario2',
+    'nrcontaFuncionario2',
+    'agenciaFuncionario2',
+    'chavePixFuncionario2',
+    
     'nomefavorecidoFuncionario',
     'cpffavorecidoFuncionario',
     'contacorrentefavorecidoFuncionario',

@@ -22,7 +22,7 @@ $('#data-table').DataTable({
     //             name: 'receita.valorreceita',
     //             render: $.fn.dataTable.render.number('.', ',', 2)
     //         },
-    //         { data: 'agenciaConta', name: 'cc.agenciaConta' },
+    //         { data: 'apelidoConta', name: 'cc.apelidoConta' },
     //         { data: 'nfreceita', name: 'receita.nfreceita' }
     //     ]
     // },

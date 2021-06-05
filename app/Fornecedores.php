@@ -43,13 +43,22 @@ class Fornecedores extends Model
         'identidadeFornecedor',
         'emailFornecedor',
         // 'dataContratoFornecedor',
-        'bancoFornecedor',
-        'nrcontaFornecedor',
-        'agenciaFornecedor',
-        'chavePix1Fornecedor',
-        'chavePix2Fornecedor',
-        'chavePix3Fornecedor',
-        'chavePix4Fornecedor',
+
+        'bancoFornecedor1',
+        'nrcontaFornecedor1',
+        'agenciaFornecedor1',
+        'chavePixFornecedor1',
+
+        'bancoFornecedor2',
+        'nrcontaFornecedor2',
+        'agenciaFornecedor2',
+        'chavePixFornecedor2',
+
+        'bancoFornecedor3',
+        'nrcontaFornecedor3',
+        'agenciaFornecedor3',
+        'chavePixFornecedor3',
+
         'ativoFornecedor',
         'excluidoFornecedor',
         // 'created_at'

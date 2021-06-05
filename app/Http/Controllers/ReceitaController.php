@@ -132,7 +132,7 @@ class ReceitaController extends Controller
      */
     public function create()
     {
-        $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1');
+        $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1');
         $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1');
 
@@ -210,7 +210,7 @@ class ReceitaController extends Controller
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1 order by id = :idosreceita desc', ['idosreceita' => $receita->idosreceita]);
         $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1 order by id = :idclientereceita desc', ['idclientereceita' => $receita->idclientereceita]);
         $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
-        $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :idConta', ['idConta' => $receita->contareceita]);
+        $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :idConta', ['idConta' => $receita->contareceita]);
 
         $valorMonetario = $receita->valorreceita;
         $valorReceita = $this->validaValoresParaView($valorMonetario);
@@ -234,12 +234,13 @@ class ReceitaController extends Controller
     public function edit($id)
     {
         $receita = Receita::find($id);
+
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1 order by id = :idosreceita desc', ['idosreceita' => $receita->idosreceita]);
         $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1 order by id = :idclientereceita desc', ['idclientereceita' => $receita->idclientereceita]);
 
 
         $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
-        $listaContas = DB::select('select id,agenciaConta, numeroConta from conta where ativoConta = 1 order by id = :idConta', ['idConta' => $receita->contareceita]);
+        $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :idConta', ['idConta' => $receita->contareceita]);
 
 
         $valorMonetario = $receita->valorreceita;

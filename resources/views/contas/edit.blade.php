@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Conta: <b>{{$conta->numeroConta}}</b></h2>
+            <h2>Editar Dados da Conta: <b>{{$conta->nomeConta}}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('contas.index') }}"> Voltar</a>
@@ -29,18 +29,18 @@
 {!! Form::model($conta, ['method' => 'PATCH','route' => ['contas.update', $conta->id]]) !!}
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
+        <strong>Apelido Conta:</strong>
+
+            <div class="form-group">
+                {!! Form::text('apelidoConta', null, array('placeholder' => 'Agência','class' => 'col-sm-2 form-control')) !!}
+            </div>
+        
         <div class="form-group">
             <strong>Número Conta:</strong>
-            {!! Form::text('numeroConta', null, array('placeholder' => 'Número Conta','class' => 'form-control')) !!}
+            {!! Form::text('nomeConta', null, array('placeholder' => 'Número Conta','class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Agência Conta:</strong>
-            {!! Form::text('agenciaConta', null, array('placeholder' => 'Agência','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Banco:</strong>
             <select class="selecionaComInput form-control" name="idBanco" id="idBanco">
@@ -53,7 +53,7 @@
             </select>
 
         </div>
-    </div>
+    </div> --}}
 
 
 

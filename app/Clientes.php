@@ -39,9 +39,25 @@ class Clientes extends Model
         'identidadeCliente',
         'emailCliente',
         'dataCadastroCliente',
-        'bancoCliente',
-        'nrcontaCliente',
-        'agenciaCliente',
+
+        'contacorrenteCliente1',
+        'bancoCliente1',
+        'nrcontaCliente1',
+        'agenciaCliente1',
+        'chavePixCliente1',
+
+        'contacorrenteCliente2',
+        'bancoCliente2',
+        'nrcontaCliente2',
+        'agenciaCliente2',
+        'chavePixCliente2',
+
+        'contacorrenteCliente3',
+        'bancoCliente3',
+        'nrcontaCliente3',
+        'agenciaCliente3',
+        'chavePixCliente3',
+
         'bancoFavorecidoCliente',
         'nomefavorecidoCliente',
         'cpffavorecidoCliente',

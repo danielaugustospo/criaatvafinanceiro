@@ -8,7 +8,7 @@
             <h2>Editar Dados da OS {{$ordemdeservico->id}}</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
+            <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
         </div>
     </div>
 </div>

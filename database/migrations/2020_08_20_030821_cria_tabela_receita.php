@@ -21,14 +21,14 @@ class CriaTabelaReceita extends Migration
             $table->string('idclientereceita')->nullable();
             $table->string('idformapagamentoreceita');
             $table->string('datapagamentoreceita');
-            $table->string('dataemissaoreceita');
+            $table->string('dataemissaoreceita')->nullable();
             $table->string('valorreceita');
             $table->string('pagoreceita');
             $table->string('contareceita');
             $table->string('descricaoreceita')->nullable();
-            $table->string('registroreceita');
+            $table->string('registroreceita')->nullable();
             // $table->string('emissaoreceita');
-            $table->string('nfreceita');
+            $table->string('nfreceita')->nullable();
 
 
             $table->timestamps();

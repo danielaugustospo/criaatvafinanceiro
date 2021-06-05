@@ -11,7 +11,7 @@
     {{$titulo3 = "Relatórios"}}
     {{$titulo4 = "Clientes"}}
     {{$titulo5 = "Fornecedores"}}
-    {{$titulo6 = "Funcionários"}}
+    {{$titulo6 = "Prestadores de Serviço"}}
 </div>
 <div class="d-flex justify-content-around mt-3">
     @can('ordemdeservico-list')  

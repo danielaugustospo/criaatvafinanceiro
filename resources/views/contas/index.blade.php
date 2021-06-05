@@ -32,9 +32,9 @@
         <thead>
             <tr>
                 <th class="text-center">Id</th>
-                <th class="text-center">Número Conta</th>
-                <th class="text-center">Agência</th>
-                <th class="text-center">Id Banco</th>
+                <th class="text-center">Apelido</th>
+                <th class="text-center">Nome</th>
+                {{-- <th class="text-center">Id Banco</th> --}}
 
                 <th width="100px" class="noExport">Ações</th>
             </tr>
@@ -60,9 +60,9 @@
         $('#btnEsconde').hide();
         $('#btnReveal').show();
         $('input[name=id]').val('');
-        $('input[name=numeroConta]').val('');
-        $('input[name=agenciaConta]').val('');
-        $('input[name=idBanco]').val('');
+        $('input[name=nomeConta]').val('');
+        $('input[name=apelidoConta]').val('');
+        // $('input[name=idBanco]').val('');
         $('input[name=pesquisar]').click();
     })
 
@@ -103,9 +103,9 @@
             url: "{{ route('contas.index') }}",
             data: function(d) {
                 d.id            = $('.buscaId').val(),
-                d.numeroConta   = $('.buscanumeroConta').val(),
-                d.agenciaConta  = $('.buscaagenciaConta').val(),
-                d.idBanco       = $('.buscaidBanco').val(),
+                d.nomeConta   = $('.buscanomeConta').val(),
+                d.apelidoConta  = $('.buscaapelidoConta').val(),
+                // d.idBanco       = $('.buscaidBanco').val(),
                 d.search        = $('input[type="search"]').val()
             }
         },
@@ -116,18 +116,18 @@
                 name: 'id'
             },
             {
-                data: 'numeroConta',
-                name: 'numeroConta'
+                data: 'nomeConta',
+                name: 'nomeConta'
             },
             {
-                data: 'agenciaConta',
-                name: 'agenciaConta'
+                data: 'apelidoConta',
+                name: 'apelidoConta'
             },
-            {
-                data: 'idBanco',
-                name: 'idBanco'
+            // {
+            //     data: 'idBanco',
+            //     name: 'idBanco'
 
-            },
+            // },
             {
                 data: 'action',
                 name: 'action',

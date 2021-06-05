@@ -6,9 +6,10 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="razaosocialFornecedor" class="col-sm-2 col-form-label">Razão Social</label>
+    <label for="razaosocialFornecedor" class="col-sm-2 col-form-label">Razão Social <span style="color:red;">*</span></label> 
+
     <div class="col-sm-10">
-        {!! Form::text('razaosocialFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView ]) !!}
+        {!! Form::text('razaosocialFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required', $variavelReadOnlyNaView ]) !!}
     </div>
 </div>
 
@@ -108,42 +109,15 @@
     </div>
 </div>
 
-
 <hr />
 <h4>Dados Bancários</h4>
 
-
 <!--BANCO/AGENCIA/CONTA-->
-<div class="form-group row">
-    <label for="bancoFornecedor" class="col-sm-2 col-form-label">Banco Fornecedor</label>
-    <div class="col-sm-3">
 
-        <select class="selecionaComInput form-control" name="bancoFornecedor" id="bancoFornecedor" {{ $variavelDisabledNaView }}>
-            @if (Request::path() == 'fornecedores/create')
-
-                @foreach ($listaBancos as $listabancos)
-                    <option value="{{$listabancos->id}}">{{$listabancos->nomeBanco}}</option>
-                @endforeach
-            @else
-                @foreach ($bancos as $listabancos)
-                    <option value="{{$listabancos->id}}">{{$listabancos->nomeBanco}}</option>
-                @endforeach
-            @endif
-
-        </select>
-    </div>
-    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Agência</label>
-    <div class="col-sm-2">
-        {!! Form::text('agenciaFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView ]) !!}
-    </div>
-    <label for="nrcontaFornecedor" class="col-sm-2 col-form-label">Conta</label>
-    <div class="col-sm-2">
-        {!! Form::text('nrcontaFornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView ]) !!}
-    </div>
-</div>
+@include('fornecedores/dadosbancarios')
 
 <!-- <h5 class="pr-2">Chaves Pix</h5> -->
-<div class="d-flex justify-content-center">
+{{-- <div class="d-flex justify-content-center">
     <img src="{{env('APP_URL')}}img/logo_pix.png" class="mb-3" width="200px;" alt="">
 </div>
 <div class="form-group row">
@@ -165,4 +139,4 @@
         {!! Form::text('chavePix4Fornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25', $variavelReadOnlyNaView ]) !!}
     </div>
 
-</div>
+</div> --}}

@@ -31,20 +31,20 @@
 {!! Form::open(array('route' => 'contas.store','method'=>'POST')) !!}
 
 <div class="form-group row">
-    <label for="nomeBanco" class="col-sm-2 col-form-label">Agência Conta</label>
-    <div class="col-sm-10">
-        {!! Form::text('agenciaConta', '', ['placeholder' => 'Agência Conta', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-    </div>
-</div>
-<div class="form-group row">
-    <label for="codigoBanco" class="col-sm-2 col-form-label">Número Conta</label>
+    <label for="nomeBanco" class="col-sm-2 col-form-label">Apelido da Conta</label>
     <div class="col-sm-2">
-        {!! Form::text('numeroConta', '', ['placeholder' => 'Número Conta', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'numeroConta']) !!}
+        {!! Form::text('apelidoConta', '', ['placeholder' => 'Apelido da Conta', 'class' => 'form-control', 'maxlength' => '100']) !!}
+
+    </div>
+</div>
+<div class="form-group row">
+    <label for="codigoBanco" class="col-sm-2 col-form-label">Nome da Conta</label>
+    <div class="col-sm-10">
+        {!! Form::text('nomeConta', '', ['placeholder' => 'Nome Conta', 'class' => 'form-control', 'maxlength' => '20', 'id' => 'nomeConta']) !!}
     </div>
 </div>
 
-<div class="form-group row">
+{{-- <div class="form-group row">
     <label for="codigoBanco" class="col-sm-2 col-form-label">Selcione o Banco</label>
        <select class="selecionaComInput col-sm-10 form-control " name="idBanco" id="idBanco">
             @foreach ($banco as $dadosBanco)
@@ -52,7 +52,7 @@
             @endforeach
 
         </select>
-</div>
+</div> --}}
 
 {!! Form::hidden('ativoConta', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoConta']) !!}
 {!! Form::hidden('excluidoConta', '0', ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoConta']) !!}
