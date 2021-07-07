@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, idCodigoDespesas, nRegistro, idOS FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
+        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, idCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
 

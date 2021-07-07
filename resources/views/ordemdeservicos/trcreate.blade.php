@@ -9,7 +9,7 @@
 
     </td>
     <td data-label="Valor Parcela">
-        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'idReceita padraoReal form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'padraoReal','required']) !!}
+        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'idReceita campo-moeda form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda','required']) !!}
 
     </td>
     <td data-label="Pago">
@@ -34,5 +34,18 @@
     <td data-label="Nota Fiscal">
         {!! Form::text('nfreceita[]', $valorInput, ['placeholder' => 'N° Nota', 'class' => ' form-control pl-0 pr-0', 'maxlength' => '100', 'required']) !!}
     </td>
-    <td><a href="#tabelaPagamento" class="delete"><i class="fa fa-trash" style="color: red;" aria-hidden="true"> Excluir</i></a></td>
+    <td>
+        <a href="#tabelaPagamento" class="duplicar pb-2">
+            <span class="badge badge-primary">
+                <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
+                Duplicar
+            </span>
+        </a>
+        <a href="#tabelaPagamento" class="deletar" style="padding: 0%;">
+            <span class="badge badge-danger">
+                <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
+                Excluir
+            </span>
+        </a>
+        {{-- <a href="#tabelaPagamento" class="delete"><i class="fa fa-trash" style="color: red;" aria-hidden="true"> Excluir</i></a></td> --}}
 </tr>

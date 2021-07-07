@@ -2,7 +2,7 @@
 
 // use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Providers\AppServiceProvider;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,24 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/cadastragrupodespesa', function () { return view('grupodespesas.campos'); });
+Route::get('/modalmateriais', function () { return view('benspatrimoniais.camposmodal'); });
+Route::get('/modaltipomateriais', function () { return view('products.camposmodal'); });
+Route::get('/modalcodigodespesa', function () { return view('codigodespesas.camposmodal'); });
+Route::get('/modalfornecedor', function () { return view('fornecedores.camposmodal'); });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Route::get('/tabelabanco', 'BancoController@basicLaratableData')->name('tabelabanco');
-// Route::get('/tabelaOS', 'OrdemdeServicoController@basicLaratableData')->name('tabelaOS');
-// Route::get('/tabelausuarios', 'UserController@basicLaratableData')->name('tabelausuarios');
-// Route::get('/tabelapercentualajax', 'TabelaPercentualController@basicLaratableData')->name('tabelapercentualajax');
-// Route::get('/tabelareceita', 'ReceitaController@basicLaratableData')->name('tabelareceita');
-// Route::get('/tabeladespesa', 'DespesaController@basicLaratableData')->name('tabeladespesa');
-// Route::get('/tabelaformapagamento', 'FormaPagamentoController@basicLaratableData')->name('tabelaformapagamento');
-// Route::get('/tabelacontas', 'ContaController@basicLaratableData')->name('tabelacontas');
-// Route::get('/tabelacodigodespesas', 'CodigoDespesaController@basicLaratableData')->name('tabelacodigodespesas');
-// Route::get('/tabelaorgaosrg', 'OrgaosRGController@basicLaratableData')->name('tabelaorgaosrg');
-// Route::get('/tabelatipobenspatrimoniais', 'ProductController@basicLaratableData')->name('tabelatipobenspatrimoniais');
-// Route::get('/tabelafornecedores', 'FornecedorController@basicLaratableData')->name('tabelafornecedores');
-// Route::get('/tabelagrupodespesas', 'GrupoDespesaController@basicLaratableData')->name('tabelagrupodespesas');
-// Route::get('/filtraDados', 'DespesaController@filtraDados')->name('filtraDados');
 
 
 Route::get('/resumofinanceiro', 'ContaController@resumofinanceiro')->name('resumofinanceiro');
@@ -49,6 +40,18 @@ Route::get('/tabelaContasAPagar', 'ContaController@tabelaContasAPagar')->name('t
 Route::get('/extratoConta', 'ContaController@extratoConta')->name('extratoConta');
 Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('tabelaExtratoConta');
 Route::get('/tabelaRelatorioFornecedores', 'FornecedorController@tabelaRelatorioFornecedores')->name('tabelaRelatorioFornecedores');
+
+Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name('listaCodigoDespesa');
+Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');
+Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
+
+
+Route::post('/salvarmodalgrupodespesa', 'GrupoDespesaController@salvarmodalgrupodespesa')->name('salvarmodalgrupodespesa');
+Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodal')->name('cadastromateriais');
+// Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodal')->name('cadastromateriais');
+Route::post('/cadastrotipomateriais', 'ProductController@salvarmodal')->name('cadastrotipomateriais');
+Route::post('/cadastrocodigodespesa', 'CodigoDespesaController@salvarmodal')->name('cadastrocodigodespesa');
+Route::post('/cadastrofornecedor', 'FornecedorController@salvarmodal')->name('cadastrofornecedor');
 
 
 Route::group(['middleware' => ['auth']], function() {

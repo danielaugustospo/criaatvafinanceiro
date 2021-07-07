@@ -128,6 +128,14 @@ class GrupoDespesaController extends Controller
                         ->with('success','Grupo de Despesa cadastrado com êxito.');
     }
 
+    public function salvarmodalgrupodespesa(Request $request)
+    {
+        $request->validate(['grupoDespesa' => 'required']);
+        GrupoDespesa::create($request->all());
+        return view('grupodespesas.campos')
+        ->with('mensagem','Grupo de Despesa cadastrado com êxito.');
+    }
+
 
     /**
      * Display the specified resource.

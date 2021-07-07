@@ -32,7 +32,7 @@ class Despesa extends Model
     'despesaCodigoDespesas',
     'idFornecedor',
     'precoReal',
-    'atuacao',
+    'ehcompra',
     'pago',
     'quempagou',
     'idFormaPagamento',

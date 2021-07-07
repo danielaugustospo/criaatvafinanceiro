@@ -40,7 +40,7 @@ try {
         $idFornecedor  = $row['idFornecedor'];
         $precoReal  = $row['precoReal'];
         $valorEstornado  = $row['valorEstornado'];
-        $atuacao  = $row['atuacao'];
+        $ehcompra  = $row['ehcompra'];
         $pago  = $row['pago'];
         $quempagou  = $row['quempagou'];
         $idFormaPagamento  = $row['idFormaPagamento'];
@@ -58,8 +58,8 @@ try {
 
 
         for ($i = 0; $i < $contasVencidas; $i++) {
-            $stmt = $conexao->prepare("INSERT INTO despesas (idCodigoDespesas,idOS,idDespesaPai,descricaoDespesa,despesaCodigoDespesas,idFornecedor,precoReal,valorEstornado,atuacao,pago,quempagou,idFormaPagamento,conta,nRegistro,vencimento,totalPrecoReal,totalPrecoCliente,notaFiscal,despesaFixa,cheque,idBanco,ativoDespesa,excluidoDespesa)
-            VALUES (:idCodigoDespesas,:idOS,:idDespesaPai,:descricaoDespesa,:despesaCodigoDespesas,:idFornecedor,:precoReal,:valorEstornado,:atuacao,:pago,:quempagou,:idFormaPagamento,:conta,:nRegistro,:vencimento,:totalPrecoReal,:totalPrecoCliente,:notaFiscal,:despesaFixa,:cheque,:idBanco,:ativoDespesa,:excluidoDespesa)");
+            $stmt = $conexao->prepare("INSERT INTO despesas (idCodigoDespesas,idOS,idDespesaPai,descricaoDespesa,despesaCodigoDespesas,idFornecedor,precoReal,valorEstornado,ehcompra,pago,quempagou,idFormaPagamento,conta,nRegistro,vencimento,totalPrecoReal,totalPrecoCliente,notaFiscal,despesaFixa,cheque,idBanco,ativoDespesa,excluidoDespesa)
+            VALUES (:idCodigoDespesas,:idOS,:idDespesaPai,:descricaoDespesa,:despesaCodigoDespesas,:idFornecedor,:precoReal,:valorEstornado,:ehcompra,:pago,:quempagou,:idFormaPagamento,:conta,:nRegistro,:vencimento,:totalPrecoReal,:totalPrecoCliente,:notaFiscal,:despesaFixa,:cheque,:idBanco,:ativoDespesa,:excluidoDespesa)");
             $stmt->bindParam(':idCodigoDespesas', $idCodigoDespesas);
             $stmt->bindParam(':idOS', $idOS);
             $stmt->bindParam(':idDespesaPai', $idDespesaPai);
@@ -68,7 +68,7 @@ try {
             $stmt->bindParam(':idFornecedor', $idFornecedor);
             $stmt->bindParam(':precoReal', $precoReal);
             $stmt->bindParam(':valorEstornado', $valorEstornado);
-            $stmt->bindParam(':atuacao', $atuacao);
+            $stmt->bindParam(':ehcompra', $ehcompra);
             $stmt->bindParam(':pago', $pago);
             $stmt->bindParam(':quempagou', $quempagou);
             $stmt->bindParam(':idFormaPagamento', $idFormaPagamento);

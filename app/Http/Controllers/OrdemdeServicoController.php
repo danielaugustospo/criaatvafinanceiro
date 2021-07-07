@@ -127,6 +127,11 @@ class OrdemdeServicoController extends Controller
 
 
         $ultimaOS = DB::select('select max(id) idMaximo from ordemdeservico');
+        if (isset($ultimaOS)) {
+            $ultimaOSParseInt = $ultimaOS[0]->idMaximo;
+            $novaOS = $ultimaOSParseInt + 1;
+        }
+
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $cliente = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
@@ -134,14 +139,13 @@ class OrdemdeServicoController extends Controller
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
         $dataInicio = date("d/m/Y");
-        // var_dump($ultimaOS);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('ordemdeservicos.create', compact('cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('ordemdeservicos.create', compact('novaOS', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -156,42 +160,25 @@ class OrdemdeServicoController extends Controller
         $ordemdeservico = new OrdemdeServico();
         $temReceita = $request->get('idformapagamentoreceita');
 
-        // $recebe = $request->get('valorreceita');
         $tamanhoArrayReceita = count($temReceita);
-        // var_dump($tamanhoArrayReceita);
-        // exit;
-
         $request->validate([
-            // 'nomeFormaPagamento'             => 'required',
-            'idClienteOrdemdeServico'         => 'required',
-            // 'dataVendaOrdemdeServico'        => 'required|min:3',
+            'idClienteOrdemdeServico'        => 'required',
             'valorProjetoOrdemdeServico'     => 'required|min:3',
             'valorOrdemdeServico'            => 'required|min:3',
             'dataOrdemdeServico'             => 'required|min:3',
             'clienteOrdemdeServico'          => 'required|min:3',
             'eventoOrdemdeServico'           => 'required|min:3',
             'servicoOrdemdeServico'          => 'required|min:3',
-            // 'obsOrdemdeServico'              => 'required|min:3',
             'dataCriacaoOrdemdeServico'      => 'required|min:3',
             'dataExclusaoOrdemdeServico'     => 'required',
 
             'ativoOrdemdeServico'            => 'required|min:1',
             'excluidoOrdemdeServico'         => 'required|min:1',
-
         ]);
 
+        $valorMonetario                                   = $request->get('valorOrdemdeServico');
 
-        $valorMonetario                  = $request->get('valorOrdemdeServico');
-        // var_dump($valorMonetario);
-        // exit;
-        // $valorOS = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
-
-
-
-
-        // $ordemdeservico->nomeFormaPagamento               = $request->get('nomeFormaPagamento');
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
-        // $ordemdeservico->dataVendaOrdemdeServico          = $request->get('dataVendaOrdemdeServico');
         $ordemdeservico->valorProjetoOrdemdeServico       = $request->get('valorProjetoOrdemdeServico');
         $ordemdeservico->valorOrdemdeServico              = $valorMonetario;
         $ordemdeservico->dataOrdemdeServico               = $request->get('dataOrdemdeServico');
@@ -200,144 +187,50 @@ class OrdemdeServicoController extends Controller
         $ordemdeservico->servicoOrdemdeServico            = $request->get('servicoOrdemdeServico');
         $ordemdeservico->obsOrdemdeServico                = $request->get('obsOrdemdeServico');
         $ordemdeservico->dataCriacaoOrdemdeServico        = $request->get('dataCriacaoOrdemdeServico');
-
         $ordemdeservico->ativoOrdemdeServico              = $request->get('ativoOrdemdeServico');
         $ordemdeservico->excluidoOrdemdeServico           = $request->get('excluidoOrdemdeServico');
 
-
-
-
         $salvaOS = $ordemdeservico->save();
-
-
         $idDaOS = $ordemdeservico->id;
-
-        // $temDespesa = $request->get('idCodigoDespesas');
-
-
-        // if ($temDespesa != '0') {
-
-        //     $despesa = new Despesa();
-
-        //     $request->validate([
-        //         'idCodigoDespesas'               => 'required',
-        //         'idClienteOrdemdeServico'        => 'required',
-        //         'despesaCodigoDespesas'          => 'required',
-        //         'idFornecedor'                   => 'required',
-        //         'eventoOrdemdeServico'           => 'required',
-        //         'atuacao'                        => 'required',
-        //         'precoCliente'                   => 'required',
-        //         'pago'                           => 'required',
-        //         'quempagou'                      => 'required',
-        //         'idFormaPagamento'               => 'required',
-        //         'conta'                          => 'required',
-        //         'nRegistro'                      => 'required',
-        //         'valorEstornado'                 => 'required',
-        //         'data'                           => 'required',
-        //         'totaleventoOrdemdeServico'      => 'required',
-        //         'totalPrecoCliente'              => 'required',
-        //         'lucro'                          => 'required',
-        //         'ativoDespesa'                   => 'required',
-        //         'excluidoDespesa'                => 'required',
-        //     ]);
-
-        //     $despesa->idCodigoDespesas           = $request->get('idCodigoDespesas');
-        //     $despesa->idClienteOrdemdeServico    = $request->get('idClienteOrdemdeServico');
-        //     $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
-        //     $despesa->idFornecedor               = $request->get('idFornecedor');
-        //     $despesa->eventoOrdemdeServico       = $request->get('eventoOrdemdeServico');
-        //     $despesa->atuacao                    = $request->get('atuacao');
-        //     $despesa->precoCliente               = $request->get('precoCliente');
-        //     $despesa->pago                       = $request->get('pago');
-        //     $despesa->quempagou                  = $request->get('quempagou');
-        //     $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
-        //     $despesa->conta                      = $request->get('conta');
-        //     $despesa->nRegistro                  = $request->get('nRegistro');
-        //     $despesa->valorEstornado             = $request->get('valorEstornado');
-        //     $despesa->data                       = $request->get('data');
-        //     $despesa->totaleventoOrdemdeServico  = $request->get('totaleventoOrdemdeServico');
-        //     $despesa->totalPrecoCliente          = $request->get('totalPrecoCliente');
-        //     $despesa->lucro                      = $request->get('lucro');
-
-        //     $despesa->ativoDespesa               = $request->get('ativoDespesa');
-        //     $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
-        //     $despesa['idOS'] = "$idDaOS";
-
-        //     $idDespesa = $despesa->id;
-
-        //     $despesa->save();
-
-        // }
 
         if ($temReceita != '0') {
 
-            // $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
-            // var_dump($request->get('idformapagamentoreceita')[0]);
-            // exit;
             for ($i = 0; $i < $tamanhoArrayReceita; $i++) {
                 $receita = new Receita();
                 $request->validate([
                     'idformapagamentoreceita'       => 'required',
                     'datapagamentoreceita'          => 'required',
-                    // 'dataemissaoreceita'            => 'required',
                     'valorreceita'                  => 'required',
                     'pagoreceita'                   => 'required',
                     'contareceita'                  => 'required',
-                    // 'registroreceita'            => 'required',
-                    // 'emissaoreceita'             => 'required',
                     'nfreceita'                     => 'required',
-                    // 'idosreceita'                => 'required',
 
                 ]);
-
-                $valorMonetarioReceita[$i]                  = $request->get('valorreceita')[$i];
-                // $valorReceita[$i] = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetarioReceita[$i]);
-
 
                 $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
                 $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
                 $receita->dataemissaoreceita            = $request->get('dataemissaoreceita')[$i];
-                $receita->valorreceita                  = $valorMonetarioReceita[$i];
+                $receita->valorreceita                  = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorreceita')[$i]);
                 $receita->pagoreceita                   = $request->get('pagoreceita')[$i];
                 $receita->contareceita                  = $request->get('contareceita')[$i];
                 $receita->registroreceita               = $request->get('registroreceita');
-                // $receita->emissaoreceita             = $request->get('emissaoreceita');
                 $receita->nfreceita                     = $request->get('nfreceita')[0];
-                // $receita->idosreceita                = $request->get('idosreceita');
 
-                $receita['idosreceita'] = "$idDaOS";
-
-
+                $receita['idosreceita']                 = "$idDaOS";
 
                 $receita->save();
                 $idReceita = $receita->id;
             }
         }
 
-
-        // if (($temDespesa != '0') && ($temReceita != '0')){
         if ($temReceita != '0') {
             return redirect()->route('ordemdeservicos.index')
-                ->with('success', 'Ordem de Serviço n°' . $idDaOS  . ' com ' . $tamanhoArrayReceita . ' parcelas cadastrada com êxito.');
-        }
-        // else if (($temDespesa != '0') && ($temReceita === '0')){
-        //             return redirect()->route('ordemdeservicos.index')
-        //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Despesa n°' . $idDespesa . ' cadastrados com êxito. Nenhuma receita foi cadastrada');
-
-        // }
-        // else if (($temDespesa === '0') && ($temReceita != '0')){
-        //             return redirect()->route('ordemdeservicos.index')
-        //             ->with('success', 'Ordem de Serviço n°' . $salvaOS->id . ',  Receita n°' . $idReceita . ' cadastrados com êxito. Nenhuma despesa foi cadastrada');
-
-        // }
-        // else if (($temDespesa === '0') && ($temReceita === '0')){
-        else if ($temReceita === '0') {
+                ->with('success', 'Ordem de Serviço n°' . $idDaOS  . ' com ' . $tamanhoArrayReceita . ' parcela(s) cadastrada(s) com êxito.');
+        } else if ($temReceita === '0') {
             return redirect()->route('ordemdeservicos.index')
                 ->with('success', 'Ordem de Serviço n°' . $idDaOS . ' cadastrada com êxito. Não foram cadastradas receitas.');
         }
     }
-
-
 
     /**
      * Display the specified resource.
@@ -348,7 +241,7 @@ class OrdemdeServicoController extends Controller
     public  function show($id)
     {
         $ordemdeservico = OrdemdeServico::find($id);
-        $dataInicio = $ordemdeservico->dataVendaOrdemdeServico;
+        $dataInicio = $ordemdeservico->dataCriacaoOrdemdeServico;
 
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
@@ -471,26 +364,20 @@ class OrdemdeServicoController extends Controller
     public function edit($id)
     {
         $ordemdeservico = OrdemdeServico::find($id);
-        $dataInicio = $ordemdeservico->dataVendaOrdemdeServico;
+        $dataInicio = $ordemdeservico->dataCriacaoOrdemdeServico;
 
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $cliente = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
-        // $nova =  new Receita();
-        // $receita = Receita::find($id);
-        // var_dump($receita);
-        // exit;
-        // $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
-
 
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
         $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $valorOS = $ordemdeservico->valorOrdemdeServico;
-        if (isset($valorOS)){
-            $ordemdeservico->valorOrdemdeServico = number_format($valorOS, 2, ',', '.');        
+        if (isset($valorOS)) {
+            $ordemdeservico->valorOrdemdeServico = number_format($valorOS, 2, ',', '.');
         }
 
         $contadorReceita = count($receitasPorOS);
@@ -500,16 +387,9 @@ class OrdemdeServicoController extends Controller
         } else {
             for ($i = 0; $i < $contadorReceita; $i++) {
                 $valorMonetarioReceita[$i] = $receitasPorOS[$i]->valorreceita;
-                $receitasPorOS[$i]->valorreceita = number_format($valorMonetarioReceita[$i], 2, ',', '.');
-
-                // $valorTratadoReceita[$i] = FormatacoesServiceProvider::validaValoresParaView($valorMonetario[$i]);
-
+                $receitasPorOS[$i]->valorreceita = FormatacoesServiceProvider::validaValoresParaView($valorMonetarioReceita[$i]);
             }
         }
-
-        // var_dump($ordemdeservico->valorOrdemdeServico);
-        // exit;
-        // $valoresReceita = $receitasPorOS->valorreceita;
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
@@ -550,11 +430,8 @@ class OrdemdeServicoController extends Controller
 
         if ($temReceita != '0') {
 
-            // $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
-            // var_dump($request->get('idformapagamentoreceita')[0]);
-            // exit;
+
             for ($i = 0; $i < $tamanhoArrayReceita; $i++) {
-                // $receita = Receita::find($id);
 
                 $request->validate([
                     'idformapagamentoreceita'       => 'required',
@@ -570,10 +447,12 @@ class OrdemdeServicoController extends Controller
 
                 ]);
 
+
+
                 $valorMonetarioReceita[$i]                  = $request->get('valorreceita')[$i];
                 $valorReceita[$i] = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetarioReceita[$i]);
-                    // $valorReceita[$i] = $valorMonetarioReceita[$i];
 
+                // $receita = new Receita;
                 $receita->idReceita                     = $request->get('idReceita')[$i];
                 $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
                 $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
@@ -589,28 +468,48 @@ class OrdemdeServicoController extends Controller
                 $receita['idosreceita'] = $ordemdeservico->id;
 
 
-                var_dump($receita->idReceita)[$i];
-                
-
-                // DB::update("UPDATE receita
-                // SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-                // datapagamentoreceita        = '$receita->datapagamentoreceita',           
-                // dataemissaoreceita          = '$receita->dataemissaoreceita',             
-                // valorreceita                = '$receita->valorreceita',                   
-                // pagoreceita                 = '$receita->pagoreceita',                    
-                // contareceita                = '$receita->contareceita',                   
-                // registroreceita             = '$receita->registroreceita',                
-                // nfreceita                   = '$receita->nfreceita',                      
-                // idosreceita                 = '$receita->idosreceita'                  
-                // WHERE id                    = '$receita->idReceita'"
-                // );
-        
+                if ($receita->idReceita == 'novo') {
+                    DB::insert(
+                        'insert into receita 
+                    (idformapagamentoreceita,
+                    datapagamentoreceita,
+                    dataemissaoreceita,
+                    valorreceita,
+                    pagoreceita,
+                    contareceita,
+                    registroreceita,
+                    nfreceita,
+                    idosreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        [
+                            $receita->idformapagamentoreceita,
+                            $receita->datapagamentoreceita,
+                            $receita->dataemissaoreceita,
+                            $receita->valorreceita,
+                            $receita->pagoreceita,
+                            $receita->contareceita,
+                            $receita->registroreceita,
+                            $receita->nfreceita,
+                            $receita->idosreceita
+                        ]
+                    );
+                } else {
+                    DB::update(
+                        "UPDATE receita
+                SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
+                datapagamentoreceita        = '$receita->datapagamentoreceita',           
+                dataemissaoreceita          = '$receita->dataemissaoreceita',             
+                valorreceita                = '$receita->valorreceita',                   
+                pagoreceita                 = '$receita->pagoreceita',                    
+                contareceita                = '$receita->contareceita',                   
+                registroreceita             = '$receita->registroreceita',                
+                nfreceita                   = '$receita->nfreceita',                      
+                idosreceita                 = '$receita->idosreceita'                  
+                WHERE id                    = '$receita->idReceita'"
+                    );
+                }
             }
-exit;
         }
-        $valorOS = $ordemdeservico->valorOrdemdeServico;
-        $ordemdeservico->valorOrdemdeServico = FormatacoesServiceProvider::validaValoresParaBackEnd($valorOS);
-
+        $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->update($request->all());
 
         return redirect()->route('ordemdeservicos.index')
@@ -627,24 +526,7 @@ exit;
     public function destroy($id)
     {
         OrdemdeServico::find($id)->delete();
-
         return redirect()->route('ordemdeservicos.index')
             ->with('success', 'Ordem de Serviço excluída com êxito!');
     }
-
-    // public function validaValores($valorMonetario){
-    //     $SemPonto  = str_replace('.', '', $valorMonetario );
-    //     $SemVirgula  = str_replace(',', '.', $SemPonto );
-    //     $valorMonetario = $SemVirgula;
-    //     return $valorMonetario;
-
-    // }
-    // public function validaValoresParaView($valorMonetario){
-    //     $ComPonto  = str_replace('', '.', $valorMonetario );
-    //     $ComVirgula  = str_replace('.', ',', $ComPonto );
-    //     $valorMonetario = $ComVirgula;
-    //     return $valorMonetario;
-
-    // }
-
 }

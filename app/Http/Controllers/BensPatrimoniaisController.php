@@ -146,6 +146,22 @@ class BensPatrimoniaisController extends Controller
         return redirect()->route('benspatrimoniais.index')
                         ->with('success','Bem Patrimonial criado com êxito.');
     }
+    public function salvarmodal(Request $request)
+    {
+
+        $request->validate([
+            'nomeBensPatrimoniais'      => 'required|min:3',
+            'idTipoBensPatrimoniais'    => 'required',
+            'descricaoBensPatrimoniais' => 'required',
+            'statusbenspatrimoniais'    => 'required',
+            'ativadoBensPatrimoniais'   => 'required',
+            'excluidoBensPatrimoniais'  => 'required',
+        ]);
+        BensPatrimoniais::create($request->all());
+
+        return view('benspatrimoniais.camposmodal')
+                        ->with('mensagem','Material cadastrado com êxito.');                        
+    }
 
 
     /**

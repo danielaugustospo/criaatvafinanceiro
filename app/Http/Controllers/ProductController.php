@@ -111,12 +111,21 @@ class ProductController extends Controller
             'detail' => 'required',
         ]);
 
-
         Product::create($request->all());
-
-
         return redirect()->route('products.index')
             ->with('success', 'Tipo cadastrado com êxito.');
+    }
+
+    public function salvarmodal(Request $request)
+    {
+        request()->validate([
+            'name' => 'required',
+            'detail' => 'required',
+        ]);
+
+        Product::create($request->all());
+        return view('products.camposmodal')
+        ->with('mensagem','Tipo de Material cadastrado com êxito.');
     }
 
 

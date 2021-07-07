@@ -44,7 +44,7 @@
 <div class="form-group row">
     <label for="valorreceita" class="col-sm-2 col-form-label">Valor</label>
     <div class="col-sm-2">
-        {!! Form::text('valorreceita', $valorReceita, ['placeholder' => 'Preencha este campo', 'class' => 'padraoReal col-sm-12 form-control', 'maxlength' => '100', 'id' => 'valorreceita', 'valor' => '0,00', 'required', $variavelReadOnlyNaView]) !!}
+        {!! Form::text('valorreceita', $valorReceita, ['placeholder' => 'Preencha este campo', 'class' => 'campo-moeda col-sm-12 form-control', 'maxlength' => '100', 'id' => 'valorreceita', 'valor' => '0,00', 'required', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 

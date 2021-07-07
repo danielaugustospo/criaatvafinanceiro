@@ -213,9 +213,7 @@ class FornecedorController extends Controller
     {
 
         $request->validate([
-
-            'razaosocialFornecedor'   => 'required|min:1',
-
+            'razaosocialFornecedor'   => 'required|min:2',
         ]);
 
             
@@ -224,6 +222,23 @@ class FornecedorController extends Controller
 
         return redirect()->route('fornecedores.index')
                         ->with('success','Fornecedor cadastrado com êxito.');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function salvarmodal(Request $request)
+    {
+        $request->validate([
+            'razaosocialFornecedor'   => 'required|min:1',
+        ]);
+        Fornecedores::create($request->all());
+        return view('fornecedores.camposmodal')
+                        ->with('mensagem','Fornecedor cadastrado com êxito.');                        
+                
     }
 
 

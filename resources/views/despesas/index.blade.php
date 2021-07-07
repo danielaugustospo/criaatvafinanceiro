@@ -39,7 +39,7 @@
                 <th class="text-center">Valor</th>
                 <th class="text-center">Vencimento</th>
                 <th class="text-center">Cód Despesa</th>
-                <th class="text-center">Registro</th>
+                <th class="text-center">Nota Fiscal</th>
                 <th class="text-center">N° OS</th>
 
                 <th width="100px" class="noExport">Ações</th>
@@ -67,10 +67,10 @@
         $('#btnReveal').show();
         $('input[name=id]').val('');
         $('input[name=descricaoDespesa]').val('');
-        $('input[name=precoReal]').val('');
+        $('input[name=valorparcela]').val('');
         $('input[name=vencimento]').val('');
         $('input[name=idCodigoDespesas]').val('');
-        $('input[name=nRegistro]').val('');
+        $('input[name=notaFiscal]').val('');
         $('input[name=idOS]').val('');
         $('input[name=pesquisar]').click();
     })
@@ -114,10 +114,10 @@
                 d.idOS = $('.buscaIdOS').val(),
                     d.descricaoDespesa = $('.buscadescricaoDespesa').val(),
                     d.id = $('.buscaIdDespesa').val(),
-                    d.precoReal = $('.buscaPrecoReal').val(),
+                    d.valorparcela = $('.buscavalorparcela').val(),
                     d.vencimento = $('.buscaVencimento').val(),
                     d.idCodigoDespesas = $('.buscaIdCodigoDespesas').val(),
-                    d.nRegistro = $('.buscaNRegistro').val(),
+                    d.notaFiscal = $('.buscaNotaFiscal').val(),
                     d.search = $('input[type="search"]').val()
             }
         },
@@ -133,8 +133,8 @@
                 name: 'descricaoDespesa'
             },
             {
-                data: 'precoReal',
-                name: 'precoReal',
+                data: 'valorparcela',
+                name: 'valorparcela',
                 // render: $.fn.dataTable.render.number( ',', '.', 2 )
                 render: $.fn.dataTable.render.number( '.', ',', 2)
             },
@@ -149,8 +149,8 @@
                 name: 'idCodigoDespesas'
             },
             {
-                data: 'nRegistro',
-                name: 'nRegistro'
+                data: 'notaFiscal',
+                name: 'notaFiscal'
             },
             {
                 data: 'idOS',

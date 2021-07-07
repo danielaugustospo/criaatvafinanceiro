@@ -128,6 +128,21 @@ class CodigoDespesaController extends Controller
                         ->with('success','Código de Despesa cadastrado com êxito.');
     }
 
+    public function salvarmodal(Request $request)
+    {
+
+        $request->validate([
+            'despesaCodigoDespesa'=> 'required',
+            'idGrupoCodigoDespesa'=> 'required',
+            'ativoCodigoDespesa'=> 'required',
+            'excluidoCodigoDespesa'=> 'required',
+    
+        ]);
+        CodigoDespesa::create($request->all());
+
+        return view('codigodespesas.camposmodal')
+                        ->with('mensagem','Código de Despesa cadastrado com êxito.');                        
+    }
 
     /**
      * Display the specified resource.

@@ -1,6 +1,6 @@
 <tr class="linhaTabela">
     <td>
-        {!! Form::text('idReceita[]', $dadosreceita->idReceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'idReceita']) !!}
+        {!! Form::hidden('idReceita[]', $dadosreceita->idReceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'idReceita']) !!}
 
         <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput form-control">
             <option value="0" selected="selected">Sem Receita</option>
@@ -11,7 +11,7 @@
 
     </td>
     <td>
-        {!! Form::text('valorreceita[]', $dadosreceita->valorreceita, ['placeholder' => 'Preencha o valor', 'class' => 'col form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'padraoReal','required']) !!}
+        {!! Form::text('valorreceita[]', $dadosreceita->valorreceita, ['placeholder' => 'Preencha o valor', 'class' => 'col campo-moeda form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda','required']) !!}
 
     </td>
     <td>
@@ -36,5 +36,21 @@
     <td>
         {!! Form::text('nfreceita[]', $dadosreceita->nfreceita, ['placeholder' => 'N° Nota', 'class' => 'form-control pl-0 pr-0', 'maxlength' => '100', 'required']) !!}
     </td>
-    <td><a href="#tabelaPagamento" class="delete">Excluir</a></td>
+    <td>
+        <a href="#tabelaPagamento" class="duplicar pb-2">
+            <span class="badge badge-primary">
+                <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
+                Duplicar
+            </span>
+        </a>
+        <a href="#tabelaPagamento" class="deletar" style="padding: 0%;">
+            <span class="badge badge-danger">
+                <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
+                Excluir
+            </span>
+        </a>
+    </td>    
+        {{-- <a href="#tabelaPagamento" class="delete">Excluir</a></td> --}}
+    
 </tr>
+

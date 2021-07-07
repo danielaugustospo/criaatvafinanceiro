@@ -164,7 +164,7 @@ h3:after {
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Início</label>
     <div class="col-sm-6">
-        {!! Form::date('dataVendaOrdemdeServico', $dataInicio , ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100']) !!}
+        {!! Form::date('dataCriacaoOrdemdeServico', $dataInicio , ['placeholder' => 'Preencha este campo', 'class' => 'col-sm-4 form-control', 'maxlength' => '100']) !!}
     </div>
 </div>
 @extends('ordemdeservicos.estilo')
@@ -183,9 +183,9 @@ h3:after {
 
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
-        {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'padraoReal form-control','step'=>'any', 'id'=>'padraoReal']) !!}
+        {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!}
 
-        {{-- {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'padraoReal form-control','step'=>'any', 'id'=>'padraoReal']) !!} --}}
+        {{-- {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!} --}}
     </div>
 </div>
 
@@ -207,7 +207,7 @@ h3:after {
 </div>
 
 
-{!! Form::hidden('atuacao', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('ehcompra', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 
 {!! Form::hidden('idOS', 'null', ['placeholder' => 'Id OS ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'idOS']) !!}
@@ -262,7 +262,6 @@ h3:after {
 <input type="hidden" id="valorProjetoOrdemdeServico" class="form-control" name="valorProjetoOrdemdeServico" value="0.00" placeholder="Preencha o preço real" /><br>
 
 {!! Form::hidden('dataOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-{!! Form::hidden('dataCriacaoOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 {!! Form::hidden('clienteOrdemdeServico', 'Campo Nome da OS', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('servicoOrdemdeServico', 'Campo Serviço', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
@@ -280,57 +279,10 @@ h3:after {
 </style>
 
 <script>
-    function colore_tabela() {
-
-        /*
-         * TEMOS 8 Status possíveis, com sua cores respectivas:
-         *  1-SIM;                    green
-         *  2-NÃO;                    #e3342f
-         */
-        // $('#linhaTabela').find('tr').each(function(indice) {
-        //     switch ($(this).children().eq(2).val()) {
-
-        //         case 'S':
-        //             // case 'aguardando aprovação':
-        //             console.log('S');
-        //             $(this).prop('class', 'info');
-        //             break;
-
-        //         case 'N':
-        //             // case 'não aprovada':
-        //             $(this).prop('class', 'warning');
-        //             break;
-
-        //             // case 'aprovada':
-        //             // case 'concluida':
-        //             // $(this).prop('class','success');
-        //             // break;
-
-        //             // case 'cancelada':
-        //             // $(this).prop('class','danger');
-        //             // break;
-
-        //     };
-        // });
-    }
 
 
     function pegaIdFornecedor() {
         var selecionado = $('#pagoreceita').find(':selected').val();
-        // console.log(selecionado);
-        // alert(selecionado);
-
-        // if (selecionado == 'S'){
-        //     cor = 'green';
-        //     document.getElementById("linhaTabela").style.backgroundColor = cor;
-        //     // $(this).prop('class','info');
-        // }
-        // else if (selecionado == 'N'){
-
-        //     cor = 'red';
-        //     document.getElementById("linhaTabela").style.backgroundColor = cor;
-        // }
-        // document.getElementById("idFornecedor").value = selecionado;
     }
 
 
@@ -365,11 +317,37 @@ function idSemValor(){
 
 }
 
+$('body').on('click', '.duplicar', function() {
+        var row = $(this).closest('tr');
+        row.find(".selecionaComInput").each(function(index) {
+            $(this).select2('destroy');
+        });
+        row.find(".campo-moeda").each(function(index) {
+            $(this).maskMoney('destroy');
+        });
+        var newrow = row.clone();
+        $("#tabelaPagamento").append(newrow);
+        $("select.selecionaComInput").select2();
+        // $("input.campo-moeda").maskMoney();
+        $('input.campo-moeda')
+            .maskMoney({
+                prefix: 'R$ ',
+                allowNegative: false,
+                thousands: '.',
+                decimal: ',',
+                affixesStay: false
+            });
+            newrow.find(".idReceita").each(function(index) {
+            $(this).val('novo');
+        });
+        // $('input[type=text].idReceita').val('novo');
+    });
+
     function removerCampos() {
         $('.novaDivReceita').empty();
     }
 
-    $('body').on('click', '.delete', function() {
+    $('body').on('click', '.deletar', function() {
         var $tr = $(this).closest('tr');
         if ($tr.attr('class') == 'linhaTabela1') {
             $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();

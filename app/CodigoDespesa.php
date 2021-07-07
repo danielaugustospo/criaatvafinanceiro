@@ -32,6 +32,12 @@ class CodigoDespesa extends Model
 
     ];
 
+    public function codigoDespesa(){
+        // return $this->query("SELECT * FROM codigodespesas WHERE (excluidoCodigoDespesa = 0) and (ativoCodigoDespesa = 1) order by id");
+        return 78;
+
+    }
+
     public static function laratablesCustomAction($codigoDespesasModel)
     {
         return view('codigodespesas.action', compact('codigoDespesasModel'))->render();

@@ -10,11 +10,15 @@
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2>Cadastro de Ordem de Serviço</h2>
-            <h5>Última OS lançada no sistema: n°
-                @foreach ($ultimaOS as $OsPassada)
-                {{ $OsPassada->idMaximo }}
-                @endforeach
+            <div class="d-flex justify-content-center row">
+            <h5>&nbsp; N° &nbsp;</h5>
+                <h1 style="margin-top: -10; color: red;">
+                      {{ $novaOS }}
+                </h1>
             </h5>
+        </div>
+                      
+
         </div>
 
     </div>
