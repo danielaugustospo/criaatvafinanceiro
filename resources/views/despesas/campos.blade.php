@@ -34,16 +34,40 @@
   @endif
 </div>
 
+{{-- <div class="form-group row" id="telaVerificaOS">
+  <h5 for="descricaoDespesa" style="color: red;" class="col-sm-2 "><b>É Uma OS?</b></h5>
+
+  <div class="col-sm-3 mt-2">
+  @if (Request::path() == 'despesas/create')
+    <label class="mr-2"><input type="radio" value="S" name="verificaOS" id="comprou" /> SIM</label> <br/>
+    <label ><input type="radio" value="N" name="verificaOS" id="naocomprou" /> NÃO</label>
+  @else
+    @isset($despesa)
+      @if ($despesa->ehcompra == 1)
+        <label class="mr-2"><input type="radio" value="S" name="verificaOS" id="comprou" checked /> SIM</label> <br/>
+        <label><input type="radio" value="N" name="verificaOS" id="naocomprou" /> NÃO</label>
+      @else
+        <label class="mr-2"><input type="radio" value="S" name="verificaOS" id="comprou" /> SIM</label> <br/>
+        <label><input type="radio" value="N" name="verificaOS" id="naocomprou" checked/> NÃO</label>
+      @endif    
+    @endisset        
+  @endif
+  </div>
+</div> --}}
+
 
 
 <div class="form-group row">
-  <label for="idCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
+  <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
   <div class="col-sm-4">
-    <select name="idCodigoDespesas" id="idCodigoDespesas" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}}>
+    <select name="despesaCodigoDespesas" id="despesaCodigoDespesas" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}} required>
       @foreach ($codigoDespesa as $listaCodigoDespesas)
-      <option value="{{$listaCodigoDespesas->id}}">
-        {{$listaCodigoDespesas->despesaCodigoDespesa}} | {{ $listaCodigoDespesas->grupoDespesa }}
-      </option>
+        @isset($despesa)
+          @if ($despesa->despesaCodigoDespesas == $listaCodigoDespesas->id)
+            <option value="{{$listaCodigoDespesas->id}}" selected>{{$listaCodigoDespesas->despesaCodigoDespesa}} | {{ $listaCodigoDespesas->grupoDespesa }}</option> 
+          @endif
+        @endisset
+          <option value="{{$listaCodigoDespesas->id}}">{{$listaCodigoDespesas->despesaCodigoDespesa}} | {{ $listaCodigoDespesas->grupoDespesa }}</option>
       @endforeach
     </select>
     <div class="divRecarregaCodigoDespesa">
@@ -57,8 +81,6 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".codigodespesa"><i class="fas fa-industry pr-1"></i>Cadastrar Código de Despesa</button>
   </div>
 
-
-
 </div>
 
 <div class="form-group row" id="telaOS">
@@ -66,10 +88,17 @@
   <div class="col-sm-7">
 
     <select name="idOS" id="idOS" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}}>
+      <option value="CRIAATVA">SEM OS</option>
       @foreach ($todasOSAtivas as $listaOS)
-      <option value="{{$listaOS->id}}">
-        {{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}
-      </option>
+        @isset($despesa)
+          @if ($despesa->idOS == $listaOS->id)
+            <option value="{{$listaOS->id}}" selected>{{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}</option>
+            @if ($despesa->idOS == 'CRIAATVA')
+              <option value="CRIAATVA" selected>SEM OS</option>              
+            @endif
+          @endif
+        @endisset
+            <option value="{{$listaOS->id}}">{{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}</option>
       @endforeach
     </select>
 
@@ -80,7 +109,12 @@
   <div class="col-sm-6">
     <select class="selecionaComInput form-control" name="descricaoDespesa" id="descricaoDespesa">
       @foreach ($listaBensPatrimoniais as $bempatrimonial)
-      <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
+        @isset($despesa)
+          @if ($despesa->descricaoDespesa == $bempatrimonial->id)
+            <option value="{{ $bempatrimonial->id }}" selected>{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
+          @endif
+        @endisset  
+          <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
       @endforeach
     </select>
   </div>
@@ -97,7 +131,12 @@
   <div class="col-sm-4">
     <select onchange="pegaIdFornecedor();" name="selecionaFornecedor" id="selecionaFornecedor" class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{$variavelDisabledNaView}}>
       @foreach ($listaFornecedores as $fornecedor)
-      <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
+        @isset($despesa)
+          @if ($despesa->idFornecedor == $fornecedor->id)
+            <option value="{{ $fornecedor->id }}" selected>{{ $fornecedor->razaosocialFornecedor }}</option>
+          @endif
+        @endisset  
+        <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
       @endforeach
     </select>
   </div>
@@ -107,16 +146,6 @@
   </div>
 </div>
 
-<div class="form-group row" id="telaFuncionario">
-  <label for="" class="col-sm-2 col-form-label">Prestador de Serviço</label>
-  <div class="col-sm-4">
-    <select onchange="pegaIdFuncionario();" name="selecionaFornecedor" id="selecionaPrestadorServico" class="selecionaComInput selecionaFuncionario form-control col-sm-12" {{$variavelDisabledNaView}}>
-      @foreach ($listaFornecedores as $fornecedor)
-      <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
-      @endforeach
-    </select>
-  </div>
-</div>
 
 <br>
 
@@ -125,7 +154,12 @@
   <div class="col-sm-4">
     <select name="idFormaPagamento" id="idFormaPagamento" class="selecionaComInput form-control col-sm-12 js-example-basic-multiple"  {{$variavelDisabledNaView}}>
       @foreach ($formapagamento as $formaPG)
-      <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
+        @isset($despesa)
+          @if ($despesa->idFormaPagamento == $formaPG->id)
+            <option value="{{ $formaPG->id }}" selected>{{ $formaPG->nomeFormaPagamento }}</option>
+          @endif
+        @endisset  
+        <option value="{{ $formaPG->id }}">{{ $formaPG->nomeFormaPagamento }}</option>
       @endforeach
     </select>
   </div>
@@ -136,8 +170,13 @@
   <div class="col-sm-4">
     <select name="conta" id="conta" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple"  {{$variavelDisabledNaView}}>
       @foreach ($listaContas as $contas)
+        @isset($despesa)
+          @if ($despesa->conta == $contas->id)
+            <option value="{{ $contas->id }}" selected>{{ $contas->nomeConta }}</option>
+          @endif
+        @endisset  
         <option value="{{ $contas->id }}">{{ $contas->nomeConta }}</option>
-      @endforeach
+    @endforeach
     </select>
   </div>
 </div>
@@ -184,7 +223,12 @@
   <div class="col-sm-4">
     <select onchange="alteraIdComprador();" name="quemComprouSelect" id="selecionaComprador" class="selecionaComInput quemComprouSelect form-control" {{$variavelDisabledNaView}}>
       @foreach ($listaFornecedores as $fornecedor)
-      <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
+        @isset($despesa)
+          @if ($despesa->quemcomprou == $fornecedor->id)
+            <option value="{{ $fornecedor->id }}" selected>{{ $fornecedor->razaosocialFornecedor }}</option>
+          @endif
+        @endisset    
+        <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
       @endforeach
     </select>
   </div>
@@ -197,14 +241,22 @@
 
     <select name="idBanco" id="idBanco" class="selecionaComInput form-control" {{$variavelDisabledNaView}}>
       @if (Request::path() == 'despesas/create')
-      @foreach ($todosOSBancos as $listaBancosViewCadastro)
-      <option value="{{ $listaBancosViewCadastro->id }}">{{ $listaBancosViewCadastro->codigoBanco }} | {{ $listaBancosViewCadastro->nomeBanco }}</option>
-      @endforeach
+        <option value="0" selected>SEM BANCO</option>
+        @foreach ($todosOSBancos as $listaBancosViewCadastro)
+          <option value="{{ $listaBancosViewCadastro->id }}">{{ $listaBancosViewCadastro->codigoBanco }} | {{ $listaBancosViewCadastro->nomeBanco }}</option>
+        @endforeach
       @else
       @foreach ($listabancos as $listaBancosViewEdit)
-      <option value="{{ $listaBancosViewEdit->id }}">{{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}</option>
+        @isset($despesa)
+              @if ($despesa->idBanco == $listaBancosViewEdit->id)
+                <option value="{{ $listaBancosViewEdit->id }}" selected>{{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}</option>
+              @endif
+              @if ($despesa->idBanco == '0')
+              <option value="0" selected>SEM BANCO</option>
+              @endif  
+        @endisset
       @endforeach
-      @endif
+      @endif     
     </select>
 
   </div>
@@ -239,9 +291,22 @@
   </div> --}}
   <div class="col-sm-4">
     <select onchange="pegaIdFornecedor();" name="reembolsado" id="reembolsado" class="selecionaComInput reembolsado form-control col-sm-12" {{$variavelDisabledNaView}}>
+      
       @foreach ($listaFornecedores as $fornecedor)
+        @isset($despesa)
+        @if ($despesa->reembolsado == $fornecedor->id)
+          <option value="{{ $fornecedor->id }}" selected>{{ $fornecedor->razaosocialFornecedor }}</option>
+        @endif
+        @if ($despesa->reembolsado == "0")
+          <option value="0" selected>SEM REEMBOLSO</option>
+        @endif
+        
+      @endisset
       <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
       @endforeach
+      <?php if((!isset($despesa))){
+        echo '<option value="0" selected>SEM REEMBOLSO</option>';
+      } ?>
     </select>
   </div>
 
@@ -268,6 +333,19 @@
   @else
   <label for="despesaFixa" class="text-center col-sm-12 mt-5 pr-2" style="color:red;">Esta despesa já é uma despesa fixa. Despesa Pai id n°{{$despesa->idDespesaPai}}</label>
   @endif
+
+  <div class="form-group row" id="telaPrestador">
+    <label for="" class="col-sm-2 col-form-label">Cod Funcionário</label>
+    <div class="col-sm-6">
+      <select onchange="pegaIdFuncionario();" name="prestadorServico" id="selecionaPrestadorServico" class="selecionaComInput selecionaFuncionario form-control col-sm-12" {{$variavelDisabledNaView}}>
+        @foreach ($listaFuncionarios as $funcionario)
+        <option value="{{ $funcionario->id }}">{{ $funcionario->nomeFuncionario }}</option>
+        
+        @endforeach
+      </select>
+    </div>
+  </div>
+
 </div>
 
 @include('despesas/cadastracodigodespesa')
@@ -280,14 +358,16 @@
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-users-cog"> </i><i class="fas fa-coins pr-1"> </i>Adicionar Grupo Despesa</button> --}}
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".materiais"><i class="fas fa-industry pr-1"></i>Cadastrar Materiais</button> --}}
   </div>
-  @include('despesas/tabelaparcelas')
+  @if (Request::path() == 'despesas/create')
+    @include('despesas/tabelaparcelas')
+  @endif
 </div>
 
 
 {{  Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}
-{!! Form::hidden('despesaCodigoDespesas', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{!! Form::hidden('idCodigoDespesas', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
-{!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+<!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
 {!! Form::hidden('totalPrecoCliente', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('totalPrecoReal', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}

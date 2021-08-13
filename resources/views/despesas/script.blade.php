@@ -12,6 +12,7 @@
                 $("#telaParcelas").show();
 
                 $("#telaDataTrabalho").hide();
+                $("#telaPrestador").hide();
                 $("#telaDataCompra").show();
 
             } else {
@@ -24,6 +25,8 @@
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
+                $("#telaPrestador").show();
+
             }
         });
         $("#naocomprou").click(function() {
@@ -37,6 +40,7 @@
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
+                $("#telaPrestador").show();
 
                 $("#telaParcelas").hide();
 
@@ -58,6 +62,7 @@
 
                 $("#telaDataTrabalho").hide();
                 $("#telaDataCompra").show();
+                $("#telaPrestador").hide();
 
                 $("#telaParcelas").show();
             }

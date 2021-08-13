@@ -176,9 +176,9 @@ class FornecedorController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     } else {
-        $listaFornecedores = Fornecedores::orderBy('id','DESC')->paginate(5);
+        $listaFornecedores = Fornecedores::orderBy('id','ASC')->paginate(5000);
         return view('fornecedores.index',compact('listaFornecedores'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+           ;
     }
 }
 

@@ -18,7 +18,7 @@
                 <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaCliente" name="idClienteOrdemdeServico" id="idClienteOrdemdeServico">
                     <option value="">Listar todos</option>
                     @foreach ($listaOrdemDeServicos as $ordemDeServicos)
-                    <option value="{{ $ordemDeServicos->idClienteOrdemdeServico }}">{{ $ordemDeServicos->idClienteOrdemdeServico }}</option>
+                    <option value="{{ $ordemDeServicos->idClienteOrdemdeServico }}">{{ $ordemDeServicos->razaosocialCliente }}</option>
                     @endforeach
                 </select>
 

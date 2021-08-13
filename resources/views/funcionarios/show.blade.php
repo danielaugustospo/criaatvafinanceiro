@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="col-lg-12 d-flex justify-content-between">
-            <h2> Dados Prestador de Serviço Daniel Augusto</h2>
+            <h2> Dados Funcionário Daniel Augusto</h2>
             <img src="../storage/fotosFuncionarios/{{ $funcionario->fotoFuncionario }}" style="height: 200;" alt="" srcset="">
 
         </div>

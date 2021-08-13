@@ -55,75 +55,96 @@ class ReceitaController extends Controller
      */
     public function index(Request $request)
     {
+
+        $consulta = $this->consultaIndexReceita();
+        
         if ($request->ajax()) {
 
-            $data = Receita::latest()->get();
-            return Datatables::of($data)
+            return Datatables::of($consulta)
                 ->addIndexColumn()
-                ->filter(function ($instance) use ($request) {
-                    $id = $request->get('id');
-                    $valorreceita = $request->get('valorreceita');
-                    $datapagamentoreceita = $request->get('datapagamentoreceita');
-                    $contareceita = $request->get('contareceita');
-                    $idosreceita = $request->get('idosreceita');
-                    if (!empty($id)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['id'], $request->get('id')) ? true : false;
-                        });
-                    }
-                    if (!empty($valorreceita)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['valorreceita'], $request->get('valorreceita')) ? true : false;
-                        });
-                    }
-                    if (!empty($datapagamentoreceita)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['datapagamentoreceita'], $request->get('datapagamentoreceita')) ? true : false;
-                        });
-                    }
-                    if (!empty($contareceita)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['contareceita'], $request->get('contareceita')) ? true : false;
-                        });
-                    }
-                    if (!empty($idosreceita)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['idosreceita'], $request->get('idosreceita')) ? true : false;
-                        });
-                    }
+                ->addColumn('action', function($consulta) {
 
-                    if (!empty($request->get('search'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                $btnVisualizar = '<div class="row col-sm-12">
+                    <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg"  title="Visualizar Receita">Visualizar</a>
+                </div>';
 
-                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['valorreceita']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['datapagamentoreceita']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['contareceita']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['idosreceita']), Str::lower($request->get('search')))) {
-                                return true;
-                            }
-                            return false;
-                        });
-                    }
+                return $btnVisualizar;
                 })
-                ->addColumn('action', function ($row) {
 
-                    $btnVisualizar = '<a href="receita/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
-                    return $btnVisualizar;
-                })
                 ->rawColumns(['action'])
                 ->make(true);
-        } else {
+        }        else {
             $data = Receita::orderBy('id', 'DESC')->paginate(5);
             return view('receita.index', compact('data'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
         }
     }
 
+
+    public function tabelaReceitas(Request $request){
+
+        $consulta = $this->consultaIndexReceita();
+
+        return Datatables::of($consulta)
+        ->filter(function ($query) use ($request) {
+
+
+            if (($request->has('id')) && ($request->id != NULL)) {
+                $query->where('receita.id', '=', "{$request->get('id')}");
+            }
+            if (($request->has('valorreceita')) && ($request->valorreceita != NULL)) {
+                $query->where('valorreceita', '=', "{$request->get('valorreceita')}");
+            }
+            if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
+                $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
+            }
+
+            if (($request->has('contareceita')) && ($request->contareceita != NULL)) {
+                $query->where('contareceita', '=', "{$request->get('contareceita')}");
+            }
+            if (($request->has('idosreceita')) && ($request->idosreceita != NULL)) {
+                $query->where('idosreceita', '=', "{$request->get('idosreceita')}");
+            }
+            if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
+                $query->where('vencimento', '=', "{$request->get('vencimento')}");
+            }
+        })
+        ->addIndexColumn()
+        ->addColumn('action', function($consulta) {
+
+        $btnVisualizar = '<div class="row col-sm-12">
+            <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Receita">Visualizar</a>
+        </div>';
+
+        return $btnVisualizar;
+        })
+    
+        ->rawColumns(['action'])
+        ->make(true);
+
+    }
+
+    public function consultaIndexReceita()
+    {
+
+        $consulta = DB::table('receita')
+        ->join('conta', 'receita.contareceita', 'conta.id')
+        ->leftJoin('clientes', 'receita.idclientereceita', 'clientes.id')
+        ->leftJoin('formapagamento', 'receita.idformapagamentoreceita', 'formapagamento.id')
+
+
+        ->select(['receita.id', 'receita.idosreceita', 'receita.idclientereceita',  'clientes.id as idDoCliente','clientes.razaosocialCliente', 'receita.idformapagamentoreceita', 'formapagamento.nomeFormaPagamento', 'receita.datapagamentoreceita',
+        'receita.dataemissaoreceita', 'receita.valorreceita', 'receita.pagoreceita', 'conta.id as idDaConta','conta.apelidoConta','receita.contareceita', 'receita.descricaoreceita', 'receita.registroreceita',
+        'receita.nfreceita']);
+
+        // $consulta1 = DB::select("SELECT receita.id,  receita.idosreceita ,  receita.idclientereceita ,  clientes.id as idDoCliente,clientes.razaosocialCliente,  receita.idformapagamentoreceita ,  receita.datapagamentoreceita ,
+        // receita.dataemissaoreceita ,  receita.valorreceita ,  receita.pagoreceita ,  conta.id as idDaConta ,conta.nomeConta , receita.contareceita ,  receita.descricaoreceita ,  receita.registroreceita ,
+        // receita.nfreceita   from receita 
+        //  inner join `conta` on `receita`.`contareceita` = `conta`.`id` 
+        //  left join `clientes` on `receita`.`idclientereceita` = `clientes`.`id`");
+        
+        return $consulta;
+    }
 
     /**
      * Show the form for creating a new resource.

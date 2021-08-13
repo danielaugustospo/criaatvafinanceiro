@@ -14,7 +14,7 @@
             @can('ordemdeservico-create')
             <a class="btn btn-success ml-3" href="{{ route('ordemdeservicos.create') }}"> Cadastrar OS</a>
             @endcan
-            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca Personalizada" readonly>
+            <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca" readonly>
             <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
     </div>
@@ -106,7 +106,7 @@
         },
 
         ajax: {
-            url: "{{ route('ordemdeservicos.index') }}",
+            url: "{{ route('tabelaOrdemServicos') }}",
             data: function(d) {
                 d.id = $('.buscaId').val(),
                     d.idClienteOrdemdeServico = $('.buscaCliente').val(),
@@ -121,8 +121,8 @@
                 name: 'id'
             },
             {
-                data: 'idClienteOrdemdeServico',
-                name: 'idClienteOrdemdeServico'
+                data: 'razaosocialCliente',
+                name: 'razaosocialCliente'
             },
             {
                 data: 'eventoOrdemdeServico',
@@ -132,7 +132,6 @@
                 data: 'valorOrdemdeServico',
                 name: 'valorOrdemdeServico',
                 render: $.fn.dataTable.render.number('.', ',', 2)
-
             },
             {
                 data: 'action',
@@ -181,7 +180,7 @@
                 }
             }
         ],
-
+        "order": [[ 0, "desc" ]]
     });
 
     $("#pesquisar").click(function() {

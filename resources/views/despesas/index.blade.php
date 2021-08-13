@@ -36,11 +36,11 @@
             <tr>
                 <th class="text-center">Id</th>
                 <th class="text-center">Descrição Despesa</th>
-                <th class="text-center">Valor</th>
-                <th class="text-center">Vencimento</th>
-                <th class="text-center">Cód Despesa</th>
-                <th class="text-center">Nota Fiscal</th>
                 <th class="text-center">N° OS</th>
+                <th class="text-center">Fornecedor</th>
+                <th class="text-center">Vencimento</th>
+                <th class="text-center">Valor</th>
+                <th class="text-center">Nota Fiscal</th>
 
                 <th width="100px" class="noExport">Ações</th>
             </tr>
@@ -50,6 +50,7 @@
     </table>
 
 <script type="text/javascript">
+    @include('layouts/daterange')
 
 
     $('#btnReveal').hide();
@@ -69,9 +70,12 @@
         $('input[name=descricaoDespesa]').val('');
         $('input[name=valorparcela]').val('');
         $('input[name=vencimento]').val('');
-        $('input[name=idCodigoDespesas]').val('');
+        $('input[name=idFornecedor]').val('');
         $('input[name=notaFiscal]').val('');
         $('input[name=idOS]').val('');
+        $('input[name=buscaDataInicio]').val('');
+        $('input[name=buscaDataFim]').val('');
+
         $('input[name=pesquisar]').click();
     })
 
@@ -109,15 +113,18 @@
         },
 
         ajax: {
-            url: "{{ route('despesas.index') }}",
+            url: "{{ route('tabelaDespesas') }}",
             data: function(d) {
                 d.idOS = $('.buscaIdOS').val(),
                     d.descricaoDespesa = $('.buscadescricaoDespesa').val(),
                     d.id = $('.buscaIdDespesa').val(),
                     d.valorparcela = $('.buscavalorparcela').val(),
                     d.vencimento = $('.buscaVencimento').val(),
-                    d.idCodigoDespesas = $('.buscaIdCodigoDespesas').val(),
+                    d.idFornecedor = $('.buscaIdFornecedor').val(),
                     d.notaFiscal = $('.buscaNotaFiscal').val(),
+                    d.buscaDataInicio   = $('.buscaDataInicio').val(),
+                    d.buscaDataFim      = $('.buscaDataFim').val(),
+
                     d.search = $('input[type="search"]').val()
             }
         },
@@ -133,28 +140,28 @@
                 name: 'descricaoDespesa'
             },
             {
+                data: 'idOS',
+                name: 'idOS'
+            },
+            {
+                data: 'razaosocialFornecedor',
+                name: 'razaosocialFornecedor'
+            },
+            {
+                data: 'vencimento',
+                name: 'vencimento',
+                render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
+                
+            },
+            {
                 data: 'valorparcela',
                 name: 'valorparcela',
                 // render: $.fn.dataTable.render.number( ',', '.', 2 )
                 render: $.fn.dataTable.render.number( '.', ',', 2)
             },
             {
-                data: 'vencimento',
-                name: 'vencimento',
-                render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
-
-            },
-            {
-                data: 'idCodigoDespesas',
-                name: 'idCodigoDespesas'
-            },
-            {
                 data: 'notaFiscal',
                 name: 'notaFiscal'
-            },
-            {
-                data: 'idOS',
-                name: 'idOS'
             },
             {
                 data: 'action',

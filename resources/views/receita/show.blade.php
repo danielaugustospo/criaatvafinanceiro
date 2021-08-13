@@ -5,7 +5,8 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2> Dados da Receita Id: {{ $receita->id }} - OS Associada: {{ $receita->idosreceita }}</h2>
+            <h2> Dados da Receita {{ $receita->id }}</h2>
+            <!-- <h2> Dados da Receita Id: {{ $receita->id }} - OS Associada: {{ $receita->idosreceita }}</h2> -->
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('receita.index') }}"> Voltar</a>

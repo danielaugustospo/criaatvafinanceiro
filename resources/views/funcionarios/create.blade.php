@@ -20,7 +20,7 @@
 
 {!! Form::open(array('route' => 'funcionarios.store','method'=>'POST', 'enctype'=>'multipart/form-data' )) !!}
 <div class="form-group row col-lg-12 mt-4">
-    <h2 class="col-lg-4 pl-0">Cadastro de Prestador de Serviço</h2>
+    <h2 class="col-lg-4 pl-0">Cadastro de Funcionário</h2>
     <div class="col-lg-8 d-flex justify-content-end">
         <label class="col-sm-3 col-form-label pr-2">Cadastrar Foto</label>
         <input type="file" class="form-control-file btn btn-secondary col-sm-6" name="fotoFuncionario" name="fotoFuncionario">

@@ -27,12 +27,12 @@
     <td data-label="Conta">
         <select name="contareceita[]" id="contaReceita" class="selecionaComInput form-control">
             @foreach ($listaContas as $contas)
-            <option value="{{ $contas->id }}">{{ $contas->apelidoConta }}</option>
+                <option value="{{ $contas->id }}">{{ $contas->apelidoConta }}</option>
             @endforeach
         </select>
     </td>
     <td data-label="Nota Fiscal">
-        {!! Form::text('nfreceita[]', $valorInput, ['placeholder' => 'N° Nota', 'class' => ' form-control pl-0 pr-0', 'maxlength' => '100', 'required']) !!}
+        {!! Form::text('nfreceita[]', $valorInput, ['placeholder' => 'N° Nota', 'class' => ' form-control', 'maxlength' => '100', 'required']) !!}
     </td>
     <td>
         <a href="#tabelaPagamento" class="duplicar pb-2">

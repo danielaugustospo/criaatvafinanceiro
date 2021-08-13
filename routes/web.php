@@ -40,6 +40,9 @@ Route::get('/tabelaContasAPagar', 'ContaController@tabelaContasAPagar')->name('t
 Route::get('/extratoConta', 'ContaController@extratoConta')->name('extratoConta');
 Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('tabelaExtratoConta');
 Route::get('/tabelaRelatorioFornecedores', 'FornecedorController@tabelaRelatorioFornecedores')->name('tabelaRelatorioFornecedores');
+Route::get('/tabelaDespesas', 'DespesaController@tabelaDespesas')->name('tabelaDespesas');
+Route::get('/tabelaReceitas', 'ReceitaController@tabelaReceitas')->name('tabelaReceitas');
+Route::get('/tabelaOrdemServicos', 'OrdemdeServicoController@tabelaOrdemServicos')->name('tabelaOrdemServicos');
 
 Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name('listaCodigoDespesa');
 Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');

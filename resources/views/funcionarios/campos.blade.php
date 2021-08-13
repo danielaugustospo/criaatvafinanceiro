@@ -1,5 +1,5 @@
 <div class="form-group row">
-    <label for="nomeFuncionario" class="col-sm-2 col-form-label pt-0">Nome Completo do Prestador de Serviço <span style="color:red;">*</span></label>
+    <label for="nomeFuncionario" class="col-sm-2 col-form-label pt-0">Nome Completo do Funcionário <span style="color:red;">*</span></label>
     <div class="col-sm-10">
         {!! Form::text('nomeFuncionario', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'required', $variavelReadOnlyNaView]) !!}
     </div>
@@ -68,7 +68,7 @@
 
 </div>
 <hr>
-<h2>Documentação do Prestador de Serviço</h2>
+<h2>Documentação do Funcionário</h2>
 <div class="form-group row ">
     <label for="cpfFuncionario" class="col-sm-2 col-form-label">CPF <span style="color:red;">*</span></label>
     <div class="col-sm-4">
@@ -134,12 +134,12 @@
         <option value="1">Estagiário</option>
         <option value="2">Temporário</option>
         <option value="3">Contrato Efetivo</option>
-        <option value="4">Prestador de Serviço</option>
+        <option value="4">Funcionário</option>
     @else
         <option value="1" {{ $funcionario->tipocontratoFuncionario == '1'?' selected':''}}>Estagiário</option>
         <option value="2" {{ $funcionario->tipocontratoFuncionario == '2'?' selected':''}}>Temporário</option>
         <option value="3" {{ $funcionario->tipocontratoFuncionario == '3'?' selected':''}}>Contrato Efetivo</option>
-        <option value="4" {{ $funcionario->tipocontratoFuncionario == '4'?' selected':''}}>Prestador de Serviço</option>
+        <option value="4" {{ $funcionario->tipocontratoFuncionario == '4'?' selected':''}}>Funcionário</option>
     @endif
 </select>
 
@@ -206,5 +206,5 @@
 
 </div>
 <hr>
-<h2>Dados Bancários Prestador de Serviço</h2>
+<h2>Dados Bancários Funcionário</h2>
 @include('funcionarios/dadosbancarios')

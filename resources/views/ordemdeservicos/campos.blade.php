@@ -12,7 +12,7 @@
 
 .rwd-table tr:first-child {
   border-top: none;
-  background: #428bca;
+  /* background: #428bca; */
   color: #fff;
 }
 
@@ -223,16 +223,16 @@ h3:after {
 <table class="styled-table rwd-table"  id="tabelaPagamento">
     <thead>
         <tr class="col-sm-10">
-            <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly>
+            {{-- <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly> --}}
             {{-- <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas" readonly style="cursor:pointer;"> --}}
 
             <th class="col-sm-2" style="width:20%;">Forma Pagamento</th>
-            <th class="col-sm-1" style="width:-webkit-fill-available;">Valor Parcela</th>
+            <th class="col-sm-1" style="width:-webkit-fill-available;"><nobr>Valor Parcela</nobr></th>
             <th class="col-sm-1" style="width:-webkit-fill-available;">Pago</th>
             <th class="col-sm-2" style="width:-webkit-fill-available;">Data Emissão NF</th>
             <th class="col-sm-2" style="width:-webkit-fill-available;">Data de Pagamento</th>
             <th class="col-sm-1" style="width:-webkit-fill-available;">Conta</th>
-            <th class="col-sm-1" style="width:-webkit-fill-available;">Nota <br>Fiscal</th>
+            <th class="col-sm-1" style="width:-webkit-fill-available;"><nobr>Nota Fiscal<nobr></th>
             <th></th>
         </tr>
     </thead>
@@ -279,18 +279,12 @@ h3:after {
 </style>
 
 <script>
-
-
     function pegaIdFornecedor() {
         var selecionado = $('#pagoreceita').find(':selected').val();
     }
 
-
-
     $("#btnAddColumn").click(function() {
         // $("#habilita_receita").clone(true).appendTo("#novaDivReceita");
-
-
         var row = $("#tabelaPagamento tr:last");
 
         row.find(".selecionaComInput").each(function(index) {
@@ -308,51 +302,54 @@ h3:after {
         // console.log(par);
 
         var tr = $(this).closest('tr');
-console.log(tr.attr(newrow));        
-// colore_tabela();
+        console.log(tr.attr(newrow));        
+        // colore_tabela();
     });
 
-function idSemValor(){
-  $('input.idReceita').val('000000');
-
-}
-
-$('body').on('click', '.duplicar', function() {
-        var row = $(this).closest('tr');
-        row.find(".selecionaComInput").each(function(index) {
-            $(this).select2('destroy');
-        });
-        row.find(".campo-moeda").each(function(index) {
-            $(this).maskMoney('destroy');
-        });
-        var newrow = row.clone();
-        $("#tabelaPagamento").append(newrow);
-        $("select.selecionaComInput").select2();
-        // $("input.campo-moeda").maskMoney();
-        $('input.campo-moeda')
-            .maskMoney({
-                prefix: 'R$ ',
-                allowNegative: false,
-                thousands: '.',
-                decimal: ',',
-                affixesStay: false
-            });
-            newrow.find(".idReceita").each(function(index) {
-            $(this).val('novo');
-        });
-        // $('input[type=text].idReceita').val('novo');
-    });
-
-    function removerCampos() {
-        $('.novaDivReceita').empty();
+    function idSemValor(){
+      $('input.idReceita').val('000000');
     }
 
-    $('body').on('click', '.deletar', function() {
-        var $tr = $(this).closest('tr');
-        if ($tr.attr('class') == 'linhaTabela1') {
-            $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
-        } else {
-            $tr.remove();
-        }
+  $('body').on('click', '.duplicar', function() {
+    var row = $(this).closest('tr');
+    row.find(".selecionaComInput").each(function(index) {
+            
+          $(this).select2('destroy');
+        
+      // $(this).select2('destroy');
+      // alert(alerta);
     });
+    row.find(".campo-moeda").each(function(index) {
+        $(this).maskMoney('destroy');
+    });
+    var newrow = row.clone();
+    $("#tabelaPagamento").append(newrow);
+    $("select.selecionaComInput").select2();
+    // $("input.campo-moeda").maskMoney();
+    $('input.campo-moeda')
+        .maskMoney({
+            prefix: 'R$ ',
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: false
+        });
+        newrow.find(".idReceita").each(function(index) {
+        $(this).val('novo');
+    });
+    // $('input[type=text].idReceita').val('novo');
+  });
+
+  function removerCampos() {
+      $('.novaDivReceita').empty();
+  }
+
+  $('body').on('click', '.deletar', function() {
+      var $tr = $(this).closest('tr');
+      if ($tr.attr('class') == 'linhaTabela1') {
+          $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
+      } else {
+          $tr.remove();
+      }
+  });
 </script>

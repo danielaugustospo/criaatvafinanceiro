@@ -63,91 +63,93 @@ class DespesaController extends Controller
      */
     public function index(Request $request)
     {
+        $consulta = $this->consultaIndexDespesa();
+        
         if ($request->ajax()) {
 
-            $data = Despesa::latest()->get();
-            return Datatables::of($data)
+            return Datatables::of($consulta)
                 ->addIndexColumn()
-                ->filter(function ($instance) use ($request) {
-                    $id = $request->get('id');
-                    $descricaoDespesa = $request->get('descricaoDespesa');
-                    $valorparcela = $request->get('valorparcela');
-                    $vencimento = $request->get('vencimento');
-                    $idCodigoDespesas = $request->get('idCodigoDespesas');
-                    $notaFiscal = $request->get('notaFiscal');
-                    $idOS = $request->get('idOS');
-                    if (!empty($id)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['id'], $request->get('id')) ? true : false;
-                        });
-                    }
-                    if (!empty($descricaoDespesa)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['descricaoDespesa'], $request->get('descricaoDespesa')) ? true : false;
-                        });
-                    }
-                    if (!empty($valorparcela)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['valorparcela'], $request->get('valorparcela')) ? true : false;
-                        });
-                    }
-                    if (!empty($vencimento)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['vencimento'], $request->get('vencimento')) ? true : false;
-                        });
-                    }
-                    if (!empty($idCodigoDespesas)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['idCodigoDespesas'], $request->get('idCodigoDespesas')) ? true : false;
-                        });
-                    }
-                    if (!empty($notaFiscal)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['notaFiscal'], $request->get('notaFiscal')) ? true : false;
-                        });
-                    }
-                    if (!empty($idOS)) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::is($row['idOS'], $request->get('idOS')) ? true : false;
-                        });
-                    }
+                ->addColumn('action', function($consulta) {
 
-                    if (!empty($request->get('search'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                $btnVisualizar = '<div class="row col-sm-12">
+                    <a href="despesas/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Despesa">Visualizar</a>
+                </div>';
 
-                            if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['descricaoDespesa']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['valorparcela']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['vencimento']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['idCodigoDespesas']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['notaFiscal']), Str::lower($request->get('search')))) {
-                                return true;
-                            } else if (Str::is(Str::lower($row['idOS']), Str::lower($request->get('search')))) {
-                                return true;
-                            }
-                            return false;
-                        });
-                    }
+                return $btnVisualizar;
                 })
-                ->addColumn('action', function ($row) {
 
-                    $btnVisualizar = '<a href="despesas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
-                    return $btnVisualizar;
-                })
                 ->rawColumns(['action'])
                 ->make(true);
         } else {
-            $data = Despesa::orderBy('id', 'DESC')->paginate(5);
-            return view('despesas.index', compact('data'))
+            // $data = Conta::orderBy('id', 'DESC')->paginate(5);
+            return view('despesas.index', compact('consulta'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
         }
     }
 
+    public function tabelaDespesas(Request $request){
+
+        $consulta = $this->consultaIndexDespesa();
+
+        return Datatables::of($consulta)
+        ->filter(function ($query) use ($request) {
+
+
+            if (($request->has('idOS')) && ($request->idOS != NULL)) {
+                $query->where('idOS', '=', "{$request->get('idOS')}");
+            }
+            if (($request->has('descricaoDespesa')) && ($request->descricaoDespesa != NULL)) {
+                $query->where('descricaoDespesa', '=', "{$request->get('descricaoDespesa')}");
+            }
+            if (($request->has('valorparcela')) && ($request->valorparcela != NULL)) {
+                $query->where('valorparcela', '=', "{$request->get('valorparcela')}");
+            }
+
+            if (($request->has('notaFiscal')) && ($request->notaFiscal != NULL)) {
+                $query->where('notaFiscal', 'like', "{$request->get('notaFiscal')}%");
+            }
+            if (($request->has('idFornecedor')) && ($request->idFornecedor != NULL)) {
+                $query->where('idFornecedor', '=', "{$request->get('idFornecedor')}");
+            }
+            if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
+                $query->where('vencimento', '=', "{$request->get('vencimento')}");
+
+            }
+            if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
+                $query->whereDate('vencimento', ">=", "{$request->buscaDataInicio}")
+                    ->whereDate('vencimento', "<=", "{$request->buscaDataFim}");
+
+            }
+        })
+        ->addIndexColumn()
+        ->addColumn('action', function($consulta) {
+
+        $btnVisualizar = '<div class="row col-sm-12">
+            <a href="despesas/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Despesa">Visualizar</a>
+        </div>';
+
+        return $btnVisualizar;
+        })
+    
+        ->rawColumns(['action'])
+        ->make(true);
+
+    }
+
+    public function consultaIndexDespesa()
+    {
+
+        $consulta = DB::table('despesas')
+        ->join('benspatrimoniais as bens', 'despesas.descricaoDespesa', 'bens.id')
+        ->join('codigodespesas as cod', 'despesas.despesaCodigoDespesas', 'cod.id')
+        ->join('fornecedores as forn', 'despesas.idFornecedor', 'forn.id')
+
+
+            // ->select(['despesas.id', 'despesas.vencimento', 'conta.apelidoConta', 'despesas.precoReal', 'despesas.descricaoDespesa', 'despesas.idOS', 'despesas.pago as pagoreceita']);
+        ->select(['despesas.id','bens.nomeBensPatrimoniais as descricaoDespesa','cod.despesaCodigoDespesa as codDespesa','despesas.valorparcela as valorparcela', 'despesas.idFornecedor', 'forn.razaosocialFornecedor','despesas.vencimento as vencimento','despesas.idCodigoDespesas','despesas.notaFiscal as notaFiscal','despesas.idOS as idOS']);    
+
+        return $consulta;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -246,6 +248,8 @@ class DespesaController extends Controller
         // $despesa->idAlteracaoUsuario         = $request->get('idAlteracaoUsuario');
         // $despesa->idAutor                    = $request->get('idAutor');
 
+        $verificaCompra =  $request->get('a');
+        if($verificaCompra == 'S'){ $despesa->ehcompra = 1; } else { $despesa->ehcompra = 0; }
         $compraparcelada =  $request->get('compraparcelada');
 
         // $temDespesa = $request->get('compraparcelada');
@@ -269,7 +273,7 @@ class DespesaController extends Controller
         $despesa->nRegistro             =  $request->get('nRegistro');
         $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
         $despesa->ativoDespesa          =  $request->get('ativoDespesa');
-        $despesa->ehcompra               =  $request->get('ehcompra');
+        // $despesa->ehcompra               =  $request->get('ehcompra');
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->totalPrecoCliente     =  $request->get('totalPrecoCliente');
         $despesa->totalPrecoReal        =  $request->get('totalPrecoReal');
@@ -292,15 +296,16 @@ class DespesaController extends Controller
                 $despesa->quantidade            =  $request->get('quantidadeTabela')[$i];
                 $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioTabela')[$i]);
 
-                $despesa->valorLiquido          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorLiquidoTabela')[$i]);
+                // $despesa->valorLiquido          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorLiquidoTabela')[$i]);
                 $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
+                $despesa->precoReal          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
                 $despesa->descricaoDespesa      =  $request->get('descricaoTabela')[$i];
 
                 $despesa->idCodigoDespesas      =  $request->get('idCodigoDespesas');
                 $despesa->idFornecedor          =  $request->get('idFornecedor');
                 $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
                 $despesa->conta                 =  $request->get('conta');
-                $despesa->precoReal             =  $request->get('precoReal');
+                // $despesa->precoReal             =  $request->get('precoReal');
                 $despesa->dataDaCompra          =  $request->get('dataDaCompra');
                 $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
                 $despesa->quemcomprou           =  $request->get('quemcomprou');
@@ -311,7 +316,7 @@ class DespesaController extends Controller
                 $despesa->nRegistro             =  $request->get('nRegistro');
                 $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
-                $despesa->ehcompra               =  $request->get('ehcompra');
+                // $despesa->ehcompra               =  $request->get('ehcompra');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
                 $despesa->totalPrecoCliente     =  $request->get('totalPrecoCliente');
                 $despesa->totalPrecoReal        =  $request->get('totalPrecoReal');
@@ -328,7 +333,7 @@ class DespesaController extends Controller
 
             $despesa->idOS                  =  $request->get('idOS');
             /*array*/
-            $despesa->vencimento            =  $request->get('vencimento')[0];
+            $despesa->vencimento            =  $request->get('vencimento');
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             /*array*/
             $despesa->pago                  =  $request->get('pago')[0];

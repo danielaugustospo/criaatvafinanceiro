@@ -30,11 +30,13 @@
 <table class="table table-bordered data-table">
     <thead>
         <tr>
-            <th class="text-center">Id Receita</th>
+            <th class="text-center">Cliente</th>
+            <th class="text-center">Descrição</th>
+            <th class="text-center">Forma Pagamento</th>
+            <th class="text-center">Conta</th>
             <th class="text-center">Valor</th>
             <th class="text-center">Data</th>
-            <th class="text-center">Cliente</th>
-            <th class="text-center">N° OS</th>
+            <th class="text-center">PG</th>
 
             <th width="100px" class="noExport">Ações</th>
         </tr>
@@ -101,7 +103,7 @@ var table = $('.data-table').DataTable({
     },
 
     ajax: {
-        url: "{{ route('receita.index') }}",
+        url: "{{ route('tabelaReceitas') }}",
         data: function(d) {
             d.id = $('.buscaIdReceita').val(),
             d.valorreceita = $('.buscaValor').val(),
@@ -114,8 +116,20 @@ var table = $('.data-table').DataTable({
 
     columns: [
         {
-            data: 'id',
-            name: 'id'
+            data: 'razaosocialCliente',
+            name: 'razaosocialCliente'
+        },
+        {
+            data: 'descricaoreceita',
+            name: 'descricaoreceita'
+        },
+        {
+            data: 'nomeFormaPagamento',
+            name: 'nomeFormaPagamento'
+        },
+        {
+            data: 'apelidoConta',
+            name: 'apelidoConta'
         },
         {
             data: 'valorreceita',
@@ -129,12 +143,8 @@ var table = $('.data-table').DataTable({
 
         },
         {
-            data: 'contareceita',
-            name: 'contareceita'
-        },
-        {
-            data: 'idosreceita',
-            name: 'idosreceita'
+            data: 'pagoreceita',
+            name: 'pagoreceita'
         },
         {
             data: 'action',
