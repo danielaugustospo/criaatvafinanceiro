@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
+Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
+

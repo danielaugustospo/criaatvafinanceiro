@@ -1,7 +1,9 @@
+
 <script>
  function getDomain() {
     return document.querySelector('base').href;
 }       
+
     $(document).ready(function() {
    
     jQuery('.campo-moeda')
@@ -12,6 +14,7 @@
         decimal: ',',
         affixesStay: false
   });
+
     $(".padraoReal").inputmask( 'currency',{"autoUnmask": true,
                     radixPoint:",",
                     groupSeparator: ".",
@@ -19,6 +22,17 @@
                     // prefix: 'R$ ',            
                     digits: 2,
                     digitsOptional: true,
+                    rightAlign: true,
+                    unmaskAsNumber: true,
+                    removeMaskOnSubmit: true
+        });
+    $(".campo-aliquota").inputmask( 'currency',{"autoUnmask": true,
+                    radixPoint:",",
+                    groupSeparator: "",
+                    allowMinus: false,
+                    // prefix: 'R$ ',            
+                    digits: 5,
+                    digitsOptional: false,
                     rightAlign: true,
                     unmaskAsNumber: true,
                     removeMaskOnSubmit: true
@@ -70,7 +84,7 @@
                 dropdownParent: $('#myModal'),
             });
 
-            $("#idCodigoDespesas").select2()({
+            $("#despesaCodigoDespesas").select2()({
                 placeholder: 'Selecione uma opção',
                 dropdownParent: $('#myModal'),
             });
@@ -206,3 +220,18 @@
         });
 
 </script>
+
+ 
+<script type="x/kendo-template" id="page-template">
+  
+    <div class="page-template">
+      <div class="header">
+        <div style="float: right">Page #: pageNum # of #: totalPages #</div>
+        Relatório de #: document.title # 
+      </div>
+      <div class="watermark">CRIAATVA</div>
+      <div class="footer">
+        Página #: pageNum # de #: totalPages #
+      </div>
+    </div>
+  </script>

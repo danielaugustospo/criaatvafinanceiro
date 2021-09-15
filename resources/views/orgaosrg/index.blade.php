@@ -62,7 +62,7 @@
         $('input[name=nome]').val('');
         $('input[name=estadoOrgaoRG]').val('');
         $('input[name=vencimento]').val('');
-        $('input[name=idCodigoDespesas]').val('');
+        $('input[name=despesaCodigoDespesas]').val('');
         $('input[name=nRegistro]').val('');
         $('input[name=idOS]').val('');
         $('input[name=pesquisar]').click();

@@ -40,4 +40,10 @@ class FormatacoesServiceProvider extends ServiceProvider
         return $valorMonetario;
 
     }
+
+    public static function campoReadOnly($readonlyOuNao, $tipo){
+        $readonlyOuNao = ('editavel' == $tipo) ? ' ' : 'readonly'; 
+        return $readonlyOuNao;
+        
+    }
 }

@@ -23,10 +23,10 @@
 
                 <label for="" class="col-sm-1">Valor</label>
                 {{-- <input type="text" name="precoReal" class="col-sm-2 form-control buscaPrecoReal" placeholder="Preço Real"> --}}
-                <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscavalorparcela" name="valorparcela" id="valorparcela">
+                <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscaprecoReal" name="precoReal" id="precoReal">
                     <option value="">Listar todos</option>
                     @foreach ($listaDespesas as $despesa)
-                    <option value="{{ $despesa->valorparcela }}">{{ $despesa->valorparcela }}</option>
+                    <option value="{{ $despesa->precoReal }}">{{ $despesa->precoReal }}</option>
                     @endforeach
                 </select>
 
@@ -34,7 +34,6 @@
             <div class="row">
                 <label for="" class="col-sm-1">Data</label><input type="date" name="vencimento" class="col-sm-2 form-control buscaVencimento" placeholder="Vencimento">
                 <label for="" class="col-sm-2">Fornecedor</label>
-                {{-- <input type="text" name="idCodigoDespesas" class="col-sm-4 form-control buscaIdCodigoDespesas" placeholder="Código de Despesas"> --}}
                 <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaIdFornecedor" name="idFornecedor" id="idFornecedor">
                     <option value="">Listar todos</option>
                     @foreach ($listaFornecedores as $fornecedores)

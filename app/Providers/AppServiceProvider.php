@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, idCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
+        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
 
@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         view()->share('listaCodigoDespesa', $listaCodigoDespesa);
 
 
-        $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,ods.clienteOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
+        $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
         from ordemdeservico ods 
         left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');
 
@@ -94,10 +94,10 @@ class AppServiceProvider extends ServiceProvider
         view()->share('listaFuncionarios', $listaFuncionarios);
 
         $listaContasAPagar =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
-        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.clienteOrdemdeServico,
+        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.idClienteOrdemdeServico,
         cli.id as idCliente, cli.nomeCliente, cli.agenciaCliente1 as agencia1, cli.agenciaCliente2 as agencia2, cli.agenciaCliente3 as agencia3
         from despesas d, ordemdeservico os, clientes cli
-        where (os.clienteOrdemdeServico = cli.id)
+        where (os.idClienteOrdemdeServico = cli.id)
         and (d.idOS = os.id) 
         and (d.pago = "N")');
         view()->share('listaContasAPagar', $listaContasAPagar);
@@ -106,11 +106,25 @@ class AppServiceProvider extends ServiceProvider
         from receita r, conta c, ordemdeservico os, clientes cli
         where pagoreceita = 'N' and r.contareceita = c.id 
         and r.idosreceita = os.id
-        and os.clienteOrdemdeServico = cli.id");
+        and os.idClienteOrdemdeServico = cli.id");
         view()->share('listaContasAReceber', $listaContasAReceber);
 
         $listaReceitasEDespesas = DB::select('SELECT r.id, r.valorreceita from receita r union all (select d.id, d.precoReal  from despesas d)');
         view()->share('listaReceitasEDespesas', $listaReceitasEDespesas);
+    
+        $consultaNotasRecibosProvider = DB::select('SELECT distinct * from view_notasrecibos order by Emissao ASC');
+        view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
+
+        $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
+        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
+
+    
     }
+
+    // public function consultasSQL()
+    // {
+    //     $consultaNotasRecibos =  new NotasRecibos();
+
+    // }
 
 }

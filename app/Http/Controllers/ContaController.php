@@ -207,7 +207,7 @@ class ContaController extends Controller
     public function update(Request $request, Conta $conta)
     {
         $request->validate([
-            'idBanco' => 'required',
+            // 'idBanco' => 'required',
             'apelidoConta'  => 'required',
 
             'nomeConta' => 'required',

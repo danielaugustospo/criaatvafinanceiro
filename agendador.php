@@ -32,7 +32,6 @@ try {
 
         $contasVencidas = count($data);
 
-        $idCodigoDespesas  = $row['idCodigoDespesas'];
         $idOS  = $row['idOS'];
         $idDespesaPai  = $row['id'];
         $descricaoDespesa  = $row['descricaoDespesa'];
@@ -58,9 +57,8 @@ try {
 
 
         for ($i = 0; $i < $contasVencidas; $i++) {
-            $stmt = $conexao->prepare("INSERT INTO despesas (idCodigoDespesas,idOS,idDespesaPai,descricaoDespesa,despesaCodigoDespesas,idFornecedor,precoReal,valorEstornado,ehcompra,pago,quempagou,idFormaPagamento,conta,nRegistro,vencimento,totalPrecoReal,totalPrecoCliente,notaFiscal,despesaFixa,cheque,idBanco,ativoDespesa,excluidoDespesa)
-            VALUES (:idCodigoDespesas,:idOS,:idDespesaPai,:descricaoDespesa,:despesaCodigoDespesas,:idFornecedor,:precoReal,:valorEstornado,:ehcompra,:pago,:quempagou,:idFormaPagamento,:conta,:nRegistro,:vencimento,:totalPrecoReal,:totalPrecoCliente,:notaFiscal,:despesaFixa,:cheque,:idBanco,:ativoDespesa,:excluidoDespesa)");
-            $stmt->bindParam(':idCodigoDespesas', $idCodigoDespesas);
+            $stmt = $conexao->prepare("INSERT INTO despesas (idOS,idDespesaPai,descricaoDespesa,despesaCodigoDespesas,idFornecedor,precoReal,valorEstornado,ehcompra,pago,quempagou,idFormaPagamento,conta,nRegistro,vencimento,totalPrecoReal,totalPrecoCliente,notaFiscal,despesaFixa,cheque,idBanco,ativoDespesa,excluidoDespesa)
+            VALUES (:idOS,:idDespesaPai,:descricaoDespesa,:despesaCodigoDespesas,:idFornecedor,:precoReal,:valorEstornado,:ehcompra,:pago,:quempagou,:idFormaPagamento,:conta,:nRegistro,:vencimento,:totalPrecoReal,:totalPrecoCliente,:notaFiscal,:despesaFixa,:cheque,:idBanco,:ativoDespesa,:excluidoDespesa)");
             $stmt->bindParam(':idOS', $idOS);
             $stmt->bindParam(':idDespesaPai', $idDespesaPai);
             $stmt->bindParam(':descricaoDespesa', $descricaoDespesa);

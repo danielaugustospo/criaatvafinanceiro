@@ -450,8 +450,10 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
     );
 
     public static $classMap = array (
+        'App\\AliquotaMensal' => __DIR__ . '/../..' . '/app/AliquotaMensal.php',
         'App\\Banco' => __DIR__ . '/../..' . '/app/Banco.php',
         'App\\BensPatrimoniais' => __DIR__ . '/../..' . '/app/BensPatrimoniais.php',
+        'App\\Classes\\Logger' => __DIR__ . '/../..' . '/app/Classes/Logger.php',
         'App\\Clientes' => __DIR__ . '/../..' . '/app/Clientes.php',
         'App\\CodigoDespesa' => __DIR__ . '/../..' . '/app/CodigoDespesa.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
@@ -464,6 +466,7 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         'App\\Fornecedores' => __DIR__ . '/../..' . '/app/Fornecedores.php',
         'App\\Funcionario' => __DIR__ . '/../..' . '/app/Funcionario.php',
         'App\\GrupoDespesa' => __DIR__ . '/../..' . '/app/GrupoDespesa.php',
+        'App\\Http\\Controllers\\AliquotaMensalController' => __DIR__ . '/../..' . '/app/Http/Controllers/AliquotaMensalController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -483,6 +486,7 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         'App\\Http\\Controllers\\FuncionarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/FuncionarioController.php',
         'App\\Http\\Controllers\\GrupoDespesaController' => __DIR__ . '/../..' . '/app/Http/Controllers/GrupoDespesaController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\NotasRecibosController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotasRecibosController.php',
         'App\\Http\\Controllers\\OrdemdeServicoController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrdemdeServicoController.php',
         'App\\Http\\Controllers\\OrgaosRGController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrgaosRGController.php',
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
@@ -500,6 +504,7 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\NotasRecibos' => __DIR__ . '/../..' . '/app/NotasRecibos.php',
         'App\\OrdemdeServico' => __DIR__ . '/../..' . '/app/OrdemdeServico.php',
         'App\\Orgaorg' => __DIR__ . '/../..' . '/app/OrgaoRG.php',
         'App\\Product' => __DIR__ . '/../..' . '/app/Product.php',

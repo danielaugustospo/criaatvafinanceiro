@@ -164,30 +164,24 @@
                 
 
 
-                @can('benspatrimoniais-list')    
+                @can('notasrecibos-list')    
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Bens Patrimoniais <span class="caret"></span>
+                        Notas/Recibos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('benspatrimoniais-list')
-                        <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
+                        @can('notasrecibos-list')
+                        <a class="dropdown-item" href="{{ route('notasrecibos.index') }}">Consultar Notas/Recibos</a>
                         @endcan
 
-                        @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas de Materiais</a>
+                        @can('notasrecibos-list')
+                        <a class="dropdown-item" href="{{ route('aliquotamensal.index') }}">Alíquotas Mensais</a>
                         @endcan
 
-                        @can('saidas-list')
-                        <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
-                        @endcan
-
-                        @can('estoque-list')
-                        <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
-                        @endcan
                     </div>
                 </li>
                 @endcan
+
 
                 <li class="nav-item dropdown">
 
@@ -226,6 +220,31 @@
 
                         @can('benspatrimoniais-list')    
                         <a class="dropdown-item" href="{{ route('products.index') }}">Tipo de Bens Patrimoniais</a>
+                        @endcan
+
+                        @can('benspatrimoniais-list')    
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Bens Patrimoniais <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('benspatrimoniais-list')
+                                <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
+                                @endcan
+        
+                                @can('entradas-list')
+                                <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas de Materiais</a>
+                                @endcan
+        
+                                @can('saidas-list')
+                                <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
+                                @endcan
+        
+                                @can('estoque-list')
+                                <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
+                                @endcan
+                            </div>
+                        </li>
                         @endcan
                     </div> 
                 </li>

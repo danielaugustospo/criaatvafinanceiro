@@ -6,8 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\AliquotaMensal' => $baseDir . '/app/AliquotaMensal.php',
     'App\\Banco' => $baseDir . '/app/Banco.php',
     'App\\BensPatrimoniais' => $baseDir . '/app/BensPatrimoniais.php',
+    'App\\Classes\\Logger' => $baseDir . '/app/Classes/Logger.php',
     'App\\Clientes' => $baseDir . '/app/Clientes.php',
     'App\\CodigoDespesa' => $baseDir . '/app/CodigoDespesa.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
@@ -20,6 +22,7 @@ return array(
     'App\\Fornecedores' => $baseDir . '/app/Fornecedores.php',
     'App\\Funcionario' => $baseDir . '/app/Funcionario.php',
     'App\\GrupoDespesa' => $baseDir . '/app/GrupoDespesa.php',
+    'App\\Http\\Controllers\\AliquotaMensalController' => $baseDir . '/app/Http/Controllers/AliquotaMensalController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
     'App\\Http\\Controllers\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -39,6 +42,7 @@ return array(
     'App\\Http\\Controllers\\FuncionarioController' => $baseDir . '/app/Http/Controllers/FuncionarioController.php',
     'App\\Http\\Controllers\\GrupoDespesaController' => $baseDir . '/app/Http/Controllers/GrupoDespesaController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Http\\Controllers\\NotasRecibosController' => $baseDir . '/app/Http/Controllers/NotasRecibosController.php',
     'App\\Http\\Controllers\\OrdemdeServicoController' => $baseDir . '/app/Http/Controllers/OrdemdeServicoController.php',
     'App\\Http\\Controllers\\OrgaosRGController' => $baseDir . '/app/Http/Controllers/OrgaosRGController.php',
     'App\\Http\\Controllers\\ProductController' => $baseDir . '/app/Http/Controllers/ProductController.php',
@@ -56,6 +60,7 @@ return array(
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\NotasRecibos' => $baseDir . '/app/NotasRecibos.php',
     'App\\OrdemdeServico' => $baseDir . '/app/OrdemdeServico.php',
     'App\\Orgaorg' => $baseDir . '/app/OrgaoRG.php',
     'App\\Product' => $baseDir . '/app/Product.php',

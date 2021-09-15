@@ -206,18 +206,6 @@
                 console.log('anterior ' + anterior);
 
             });
-
-            $linha.find('input.valorliquido').text(tot);
-            var tg = 0;
-            $linha.closest('table').find('input.valorliquido').each(function() {
-                if ($(this).attr("id")) {
-                    // td sem id é a coluna do total geral, mas seria melhor ter uma identificação ou classe.
-                    var valor = parseFloat($(this).text().replace(',', '.'));
-                    console.log(valor);
-                    tg += (isNaN(valor) ? 0 : valor);
-                }
-            });
-            $(".valorliquido").val(tg);
         }).trigger("input");
     }
 
@@ -227,9 +215,9 @@
     }
 
     function recarregaCodigoDespesa() {
-        $('#idCodigoDespesas').select2('destroy');
+        $('#despesaCodigoDespesas').select2('destroy');
 
-        let dropdown = $('#idCodigoDespesas');
+        let dropdown = $('#despesaCodigoDespesas');
         dropdown.empty();
         dropdown.append('<option selected="true" disabled>SELECIONE UM CÓDIGO DE DESPESA...</option>');
         dropdown.prop('selectedIndex', 0);
@@ -241,7 +229,7 @@
                 dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.despesaCodigoDespesa + ' | ' + dadosjson.grupoDespesa));
             })
         });
-        $('#idCodigoDespesas').select2();
+        $('#despesaCodigoDespesas').select2();
     }
 
     function recarregaDescricaoDespesa() {

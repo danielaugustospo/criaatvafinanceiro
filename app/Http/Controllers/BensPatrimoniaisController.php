@@ -44,7 +44,7 @@ class BensPatrimoniaisController extends Controller
                     $descricaoBensPatrimoniais = $request->get('descricaoBensPatrimoniais');
                     $idTipoBensPatrimoniais = $request->get('idTipoBensPatrimoniais');
                     $statusbenspatrimoniais = $request->get('statusbenspatrimoniais');
-
+ 
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['id'], $request->get('id')) ? true : false;
@@ -70,10 +70,10 @@ class BensPatrimoniaisController extends Controller
                             return Str::is($row['statusbenspatrimoniais'], $request->get('statusbenspatrimoniais')) ? true : false;
                         });
                     }
-
+ 
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-
+ 
                             if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
                             } else if (Str::is(Str::lower($row['nomeBensPatrimoniais']), Str::lower($request->get('search')))) {
@@ -90,20 +90,27 @@ class BensPatrimoniaisController extends Controller
                     }
                 })
                 ->addColumn('action', function ($row) {
-
+ 
                     $btnVisualizar = '<a href="benspatrimoniais/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
                     return $btnVisualizar;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         } else {
-
+ 
         $data = BensPatrimoniais::orderBy('id','DESC')->paginate(5);
         return view('benspatrimoniais.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
+
+     }
 }
 
+
+public function apibenspatrimoniais(Request $request)
+{
+    $data = BensPatrimoniais::all();
+    return $data;
+}
 
     /**
      * Show the form for creating a new resource.
@@ -172,7 +179,8 @@ class BensPatrimoniaisController extends Controller
      */
     public function show($id)
     {
-        $benspatrimoniais = BensPatrimoniais::find($id);
+        $benspatrimoniais =  BensPatrimoniais::find($id);
+
         return view('benspatrimoniais.show',compact('benspatrimoniais'));
     }
 

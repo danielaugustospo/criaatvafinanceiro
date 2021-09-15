@@ -181,6 +181,7 @@ h3:after {
         </select>
     </div>
 
+
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!}
@@ -204,6 +205,15 @@ h3:after {
         {!! Form::text('obsOrdemdeServico', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100' ]) !!}
 
     </div>
+</div>
+
+<div class="form-group row">
+    <label for="obsOrdemdeServico" class="col-sm-2 col-form-label mr-3">Serviço c/ Fator R</label>
+    {{Form::radio('comFatorR', 0, null, ['class'=>'mt-3']) }} 
+    <label for="obsOrdemdeServico" class="col-sm-1  mt-1 pl-0 col-form-label">Não</label>
+
+    {{Form::radio('comFatorR', 1,  null, ['class'=>'mt-3']) }}
+    <label for="obsOrdemdeServico" class="col-sm-1 mt-1 pl-0 col-form-label">Sim</label>
 </div>
 
 
@@ -263,7 +273,6 @@ h3:after {
 
 {!! Form::hidden('dataOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-{!! Form::hidden('clienteOrdemdeServico', 'Campo Nome da OS', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('servicoOrdemdeServico', 'Campo Serviço', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 
@@ -337,7 +346,7 @@ h3:after {
         newrow.find(".idReceita").each(function(index) {
         $(this).val('novo');
     });
-    // $('input[type=text].idReceita').val('novo');
+    $('input[type=text].idReceita').val('novo');
   });
 
   function removerCampos() {

@@ -22,7 +22,7 @@ class CreateTableOrdemdeServico extends Migration
             $table->string('valorProjetoOrdemdeServico')->default('0.0');
             $table->string('valorOrdemdeServico')->default('0.0');
             $table->string('dataOrdemdeServico')->nullable();
-            $table->string('clienteOrdemdeServico')->nullable();
+            $table->string('fatorR')->nullable();
             $table->string('eventoOrdemdeServico');
             $table->string('servicoOrdemdeServico')->nullable();
             $table->string('obsOrdemdeServico')->nullable();

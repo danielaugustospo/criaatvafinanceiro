@@ -28,10 +28,10 @@ class CreateTableDespesas extends Migration
             $table->string('despesaCodigoDespesas')->nullable();
             $table->string('despesaFixa')->nullable();
             $table->string('idBanco')->nullable();
-            $table->string('idCodigoDespesas')->nullable();
             $table->string('idDespesaPai')->nullable();
             $table->string('idFormaPagamento')->nullable();
             $table->string('idFornecedor')->nullable();
+            $table->string('idFuncionario')->nullable();
             $table->string('idOS')->nullable();
             $table->string('notaFiscal')->nullable();
             $table->string('nRegistro')->nullable();
@@ -43,10 +43,8 @@ class CreateTableDespesas extends Migration
             $table->string('vencimento')->nullable();
             $table->string('idAlteracaoUsuario')->nullable();
             $table->string('idAutor')->nullable();
-            $table->string('tipoFornecedor')->nullable();
             $table->string('quantidade')->nullable();
             $table->string('valorUnitario')->nullable();
-            $table->string('valorLiquido')->nullable();
             $table->string('valorparcela')->nullable();
             $table->string('ativoDespesa')->default('1');
             $table->string('excluidoDespesa')->default('0');

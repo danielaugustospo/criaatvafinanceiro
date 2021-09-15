@@ -124,12 +124,12 @@
   </div>
 </div>
 
-<input type="hidden" name="idFornecedor" id="idFornecedor">
+{{-- <input type="hidden" name="idFornecedor" id="idFornecedor"> --}}
 
 <div class="form-group row" id="telaFornecedor">
   <label for="" class="col-sm-2 col-form-label">Fornecedor/Prestador de Serviço</label>
   <div class="col-sm-4">
-    <select onchange="pegaIdFornecedor();" name="selecionaFornecedor" id="selecionaFornecedor" class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{$variavelDisabledNaView}}>
+    <select onchange="pegaIdFornecedor();" name="idFornecedor" id="selecionaFornecedor" class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{$variavelDisabledNaView}}>
       @foreach ($listaFornecedores as $fornecedor)
         @isset($despesa)
           @if ($despesa->idFornecedor == $fornecedor->id)
@@ -337,11 +337,28 @@
   <div class="form-group row" id="telaPrestador">
     <label for="" class="col-sm-2 col-form-label">Cod Funcionário</label>
     <div class="col-sm-6">
-      <select onchange="pegaIdFuncionario();" name="prestadorServico" id="selecionaPrestadorServico" class="selecionaComInput selecionaFuncionario form-control col-sm-12" {{$variavelDisabledNaView}}>
-        @foreach ($listaFuncionarios as $funcionario)
-        <option value="{{ $funcionario->id }}">{{ $funcionario->nomeFuncionario }}</option>
-        
-        @endforeach
+      <select  name="idFuncionario" id="idFuncionario" class="selecionaComInput form-control col-sm-12" {{$variavelDisabledNaView}}>
+       @if (Request::path() == 'despesas/create')
+          <option value="0" selected>SEM FUNCIONÁRIO</option>
+          @foreach ($listaFuncionarios as $funcionario)
+            <option value="{{ $funcionario->id }}">{{ $funcionario->nomeFuncionario }}</option>
+          @endforeach
+        @else
+          @isset($despesa)
+            @foreach ($listaFuncionarios as $funcionario)
+              @if ($despesa->idFuncionario == $funcionario->id)
+                <option value="{{ $funcionario->id }}" selected>{{ $funcionario->nomeFuncionario }}</option>
+              @endif
+            @endforeach
+            @if ($despesa->idFuncionario == '0')
+              <option value="0" selected>SEM FUNCIONÁRIO</option>
+            @endif
+            @foreach ($listaFuncionarios as $funcionario)
+              <option value="{{ $funcionario->id }}">{{ $funcionario->nomeFuncionario }}</option>
+            @endforeach
+          @endisset
+        @endif     
+
       </select>
     </div>
   </div>
@@ -365,7 +382,6 @@
 
 
 {{  Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}
-{!! Form::hidden('idCodigoDespesas', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 <!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}

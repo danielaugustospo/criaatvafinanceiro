@@ -487,7 +487,7 @@
 
     <tr>
         <td>{{ $tabeladespesa->id }}</td>
-        <td>{{ $tabeladespesa->idCodigoDespesas }}</td>
+        <td>{{ $tabeladespesa->despesaCodigoDespesas }}</td>
         <td>{{ $tabeladespesa->idOS }}</td>
         <td>{{ $tabeladespesa->descricaoDespesa }}</td>
         <td>

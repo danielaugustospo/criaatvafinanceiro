@@ -1,23 +1,26 @@
+<head>
+    <meta charset="utf-8">
+    <title>Despesas</title>
+</head>
+
 @extends('layouts.app')
 
 @section('content')
 
 
 <div class="row">
-
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2 class="text-center">Consulta de Despesas</h2>
         </div>
         <div class="d-flex justify-content-between pull-right">
             @can('despesa-create')
-                <a class="btn btn-success" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
+            <a class="btn btn-success" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
             @endcan
-            @include('layouts/exibeFiltro')
+            {{-- @include('layouts/exibeFiltro') --}}
         </div>
     </div>
 </div>
-
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -26,208 +29,142 @@
 @endif
 
 <hr>
+{{-- @include('despesas/filtroindex') --}}
 
 
-@include('despesas/filtroindex')
+<div id="filter-menu"></div>
+<br /><br />
+<div id="grid"></div>
 
+<script>
 
-<table class="table table-bordered data-table">
-        <thead>
-            <tr>
-                <th class="text-center">Id</th>
-                <th class="text-center">Descrição Despesa</th>
-                <th class="text-center">N° OS</th>
-                <th class="text-center">Fornecedor</th>
-                <th class="text-center">Vencimento</th>
-                <th class="text-center">Valor</th>
-                <th class="text-center">Nota Fiscal</th>
-
-                <th width="100px" class="noExport">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-<script type="text/javascript">
-    @include('layouts/daterange')
-
-
-    $('#btnReveal').hide();
-
-    $('#btnReveal').on('click', function () {
-        $('#areaTabela').show('#div_BuscaPersonalizada');
-        $('#btnReveal').hide();
-        $('#btnEsconde').show();
-        $('#div_BuscaPersonalizada').show();
-    })
-
-    $('#btnEsconde').on('click', function () {
-        $('#areaTabela').hide('#div_BuscaPersonalizada');
-        $('#btnEsconde').hide();
-        $('#btnReveal').show();
-        $('input[name=id]').val('');
-        $('input[name=descricaoDespesa]').val('');
-        $('input[name=valorparcela]').val('');
-        $('input[name=vencimento]').val('');
-        $('input[name=idFornecedor]').val('');
-        $('input[name=notaFiscal]').val('');
-        $('input[name=idOS]').val('');
-        $('input[name=buscaDataInicio]').val('');
-        $('input[name=buscaDataFim]').val('');
-
-        $('input[name=pesquisar]').click();
-    })
-
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        "iDisplayLength": 10,
-        "aLengthMenu": [[5, 10, 25, 50, 100, 200, -1], ['5 resultados' , '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]],
-        
-
-        "language": {
-            "sProcessing": "Processando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "Não foram encontrados resultados",
-            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
-            "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
-            "sInfoPostFix": "",
-            "sSearch": "Procurar:",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "Primeiro",
-                "sPrevious": "Anterior",
-                "sNext": "Seguinte",
-                "sLast": "Último"
+    var dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "{{ route('apidespesas') }}",
+                dataType: "json"
             },
-            "buttons": {
-            "copy": "Copiar",
-            "csv": "Exportar em CSV",
-            "excel": "Exportar para Excel (.xlsx)",
-            "pdf": "Salvar em PDF",
-            "print": "Imprimir",
-            "pageLength": "Exibir por página" 
-            }
         },
-
-        ajax: {
-            url: "{{ route('tabelaDespesas') }}",
-            data: function(d) {
-                d.idOS = $('.buscaIdOS').val(),
-                    d.descricaoDespesa = $('.buscadescricaoDespesa').val(),
-                    d.id = $('.buscaIdDespesa').val(),
-                    d.valorparcela = $('.buscavalorparcela').val(),
-                    d.vencimento = $('.buscaVencimento').val(),
-                    d.idFornecedor = $('.buscaIdFornecedor').val(),
-                    d.notaFiscal = $('.buscaNotaFiscal').val(),
-                    d.buscaDataInicio   = $('.buscaDataInicio').val(),
-                    d.buscaDataFim      = $('.buscaDataFim').val(),
-
-                    d.search = $('input[type="search"]').val()
-            }
-        },
-
-        columns: [
-            // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {
-                data: 'id',
-                name: 'id'
-            },
-            {
-                data: 'descricaoDespesa',
-                name: 'descricaoDespesa'
-            },
-            {
-                data: 'idOS',
-                name: 'idOS'
-            },
-            {
-                data: 'razaosocialFornecedor',
-                name: 'razaosocialFornecedor'
-            },
-            {
-                data: 'vencimento',
-                name: 'vencimento',
-                render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
-                
-            },
-            {
-                data: 'valorparcela',
-                name: 'valorparcela',
-                // render: $.fn.dataTable.render.number( ',', '.', 2 )
-                render: $.fn.dataTable.render.number( '.', ',', 2)
-            },
-            {
-                data: 'notaFiscal',
-                name: 'notaFiscal'
-            },
-            {
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                exportOptions: {
-                visible: false
-                },
-            },
-        ],
-        dom: 'Bfrtip',
-        buttons: [{
-            extend: 'pageLength', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    },
-                },{
-            extend: 'copy', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    },
-                },
-                {
-            extend: 'csv', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    },
-                },
-                {
-            extend: 'excel', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    },
-                },
-                {
-            extend: 'pdf', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    },
-                },
-                {
-            extend: 'print', 
-                    // title: 'Test Data export',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                }
-        ],
-
-        // columnDefs: [ {
-        // targets: 3,
-        // render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
-        // } ],
     });
 
-    $("#pesquisar").click(function() {
-        table.draw();
+    dataSource.fetch().then(function () {
+        var data = dataSource.data();
+
+        // initialize a Kendo Grid with the returned data from the server.
+        $("#grid").kendoGrid({
+            toolbar: ["excel", "pdf"],
+            excel: {
+                fileName: "Relatório de " + document.title + ".xlsx",
+                // proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
+                // filterable: true
+            },
+            excelExport: function (e) {
+
+                var sheet = e.workbook.sheets[0];
+                sheet.frozenRows = 1;
+                sheet.mergedCells = ["A1:H1"];
+                sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
+
+                var myHeaders = [{
+                    value: "Relatório de " + document.title,
+                    textAlign: "center",
+                    background: "black",
+                    color: "#ffffff"
+                }];
+
+                sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 70 });
+            },
+
+            pdf: {
+                fileName: "Relatório de " + document.title + ".pdf",
+
+                allPages: true,
+                avoidLinks: true,
+                paperSize: "A4",
+                margin: { top: "2cm", left: "1cm", right: "1cm", bottom: "1cm" },
+                landscape: true,
+                repeatHeaders: true,
+                template: $("#page-template").html(),
+                scale: 0.8
+            },
+            dataSource: {
+                data: data,
+                pageSize: 15,
+                schema: {
+                    model: {
+                        fields: {
+                            precoReal: { type: "number" },
+                            razaosocialFornecedor: { type: "string" },
+                            vencimento: { type: "date" },
+                        }
+                    },
+                },
+
+                group: {
+                    field: "razaosocialFornecedor", aggregates: [
+                        { field: "razaosocialFornecedor", aggregate: "count" },
+                        { field: "precoReal", aggregate: "sum" },
+                        // { field: "UnitsOnOrder", aggregate: "average" },
+                        // { field: "notaFiscal", aggregate: "count" }
+                    ]
+                },
+                aggregate: [{ field: "razaosocialFornecedor", aggregate: "count" },
+                { field: "precoReal", aggregate: "sum" }],
+                // { field: "UnitsOnOrder", aggregate: "average" },
+                // { field: "UnitsInStock", aggregate: "min" },
+                // { field: "UnitsInStock", aggregate: "max" }]
+            },
+            height: 550,
+            filterable: true,
+            sortable: true,
+            resizable: true,
+            // responsible: true,
+            pageable: {
+                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                numeric: false
+            },
+            columns: [
+                { field: "id", title: "ID", filterable: true, width: 50 },
+                { field: "despesaCodigoDespesa", title: "Despesa", filterable: true, width: 100 },
+                { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
+                { field: "idOS", title: "OS", filterable: true, width: 100 },
+                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
+                { field: "vencimento", title: "Vencimento", filterable: true, width: 100,  format: "{0:dd/MM/yyyy}" },
+                { field: "precoReal", title: "Valor", filterable: true, width: 100, decimals: 2,  aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #",  footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+
+                {
+                    command: [{
+                        name: "Visualizar",
+                        click: function (e) {
+                            e.preventDefault();
+                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                            var data = this.dataItem(tr);
+                            window.location.href = location.href + '/' + data.id;
+                        }
+                    }],
+                    width: 100,
+                    exportable: false,
+                },
+                {
+                    command: [{
+                        name: "Editar",
+                        click: function (e) {
+                            e.preventDefault();
+                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                            var data = this.dataItem(tr);
+                            window.location.href = location.href + '/' + data.id + '/edit';
+                        }
+                    }],
+                    width: 80,
+                    exportable: false,
+                },
+            ],
+
+
+        });
     });
 </script>
-
 
 
 @endsection

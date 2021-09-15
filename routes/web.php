@@ -48,10 +48,11 @@ Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name(
 Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');
 Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
 
+// Route::get('/apiteste', 'BensPatrimoniaisController@apiteste')->name('apiteste');
+
 
 Route::post('/salvarmodalgrupodespesa', 'GrupoDespesaController@salvarmodalgrupodespesa')->name('salvarmodalgrupodespesa');
 Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodal')->name('cadastromateriais');
-// Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodal')->name('cadastromateriais');
 Route::post('/cadastrotipomateriais', 'ProductController@salvarmodal')->name('cadastrotipomateriais');
 Route::post('/cadastrocodigodespesa', 'CodigoDespesaController@salvarmodal')->name('cadastrocodigodespesa');
 Route::post('/cadastrofornecedor', 'FornecedorController@salvarmodal')->name('cadastrofornecedor');
@@ -79,5 +80,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('tabelapercentual','TabelaPercentualController');
     Route::resource('receita','ReceitaController');
     Route::resource('grupodespesas','GrupoDespesaController');
+    Route::resource('notasrecibos','NotasRecibosController');
+    Route::resource('aliquotamensal','AliquotaMensalController');
 
 });
