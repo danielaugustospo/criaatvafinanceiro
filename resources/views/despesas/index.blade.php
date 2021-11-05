@@ -47,6 +47,9 @@
         },
     });
 
+    //Se não houver essa declaração, ele retorna erro dizendo que não encontrou o metodo e não exporta o pdf
+    var detailColsVisibility = {};
+
     dataSource.fetch().then(function () {
         var data = dataSource.data();
 
@@ -94,8 +97,11 @@
                     model: {
                         fields: {
                             precoReal: { type: "number" },
+                            vale: { type: "number" },
+                            despesareal: { type: "number" },
                             razaosocialFornecedor: { type: "string" },
                             vencimento: { type: "date" },
+                            datavale: { type: "date" },
                         }
                     },
                 },
@@ -104,17 +110,22 @@
                     field: "razaosocialFornecedor", aggregates: [
                         { field: "razaosocialFornecedor", aggregate: "count" },
                         { field: "precoReal", aggregate: "sum" },
+                        { field: "vale", aggregate: "sum" },
+                        { field: "despesareal", aggregate: "sum" }
                         // { field: "UnitsOnOrder", aggregate: "average" },
                         // { field: "notaFiscal", aggregate: "count" }
                     ]
                 },
                 aggregate: [{ field: "razaosocialFornecedor", aggregate: "count" },
-                { field: "precoReal", aggregate: "sum" }],
+                { field: "precoReal", aggregate: "sum" },
+                { field: "vale", aggregate: "sum" },
+                { field: "despesareal", aggregate: "sum" }],
                 // { field: "UnitsOnOrder", aggregate: "average" },
                 // { field: "UnitsInStock", aggregate: "min" },
                 // { field: "UnitsInStock", aggregate: "max" }]
             },
             height: 550,
+            // width: 1280,
             filterable: true,
             sortable: true,
             resizable: true,
@@ -124,14 +135,18 @@
                 numeric: false
             },
             columns: [
-                { field: "id", title: "ID", filterable: true, width: 50 },
-                { field: "despesaCodigoDespesa", title: "Despesa", filterable: true, width: 100 },
-                { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
-                { field: "idOS", title: "OS", filterable: true, width: 100 },
+                { field: "id", title: "ID", filterable: true, width: 40 },
+                { field: "apelidoConta", title: "C/C", filterable: true, width: 40 },
+                { field: "despesaCodigoDespesa", title: "Cód.<br>Despesa", filterable: true, width: 100 },
+                { field: "idOS", title: "OS", filterable: true, width: 70 },
+                { field: "nomeBensPatrimoniais", title: "Despesa", filterable: true, width: 100 },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
-                { field: "vencimento", title: "Vencimento", filterable: true, width: 100,  format: "{0:dd/MM/yyyy}" },
-                { field: "precoReal", title: "Valor", filterable: true, width: 100, decimals: 2,  aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #",  footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+                { field: "vencimento", title: "Venc.", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" },
+                { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "vale", title: "Vale", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "despesareal", title: "Valor<br>Final", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "datavale", title: "PG<br>Vale", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" },
+                { field: "notaFiscal", title: "NF", filterable: true, width: 60 },
 
                 {
                     command: [{
@@ -143,7 +158,7 @@
                             window.location.href = location.href + '/' + data.id;
                         }
                     }],
-                    width: 100,
+                    width: 120,
                     exportable: false,
                 },
                 {
@@ -156,13 +171,66 @@
                             window.location.href = location.href + '/' + data.id + '/edit';
                         }
                     }],
-                    width: 80,
+                    width: 120,
                     exportable: false,
                 },
             ],
+            columnMenu: true,
+            dataBound: function (e) {
+                var grid = this;
+                var columns = grid.columns;
+                // populate initial columns list if the detailColsVisibility object is empty
+                if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
+                    for (var i = 0; i < columns.length; i++) {
+                        detailColsVisibility[columns[i].field] = !columns[i].hidden;
+                    }
+                }
+                else {
+                    // restore columns visibility state using the stored values
+                    for (var i = 0; i < columns.length; i++) {
+                        var column = columns[i];
+                        if (detailColsVisibility[column.field]) {
+                            grid.showColumn(column);
+                        }
+                        else {
+                            grid.hideColumn(column);
+                        }
+                    }
+                }
+            },
+            columnHide: function (e) {
+                // hide column in all other detail Grids
+                showHideAll(false, e.column.field, e.sender.element);
+                // store new visibility state of column
+                detailColsVisibility[e.column.field] = false;
 
-
+            },
+            columnShow: function (e) {
+                // show column in all other detail Grids
+                showHideAll(true, e.column.field, e.sender.element);
+                // store new visibility state of column
+                detailColsVisibility[e.column.field] = true;
+            }
         });
+
+
+        function showHideAll(show, field, element) {
+            // find the master Grid element
+            var parentGridElement = element.parents(".k-grid");
+            // find all Grid widgets inside the mater Grid element
+            var detailGrids = parentGridElement.find(".k-grid");
+            //traverse detail Grids and show/hide the column with the given field name
+            for (var i = 0; i < detailGrids.length; i++) {
+                var grid = $(detailGrids[i]).data("kendoGrid");
+                if (show) {
+                    grid.showColumn(field);
+                }
+                else {
+                    grid.hideColumn(field);
+                }
+            }
+        }
+
     });
 </script>
 

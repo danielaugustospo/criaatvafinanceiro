@@ -214,23 +214,7 @@
             <h2> Dados da OS: </h2>
             <h1 class="ml-2" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }}</h1>
         </div>
-        <div class="d-flex justify-content-center">
-            <?php $contadorReceitas =  count($receitasPorOS); 
-            $readonlyOrNo = "readonly";
-            $disabledOrNo = "disabled";
-            ?>
 
-
-            @if (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas == 0))
-            <div class="alert alert-danger col-sm-12" role="alert">
-                Não há receitas para esta OS!
-            </div>
-            @elseif (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas > 0))
-            <h3 class="" style="color:blue;">100% PAGA</h3>
-            @else
-            <h3 style="color:red;"> {{$porcentagemReceitaAPagar}} % A receber </h3>
-            @endif
-        </div>
         <div class="pull-right">
             <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
 
@@ -294,6 +278,25 @@
         }
     }
 </script>
+
+<div class="d-flex justify-content-center">
+    <?php $contadorReceitas =  count($receitasPorOS); 
+    $readonlyOrNo = "readonly";
+    $disabledOrNo = "disabled";
+    ?>
+
+
+    @if (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas == 0))
+    <div class="alert alert-danger col-sm-12" role="alert">
+        Não há receitas para esta OS!
+    </div>
+    @elseif (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas > 0))
+    <h3 class="" style="color:blue;">100% PAGA</h3>
+    @else
+    <h3 style="color:red;"> {{$porcentagemReceitaAPagar}} % A receber </h3>
+    @endif
+</div>
+
 <h3 class="text-center">Resumo Financeiro</h3>
 
 {{-- <div class="shadow-lg p-3 mb-5 bg-white rounded" style="background-color: lightslategray; color:white;"> --}}
@@ -324,7 +327,7 @@
                             $porcentagemDespesaPagas }} %</label>
                     </div>
                     <div class="row ml-0">
-                        <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Desp. Pagar</label>
+                        <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Desp. A Pagar</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
                             value="{{$totaldespesasAPagar}}" readonly />
                         <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesaAPagar }}

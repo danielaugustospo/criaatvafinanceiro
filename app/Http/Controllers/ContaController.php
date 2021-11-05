@@ -626,6 +626,8 @@ class ContaController extends Controller
     {
         $consulta = $this->consultaExtratoConta();
 
+
+
         if ($request->ajax()) {
 
 
@@ -643,6 +645,7 @@ class ContaController extends Controller
     {
 
         $consulta = $this->consultaExtratoConta();
+        
 
         return Datatables::of($consulta)
             ->filter(function ($query) use ($request) {
@@ -699,7 +702,8 @@ class ContaController extends Controller
                 $consulta->where('pagoreceita', '=', 'S')
                     ->orWhere('pagoreceita', '=', '1');
             });
-
         return $consulta;
     }
+
+
 }

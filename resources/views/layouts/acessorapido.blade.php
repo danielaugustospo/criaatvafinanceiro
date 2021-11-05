@@ -65,7 +65,7 @@
     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
         @can('conta-list')  
 
-        <a href="#" onclick="alert('Funcionalidade em desenvolvimento!');">
+        <a href="relatorio">
 
         <div class="card-headernew d-flex justify-content-center"><h4 class="pt-4">{{$titulo3}}</h4></div>
         <div class="card-body">

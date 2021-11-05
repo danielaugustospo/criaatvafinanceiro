@@ -70,4 +70,21 @@ class Fornecedores extends Model
         return view('fornecedores.action', compact('tabelaFornecedoresModel'))->render();
     }
 
+    public function dadosRelatorio($stringQueryExtrato)
+    {
+        $stringQueryExtrato = "SELECT 
+        os.id, 
+        os.dataCriacaoOrdemdeServico, 
+        os.eventoOrdemdeServico, 
+        os.valorOrdemdeServico, 
+        SUM(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'S' THEN receita.valorreceita ELSE 0 END) as 'receitapaga',
+        SUM(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'N' THEN receita.valorreceita ELSE 0 END) as 'valorareceber'
+        
+        from ordemdeservico os, receita, clientes 
+        
+        GROUP by os.id
+        ";
+        return $stringQueryExtrato;
+    }
+
 }

@@ -38,8 +38,8 @@ class CreateTableDespesas extends Migration
             $table->string('pago')->nullable();
             $table->string('precoReal')->nullable();
             $table->string('reembolsado')->nullable();
-            $table->string('totalPrecoCliente')->nullable();
-            $table->string('totalPrecoReal')->nullable();
+            $table->string('vale')->nullable();
+            $table->string('datavale')->nullable();
             $table->string('vencimento')->nullable();
             $table->string('idAlteracaoUsuario')->nullable();
             $table->string('idAutor')->nullable();
