@@ -26066,7 +26066,7 @@ kendo-card-footer {
     text-align: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .k-grid th:first-child,
@@ -27678,16 +27678,16 @@ tbody .k-group-cell {
 .k-grid {
     border-color: black;
     color: #424242;
-    background-color: #8d7474;
+    background-color: lightgray;
 }
 
-.k-grid tr.k-alt {
+/* .k-grid tr.k-alt {
     background-color: rgba(0, 0, 0, 0.04);
-}
+} */
 
 .k-grid tbody tr:hover,
 .k-grid tbody tr.k-state-hover {
-    background-color: #ededed;
+    background-color: grey;
 }
 
 .k-grid td.k-state-selected,
@@ -27826,13 +27826,13 @@ th.k-sorted {
 .k-master-row .k-grid-content-sticky {
     border-color: rgba(0, 0, 0, 0.3);
     border-top-color: rgba(0, 0, 0, 0.08);
-    background-color: #ffffff;
+    background-color: lightgray !important;
 }
 
 .k-master-row .k-grid-row-sticky {
     border-top-color: rgba(0, 0, 0, 0.3);
     border-bottom-color: rgba(0, 0, 0, 0.3);
-    background-color: #ffffff;
+    background-color: lightgray !important;
 }
 
 .k-master-row.k-alt .k-grid-content-sticky,

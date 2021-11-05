@@ -77,21 +77,24 @@
                     </div>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <li class="nav-item ">
+                    <a  class="nav-link" href="{{ route('relatorio') }}" role="button">
                         Relatórios <span class="caret"></span>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {{-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('conta-list')
                         <a class="dropdown-item" href="{{ route('contasAPagar') }}">Contas a Pagar</a>
                         @endcan
                         @can('conta-list')
                         <a class="dropdown-item" href="{{ route('contasAReceber') }}">Contas a Receber</a>
                         @endcan
+                        @can('conta-list')
+                        <a class="dropdown-item" href="{{ url('/contasareceberporos') }}">Relatório a Receber Por OS</a>
+                        @endcan
                         @can('fornecedor-list')
                         <a class="dropdown-item" href="{{ route('relatorioFornecedores') }}">Relatório de Fornecedores</a>
                         @endcan
-                    </div>
+                    </div> --}}
                 </li>    
 
                 <li class="nav-item dropdown">
@@ -167,7 +170,7 @@
                 @can('notasrecibos-list')    
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Notas/Recibos <span class="caret"></span>
+                        Notas/Alíquotas <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('notasrecibos-list')

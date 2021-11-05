@@ -186,6 +186,14 @@
   <div class="col-sm-2">
     {!! Form::text('precoReal', $precoReal, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'precoReal',  $variavelReadOnlyNaView]) !!}
   </div>
+  <label for="precoReal" class="col-sm-1 col-form-label">Vale</label>
+  <div class="col-sm-2">
+    {!! Form::text('vale', $vale, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'vale',  $variavelReadOnlyNaView]) !!}
+  </div>
+  <label for="precoReal" class="col-sm-2 col-form-label">Data Vale</label>
+  <div class="col-sm-3">
+    {!! Form::date('datavale', $valorInput, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'datavale',  $variavelReadOnlyNaView]) !!}
+  </div>
 </div>
 
 <div class="form-group row" id="telaDataCompra">
@@ -335,7 +343,7 @@
   @endif
 
   <div class="form-group row" id="telaPrestador">
-    <label for="" class="col-sm-2 col-form-label">Cod Funcionário</label>
+    <label for="" class="col-sm-3 col-form-label">Código Funcionário</label>
     <div class="col-sm-6">
       <select  name="idFuncionario" id="idFuncionario" class="selecionaComInput form-control col-sm-12" {{$variavelDisabledNaView}}>
        @if (Request::path() == 'despesas/create')
@@ -385,8 +393,8 @@
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 <!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
-{!! Form::hidden('totalPrecoCliente', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-{!! Form::hidden('totalPrecoReal', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+{{-- {!! Form::hidden('totalPrecoCliente', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
+{{-- {!! Form::hidden('totalPrecoReal', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
 {!! Form::hidden('idDespesaPai', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 {!! Form::hidden('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!}
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}

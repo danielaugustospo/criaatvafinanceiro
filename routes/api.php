@@ -20,3 +20,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
 Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
 
+Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('apiextratocontarelatorio');
+Route::get('/apicontaareceberporosrelatorio', 'RelatorioController@apiAReceberPorOSRelatorio')->name('apicontaareceberporosrelatorio');
+Route::get('/apifaturamentoporcliente', 'RelatorioController@apiFaturamentoPorCliente')->name('apifaturamentoporcliente');
+Route::get('/apientradaporcontabancaria', 'RelatorioController@apiEntradasPorContaBancaria')->name('apientradaporcontabancaria');
+Route::get('/apidespesaspagasporcontabancaria', 'RelatorioController@apiDespesasPagasPorContaBancaria')->name('apidespesaspagasporcontabancaria');
+Route::get('/apidespesasporos', 'RelatorioController@apiDespesasPorOS')->name('apidespesasporos');
+Route::get('/apiconsultaos', 'RelatorioController@apiConsultaOS')->name('apiconsultaos');
+Route::get('/apiconsultacontaspagasporgrupo', 'RelatorioController@apiConsultaContasPagasPorGrupo')->name('apiconsultacontaspagasporgrupo');
+Route::get('/apiconsultacontasapagarporgrupo','RelatorioController@apiConsultaContasAPagarPorGrupo')->name('apiconsultacontasapagarporgrupo');
+Route::get('/apiconsultacontasaidentificar','RelatorioController@apiConsultaContasAIdentificar')->name('apiconsultacontasaidentificar');
+Route::get('/apiconsultareembolso', 'RelatorioController@apiConsultaReembolso')->name('apiconsultareembolso');
+Route::get('/apientradareceitarecebidas', 'RelatorioController@apiEntradaReceitaRecebidas')->name('apientradareceitarecebidas');
+Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServicoRecebidas')->name('apiordemdeservicorecebidas');
+Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('apiareceber');
+Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('apiconsultaprolabore');
+
