@@ -136,7 +136,7 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
-
+    
     public function apiConsultaReembolso(Request $request)
     {
         $relatorio = new Relatorio();
@@ -144,6 +144,7 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
+
     public function apiOrdemdeServicoRecebidas(Request $request)
     {
         $relatorio = new Relatorio();
@@ -151,6 +152,7 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
+
     public function apiEntradaReceitaRecebidas(Request $request)
     {
         $relatorio = new Relatorio();
@@ -158,6 +160,7 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
+
     public function apiAReceber(Request $request)
     {
         $relatorio = new Relatorio();
@@ -166,4 +169,19 @@ class RelatorioController extends Controller
         return $dadosConsulta;
     }
 
+    public function apiDespesasFixaVariavel(Request $request)
+    {
+        $relatorio = new Relatorio();
+        $stringConsulta = $relatorio->dadosRelatorioDespesasPorOS(null, $parametros = null);
+        $dadosConsulta = DB::select($stringConsulta);
+        return $dadosConsulta;
+    }
+
+    public function apidadosReceitaOS(Request $request)
+    {
+        $relatorio = new Relatorio();
+        $stringConsulta = $relatorio->dadosReceitaOS(null);
+        $dadosConsulta = DB::select($stringConsulta);
+        return $dadosConsulta;
+    }
 }

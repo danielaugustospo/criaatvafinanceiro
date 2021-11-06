@@ -62,7 +62,6 @@
         },
     });
     
-    teste = this.window.window.valsomado;
     //Se não houver essa declaração, ele retorna erro dizendo que não encontrou o metodo e não exporta o pdf
     var detailColsVisibility = {};
 
@@ -125,7 +124,8 @@
                 aggregate: [
                 { field: "razaosocialCliente", aggregate: "count" },
                 { field: "valortotal", aggregate: "sum" },
-                { field: "valorrecebido", aggregate: "sum" }
+                { field: "valorrecebido", aggregate: "sum" },
+                { field: "porcentagemOS", aggregate: "sum" }
                 ],
                 // { field: "UnitsOnOrder", aggregate: "average" },
                 // { field: "UnitsInStock", aggregate: "min" },
@@ -144,11 +144,13 @@
             
             
             columns: [
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 150 },
                 { field: "datapagamentoreceita", title: "Data", filterable: true, width: 100 },
-                { field: "valortotal", title: "Valor Total", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') # # valsomado = sum# ", format: '{0:0.00}' },
+                { field: "valortotal", title: "Valor Total", filterable: true, width: 180, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", format: '{0:0.00}' },
                 // { field: "valorrecebido", title: "Valor Recebido", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", format: '{0:0.00}' },
                 
-                { field: "porcentagemOS", title: "Perc(%)", filterable: true, width: 20,  format: '{0:0.00}'}
+                // { field: "porcentagemOS", title: "Perc(%)", filterable: true, width: 20,  format: '{0:0.00}'}
+                { field: "porcentagemOS", title: "Perc(%)",  width: 180, template:template}
         
             ],
             columnMenu: true,
@@ -179,7 +181,6 @@
                 showHideAll(false, e.column.field, e.sender.element);
                 // store new visibility state of column
                 detailColsVisibility[e.column.field] = false;
-
             },
             columnShow: function (e) {
                 // show column in all other detail Grids
@@ -189,6 +190,14 @@
             }
         });
 
+        function template(data){
+            var grid = $('#grid').data('kendoGrid');
+            
+            // var valorPorcentagem = 100*(+data.porcentagemOS)/grid.dataSource.aggregates().porcentagemOS.sum + ' %';
+            var valorPorcentagem = 100 * (+data.valortotal) / grid.dataSource.aggregates().valortotal.sum;
+            valorPorcentagem = parseFloat(valorPorcentagem).toFixed(2)+"%";
+            return  valorPorcentagem;
+        }
 
         function showHideAll(show, field, element) {
             // find the master Grid element
@@ -206,9 +215,9 @@
                 }
             }
         }
-
     });
-     console.log(valsomado);
+
+
 </script>
 
 

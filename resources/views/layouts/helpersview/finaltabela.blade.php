@@ -63,14 +63,15 @@ for (var i = 0; i < detailGrids.length; i++) {
 
 $(window).on('load', function(){
     var counter = 0;
-    setInterval(function () {
-        ++counter;
-        if (counter == 1){
-            $('.k-link')[0].click();  
-            console.log('Ordenação Por Grupo Clicado Inicialmente');
-            $.LoadingOverlay("hide");
+    
+    setInterval(function (){    
+    ++counter;
+
+    if (counter == 5){
+        console.log('Ordenação Por Grupo Clicado Inicialmente');
+        $.LoadingOverlay("hide");
+        $('.k-link')[0].click();  
         }
     }, 1000);
-
 
 });

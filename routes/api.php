@@ -35,4 +35,5 @@ Route::get('/apientradareceitarecebidas', 'RelatorioController@apiEntradaReceita
 Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServicoRecebidas')->name('apiordemdeservicorecebidas');
 Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('apiareceber');
 Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('apiconsultaprolabore');
-
+Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('apidespesasfixavariavel');
+Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name('apidadosreceitaos');

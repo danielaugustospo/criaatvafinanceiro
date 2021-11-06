@@ -47,6 +47,11 @@ Route::get('/areceberporcliente', function () { return view('relatorio.areceberp
 Route::get('/areceberporos', function () { return view('relatorio.areceberporos.index'); });
 Route::get('/reembolso', function () { return view('relatorio.reembolso.index'); });
 Route::get('/prolabore', function () { return view('relatorio.prolabore.index'); });
+Route::get('/despesasfixavariavel', function () { return view('relatorio.despesasfixavariavel.index'); });
+Route::get('/notafiscalfornecedor', function () { return view('relatorio.notafiscalfornecedor.index'); });
+Route::get('/notasemitidas', function () { return view('relatorio.notasemitidas.index'); });
+Route::get('/notasficaisemitidascriaatva', function () { return view('relatorio.notasficaisemitidascriaatva.index'); });
+Route::get('/fechamentofinal', function () { return view('relatorio.fechamentofinal.index'); });
 
 
 
