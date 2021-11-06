@@ -17,9 +17,8 @@ class Relatorio extends Model
         $stringQuery = "SELECT DISTINCT 
                         c.razaosocialCliente , 
                         os.valorOrdemdeServico,  
-                        sum(r.valorreceita) 'valortotal',
-                        (select ( (sum(r.valorreceita) * 100) / sum(os.valorOrdemdeServico)) from ordemdeservico os ) as porcentagemOS 
-                    
+                        sum(r.valorreceita) 'valortotal'
+                                            
                         FROM ordemdeservico os, receita r, clientes c
                         WHERE (os.idClienteOrdemdeServico = c.id) 
                         and (os.id = r.idosreceita)
@@ -69,16 +68,18 @@ class Relatorio extends Model
 
     public function dadosRelatorioDespesasPorOS($stringQuery)
     {
-        $stringQuery = 'SELECT os.id as idOS, c.razaosocialCliente, forn.razaosocialFornecedor , os.eventoOrdemdeServico, g.grupoDespesa, desp.vencimento, bens.nomeBensPatrimoniais, desp.precoReal, cc.nomeConta, cc.apelidoConta,  desp.pago,
-        CONCAT("N° OS:", os.id, "      - Cliente: ", c.razaosocialCliente, "       - Evento: ", os.eventoOrdemdeServico) AS dados
-       FROM ordemdeservico os
-            
-       JOIN despesas         	    AS desp ON os.id = desp.idOS 
-       LEFT JOIN clientes         	AS c 	ON os.idClienteOrdemdeServico = c.id
-       LEFT JOIN benspatrimoniais 	AS bens ON desp.descricaoDespesa = bens.id
-       LEFT JOIN conta 			    AS cc  	ON desp.conta = cc.id
-       LEFT JOIN grupodespesas 	    AS g	ON desp.despesaCodigoDespesas = g.id
-       LEFT JOIN fornecedores 		AS forn	ON desp.idFornecedor = forn.id';
+        $stringQuery = 'SELECT os.id as idOS, c.razaosocialCliente, fpg.nomeFormaPagamento, forn.razaosocialFornecedor , os.eventoOrdemdeServico, g.grupoDespesa, desp.vencimento, desp.dataDoPagamento, desp.notaFiscal,
+        CASE WHEN desp.despesaFixa = 1  THEN "FIXA" ELSE "NÃO FIXA" END as despesaFixa, bens.nomeBensPatrimoniais, desp.precoReal, cc.nomeConta, cc.apelidoConta,  desp.pago,
+                CONCAT("N° OS:", os.id, "      - Cliente: ", c.razaosocialCliente, "       - Evento: ", os.eventoOrdemdeServico) AS dados
+               FROM ordemdeservico os
+                    
+               JOIN despesas         	    AS desp ON os.id = desp.idOS 
+               LEFT JOIN clientes         	AS c 	ON os.idClienteOrdemdeServico = c.id
+               LEFT JOIN benspatrimoniais 	AS bens ON desp.descricaoDespesa = bens.id
+               LEFT JOIN conta 			    AS cc  	ON desp.conta = cc.id
+               LEFT JOIN grupodespesas 	    AS g	ON desp.despesaCodigoDespesas = g.id
+               LEFT JOIN fornecedores 		AS forn	ON desp.idFornecedor = forn.id
+               LEFT JOIN formapagamento   fpg	 ON desp.idFormaPagamento = fpg.id';
 
         return $stringQuery;
     }
@@ -218,6 +219,38 @@ class Relatorio extends Model
         return $stringQuery;
     }
 
+    public function dadosReceitaOS($stringQuery)
+    {
+        $stringQuery ="SELECT 
+	
+        os.id as 'idOS',
+        r.datapagamentoreceita,
+        r.dataemissaoreceita,
+        cli.razaosocialCliente,
+        clireceita.razaosocialCliente as 'cliente',
+        os.eventoOrdemdeServico,
+        r.valorreceita,	
+        r.nfreceita, 
+        cc.apelidoConta,
+        fpg.nomeFormaPagamento,
+        os.dataCriacaoOrdemdeServico,
+        os.valorOrdemdeServico,
+        r.descricaoreceita,
+        CONCAT( 'Nº OS: ', os.id, ' - Data da OS: ', DATE_FORMAT(os.dataCriacaoOrdemdeServico,'%d/%m/%Y'), ' - Valor do Projeto: ', os.valorOrdemdeServico, ' - Cliente: ', cli.razaosocialCliente, ' - Evento: ', os.eventoOrdemdeServico) AS dados,
+        r.pagoreceita  
+    
+    FROM receita r 
+
+     LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
+     LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
+     LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+     LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+     LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+     where os.id != ''";
+
+    return $stringQuery;
+
+    }
 }
 
 

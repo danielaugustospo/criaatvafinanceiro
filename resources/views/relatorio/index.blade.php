@@ -35,6 +35,8 @@
         <label class="text-center row" for="">Ordem de Serviço Recebidas Por Cliente  &nbsp; <a href="osrecebidasporcliente">Acesse Aqui</a></label>
         <label class="text-center row" for="">A Receber Por Cliente  &nbsp;         <a href="areceberporcliente">Acesse Aqui</a></label>
         <label class="text-center row" for="">A Receber Por OS      &nbsp;          <a href="areceberporos">Acesse Aqui</a></label>
+        <label class="text-center row" for="">Notas Emitidas                 &nbsp; <a href="notasemitidas">Acesse Aqui</a></label>
+        <label class="text-center row" for="">Notas Fiscais Emitidas         &nbsp; <a href="notasficaisemitidascriaatva">Acesse Aqui</a></label>
 
     </div>
     <div class="col-sm-1"></div>
@@ -50,10 +52,13 @@
         <label class="text-center row" for="">Contas a Identificar        &nbsp; <a href="contasaidentificar">Acesse Aqui</a></label>
         <label class="text-center row" for="">Fornecedor                  &nbsp; <a href="fornecedor">Acesse Aqui</a></label>
         <label class="text-center row" for="">Despesas Por OS - Planilha  &nbsp; <a href="despesasporosplanilha">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Pró-Labore                  &nbsp; <a href="prolabore">Pró-Labore</a></label>
+        <label class="text-center row" for="">Despesas Fixas/Variáveis    &nbsp; <a href="despesasfixavariavel">Acesse Aqui</a></label>
+        <label class="text-center row" for="">Pró-Labore                  &nbsp; <a href="prolabore">Acesse Aqui</a></label>
+        <label class="text-center row" for="">Nota Fiscal                 &nbsp; <a href="notafiscalfornecedor">Acesse Aqui</a></label>
     </div>
 </div>
 <label class="text-center row" for="">Relatório OS Cadastradas  &nbsp; <a href="oscadastradas">Acesse Aqui</a></label>
+<label class="text-center row" for="">Relatório Fechamento Final  &nbsp; <a href="fechamentofinal">Acesse Aqui</a></label>
 @endsection
 
 
