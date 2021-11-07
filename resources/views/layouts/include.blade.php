@@ -17,11 +17,12 @@
     
     {{-- <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.all.min.js"></script> --}}
     <script src="{{ asset('js/kendogrid/kendo.all.min.js') }}"></script>
-
+    
     <script src="{{ asset('js/kendogrid/messages.pt-BR.min.js') }}"></script>
+
     <!-- Carrega Pako ZLIB library para habilitar a compressão PDF -->
     <script src="https://kendo.cdn.telerik.com/2021.2.616/js/pako_deflate.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2018.2.620/js/cultures/kendo.culture.pt-BR.min.js"></script>
+    <script src="{{ asset('js/kendogrid/kendo.culture.pt-BR.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
     

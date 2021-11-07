@@ -67,7 +67,9 @@
                 aggregate: [
                     { field: "grupoDespesa", aggregate: "count" },
                     { field: "apelidoConta", aggregate: "count" },
-                    { field: "precoReal", aggregate: "sum" }]
+                    { field: "precoReal", aggregate: "sum" },
+                    { field: "porcentagemOS", aggregate: "sum" }
+                ]
 
                 // { field: "UnitsOnOrder", aggregate: "average" },
                 // { field: "UnitsInStock", aggregate: "min" },
@@ -93,7 +95,8 @@
                 // { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "apelidoConta", title: "Conta", filterable: true, width: 60 },
-                { field: "percentual", title: "Perc(%)", filterable: true, width: 60 },
+                { field: "porcentagemOS", title: "Perc(%)",  width: 180, template:template},
+                // { field: "percentual", title: "Perc(%)", filterable: true, width: 60 },
                 { field: "grupoDespesa", title: "Grupo", filterable: true, width: 120 },
                 { field: "idOS", title: "N° OS", filterable: true, width: 60 },
                 // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" }
@@ -101,6 +104,14 @@
             @include('layouts/helpersview/finaltabela')
 
 
+            function template(data){
+                var grid = $('#grid').data('kendoGrid');
+            
+                // var valorPorcentagem = 100*(+data.porcentagemOS)/grid.dataSource.aggregates().porcentagemOS.sum + ' %';
+                var valorPorcentagem = 100 * (+data.precoReal) / grid.dataSource.aggregates().precoReal.sum;
+                valorPorcentagem = parseFloat(valorPorcentagem).toFixed(2)+"%";
+                return  valorPorcentagem;
+            }
 </script>
 
 

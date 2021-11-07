@@ -184,4 +184,12 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
+
+    public function apidadosFechamentoFinal(Request $request)
+    {
+        $relatorio = new Relatorio();
+        $stringConsulta = $relatorio->dadosFechamentoFinal(null);
+        $dadosConsulta = DB::select($stringConsulta);
+        return $dadosConsulta;
+    }
 }

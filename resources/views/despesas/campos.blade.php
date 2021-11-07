@@ -186,13 +186,13 @@
   <div class="col-sm-2">
     {!! Form::text('precoReal', $precoReal, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'precoReal',  $variavelReadOnlyNaView]) !!}
   </div>
-  <label for="precoReal" class="col-sm-1 col-form-label">Vale</label>
+  <label for="precoReal" style="color: red;" class="col-sm-1 col-form-label">Vale</label>
   <div class="col-sm-2">
-    {!! Form::text('vale', $vale, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'vale',  $variavelReadOnlyNaView]) !!}
+    {!! Form::text('vale', $vale, ['class' => 'campo-moeda form-control', 'style' => 'color: red;', 'maxlength' => '100', 'id' => 'vale',  $variavelReadOnlyNaView]) !!}
   </div>
-  <label for="precoReal" class="col-sm-2 col-form-label">Data Vale</label>
+  <label for="precoReal" style="color: red;" class="col-sm-2 col-form-label">Data Vale</label>
   <div class="col-sm-3">
-    {!! Form::date('datavale', $valorInput, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'datavale',  $variavelReadOnlyNaView]) !!}
+    {!! Form::date('datavale', $valorInput, ['class' => 'campo-moeda form-control', 'style' => 'color: red;', 'maxlength' => '100', 'id' => 'datavale',  $variavelReadOnlyNaView]) !!}
   </div>
 </div>
 
