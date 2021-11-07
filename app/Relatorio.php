@@ -18,7 +18,7 @@ class Relatorio extends Model
                         c.razaosocialCliente , 
                         os.valorOrdemdeServico,  
                         sum(r.valorreceita) 'valortotal'
-                                            
+
                         FROM ordemdeservico os, receita r, clientes c
                         WHERE (os.idClienteOrdemdeServico = c.id) 
                         and (os.id = r.idosreceita)
@@ -247,6 +247,33 @@ class Relatorio extends Model
      LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
      LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
      where os.id != ''";
+
+    return $stringQuery;
+
+    }
+
+    public function dadosFechamentoFinal($stringQuery)
+    {
+        $stringQuery ="SELECT 
+	
+        os.id as 'idOS',
+        os.dataCriacaoOrdemdeServico,
+        cli.razaosocialCliente,
+        os.eventoOrdemdeServico,
+        os.valorOrdemdeServico, 
+        COALESCE(valdesp.valpg, '0') as custo,
+        os.valorOrdemdeServico - COALESCE(valdesp.valpg, '0') as 'lucro',
+        (os.valorOrdemdeServico - COALESCE(valdesp.valpg, '0')) * 100 / (os.valorOrdemdeServico) as 'porcentagem',
+        valpago.valpg,
+        CASE WHEN os.valorOrdemdeServico <= valpago.valpg  THEN 'PAGO' ELSE 'NÃO PAGO' END as status
+         
+    	FROM ordemdeservico os
+
+	    LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
+	    LEFT JOIN (SELECT distinct desp2.idOS, sum(desp2.precoReal) AS valpg FROM despesas desp2 WHERE desp2.excluidoDespesa = '0' group by idOS) AS valdesp ON os.id = valdesp.idOS
+	    LEFT JOIN (SELECT distinct rpg.idosreceita , sum(rpg.valorreceita) AS valpg, rpg.pagoreceita FROM receita rpg WHERE rpg.pagoreceita = 'S' group by idosreceita) AS valpago ON os.id = valpago.idosreceita 
+
+      where os.id != ''";
 
     return $stringQuery;
 

@@ -8952,7 +8952,7 @@ dir:s,compare:o.compare}
 var e=this;i.fn.destroy.call(e),e.groupContainer.off(g),e.groupContainer.data("kendoDropTarget")&&e.groupContainer.data("kendoDropTarget").destroy(),e.groupContainer.data("kendoDraggable")&&e.groupContainer.data("kendoDraggable").destroy(),e.options.draggable||e.draggable.destroy(),e.dataSource&&e._refreshHandler&&(e.dataSource.unbind("change",e._refreshHandler),e._refreshHandler=null),e.groupContainer=e.element=e.draggable=null}
 ,events:["change"],options:{
 name:"Groupable",filter:"th",draggableElements:"th",messages:{
-empty:"Drag a column header and drop it here to group by that column"}
+empty:"Arraste um cabeçalho de coluna e solte-o aqui para agrupar por essa coluna"}
 ,sort:{
 dir:p,compare:null}
 }
