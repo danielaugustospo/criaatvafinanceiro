@@ -17,7 +17,7 @@
 <body style="background-image: url('../img/BACKGROUND-TOP.jpg');">
     <div id="app">
         @include('layouts/navbar')
-        <main class="py-4">
+        <main class="py-4" style="margin-bottom: 50px;">
             <div class="container" >
                 @yield('content')
             </div>

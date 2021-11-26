@@ -7,7 +7,7 @@
 
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
-                pegaIdFornecedor();
+                // pegaIdFornecedor();
 
                 $("#telaParcelas").show();
 
@@ -21,7 +21,7 @@
 
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
-                pegaIdFuncionario();
+                // pegaIdFuncionario();
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
@@ -36,7 +36,7 @@
 
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
-                pegaIdFuncionario();
+                // pegaIdFuncionario();
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();

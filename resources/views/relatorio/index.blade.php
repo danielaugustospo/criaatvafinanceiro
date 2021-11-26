@@ -26,39 +26,51 @@
 {{-- @include('despesas/filtroindex') --}}
 <div class="row">
     <div class="divCategoria col-sm-5">
-        <h2 class="text-center">Receitas</h2>
-        <label class="text-center  row" for="">Faturamento Por Cliente &nbsp;     <a href="fatporcliente?p=s">Acesse Aqui</a></label>
-        <label class="text-center  row" for="">Entradas por Conta Bancária &nbsp; <a href="entradaporcontabancaria">Acesse Aqui</a></label>
-        <label class="text-center  row" for="">Entradas de Receitas Recebidas &nbsp; <a href="entradasdereceitasrecebidas">Acesse Aqui</a></label>
-        <label class="text-center  row" for="">Contas a Receber        &nbsp;     <a href="contasAReceber">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Ordem de Serviço Recebidas (Analítico)  &nbsp; <a href="ordemdeservicorecebidas">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Ordem de Serviço Recebidas Por Cliente  &nbsp; <a href="osrecebidasporcliente">Acesse Aqui</a></label>
-        <label class="text-center row" for="">A Receber Por Cliente  &nbsp;         <a href="areceberporcliente">Acesse Aqui</a></label>
-        <label class="text-center row" for="">A Receber Por OS      &nbsp;          <a href="areceberporos">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Notas Emitidas                 &nbsp; <a href="notasemitidas">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Notas Fiscais Emitidas         &nbsp; <a href="notasficaisemitidascriaatva">Acesse Aqui</a></label>
+        <h4 class="text-center">Receitas</h4>
+        <a href="areceberporcliente">           <label class="text-center fontenormal row" for="">A Receber Por Cliente  &nbsp;    </label></a>
+        <a href="areceberporos">                <label class="text-center fontenormal row" for="">A Receber Por OS &nbsp; </label></a>
+        <a href="contasAReceber">               <label class="text-center fontenormal row" for="">Contas a Receber &nbsp;</label></a>
+        <a href="entradasdereceitasrecebidas">  <label class="text-center fontenormal row" for="">Entradas de Receitas Recebidas  &nbsp;</label></a>    
+        <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Entradas por Conta Bancária&nbsp;</label></a>
+        <a href="fatporcliente?p=s">            <label class="text-center fontenormal row" for="">Faturamento Por Cliente &nbsp;</label></a>
+        <a href="notasemitidas">                <label class="text-center fontenormal row" for="">Notas Emitidas &nbsp; </label></a>
+        <a href="notasficaisemitidascriaatva">  <label class="text-center fontenormal row" for="">Notas Fiscais Emitidas  &nbsp; </label></a>
+        <a href="ordemdeservicorecebidas">      <label class="text-center fontenormal row" for="">Ordem de Serviço Recebidas (Analítico)  &nbsp;</label></a>    
+        <a href="osrecebidasporcliente">        <label class="text-center fontenormal row" for="">Ordem de Serviço Recebidas Por Cliente  &nbsp; </label></a>    
 
     </div>
     <div class="col-sm-1"></div>
     <div class="divCategoria col-sm-5">
-        <h2 class="text-center">Despesas</h2>
-        <label class="text-center row" for="">Despesas por Conta Bancária &nbsp; <a href="despesaspagasporcontabancaria">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Despesas Por OS             &nbsp; <a href="despesasporos">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Despesas Sintética por OS   &nbsp; <a href="despesassinteticaporos">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Despesas por Cliente (Analítico)  &nbsp; <a href="despesasporclienteanalitico">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Contas Pagas por Grupo      &nbsp; <a href="contaspagasporgrupo">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Reembolso                   &nbsp; <a href="reembolso">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Contas a Pagar              &nbsp; <a href="contasapagarporgrupo">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Contas a Identificar        &nbsp; <a href="contasaidentificar">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Fornecedor                  &nbsp; <a href="fornecedor">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Despesas Por OS - Planilha  &nbsp; <a href="despesasporosplanilha">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Despesas Fixas/Variáveis    &nbsp; <a href="despesasfixavariavel">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Pró-Labore                  &nbsp; <a href="prolabore">Acesse Aqui</a></label>
-        <label class="text-center row" for="">Nota Fiscal                 &nbsp; <a href="notafiscalfornecedor">Acesse Aqui</a></label>
+        <h4 class="text-center">Despesas</h4>
+        <a href="contasapagarporgrupo">             <label class="text-center fontenormal row" for="">Contas a Pagar              &nbsp; </label></a>
+        <a href="contasaidentificar">               <label class="text-center fontenormal row" for="">Contas a Identificar        &nbsp; </label></a>
+        <a href="contaspagasporgrupo">              <label class="text-center fontenormal row" for="">Contas Pagas por Grupo      &nbsp; </label></a>
+        <a href="despesasfixavariavel">             <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
+        <a href="fornecedor">                       <label class="text-center fontenormal row" for="">Fornecedor                  &nbsp; </label></a>
+        <a href="notafiscalfornecedor">             <label class="text-center fontenormal row" for="">Nota Fiscal (Fornecedor)                &nbsp; </label></a>
+        <a href="despesasporclienteanalitico">      <label class="text-center fontenormal row" for="">Por Cliente (Analítico)     &nbsp; </label></a>
+        <a href="despesaspagasporcontabancaria">    <label class="text-center fontenormal row" for="">Por Conta Bancária          &nbsp; </label></a>
+        <a href="despesasporos">                    <label class="text-center fontenormal row" for="">Por OS                      &nbsp; </label></a>
+        <a href="despesasporosplanilha">            <label class="text-center fontenormal row" for="">Por OS - Planilha           &nbsp; </label></a>
+        <a href="prolabore">                        <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a>
+        <a href="reembolso">                        <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>
+        <a href="despesassinteticaporos">           <label class="text-center fontenormal row" for="">Sintética por OS            &nbsp; </label></a>
     </div>
 </div>
-<label class="text-center row" for="">Relatório OS Cadastradas  &nbsp; <a href="oscadastradas">Acesse Aqui</a></label>
-<label class="text-center row" for="">Relatório Fechamento Final  &nbsp; <a href="fechamentofinal">Acesse Aqui</a></label>
+<div class="row mt-5">
+
+<div class="divCategoria col-sm-5">
+<h4 class="text-center">Ordem de Serviço</h4>
+    <a href="oscadastradas"><label class="text-center fontenormal row" for="">Relatório OS Cadastradas  &nbsp; </label></a>
+</div>
+
+<div class="col-sm-1"></div>
+
+<div class="divCategoria col-sm-5">
+    <h4 class="text-center">Fechamento</h4>
+    <a href="fechamentofinal"><label class="text-center fontenormal row" for="">Relatório Fechamento Final  &nbsp; </label></a>
+    </div>
+</div>
 @endsection
 
 

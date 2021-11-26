@@ -2,6 +2,9 @@
     p,label,h1,h2,h3,h4,h5,th,button,input,select,option,a,span,td,strong {
         text-transform: uppercase; 
     }
+    .fontenormal {
+        text-transform: initial;
+    }
 
 /*Início estilo PDF Kendo Grid */
     .k-grid {
