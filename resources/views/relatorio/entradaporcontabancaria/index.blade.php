@@ -68,6 +68,8 @@
             filterable: true,
             sortable: true,
             resizable: true,
+            scrollable: false,
+            groupable: true,
             pageable: {
                 pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                 numeric: false

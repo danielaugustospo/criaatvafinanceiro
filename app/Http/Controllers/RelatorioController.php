@@ -7,6 +7,10 @@ namespace App\Http\Controllers;
 use App\Relatorio;
 use App\Despesa;
 use App\Conta;
+use App\Clientes;
+use App\OrdemdeServico;
+use App\Providers\FormatacoesServiceProvider;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Receita;
@@ -191,5 +195,137 @@ class RelatorioController extends Controller
         $stringConsulta = $relatorio->dadosFechamentoFinal(null);
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
+    }
+
+    public function apiProjecaoTrimestral(Request $request)
+    {
+
+        // $mesAno = $this->pegaMesCorrenteEAno();
+        // $mes = $mesAno[0];
+        // $ano = $mesAno[1];
+
+        // $relatorio = new Relatorio();
+
+        // $stringConsultaDespesa = $relatorio->dadosDespesaProjecaoTrimestral(null, $mes, $ano);
+        // $dadosConsultaDespesa = DB::select($stringConsultaDespesa);
+
+
+        // $stringConsultaReceita = $relatorio->dadosReceitaProjecaoTrimestral(null, $mes, $ano);
+        // $dadosConsultaReceita = DB::select($stringConsultaReceita);
+
+
+        // $contadorReceita = count($dadosConsultaReceita);
+        // if ($contadorReceita == 0) { $dadosReceita = "{}"; }  
+        // else { $dadosReceita = $dadosConsultaReceita[0]; }  
+
+        $dadosConsultaDespesa = $this->pegaJsonOS();
+
+return $dadosConsultaDespesa;
+
+        // array_push($dadosConsultaDespesa, $dadosReceita);
+
+        // return $dadosConsultaDespesa;
+
+        // $dadosConsulta = array($dadosConsultaDespesa, $dadosConsultaReceita);
+        // return $dadosConsulta;
+
+
+
+        // $mesCorrente    = $mesAno[0][0];
+        // $mesSegundo     = $mesAno[0][1];
+        // $mesTerceiro    = $mesAno[0][2];
+
+        // $anoCorrente            = $mesAno[1][0];
+        // $anoMesCorrenteSegundo  = $mesAno[1][1];
+        // $anoMesCorrenteTerceiro = $mesAno[1][2];
+
+        // return $mesCorrente;
+
+    }
+
+    public function pegaMesCorrenteEAno()
+    {
+        $mesAtual = date("m"); 
+        $mesAtual = intval($mesAtual);
+
+        $anoAtual = date("Y");
+        $anoAtual = intval($anoAtual);
+
+        $segundoMes = $mesAtual + 1;
+        $terceiroMes = $segundoMes + 1;
+
+        $anoSegundoMes = $anoAtual;
+        $anoTerceiroMes = $anoAtual;
+
+        if ($segundoMes  == 13){ $segundoMes = 1; $terceiroMes = 2;  $anoSegundoMes = $anoSegundoMes + 1; $anoTerceiroMes = $anoSegundoMes;}
+        if ($terceiroMes == 13){ $terceiroMes = 1; $anoTerceiroMes = $anoTerceiroMes + 1;}
+
+        if ($mesAtual    < 10){ $mesAtual = '0' . $mesAtual; }
+        if ($segundoMes  < 10){ $segundoMes = '0' . $segundoMes; }
+        if ($terceiroMes < 10){ $terceiroMes = '0' . $terceiroMes; }
+
+        $arrayMes = array($mesAtual, $segundoMes, $terceiroMes);
+        $arrayAno = array($anoAtual, $anoSegundoMes, $anoTerceiroMes);
+
+        return array($arrayMes, $arrayAno);
+
+    }
+
+    public function pegaJsonOS()
+    {
+        $listaClientes = DB::select('select * from clientes where excluidoCliente = "0"');
+        $totalClientes = count((array)$listaClientes);
+        $contadorClientes = 0;
+        
+        $importaOS = file_get_contents('./migracao/vendas.json');
+        $os = json_decode($importaOS,true);
+          
+        // Display data
+        // print_r($os);    
+
+        $idDaOS = 0;
+
+        $totalOS = count((array)$os);
+        $contadorOS = 0;
+        while ($contadorOS < $totalOS) {
+            while ($contadorClientes < $totalClientes) {
+
+                if ($os[$contadorOS]['Cliente'] == $listaClientes[$contadorClientes]->razaosocialCliente){
+                    $os[$contadorOS]['Cliente'] = $listaClientes[$contadorClientes]->id;
+                }
+                $contadorClientes++;
+            }
+            
+
+            
+        $ordemdeservico = new OrdemdeServico();
+        $fatorR = '0';
+
+
+        $ordemdeservico->idClienteOrdemdeServico          = $os[$contadorOS]['Cliente'];
+        $ordemdeservico->valorProjetoOrdemdeServico       = '0.00';
+        $ordemdeservico->valorOrdemdeServico              = FormatacoesServiceProvider::validaValoresParaBackEnd($os[$contadorOS]['ValorTotal']);
+        $ordemdeservico->dataOrdemdeServico               = $os[$contadorOS]['DataVenda'];
+        // $ordemdeservico->clienteOrdemdeServico            = $request->get('clienteOrdemdeServico');
+        $ordemdeservico->eventoOrdemdeServico             = $os[$contadorOS]['Evento'];
+        $ordemdeservico->servicoOrdemdeServico            = 'Campo Serviço';
+        $ordemdeservico->obsOrdemdeServico                = '';
+        $ordemdeservico->dataCriacaoOrdemdeServico        = $os[$contadorOS]['DataVenda'];
+        $ordemdeservico->fatorR                           = $fatorR;
+        $ordemdeservico->ativoOrdemdeServico              = '1';
+        $ordemdeservico->excluidoOrdemdeServico           = '0';
+
+        $salvaOS = $ordemdeservico->save();
+        $idDaOS = $ordemdeservico->id;
+
+
+        $contadorOS++;
+        }
+
+
+
+        // var_dump($os[0]['Numvenda']);
+        var_dump("última os: " . $idDaOS);
+
     }
 }

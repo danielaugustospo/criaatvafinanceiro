@@ -81,6 +81,14 @@
                     <a  class="nav-link" href="{{ route('relatorio') }}" role="button">
                         Relatórios <span class="caret"></span>
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('entradas-list')
+                        <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
+                        @endcan
+                        @can('entradas-list')
+                        <a class="dropdown-item" href="{{ route('extratoConta') }}">Extrato Por Período</a>
+                        @endcan
+                    </div>
                     {{-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('conta-list')
                         <a class="dropdown-item" href="{{ route('contasAPagar') }}">Contas a Pagar</a>
@@ -97,7 +105,7 @@
                     </div> --}}
                 </li>    
 
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     @can('conta-list')
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Conta Corrente <span class="caret"></span>
@@ -111,7 +119,7 @@
                         <a class="dropdown-item" href="{{ route('extratoConta') }}">Extrato Por Período</a>
                         @endcan
                     </div>
-                </li>
+                </li> -->
 
                 <li class="nav-item dropdown">
                     @can('fornecedor-list')
@@ -228,7 +236,7 @@
                         @can('benspatrimoniais-list')    
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Bens Patrimoniais <span class="caret"></span>
+                                Bens <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('benspatrimoniais-list')
@@ -251,6 +259,7 @@
                         @endcan
                     </div> 
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

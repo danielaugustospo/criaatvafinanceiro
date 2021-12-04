@@ -38,3 +38,4 @@ Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')-
 Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('apidespesasfixavariavel');
 Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name('apidadosreceitaos');
 Route::get('/apidadosfechamentofinal', 'RelatorioController@apidadosFechamentoFinal')->name('apidadosfechamentofinal');
+Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral')->name('apiprojecaotrimestral');

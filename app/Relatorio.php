@@ -278,6 +278,156 @@ class Relatorio extends Model
     return $stringQuery;
 
     }
+
+    public function dadosDespesaProjecaoTrimestral($stringQuery, $mes, $ano)
+    {
+        $stringQuery ="SELECT 
+		
+		despprimeiromes.id as idpri,
+		despprimeiromes.razaosocialFornecedor as razaosocialFornecedorpri,
+		despprimeiromes.descricaoBensPatrimoniais as descricaoBensPatrimoniaispri,
+        despprimeiromes.apelidoConta as apelidoContapri,
+		despprimeiromes.vencimento as vencimentopri,
+				
+        despsegundomes.id as idseg,
+        despsegundomes.razaosocialFornecedor as razaosocialFornecedorseg,
+        despsegundomes.descricaoBensPatrimoniais as descricaoBensPatrimoniaisseg,
+        despsegundomes.apelidoConta as apelidoContaseg,
+        despsegundomes.vencimento as vencimentoseg,
+
+        despterceiromes.id as idterc,
+        despterceiromes.razaosocialFornecedor as razaosocialFornecedorterc,
+        despterceiromes.descricaoBensPatrimoniais as descricaoBensPatrimoniaisterc,
+        despterceiromes.apelidoConta as apelidoContaterc,
+        despterceiromes.vencimento as vencimentoterc
+              
+        FROM despesas d
+        
+        	-- inicio primeiro
+            RIGHT JOIN (SELECT 
+		    d.id,
+		    d.vencimento,
+		    f.razaosocialFornecedor, 
+		    b.descricaoBensPatrimoniais,
+		    cc.apelidoConta
+		    
+		    FROM despesas as d
+		    
+		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
+		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
+		    LEFT JOIN conta AS cc ON d.conta = cc.id 
+		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+        	and d.vencimento like '$ano[0]-$mes[0]%') AS despprimeiromes on d.id = despprimeiromes.id
+            -- inicio segundo
+            RIGHT JOIN (SELECT 
+		    d.id,
+		    d.vencimento,
+		    f.razaosocialFornecedor, 
+		    b.descricaoBensPatrimoniais,
+		    cc.apelidoConta
+		    
+		    FROM despesas as d
+		    
+		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
+		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
+		    LEFT JOIN conta AS cc ON d.conta = cc.id 
+		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+        	and d.vencimento like '$ano[1]-$mes[1]%') AS despsegundomes on d.id = despsegundomes.id
+            -- inicio terceiro
+            RIGHT JOIN (SELECT 
+		    d.id,
+		    d.vencimento,
+		    f.razaosocialFornecedor, 
+		    b.descricaoBensPatrimoniais,
+		    cc.apelidoConta
+		    
+		    FROM despesas as d
+		    
+		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
+		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
+		    LEFT JOIN conta AS cc ON d.conta = cc.id 
+		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+        	and d.vencimento like '$ano[2]-$mes[2]%') AS despterceiromes on d.id = despterceiromes.id";
+
+        var_dump($stringQuery);
+        exit;
+    }
+
+    public function dadosReceitaProjecaoTrimestral($stringQuery, $mes, $ano)
+    {
+        $stringQuery ="SELECT 
+            recprimeiromes.datapagamentoreceita as datapagamentoreceitapri,
+            recprimeiromes.razaosocialCliente as razaosocialClientepri,
+            recprimeiromes.valorreceita as valorreceitapri,
+            recprimeiromes.apelidoConta as apelidoContapri,
+            recprimeiromes.descricaoreceita as descricaoreceitapri,
+
+            recsegundomes.datapagamentoreceita as datapagamentoreceitaseg,
+            recsegundomes.razaosocialCliente as razaosocialClienteseg,
+            recsegundomes.valorreceita as valorreceitaseg,
+            recsegundomes.apelidoConta as apelidoContaseg,
+            recsegundomes.descricaoreceita as descricaoreceitaseg,
+
+            recterceiromes.datapagamentoreceita as datapagamentoreceitaterc,
+            recterceiromes.razaosocialCliente as razaosocialClienteterc,
+            recterceiromes.valorreceita as valorreceitaterc,
+            recterceiromes.apelidoConta as apelidoContaterc,
+            recterceiromes.descricaoreceita as descricaoreceitaterc
+
+                FROM receita r
+                RIGHT JOIN (
+                    SELECT
+                        r.id,
+                        r.datapagamentoreceita,
+                        clireceita.razaosocialCliente,
+                        r.valorreceita,	
+                        cc.apelidoConta,
+                        r.descricaoreceita
+                
+                    FROM receita r 
+                
+                    LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+                    LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+                    LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+                    where r.idosreceita = 'CRIAATVA' and r.pagoreceita = 'N' 
+                    and r.datapagamentoreceita like '$ano[0]-$mes[0]%') as recprimeiromes on r.id = recprimeiromes.id
+                RIGHT JOIN (
+                    SELECT
+                        r.id,
+                        r.datapagamentoreceita,
+                        clireceita.razaosocialCliente,
+                        r.valorreceita,	
+                        cc.apelidoConta,
+                        r.descricaoreceita
+                
+                    FROM receita r 
+                
+                    LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+                    LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+                    LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+                    where r.idosreceita = 'CRIAATVA' and r.pagoreceita = 'N' 
+                    and r.datapagamentoreceita like '$ano[1]-$mes[1]%') as recsegundomes on r.id = recsegundomes.id
+                RIGHT JOIN (
+                    SELECT
+                        r.id,
+                        r.datapagamentoreceita,
+                        clireceita.razaosocialCliente,
+                        r.valorreceita,	
+                        cc.apelidoConta,
+                        r.descricaoreceita
+                
+                    FROM receita r 
+                
+                    LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+                    LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+                    LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+                    where r.idosreceita = 'CRIAATVA' and r.pagoreceita = 'N' 
+                    and r.datapagamentoreceita like '$ano[2]-$mes[2]%') as recterceiromes on r.id = recterceiromes.id";
+
+             return $stringQuery;
+
+    }
+		
 }
 
 
