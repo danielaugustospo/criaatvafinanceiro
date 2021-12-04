@@ -21,8 +21,6 @@
     </div>
 </div>
 
-
-
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
     <p>{{ $message }}</p>
@@ -30,7 +28,6 @@
 @endif
 
 {{-- @include('despesas/filtroindex') --}}
-
 
 <div id="filter-menu"></div>
 <br /><br />
@@ -61,11 +58,7 @@
                     { field: "valorOrdemdeServico", aggregate: "sum" },
                     { field: "razaosocialCliente", aggregate: "count" },
                     ]
-
-
             },
-            //height: 550,
-            // width: 1280,
             filterable: true,
             sortable: true,
             resizable: true,

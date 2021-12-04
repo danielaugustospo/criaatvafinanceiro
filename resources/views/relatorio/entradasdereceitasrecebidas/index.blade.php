@@ -11,8 +11,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
@@ -20,8 +18,6 @@
         </div>
     </div>
 </div>
-
-
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -61,22 +57,19 @@
                 }],
 
                 aggregate: [
-                // { field: "conta", aggregate: "count" },
                 { field: "valorreceita", aggregate: "sum" }],
 
             },
-            //height: 550,
-            // width: 1280,
             filterable: true,
             sortable: true,
             resizable: true,
-            // responsible: true,
+            scrollable: false,
+            groupable: true,
             pageable: {
                 pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                 numeric: false
             },
-            
-            
+                        
             columns: [
                 { field: "descricaoreceita", title: "Descrição da Receita", filterable: true, width: 100 },
                 { field: "datapagamentoreceita", title: "Vencimento", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" },
