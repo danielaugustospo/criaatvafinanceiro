@@ -287,8 +287,8 @@ return $dadosConsultaDespesa;
 
         $totalOS = count((array)$os);
         $contadorOS = 0;
-        while ($contadorOS < $totalOS) {
-            while ($contadorClientes < $totalClientes) {
+        while ($contadorClientes < $totalClientes) {
+                while ($contadorOS < $totalOS) {
 
                 if ($os[$contadorOS]['Cliente'] == $listaClientes[$contadorClientes]->razaosocialCliente){
                     $os[$contadorOS]['Cliente'] = $listaClientes[$contadorClientes]->id;
