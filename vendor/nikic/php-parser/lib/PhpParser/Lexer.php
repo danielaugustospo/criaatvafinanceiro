@@ -85,7 +85,6 @@ class Lexer
 
         $scream = ini_set('xdebug.scream', '0');
 
-        error_clear_last();
         $this->tokens = @token_get_all($code);
         $this->postprocessTokens($errorHandler);
 
@@ -135,10 +134,11 @@ class Lexer
         // detected by finding "gaps" in the token array. Unterminated comments are detected
         // by checking if a trailing comment has a "*/" at the end.
         //
-        // Additionally, we canonicalize to the PHP 8 comment format here, which does not include
-        // the trailing whitespace anymore.
-        //
-        // We also canonicalize to the PHP 8 T_NAME_* tokens.
+        // Additionally, we perform a number of canonicalizations here:
+        //  * Use the PHP 8.0 comment format, which does not include trailing whitespace anymore.
+        //  * Use PHP 8.0 T_NAME_* tokens.
+        //  * Use PHP 8.1 T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG and
+        //    T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG tokens used to disambiguate intersection types.
 
         $filePos = 0;
         $line = 1;
@@ -207,6 +207,22 @@ class Lexer
                     array_splice($this->tokens, $i, $j - $i, [$token]);
                     $numTokens -= $j - $i - 1;
                 }
+            }
+
+            if ($token === '&') {
+                $next = $i + 1;
+                while (isset($this->tokens[$next]) && $this->tokens[$next][0] === \T_WHITESPACE) {
+                    $next++;
+                }
+                $followedByVarOrVarArg = isset($this->tokens[$next]) &&
+                    ($this->tokens[$next][0] === \T_VARIABLE || $this->tokens[$next][0] === \T_ELLIPSIS);
+                $this->tokens[$i] = $token = [
+                    $followedByVarOrVarArg
+                        ? \T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG
+                        : \T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG,
+                    '&',
+                    $line,
+                ];
             }
 
             $tokenValue = \is_string($token) ? $token : $token[1];
@@ -323,7 +339,8 @@ class Lexer
                 $value = $token[1];
                 $id = $this->tokenMap[$token[0]];
                 if (\T_CLOSE_TAG === $token[0]) {
-                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n");
+                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n")
+                        || false !== strpos($token[1], "\r");
                 } elseif (\T_INLINE_HTML === $token[0]) {
                     $startAttributes['hasLeadingNewline'] = $this->prevCloseTagHasNewline;
                 }
@@ -405,33 +422,63 @@ class Lexer
     }
 
     private function defineCompatibilityTokens() {
-        // PHP 7.4
-        if (!defined('T_BAD_CHARACTER')) {
-            \define('T_BAD_CHARACTER', -1);
-        }
-        if (!defined('T_FN')) {
-            \define('T_FN', -2);
-        }
-        if (!defined('T_COALESCE_EQUAL')) {
-            \define('T_COALESCE_EQUAL', -3);
+        static $compatTokensDefined = false;
+        if ($compatTokensDefined) {
+            return;
         }
 
-        // PHP 8.0
-        if (!defined('T_NAME_QUALIFIED')) {
-            \define('T_NAME_QUALIFIED', -4);
+        $compatTokens = [
+            // PHP 7.4
+            'T_BAD_CHARACTER',
+            'T_FN',
+            'T_COALESCE_EQUAL',
+            // PHP 8.0
+            'T_NAME_QUALIFIED',
+            'T_NAME_FULLY_QUALIFIED',
+            'T_NAME_RELATIVE',
+            'T_MATCH',
+            'T_NULLSAFE_OBJECT_OPERATOR',
+            'T_ATTRIBUTE',
+            // PHP 8.1
+            'T_ENUM',
+            'T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG',
+            'T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG',
+            'T_READONLY',
+        ];
+
+        // PHP-Parser might be used together with another library that also emulates some or all
+        // of these tokens. Perform a sanity-check that all already defined tokens have been
+        // assigned a unique ID.
+        $usedTokenIds = [];
+        foreach ($compatTokens as $token) {
+            if (\defined($token)) {
+                $tokenId = \constant($token);
+                $clashingToken = $usedTokenIds[$tokenId] ?? null;
+                if ($clashingToken !== null) {
+                    throw new \Error(sprintf(
+                        'Token %s has same ID as token %s, ' .
+                        'you may be using a library with broken token emulation',
+                        $token, $clashingToken
+                    ));
+                }
+                $usedTokenIds[$tokenId] = $token;
+            }
         }
-        if (!defined('T_NAME_FULLY_QUALIFIED')) {
-            \define('T_NAME_FULLY_QUALIFIED', -5);
+
+        // Now define any tokens that have not yet been emulated. Try to assign IDs from -1
+        // downwards, but skip any IDs that may already be in use.
+        $newTokenId = -1;
+        foreach ($compatTokens as $token) {
+            if (!\defined($token)) {
+                while (isset($usedTokenIds[$newTokenId])) {
+                    $newTokenId--;
+                }
+                \define($token, $newTokenId);
+                $newTokenId--;
+            }
         }
-        if (!defined('T_NAME_RELATIVE')) {
-            \define('T_NAME_RELATIVE', -6);
-        }
-        if (!defined('T_MATCH')) {
-            \define('T_MATCH', -7);
-        }
-        if (!defined('T_NULLSAFE_OBJECT_OPERATOR')) {
-            \define('T_NULLSAFE_OBJECT_OPERATOR', -8);
-        }
+
+        $compatTokensDefined = true;
     }
 
     /**
@@ -486,6 +533,11 @@ class Lexer
         $tokenMap[\T_NAME_RELATIVE] = Tokens::T_NAME_RELATIVE;
         $tokenMap[\T_MATCH] = Tokens::T_MATCH;
         $tokenMap[\T_NULLSAFE_OBJECT_OPERATOR] = Tokens::T_NULLSAFE_OBJECT_OPERATOR;
+        $tokenMap[\T_ATTRIBUTE] = Tokens::T_ATTRIBUTE;
+        $tokenMap[\T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG] = Tokens::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG;
+        $tokenMap[\T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG] = Tokens::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG;
+        $tokenMap[\T_ENUM] = Tokens::T_ENUM;
+        $tokenMap[\T_READONLY] = Tokens::T_READONLY;
 
         return $tokenMap;
     }
@@ -494,7 +546,7 @@ class Lexer
         // Based on semi_reserved production.
         return array_fill_keys([
             \T_STRING,
-            \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC,
+            \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_READONLY,
             \T_INCLUDE, \T_INCLUDE_ONCE, \T_EVAL, \T_REQUIRE, \T_REQUIRE_ONCE, \T_LOGICAL_OR, \T_LOGICAL_XOR, \T_LOGICAL_AND,
             \T_INSTANCEOF, \T_NEW, \T_CLONE, \T_EXIT, \T_IF, \T_ELSEIF, \T_ELSE, \T_ENDIF, \T_ECHO, \T_DO, \T_WHILE,
             \T_ENDWHILE, \T_FOR, \T_ENDFOR, \T_FOREACH, \T_ENDFOREACH, \T_DECLARE, \T_ENDDECLARE, \T_AS, \T_TRY, \T_CATCH,

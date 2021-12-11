@@ -17,7 +17,7 @@
         "laravelcollective/html": "^5.8",
         "spatie/laravel-permission": "^2.37",
         "vlucas/phpdotenv": "3.3",
-        "yajra/laravel-datatables-oracle": "8.5.0"
+        "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
