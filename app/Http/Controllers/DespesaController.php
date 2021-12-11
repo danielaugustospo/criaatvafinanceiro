@@ -17,7 +17,7 @@ use App\Providers\FormatacoesServiceProvider;
 use Illuminate\Support\Facades\App;
 use App\Classes\Logger;
 use Auth;
-
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class DespesaController extends Controller
 {
@@ -70,7 +70,7 @@ class DespesaController extends Controller
         
         if ($request->ajax()) {
 
-            return Datatables::of($consulta)
+            return DataTables::of($consulta)
                 ->addIndexColumn()
                 ->addColumn('action', function($consulta) {
 
@@ -290,7 +290,6 @@ class DespesaController extends Controller
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
-
                 $despesa->save();
                 $this->logCadastraDespesas($despesa);
             }
@@ -348,7 +347,7 @@ class DespesaController extends Controller
 
         $this->logVisualizaDespesas($despesa);
 
-        return view('despesas.show', compact('despesa', 'idUsuario', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 

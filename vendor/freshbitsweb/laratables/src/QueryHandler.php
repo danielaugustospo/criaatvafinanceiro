@@ -2,9 +2,6 @@
 
 namespace Freshbitsweb\Laratables;
 
-use App\Http\Controllers\OrdemdeServicoController;
-use App\OrdemdeServico;
-
 class QueryHandler
 {
     /**
@@ -63,11 +60,8 @@ class QueryHandler
 
         if (method_exists($class, 'laratablesQueryConditions')) {
             $this->query = $class::laratablesQueryConditions($this->query);
-
         }
-
     }
-
 
     /**
      * Applies where conditions to the query according to search value.

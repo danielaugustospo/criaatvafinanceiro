@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.3.5 (2021-09-13)
+* Fix auto-generated return values with union types #1143
+* Adds support for tentative types #1130
+* Fixes for PHP 8.1 Support (#1130 and #1140)
+
+## 1.3.4 (2021-02-24)
+
+* Fixes calls to fetchMock before initialisation #1113
+* Fix crash on a union type including null #1106
+
 ## 1.3.3 (2020-08-11)
 * Fix array to string conversion in ConstantsPass (#1086)
 * Fixed nullable PHP 8.0 union types (#1088)
