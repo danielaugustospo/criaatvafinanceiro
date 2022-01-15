@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
 Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
+Route::get('/apipedidocompra', 'PedidoCompraController@apipedidocompra')->name('apipedidocompra');
 
 Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('apiextratocontarelatorio');
 Route::get('/apicontaareceberporosrelatorio', 'RelatorioController@apiAReceberPorOSRelatorio')->name('apicontaareceberporosrelatorio');
@@ -39,3 +41,4 @@ Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVaria
 Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name('apidadosreceitaos');
 Route::get('/apidadosfechamentofinal', 'RelatorioController@apidadosFechamentoFinal')->name('apidadosfechamentofinal');
 Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral')->name('apiprojecaotrimestral');
+

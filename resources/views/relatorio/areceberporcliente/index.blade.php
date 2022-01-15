@@ -2,6 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apiareceber";
     $titulo  = "A Receber Por Cliente";
+    $campodata = 'dataCriacaoOrdemdeServico';
 ?>
 <head>
     <meta charset="utf-8">
@@ -59,19 +60,16 @@
                     { field: "razaosocialCliente", aggregate: "count" },
                     ]
             },
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
 
             columns: [
                 { field: "idOS", title: "N° OS", filterable: true, width: 50 },
-                { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 65, format: "{0:dd/MM/yyyy}" },
+                { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 65, format: "{0:dd/MM/yyyy}",
+                    filterable: {
+                                cell: {
+                                        template: betweenFilter
+                                    }
+                                } 
+                    },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 90 },
                 { field: "valorOrdemdeServico", title: "Valor do Projeto", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Cliente: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "receitapaga", title: "Valor Recebido", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total Recebido: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
@@ -80,6 +78,7 @@
                 { field: "razaosocialCliente", title: "Cliente", aggregates: ["count"], groupHeaderColumnTemplate: "Total de Vendas Por Cliente: #=count#",  filterable: true, width: 50 },
                 ],
                 @include('layouts/helpersview/finaltabela')
+                @include('layouts/filtradata')
 
 </script>
 

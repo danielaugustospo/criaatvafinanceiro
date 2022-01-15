@@ -93,9 +93,10 @@ class DespesaController extends Controller
     public function apidespesas(Request $request)
     {
         $data = Despesa::all();
-        $listaDespesas = DB::select('SELECT d.id, 
+        $listaDespesas = DB::select('SELECT distinct d.id, 
         c.despesaCodigoDespesa,
-        b.nomeBensPatrimoniais, 
+        -- b.nomeBensPatrimoniais, 
+        d.descricaoDespesa,
         d.idOS, 
         f.razaosocialFornecedor,
         d.vencimento, 
@@ -113,8 +114,7 @@ class DespesaController extends Controller
         d.idFornecedor = f.id
         AND
         d.despesaCodigoDespesas =  c.id 
-        AND 
-        d.descricaoDespesa = b.id
+        -- AND d.descricaoDespesa = b.id
         AND 
         cc.id = d.conta 
         

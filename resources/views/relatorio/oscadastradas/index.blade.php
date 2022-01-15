@@ -2,6 +2,8 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apiconsultaos";
     $titulo  = "OS Cadastradas";
+    $campodata = 'dataCriacaoOrdemdeServico';
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -54,24 +56,14 @@
                    
                     ]
                 },
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
-
             columns: [
                 { field: "id", title: "N° OS", filterable: true, width: 30, aggregates: ["count"], footerTemplate: "Total de OS:  #=count#" },
-                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}" },
+                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100 },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 120 }
             ],
             @include('layouts/helpersview/finaltabela')
-
+            @include('layouts/filtradata')
 
 </script>
 

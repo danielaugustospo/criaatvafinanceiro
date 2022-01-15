@@ -130,6 +130,12 @@ class PermissionTableSeeder extends Seeder
             // 'aliquotamensal-create',
             // 'aliquotamensal-edit',
             // 'aliquotamensal-delete',
+
+            // 'pedidocompra-list',
+            // 'pedidocompra-create',
+            // 'pedidocompra-edit',
+            // 'pedidocompra-delete',
+            // 'pedidocompra-analise',
         ];
 
 

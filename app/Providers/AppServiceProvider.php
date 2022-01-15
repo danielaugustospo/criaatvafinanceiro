@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 
-
+use Illuminate\Support\Facades\Auth;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -121,10 +121,29 @@ class AppServiceProvider extends ServiceProvider
     
     }
 
-    // public function consultasSQL()
-    // {
-    //     $consultaNotasRecibos =  new NotasRecibos();
+    public static function pegaCountPedidoAprovado($id)
+    {
+        $countpedidoaprovado = DB::select("SELECT count(id) as countpedidoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	
+        and ped_excluidopedido = 0 
+        and ped_aprovado = 1
+        and ped_novanotificacao = 1");
+        return $countpedidoaprovado;
+    }
 
-    // }
+    public static function pegaCountPedidoNaoAprovado($id)
+    {
+        $countpedidonaoaprovado = DB::select("SELECT count(id) as countpedidonaoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	and ped_excluidopedido = 0 and p.ped_aprovado = 0");
+        return $countpedidonaoaprovado;
+    }
+
+    public static function pegaCountPedidoAguardandoAprovacao()
+    {
+        $countpedidoaguardandoaprov = DB::select('SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = 3');
+        return $countpedidoaguardandoaprov;
+    }
+    public static function getOptionDefault()
+    {
+        $optionSelect = "<option selected>Qual</option>";
+        view()->share('optionSelect', $optionSelect);    }
 
 }

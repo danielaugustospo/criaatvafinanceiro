@@ -2,6 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apidespesasporos";
     $titulo  = "Despesas Por Cliente (Analítico)";
+    $campodata = 'vencimento';
 ?>
 <head>
     <meta charset="utf-8">
@@ -21,8 +22,6 @@
 
     </div>
 </div>
-
-
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -48,12 +47,7 @@
                     model: {
                         fields: {
                             vencimento: { type: "date" },
-                            // idOS: { type: "string" },
-                            // razaosocialFornecedor: { type: "string" },
-                            // descricaoBensPatrimoniais: { type: "string" },
-                            // nomeFormaPagamento: { type: "string" },
                             precoReal: { type: "number" },
-                            // conta: { type: "string" },
                         }
                     },
                 },
@@ -63,20 +57,9 @@
                 }]
 
             },
-            //height: 550,
-            // width: 1280,
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
 
             columns: [
-                { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" },
+                { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 100 },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100 },
                 // { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
@@ -86,7 +69,7 @@
                 { field: "idOS", title: "N° OS", filterable: true, width: 60 }            
                 ],
                 @include('layouts/helpersview/finaltabela')
-
+                @include('layouts/filtradata')
 </script>
 
 

@@ -52,6 +52,14 @@ class FormatacoesServiceProvider extends ServiceProvider
         
     }
 
+    public static function getHorarioParaBackend()
+    {
+    date_default_timezone_set("America/Sao_Paulo");
+    return date("Y-m-d H:i:s:ms", time());
+    }
+
+   
+
     function mod($dividendo,$divisor)
     {
        return round($dividendo - (floor($dividendo/$divisor)*$divisor));

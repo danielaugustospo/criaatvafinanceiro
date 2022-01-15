@@ -81,6 +81,9 @@ Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name(
 Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');
 Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
 
+Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
+Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
+
 // Route::get('/apiteste', 'BensPatrimoniaisController@apiteste')->name('apiteste');
 
 
@@ -115,5 +118,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('grupodespesas','GrupoDespesaController');
     Route::resource('notasrecibos','NotasRecibosController');
     Route::resource('aliquotamensal','AliquotaMensalController');
+    Route::resource('pedidocompra','PedidoCompraController');
 
 });
