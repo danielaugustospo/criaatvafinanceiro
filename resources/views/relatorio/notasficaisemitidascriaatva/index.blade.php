@@ -2,6 +2,8 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apidadosreceitaos";
     $titulo  = "Notas Fiscais Emitidas - CRIAATVA";
+    $campodata = 'dataemissaoreceita';
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -59,19 +61,9 @@
                     ]
             },
 
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
-
             columns: [
                 { field: "idOS", title: "OS", aggregates: ["count"], footerTemplate: "Total de Notas: #=count#",  filterable: true, width: 30  },
-                { field: "dataemissaoreceita", title: "Data Emissão", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
+                { field: "dataemissaoreceita", title: "Data Emissão", filterable: true, width: 30, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 // { field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
                 { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 60 },
                 { field: "nomeFormaPagamento", title: "Forma de Pag.", filterable: true, width: 60 },
@@ -81,7 +73,7 @@
                 { field: "nfreceita", title: "NF", filterable: true, width: 40 },            
                 ],
                 @include('layouts/helpersview/finaltabela')
-
+                @include('layouts/filtradata')
 </script>
 
 @endsection

@@ -36,7 +36,7 @@
             </div>
         
         <div class="form-group">
-            <strong>Número Conta:</strong>
+            <strong>Nome Conta:</strong>
             {!! Form::text('nomeConta', null, array('placeholder' => 'Número Conta','class' => 'form-control')) !!}
         </div>
     </div>

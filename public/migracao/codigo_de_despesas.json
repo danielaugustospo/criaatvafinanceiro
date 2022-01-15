@@ -1,1 +1,1166 @@
-[{"Codigo":1,"Descricao":"MONTAGEM","Grupo":"FORNECEDOR"},{"Codigo":2,"Descricao":"PRODUTOR(A)","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":3,"Descricao":"FOTÓGRAFO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":4,"Descricao":"ATIVAÇÃO","Grupo":"FORNECEDOR"},{"Codigo":5,"Descricao":"MOTOBOY","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":6,"Descricao":"LANCHE","Grupo":"ALIMENTAÇÃO"},{"Codigo":7,"Descricao":"COMBUSTÍVEL","Grupo":"VEÍCULO"},{"Codigo":8,"Descricao":"GRÁFICA","Grupo":"FORNECEDOR"},{"Codigo":9,"Descricao":"DESMONTAGEM","Grupo":"FORNECEDOR"},{"Codigo":10,"Descricao":"FRETE","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":11,"Descricao":"DIVERSOS","Grupo":"ADMINISTRATIVO"},{"Codigo":12,"Descricao":"GRAFITEIRO","Grupo":"FORNECEDOR"},{"Codigo":13,"Descricao":"PRODUÇÃO","Grupo":"FORNECEDOR"},{"Codigo":14,"Descricao":"AJUDANTE","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":15,"Descricao":"CACHÊ","Grupo":"FORNECEDOR"},{"Codigo":16,"Descricao":"PROMOTORA","Grupo":"FORNECEDOR"},{"Codigo":17,"Descricao":"GASOLINA","Grupo":"VEÍCULO"},{"Codigo":18,"Descricao":"FORNECEDOR","Grupo":"FORNECEDOR"},{"Codigo":19,"Descricao":"BANCO","Grupo":"BANCO"},{"Codigo":20,"Descricao":"NET/CLARO","Grupo":"FORNECEDOR"},{"Codigo":21,"Descricao":"TÁXI","Grupo":"TRANSPORTE"},{"Codigo":22,"Descricao":"SAQUE","Grupo":"BANCO"},{"Codigo":23,"Descricao":"ESTACIONAMENTO","Grupo":"VEÍCULO"},{"Codigo":24,"Descricao":"STAFF","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":25,"Descricao":"REFEIÇÃO","Grupo":"ALIMENTAÇÃO"},{"Codigo":26,"Descricao":"VALE","Grupo":"PAGAMENTO"},{"Codigo":27,"Descricao":"MONTANA","Grupo":"VEÍCULO"},{"Codigo":28,"Descricao":"ALUGUEL","Grupo":"ADMINISTRATIVO"},{"Codigo":29,"Descricao":"ESTÔRNO","Grupo":"PAGAMENTO"},{"Codigo":30,"Descricao":"TRANSPORTE","Grupo":"TRANSPORTE"},{"Codigo":31,"Descricao":"PEDÁGIO","Grupo":"VEÍCULO"},{"Codigo":32,"Descricao":"AVIÃO","Grupo":"VIAGEM"},{"Codigo":33,"Descricao":"PRO-LABORE","Grupo":"PRO-LABORE"},{"Codigo":34,"Descricao":"COSTUREIRA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":35,"Descricao":"SISTEMA","Grupo":"FORNECEDOR"},{"Codigo":36,"Descricao":"DARF","Grupo":"IMPOSTO"},{"Codigo":37,"Descricao":"SALÁRIO","Grupo":"PAGAMENTO"},{"Codigo":38,"Descricao":"CONTADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":39,"Descricao":"TRÔCO","Grupo":"PAGAMENTO"},{"Codigo":40,"Descricao":"CRIAATVA","Grupo":"CRIAATVA"},{"Codigo":41,"Descricao":"TRANSFERÊNCIA","Grupo":"BANCO"},{"Codigo":42,"Descricao":"EXTRA CLIENTE","Grupo":"EXTRA CLIENTE"},{"Codigo":43,"Descricao":"POUPANÇA","Grupo":"BANCO"},{"Codigo":44,"Descricao":"SEGURO","Grupo":"FORNECEDOR"},{"Codigo":45,"Descricao":"SUPERMERCADO","Grupo":"SUPERMERCADO"},{"Codigo":46,"Descricao":"INTERNET","Grupo":"INTERNET"},{"Codigo":47,"Descricao":"ACERTO DE CAIXA","Grupo":"PAGAMENTO"},{"Codigo":48,"Descricao":"PEÇA","Grupo":"MÁQUINÁRIO"},{"Codigo":49,"Descricao":"EMPRÉSTIMO","Grupo":"BANCO"},{"Codigo":50,"Descricao":"BÔNUS","Grupo":"PAGAMENTO"},{"Codigo":51,"Descricao":"CELULAR","Grupo":"FORNECEDOR"},{"Codigo":52,"Descricao":"GORJETA","Grupo":"PAGAMENTO"},{"Codigo":53,"Descricao":"PASSAGEM AÉREA","Grupo":"PASSAGEM AÉREA"},{"Codigo":54,"Descricao":"HOTEL","Grupo":"VIAGEM"},{"Codigo":55,"Descricao":"MÓVEIS","Grupo":"MÓVEIS"},{"Codigo":56,"Descricao":"PAGAMENTO INDEVIDO","Grupo":"PAGAMENTO INDEVIDO"},{"Codigo":57,"Descricao":"ILUSTRADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":58,"Descricao":"TELEMAR","Grupo":"FORNCEDOR"},{"Codigo":59,"Descricao":"SERRALHEIRO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":60,"Descricao":"FERRO VELHO","Grupo":"FERRO VELHO"},{"Codigo":61,"Descricao":"LOCAÇÃO - CRIAATVA","Grupo":"FORNECEDOR"},{"Codigo":62,"Descricao":"INDENIZAÇÃO","Grupo":"PAGAMENTO"},{"Codigo":63,"Descricao":"MATERIAL DE LIMPEZA","Grupo":"ADMINISTRATIVO"},{"Codigo":64,"Descricao":"CARTÓRIO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":65,"Descricao":"MARCENEIRO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":66,"Descricao":"PASSAGEM DE ÔNIBUS","Grupo":"TRANSPORTE"},{"Codigo":67,"Descricao":"ESTOFADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":68,"Descricao":"ELETRICISTA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":69,"Descricao":"CAÇAMBA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":70,"Descricao":"AR CONDICIONADO","Grupo":"ADMINISTRATIVO"},{"Codigo":71,"Descricao":"GÊLO","Grupo":"ALIMENTAÇÃO"},{"Codigo":72,"Descricao":"ÁGUA","Grupo":"ALIMENTAÇÃO"},{"Codigo":73,"Descricao":"SCHEEEINS - CARNAVAL","Grupo":"SCHEEEINS - CARNAVAL"},{"Codigo":74,"Descricao":"LUCRO","Grupo":"PAGAMENTO"},{"Codigo":75,"Descricao":"INFORMÁTICA","Grupo":"ADMINISTRATIVO"},{"Codigo":76,"Descricao":"ESCRITÓRIO","Grupo":"ADMINISTRATIVO"},{"Codigo":77,"Descricao":"CARNAVAL/2016","Grupo":"CARNAVAL/2016"},{"Codigo":78,"Descricao":"PAPELARIA","Grupo":"PAPELARIA"},{"Codigo":79,"Descricao":"ADESIVADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":80,"Descricao":"MÁQUINA","Grupo":"MAQUINÁRIO"},{"Codigo":81,"Descricao":"CORREIOS","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":82,"Descricao":"METRA (PROGRAMA)","Grupo":"METRA (PROGRAMA)"},{"Codigo":83,"Descricao":"MADEIRA","Grupo":"FORNECEDOR"},{"Codigo":84,"Descricao":"TIM","Grupo":"FORNCEDOR"},{"Codigo":85,"Descricao":"SITE","Grupo":"FORNECEDOR"},{"Codigo":86,"Descricao":"JC CAVALCANTE","Grupo":"FORNECEDOR"},{"Codigo":87,"Descricao":"VIVO - PARCERIA","Grupo":"FORNCEDOR"},{"Codigo":88,"Descricao":"VIVO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":89,"Descricao":"FERRAMENTA","Grupo":"MAQUINÁRIO"},{"Codigo":90,"Descricao":"STUDIO HELLO","Grupo":"FORNCEDOR"},{"Codigo":91,"Descricao":"FARMÁCIA","Grupo":"SAÚDE"},{"Codigo":92,"Descricao":"HOSPITAL","Grupo":"SAÚDE"},{"Codigo":93,"Descricao":"COMISSÃO","Grupo":"PAGAMENTO"},{"Codigo":94,"Descricao":"PINOS","Grupo":"FORNECEDOR"},{"Codigo":95,"Descricao":"BICICLETA ELÉTRICA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":96,"Descricao":"CONSERTO DE MÁQUINAS","Grupo":"MAQUINÁRIO"},{"Codigo":97,"Descricao":"EQUIP. SEGURANÇA","Grupo":"FORNECEDOR"},{"Codigo":98,"Descricao":"UNIFORME","Grupo":"FORNCEDOR"},{"Codigo":99,"Descricao":"GRAMA SINTÉTICA (ALUGUEL)","Grupo":"GRAMA SINTÉTICA (ALUGUEL)"},{"Codigo":100,"Descricao":"ELÉTRICA","Grupo":"ELÉTRICA"},{"Codigo":101,"Descricao":"GALPÃO 291 - CRIAATVA","Grupo":"GALPÃO 291 - CRIAATVA"},{"Codigo":102,"Descricao":"GALPÃO 291 - PRAYA","Grupo":"GALPÃO 291 - PRAYA"},{"Codigo":103,"Descricao":"MERCADINHO","Grupo":"ADMINIS3"},{"Codigo":104,"Descricao":"EXTINTOR","Grupo":"FORNECEDOR"},{"Codigo":105,"Descricao":"ALUGUEL DE CARRO","Grupo":"VEÍCULO"},{"Codigo":106,"Descricao":"INN CONTAINER","Grupo":"INN CONTAINER"},{"Codigo":107,"Descricao":"PEDREIRO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":108,"Descricao":"13º SALÁRIO","Grupo":"PAGAMENTO"},{"Codigo":109,"Descricao":"CESTAS DE NATAL","Grupo":"PAGAMENTO"},{"Codigo":110,"Descricao":"FESTA DE NATAL","Grupo":"PAGAMENTO"},{"Codigo":111,"Descricao":"MÍDIA SOCIAL","Grupo":"FORNECEDOR"},{"Codigo":112,"Descricao":"BEM PATRIMONIAL","Grupo":"BEM PATRIMONIAL"},{"Codigo":113,"Descricao":"VIRA-CRIAATVA","Grupo":"VIRA-CRIAATVA"},{"Codigo":114,"Descricao":"PROPOSTA","Grupo":"PROPOSTA"},{"Codigo":115,"Descricao":"MARKETING","Grupo":"MARTKETING"},{"Codigo":116,"Descricao":"PROJETO CONTAINER","Grupo":"PROJETO CONTAINER"},{"Codigo":117,"Descricao":"FÉRIAS","Grupo":"PAGAMENTO"},{"Codigo":118,"Descricao":"JUROS","Grupo":"BANCO"},{"Codigo":119,"Descricao":"TAXA","Grupo":"TAXA"},{"Codigo":120,"Descricao":"TERCERIZADO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":121,"Descricao":"MULTA","Grupo":"VEÍCULO"},{"Codigo":122,"Descricao":"MATERIAL DE COZINHA","Grupo":"ADMINISTRATIVO"},{"Codigo":123,"Descricao":"ANDAIMES","Grupo":"FORNECEDOR"},{"Codigo":124,"Descricao":"OS-COMISSÕES","Grupo":"OS-COMISSÕES"},{"Codigo":125,"Descricao":"DESIGNER","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":126,"Descricao":"SUPERVISOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":127,"Descricao":"DIMEP","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":128,"Descricao":"CONSÓRCIO - ITAÚ","Grupo":"BANCO"},{"Codigo":129,"Descricao":"C DE CRÉDITO - THIAGO","Grupo":"C DE CRÉDITO - THIAGO"},{"Codigo":130,"Descricao":"GALPÃO 299","Grupo":"GALPÃO 299"},{"Codigo":131,"Descricao":"EMPRÉSTIMO ESTORNADO","Grupo":"PAGAMENTO"},{"Codigo":132,"Descricao":"MOTO TÁXI","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":133,"Descricao":"CARTÃO LOSANGO/LEROY","Grupo":"CARTÃO LOSANGO/LEROY"},{"Codigo":134,"Descricao":"10%","Grupo":"COMISSÃO"},{"Codigo":135,"Descricao":"LIGHT","Grupo":"FORNECEDOR"},{"Codigo":136,"Descricao":"REEMBOLSO","Grupo":"PAGAMENTO"},{"Codigo":137,"Descricao":"CENÓGRAFO - ATTILA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":138,"Descricao":"FORRADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":139,"Descricao":"ADIANTAMENTO LUCRO","Grupo":"PAGAMENTO"},{"Codigo":140,"Descricao":"CARPINTEIRO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":141,"Descricao":"FRONTIER - 2012/2013","Grupo":"VEÍCULO"},{"Codigo":142,"Descricao":"INPI","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":143,"Descricao":"VEÍCULO","Grupo":"FRONTIER"},{"Codigo":144,"Descricao":"PINTOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":145,"Descricao":"PRESENTE","Grupo":"PAGAMENTO"},{"Codigo":146,"Descricao":"MEIO OFICIAL","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":147,"Descricao":"CARTÃO TAILORMADE","Grupo":"CARTÃO TAILORMADE"},{"Codigo":148,"Descricao":"CEDAE","Grupo":"FORNECEDOR"},{"Codigo":149,"Descricao":"CAPOTEIRO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":150,"Descricao":"CURSO","Grupo":"ADMINISTRATIVO"},{"Codigo":151,"Descricao":"ADVOGADO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":152,"Descricao":"FRONTIER - 2018","Grupo":"VEÍCULO"},{"Codigo":153,"Descricao":"SALA - BARRA","Grupo":"ADMINISTRATIVO"},{"Codigo":154,"Descricao":"DEPÓSITO","Grupo":"BANCO"},{"Codigo":155,"Descricao":"PLANO DE SAÚDE","Grupo":"SAÚDE"},{"Codigo":156,"Descricao":"JUSTIÇA","Grupo":"ADMINISTRATIVO"},{"Codigo":157,"Descricao":"GALPÃO 291 - 2020","Grupo":"GALPÃO 291 - 2020"},{"Codigo":158,"Descricao":"MOTORISTA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":159,"Descricao":"CAPITAL DE GIRO - ITAU","Grupo":"BANCO"},{"Codigo":160,"Descricao":"KOMBI","Grupo":"VEÍCULO"},{"Codigo":161,"Descricao":"CAIXINHA - MAURÍCIO","Grupo":"PAGAMENTO"},{"Codigo":162,"Descricao":"ASSISTENTE JR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":163,"Descricao":"COORDENADOR","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":164,"Descricao":"SUPORTE FINANCEIRO","Grupo":"SUPORTE FINANCEIRO"},{"Codigo":165,"Descricao":"APORTE JUNIOR","Grupo":"PAGAMENTO"},{"Codigo":166,"Descricao":"ALMOXARIFE","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":167,"Descricao":"VIGIA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":168,"Descricao":"MATERIAIS PARA ESCRITÓRIO","Grupo":"ADMINISTRATIVO"},{"Codigo":169},{"Codigo":170,"Descricao":"CÂMERAS","Grupo":"SEGURANÇA"},{"Codigo":171,"Descricao":"MECÂNICO","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":172,"Descricao":"IPTU","Grupo":"IMPOSTO"},{"Codigo":173,"Descricao":"GPS","Grupo":"IMPOSTO"},{"Codigo":174,"Descricao":"ISS","Grupo":"IMPOSTO"},{"Codigo":175,"Descricao":"DAS","Grupo":"IMPOSTO"},{"Codigo":176,"Descricao":"IMPRENSA","Grupo":"FORNECEDOR"},{"Codigo":177,"Descricao":"FAXINEIRA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":178,"Descricao":"CERTIFICADO DIGITAL","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":179,"Descricao":"AFIAÇÃO DE FERRAMENTAS","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":180,"Descricao":"MAQUINISTA","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":181,"Descricao":"PARCELAMENTO","Grupo":"IMPOSTO"},{"Codigo":182,"Descricao":"AUTO DE INFRAÇÃO","Grupo":"ÓRGÃO DE CLASSE"},{"Codigo":183,"Descricao":"EMPRÉSTIMO","Grupo":"LANDEIRA"},{"Codigo":184,"Descricao":"TECNICO DE SEGURANÇA","Grupo":"ADMINISTRATIVO"},{"Codigo":185,"Descricao":"EMPRESTIMO","Grupo":"PESSOAL"},{"Codigo":186,"Descricao":"ROUBO","Grupo":"DIVERSOS"},{"Codigo":187,"Descricao":"APLICADOR DE PISO","Grupo":"FORNECEDOR"},{"Codigo":188,"Descricao":"CARTÃO THIAGO","Grupo":"CARTÃO THIAGO"},{"Codigo":189,"Descricao":"PINTOR DE ARTE","Grupo":"PRESTADOR DE SERVIÇO"},{"Codigo":190,"Descricao":"ENCARREGADO","Grupo":"PRESTADOR DE SERVIÇO"}]
+[
+  {
+    "Codigo": "1",
+    "Descrição da despesa": "MONTAGEM",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "2",
+    "Descrição da despesa": "PRODUTOR(A)",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "3",
+    "Descrição da despesa": "FOTÓGRAFO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "4",
+    "Descrição da despesa": "ATIVAÇÃO",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "5",
+    "Descrição da despesa": "MOTOBOY",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "6",
+    "Descrição da despesa": "LANCHE",
+    "Grupo": "ALIMENTAÇÃO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "7",
+    "Descrição da despesa": "COMBUSTÍVEL",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "8",
+    "Descrição da despesa": "GRÁFICA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "9",
+    "Descrição da despesa": "DESMONTAGEM",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "10",
+    "Descrição da despesa": "FRETE",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "11",
+    "Descrição da despesa": "DIVERSOS",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "12",
+    "Descrição da despesa": "GRAFITEIRO",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "13",
+    "Descrição da despesa": "PRODUÇÃO",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "14",
+    "Descrição da despesa": "AJUDANTE",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "15",
+    "Descrição da despesa": "CACHÊ",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "16",
+    "Descrição da despesa": "PROMOTORA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "17",
+    "Descrição da despesa": "GASOLINA",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "18",
+    "Descrição da despesa": "FORNECEDOR",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "19",
+    "Descrição da despesa": "BANCO",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "20",
+    "Descrição da despesa": "NET/CLARO",
+    "Grupo": "CONCESSIONÁRIA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "21",
+    "Descrição da despesa": "TÁXI",
+    "Grupo": "TRANSPORTE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "22",
+    "Descrição da despesa": "SAQUE",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "23",
+    "Descrição da despesa": "ESTACIONAMENTO",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "24",
+    "Descrição da despesa": "STAFF",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "25",
+    "Descrição da despesa": "REFEIÇÃO",
+    "Grupo": "ALIMENTAÇÃO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "26",
+    "Descrição da despesa": "VALE",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "27",
+    "Descrição da despesa": "MONTANA",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "28",
+    "Descrição da despesa": "ALUGUEL",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "29",
+    "Descrição da despesa": "ESTÔRNO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "30",
+    "Descrição da despesa": "TRANSPORTE",
+    "Grupo": "TRANSPORTE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "31",
+    "Descrição da despesa": "PEDÁGIO",
+    "Grupo": "CONCESSIONÁRIA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "32",
+    "Descrição da despesa": "AVIÃO",
+    "Grupo": "VIAGEM",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "33",
+    "Descrição da despesa": "PRO-LABORE",
+    "Grupo": "PRO-LABORE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "34",
+    "Descrição da despesa": "COSTUREIRA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "35",
+    "Descrição da despesa": "SISTEMA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "36",
+    "Descrição da despesa": "DARF",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "37",
+    "Descrição da despesa": "SALÁRIO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "38",
+    "Descrição da despesa": "CONTADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "39",
+    "Descrição da despesa": "TRÔCO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "40",
+    "Descrição da despesa": "CRIAATVA",
+    "Grupo": "CRIAATVA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "41",
+    "Descrição da despesa": "TRANSFERÊNCIA",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "42",
+    "Descrição da despesa": "EXTRA CLIENTE",
+    "Grupo": "EXTRA CLIENTE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "43",
+    "Descrição da despesa": "POUPANÇA",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "44",
+    "Descrição da despesa": "SEGURO",
+    "Grupo": "SEGURADORA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "45",
+    "Descrição da despesa": "SUPERMERCADO",
+    "Grupo": "SUPERMERCADO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "46",
+    "Descrição da despesa": "INTERNET",
+    "Grupo": "INTERNET",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "47",
+    "Descrição da despesa": "ACERTO DE CAIXA",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "48",
+    "Descrição da despesa": "PEÇA",
+    "Grupo": "MÁQUINÁRIO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "49",
+    "Descrição da despesa": "EMPRÉSTIMO",
+    "Grupo": "BL CONS. - LANDEIRA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "50",
+    "Descrição da despesa": "BÔNUS",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "51",
+    "Descrição da despesa": "CELULAR",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "52",
+    "Descrição da despesa": "GORJETA",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "53",
+    "Descrição da despesa": "PASSAGEM AÉREA",
+    "Grupo": "PASSAGEM AÉREA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "54",
+    "Descrição da despesa": "HOTEL",
+    "Grupo": "VIAGEM",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "55",
+    "Descrição da despesa": "MÓVEIS",
+    "Grupo": "MÓVEIS",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "56",
+    "Descrição da despesa": "PAGAMENTO INDEVIDO",
+    "Grupo": "PAGAMENTO INDEVIDO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "57",
+    "Descrição da despesa": "ILUSTRADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "58",
+    "Descrição da despesa": "TELEMAR",
+    "Grupo": "FORNCEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "59",
+    "Descrição da despesa": "SERRALHEIRO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "60",
+    "Descrição da despesa": "FERRO VELHO",
+    "Grupo": "FERRO VELHO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "61",
+    "Descrição da despesa": "LOCAÇÃO - CRIAATVA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "62",
+    "Descrição da despesa": "INDENIZAÇÃO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "63",
+    "Descrição da despesa": "MATERIAL DE LIMPEZA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "64",
+    "Descrição da despesa": "CARTÓRIO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "65",
+    "Descrição da despesa": "MARCENEIRO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "66",
+    "Descrição da despesa": "PASSAGEM DE ÔNIBUS",
+    "Grupo": "TRANSPORTE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "67",
+    "Descrição da despesa": "ESTOFADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "68",
+    "Descrição da despesa": "ELETRICISTA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "69",
+    "Descrição da despesa": "CAÇAMBA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "70",
+    "Descrição da despesa": "AR CONDICIONADO",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "71",
+    "Descrição da despesa": "GÊLO",
+    "Grupo": "ALIMENTAÇÃO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "72",
+    "Descrição da despesa": "ÁGUA",
+    "Grupo": "ALIMENTAÇÃO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "73",
+    "Descrição da despesa": "SCHEEEINS - CARNAVAL",
+    "Grupo": "SCHEEEINS - CARNAVAL",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "74",
+    "Descrição da despesa": "LUCRO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "75",
+    "Descrição da despesa": "INFORMÁTICA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "76",
+    "Descrição da despesa": "ESCRITÓRIO",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "77",
+    "Descrição da despesa": "CARNAVAL/2016",
+    "Grupo": "CARNAVAL/2016",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "78",
+    "Descrição da despesa": "PAPELARIA",
+    "Grupo": "PAPELARIA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "79",
+    "Descrição da despesa": "ADESIVADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "80",
+    "Descrição da despesa": "MÁQUINA",
+    "Grupo": "MAQUINÁRIO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "81",
+    "Descrição da despesa": "CORREIOS",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "82",
+    "Descrição da despesa": "METRA (PROGRAMA)",
+    "Grupo": "METRA (PROGRAMA)",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "83",
+    "Descrição da despesa": "MADEIRA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "84",
+    "Descrição da despesa": "TIM",
+    "Grupo": "FORNCEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "85",
+    "Descrição da despesa": "SITE",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "86",
+    "Descrição da despesa": "JC CAVALCANTE",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "87",
+    "Descrição da despesa": "VIVO - PARCERIA",
+    "Grupo": "FORNCEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "88",
+    "Descrição da despesa": "VIVO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "89",
+    "Descrição da despesa": "FERRAMENTA",
+    "Grupo": "MAQUINÁRIO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "90",
+    "Descrição da despesa": "STUDIO HELLO",
+    "Grupo": "FORNCEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "91",
+    "Descrição da despesa": "FARMÁCIA",
+    "Grupo": "SAÚDE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "92",
+    "Descrição da despesa": "HOSPITAL",
+    "Grupo": "SAÚDE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "93",
+    "Descrição da despesa": "COMISSÃO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "94",
+    "Descrição da despesa": "PINOS",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "95",
+    "Descrição da despesa": "BICICLETA ELÉTRICA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "96",
+    "Descrição da despesa": "CONSERTO DE MÁQUINAS",
+    "Grupo": "MAQUINÁRIO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "97",
+    "Descrição da despesa": "EQUIP. SEGURANÇA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "98",
+    "Descrição da despesa": "UNIFORME",
+    "Grupo": "FORNCEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "99",
+    "Descrição da despesa": "GRAMA SINTÉTICA (ALUGUEL)",
+    "Grupo": "GRAMA SINTÉTICA (ALUGUEL)",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "100",
+    "Descrição da despesa": "ELÉTRICA",
+    "Grupo": "ELÉTRICA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "101",
+    "Descrição da despesa": "GALPÃO 291 - CRIAATVA",
+    "Grupo": "GALPÃO 291 - CRIAATVA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "102",
+    "Descrição da despesa": "GALPÃO 291 - PRAYA",
+    "Grupo": "GALPÃO 291 - PRAYA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "103",
+    "Descrição da despesa": "MERCADINHO",
+    "Grupo": "ADMINIS3",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "104",
+    "Descrição da despesa": "EXTINTOR",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "105",
+    "Descrição da despesa": "ALUGUEL DE CARRO",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "106",
+    "Descrição da despesa": "INN CONTAINER",
+    "Grupo": "INN CONTAINER",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "107",
+    "Descrição da despesa": "PEDREIRO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "108",
+    "Descrição da despesa": "13º SALÁRIO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "109",
+    "Descrição da despesa": "CESTAS DE NATAL",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "110",
+    "Descrição da despesa": "FESTA DE NATAL",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "111",
+    "Descrição da despesa": "MÍDIA SOCIAL",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "112",
+    "Descrição da despesa": "BEM PATRIMONIAL",
+    "Grupo": "BEM PATRIMONIAL",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "113",
+    "Descrição da despesa": "VIRA-CRIAATVA",
+    "Grupo": "VIRA-CRIAATVA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "114",
+    "Descrição da despesa": "PROPOSTA",
+    "Grupo": "PROPOSTA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "115",
+    "Descrição da despesa": "MARKETING",
+    "Grupo": "MARTKETING",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "116",
+    "Descrição da despesa": "PROJETO CONTAINER",
+    "Grupo": "PROJETO CONTAINER",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "117",
+    "Descrição da despesa": "FÉRIAS",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "118",
+    "Descrição da despesa": "JUROS",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "119",
+    "Descrição da despesa": "TAXA",
+    "Grupo": "TAXA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "120",
+    "Descrição da despesa": "TERCERIZADO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "121",
+    "Descrição da despesa": "MULTA",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "122",
+    "Descrição da despesa": "MATERIAL DE COZINHA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "123",
+    "Descrição da despesa": "ANDAIMES",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "124",
+    "Descrição da despesa": "OS-COMISSÕES",
+    "Grupo": "OS-COMISSÕES",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "125",
+    "Descrição da despesa": "DESIGNER",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "126",
+    "Descrição da despesa": "SUPERVISOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "127",
+    "Descrição da despesa": "DIMEP",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "128",
+    "Descrição da despesa": "CONSÓRCIO - ITAÚ",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "129",
+    "Descrição da despesa": "C DE CRÉDITO - THIAGO",
+    "Grupo": "C DE CRÉDITO - THIAGO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "130",
+    "Descrição da despesa": "GALPÃO 299",
+    "Grupo": "GALPÃO 299",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "131",
+    "Descrição da despesa": "EMPRÉSTIMO ESTORNADO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "132",
+    "Descrição da despesa": "MOTO TÁXI",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "133",
+    "Descrição da despesa": "CARTÃO LOSANGO/LEROY",
+    "Grupo": "CARTÃO LOSANGO/LEROY",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "134",
+    "Descrição da despesa": "10%",
+    "Grupo": "COMISSÃO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "135",
+    "Descrição da despesa": "LIGHT",
+    "Grupo": "CONCESSIONÁRIA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "136",
+    "Descrição da despesa": "REEMBOLSO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "137",
+    "Descrição da despesa": "CENÓGRAFO - ATTILA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "138",
+    "Descrição da despesa": "FORRADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "139",
+    "Descrição da despesa": "ADIANTAMENTO LUCRO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "140",
+    "Descrição da despesa": "CARPINTEIRO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "141",
+    "Descrição da despesa": "FRONTIER - 2012/2013",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "142",
+    "Descrição da despesa": "INPI",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "143",
+    "Descrição da despesa": "VEÍCULO",
+    "Grupo": "FRONTIER",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "144",
+    "Descrição da despesa": "PINTOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "145",
+    "Descrição da despesa": "PRESENTE",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "146",
+    "Descrição da despesa": "MEIO OFICIAL",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "147",
+    "Descrição da despesa": "CARTÃO TAILORMADE",
+    "Grupo": "CARTÃO TAILORMADE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "148",
+    "Descrição da despesa": "CEDAE",
+    "Grupo": "CONCESSIONÁRIA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "149",
+    "Descrição da despesa": "CAPOTEIRO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "150",
+    "Descrição da despesa": "CURSO",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "151",
+    "Descrição da despesa": "ADVOGADO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "152",
+    "Descrição da despesa": "FRONTIER - 2018",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "153",
+    "Descrição da despesa": "SALA - BARRA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "154",
+    "Descrição da despesa": "DEPÓSITO",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "155",
+    "Descrição da despesa": "PLANO DE SAÚDE",
+    "Grupo": "SAÚDE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "156",
+    "Descrição da despesa": "JUSTIÇA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "157",
+    "Descrição da despesa": "GALPÃO 291 - 2020",
+    "Grupo": "GALPÃO 291 - 2020",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "158",
+    "Descrição da despesa": "MOTORISTA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "159",
+    "Descrição da despesa": "CAPITAL DE GIRO - ITAU",
+    "Grupo": "BANCO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "160",
+    "Descrição da despesa": "KOMBI",
+    "Grupo": "VEÍCULO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "161",
+    "Descrição da despesa": "CAIXINHA - MAURÍCIO",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "162",
+    "Descrição da despesa": "ASSISTENTE JR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "163",
+    "Descrição da despesa": "COORDENADOR",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "164",
+    "Descrição da despesa": "SUPORTE FINANCEIRO",
+    "Grupo": "SUPORTE FINANCEIRO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "165",
+    "Descrição da despesa": "APORTE JUNIOR",
+    "Grupo": "PAGAMENTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "166",
+    "Descrição da despesa": "ALMOXARIFE",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "167",
+    "Descrição da despesa": "VIGIA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "168",
+    "Descrição da despesa": "MATERIAIS PARA ESCRITÓRIO",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "169",
+    "Descrição da despesa": "",
+    "Grupo": "",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "170",
+    "Descrição da despesa": "CÂMERAS",
+    "Grupo": "SEGURANÇA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "171",
+    "Descrição da despesa": "MECÂNICO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "172",
+    "Descrição da despesa": "IPTU",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "173",
+    "Descrição da despesa": "GPS",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "174",
+    "Descrição da despesa": "ISS",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "175",
+    "Descrição da despesa": "DAS",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "176",
+    "Descrição da despesa": "IMPRENSA",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "177",
+    "Descrição da despesa": "FAXINEIRA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "178",
+    "Descrição da despesa": "CERTIFICADO DIGITAL",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "179",
+    "Descrição da despesa": "AFIAÇÃO DE FERRAMENTAS",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "180",
+    "Descrição da despesa": "MAQUINISTA",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "181",
+    "Descrição da despesa": "PARCELAMENTO",
+    "Grupo": "IMPOSTO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "182",
+    "Descrição da despesa": "AUTO DE INFRAÇÃO",
+    "Grupo": "ÓRGÃO DE CLASSE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "183",
+    "Descrição da despesa": "EMPRÉSTIMO",
+    "Grupo": "BL CONSULTORIA - LANDEIRA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "184",
+    "Descrição da despesa": "TECNICO DE SEGURANÇA",
+    "Grupo": "ADMINISTRATIVO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "185",
+    "Descrição da despesa": "EMPRÉSTIMO",
+    "Grupo": "PESSOAL",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "186",
+    "Descrição da despesa": "ROUBO",
+    "Grupo": "DIVERSOS",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "187",
+    "Descrição da despesa": "APLICADOR DE PISO",
+    "Grupo": "FORNECEDOR",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "188",
+    "Descrição da despesa": "CARTÃO THIAGO",
+    "Grupo": "CARTÃO THIAGO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "189",
+    "Descrição da despesa": "PINTOR DE ARTE",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "190",
+    "Descrição da despesa": "ENCARREGADO",
+    "Grupo": "PRESTADOR DE SERVIÇO",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "191",
+    "Descrição da despesa": "alimr",
+    "Grupo": "",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "192",
+    "Descrição da despesa": "EXAME",
+    "Grupo": "SAÚDE",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "193",
+    "Descrição da despesa": "EMPRÉSTIMO",
+    "Grupo": "D2S COBRANÇA",
+    "Tipo": ""
+  },
+  {
+    "Codigo": "194",
+    "Descrição da despesa": "RRT - CAU",
+    "Grupo": "CONCESSIONÁRIA",
+    "Tipo": ""
+  }
+]

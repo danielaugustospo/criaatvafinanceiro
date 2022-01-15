@@ -11,9 +11,13 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
+use App\Classes\Logger;
 
 class FuncionarioController extends Controller
 {
+
+    private $Enc;
+    private $Logger;
     /**
      * Display a listing of the resource.
      *
@@ -26,6 +30,9 @@ class FuncionarioController extends Controller
         $this->middleware('permission:funcionario-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:funcionario-delete', ['only' => ['destroy']]);
     
+        //Importação do Logger
+        $this->Logger = new Logger();
+
         $this->acao =  request()->segment(count(request()->segments()));
         $this->valorInput = null;
         $this->valorSemCadastro = null;
@@ -248,6 +255,8 @@ class FuncionarioController extends Controller
             //Funcionario::create($request->all());
         }
         $funcionario->save();
+        $this->logCadastraFuncionario($funcionario->nomeFuncionario);
+
         return redirect()->route('funcionarios.index')
             ->with('success', 'Funcionário criado com êxito.');
 
@@ -277,6 +286,7 @@ class FuncionarioController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
+        $this->logVisualizaFuncionario($id);
 
         return view('funcionarios.show', compact('funcionario', 'todosorgaosrg', 'todososbancos1', 'todososbancos2', 'todososbancos3','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
     }
@@ -421,6 +431,8 @@ class FuncionarioController extends Controller
             unset($funcionario->fotoFuncionario);
         }
                 $funcionario->save();
+                $this->logAtualizaFuncionario($funcionario->nomeFuncionario);
+
                 return redirect()->route('funcionarios.index')
                     ->with('success', $mensagemSucesso);
     }
@@ -436,8 +448,26 @@ class FuncionarioController extends Controller
     {
 
         Funcionario::find($id)->delete();
+        $this->logExcluiFuncionario($id);
 
         return redirect()->route('funcionarios.index')
             ->with('success', 'Funcionário excluído com êxito!');
+    }
+
+    public function logCadastraFuncionario($nomeFuncionario)
+    {
+        $this->Logger->log('info', 'Cadastrou o funcionário '. $nomeFuncionario);
+    }
+    public function logVisualizaFuncionario($nomeFuncionario)
+    {
+        $this->Logger->log('info', 'Visualizou o funcionário id '. $nomeFuncionario);
+    }
+    public function logExcluiFuncionario($id)
+    {
+        $this->Logger->log('info', 'Excluiu o funcionário id '. $id);
+    }
+    public function logAtualizaFuncionario($nomeFuncionario)
+    {
+        $this->Logger->log('info', 'Atualizou o funcionário '. $nomeFuncionario);
     }
 }

@@ -282,7 +282,8 @@ h3:after {
 
 <style>
     input,
-    select {
+    select,
+    textarea {
         text-transform: uppercase;
     }
 </style>

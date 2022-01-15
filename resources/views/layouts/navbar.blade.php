@@ -1,11 +1,20 @@
+<?php
+use  App\Providers\AppServiceProvider;
+
+?>
+
 <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
-    @yield('nav') 
+    @yield('nav')
     <div class="container" style="max-width: fit-content !important;">
-       <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>
+        <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>
         <a class="navbar-brand" href="{{ url('/') }}" style="color:white;">
             Criaatva
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+       
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -18,10 +27,11 @@
                 @guest
                 <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                 @else
-                
+
                 <li class="nav-item dropdown">
                     @can('ordemdeservico-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         OS <span class="caret"></span>
                     </a>
                     @endcan
@@ -42,7 +52,8 @@
 
                 <li class="nav-item dropdown">
                     @can('despesa-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Despesas <span class="caret"></span>
                     </a>
                     @endcan
@@ -63,7 +74,8 @@
                 </li>
                 <li class="nav-item dropdown">
                     @can('receita-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Receitas <span class="caret"></span>
                     </a>
                     @endcan
@@ -78,53 +90,70 @@
                 </li>
 
                 <li class="nav-item ">
-                    <a  class="nav-link" href="{{ route('relatorio') }}" role="button">
+                    <a class="nav-link" href="{{ route('relatorio') }}" role="button">
                         Relatórios <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @can('entradas-list')
                         <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
                         @endcan
-                        @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('extratoConta') }}">Extrato Por Período</a>
-                        @endcan
                     </div>
-                    {{-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('conta-list')
-                        <a class="dropdown-item" href="{{ route('contasAPagar') }}">Contas a Pagar</a>
-                        @endcan
-                        @can('conta-list')
-                        <a class="dropdown-item" href="{{ route('contasAReceber') }}">Contas a Receber</a>
-                        @endcan
-                        @can('conta-list')
-                        <a class="dropdown-item" href="{{ url('/contasareceberporos') }}">Relatório a Receber Por OS</a>
-                        @endcan
-                        @can('fornecedor-list')
-                        <a class="dropdown-item" href="{{ route('relatorioFornecedores') }}">Relatório de Fornecedores</a>
-                        @endcan
-                    </div> --}}
-                </li>    
+                </li>
 
-                <!-- <li class="nav-item dropdown">
-                    @can('conta-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Conta Corrente <span class="caret"></span>
-                    </a>
+                @can('pedidocompra-list')
+                <li class="nav-item dropdown">
+
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    @can('pedidocompra-analise')
+                        @if((AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado) > 0)    
+                            <span class="badge badge-warning mt-0" style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao()[0]->aguardaprov }}</span>
+                        @endif
                     @endcan
+                    @can('pedidocompra-list')
+                        @if((AppServiceProvider::pegaCountPedidoNaoAprovado(Auth::id())[0]->countpedidonaoaprovado) > 0)    
+                            <span class="badge badge-danger" style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoNaoAprovado(Auth::id())[0]->countpedidonaoaprovado }}</span>
+                        @endif
+                        @if((AppServiceProvider::pegaCountPedidoAguardandoAprovacao(Auth::id())[0]->aguardaprov) > 0)    
+                            <span class="badge badge-warning" style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao(Auth::id())[0]->aguardaprov }}</span>
+                        @endif
+                        @if((AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado) > 0)    
+                            <span class="badge badge-success" style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado }}</span>
+                        @endif
+
+                    @endcan
+                    Pedido Compra
+                </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
-                        @endcan
-                        @can('entradas-list')
-                        <a class="dropdown-item" href="{{ route('extratoConta') }}">Extrato Por Período</a>
+                        
+                        @can('pedidocompra-create')
+                        @if(Gate::check('pedidocompra-analise'))
+                        @else
+                            <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=0&notificado=0">
+                                <span class="badge badge-danger" style="font-size: 20;">
+                                 {{ AppServiceProvider::pegaCountPedidoNaoAprovado(Auth::id())[0]->countpedidonaoaprovado }} 
+                                </span> pedido(s) não aprovado(s) 
+                            </a>
+
+                        
+                            <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=3&notificado=1"><span class="badge badge-warning" style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao(Auth::id())[0]->aguardaprov }}</span> pedido(s) aguardando aprovação</a>
+                            <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=1&notificado=1"><span class="badge badge-success" style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado }}</span> pedido(s) aprovado(s)</a>
+                            @endif
+                            @endcan
+                            <a class="dropdown-item" href="{{ route('pedidocompra.index') }}">Listar todos</a>
+                        @can('pedidocompra-analise')
+                        <hr>
+                        <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=3&notificado=1">Avaliador - <span class="badge badge-warning mt-0" style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao()[0]->aguardaprov }}</span>  pedido(s) para aprovar</a>
                         @endcan
                     </div>
-                </li> -->
+                </li>
+                @endcan
 
                 <li class="nav-item dropdown">
                     @can('fornecedor-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Fornecedores <span class="caret"></span>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Forn. <span class="caret"></span>
                     </a>
                     @endcan
 
@@ -136,11 +165,12 @@
                         <a class="dropdown-item" href="{{ route('fornecedores.index') }}">Consultar</a>
                         @endcan
                     </div>
-                </li>    
+                </li>
 
                 <li class="nav-item dropdown">
                     @can('cliente-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Clientes <span class="caret"></span>
                     </a>
                     @endcan
@@ -153,11 +183,12 @@
                         <a class="dropdown-item" href="{{ route('clientes.index') }}">Consultar</a>
                         @endcan
                     </div>
-                </li>    
+                </li>
 
                 <li class="nav-item dropdown">
                     @can('funcionario-list')
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Funcionários <span class="caret"></span>
                     </a>
                     @endcan
@@ -170,14 +201,12 @@
                         <a class="dropdown-item" href="{{ route('funcionarios.index') }}">Consultar</a>
                         @endcan
                     </div>
-                </li>    
+                </li>
 
-                
-
-
-                @can('notasrecibos-list')    
+                @can('notasrecibos-list')
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Notas/Alíquotas <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -196,15 +225,16 @@
 
                 <li class="nav-item dropdown">
 
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Configurações <span class="caret"></span>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Conf. <span class="caret"></span>
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @can('usuario-list')  
+                        @can('usuario-list')
                         <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
                         @endcan
-                        
+
                         @can('banco-list')
                         <a class="dropdown-item" href="{{ route('bancos.index') }}">Bancos</a>
                         @endcan
@@ -229,51 +259,52 @@
                         <a class="dropdown-item" href="{{ route('orgaosrg.index') }}">Órgãos RG</a>
                         @endcan
 
-                        @can('benspatrimoniais-list')    
+                        @can('benspatrimoniais-list')
                         <a class="dropdown-item" href="{{ route('products.index') }}">Tipo de Bens Patrimoniais</a>
                         @endcan
-
-                        @can('benspatrimoniais-list')    
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Bens <span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @can('benspatrimoniais-list')
-                                <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
-                                @endcan
-        
-                                @can('entradas-list')
-                                <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas de Materiais</a>
-                                @endcan
-        
-                                @can('saidas-list')
-                                <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
-                                @endcan
-        
-                                @can('estoque-list')
-                                <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
-                                @endcan
-                            </div>
-                        </li>
-                        @endcan
-                    </div> 
+                    </div>
                 </li>
 
+                @can('benspatrimoniais-list')
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Bens <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('benspatrimoniais-list')
+                        <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
+                        @endcan
+
+                        @can('entradas-list')
+                        <a class="dropdown-item" href="{{ route('entradas.index') }}">Entradas de Materiais</a>
+                        @endcan
+
+                        @can('saidas-list')
+                        <a class="dropdown-item" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
+                        @endcan
+
+                        @can('estoque-list')
+                        <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
+                        @endcan
+                    </div>
+                </li>
+                @endcan
 
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>{{ Auth::user()->name }}<span
+                            class="caret"></span>
                     </a>
 
-
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="users/{{Auth::user()->id}}/edit">Editar Perfil <i class="far fa-id-card ml-1"></i></a>
+                        <a class="dropdown-item" href="users/{{Auth::user()->id}}/edit">Editar Perfil <i
+                                class="far fa-id-card ml-1"></i></a>
 
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
-                           Sair
-                           <i class="fas fa-power-off"></i>
+                            Sair
+                            <i class="fas fa-power-off"></i>
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

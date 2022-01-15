@@ -61,6 +61,9 @@
   <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
   <div class="col-sm-4">
     <select name="despesaCodigoDespesas" id="despesaCodigoDespesas" class="selecionaComInput col-sm-12" {{$variavelDisabledNaView}} required>
+      @if(!isset($despesa))                  
+        <option disabled selected>Selecione...</option>
+      @endif
       @foreach ($codigoDespesa as $listaCodigoDespesas)
         @isset($despesa)
           @if ($despesa->despesaCodigoDespesas == $listaCodigoDespesas->id)
@@ -109,6 +112,9 @@
   <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
   <div class="col-sm-6">
     <select class="selecionaComInput form-control" name="descricaoDespesa" id="descricaoDespesa">
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @foreach ($listaBensPatrimoniais as $bempatrimonial)
         @isset($despesa)
           @if ($despesa->descricaoDespesa == $bempatrimonial->id)
@@ -131,6 +137,9 @@
   <label for="" class="col-sm-2 col-form-label">Fornecedor/Prestador de Serviço</label>
   <div class="col-sm-4">
     <select onchange="pegaIdFornecedor();" name="idFornecedor" id="selecionaFornecedor" class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{$variavelDisabledNaView}}>
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @foreach ($listaFornecedores as $fornecedor)
         @isset($despesa)
           @if ($despesa->idFornecedor == $fornecedor->id)
@@ -154,6 +163,9 @@
   <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
   <div class="col-sm-4">
     <select name="idFormaPagamento" id="idFormaPagamento" class="selecionaComInput form-control col-sm-12 js-example-basic-multiple"  {{$variavelDisabledNaView}}>
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @foreach ($formapagamento as $formaPG)
         @isset($despesa)
           @if ($despesa->idFormaPagamento == $formaPG->id)
@@ -170,6 +182,9 @@
   <label for="conta" class="col-sm-2 col-form-label">Conta</label>
   <div class="col-sm-4">
     <select name="conta" id="conta" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple"  {{$variavelDisabledNaView}}>
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @foreach ($listaContas as $contas)
         @isset($despesa)
           @if ($despesa->conta == $contas->id)
@@ -231,6 +246,9 @@
   <label for="quemComprouSelect" class="col-sm-2 col-form-label">Quem Comprou</label>
   <div class="col-sm-4">
     <select onchange="alteraIdComprador();" name="quemComprouSelect" id="selecionaComprador" class="selecionaComInput quemComprouSelect form-control" {{$variavelDisabledNaView}}>
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @foreach ($listaFornecedores as $fornecedor)
         @isset($despesa)
           @if ($despesa->quemcomprou == $fornecedor->id)
@@ -282,6 +300,9 @@
   <label for="pago" class="col-sm-2 col-form-label">Pago</label>
   <div class="col-sm-2">
     <select name="pago" id="pago" style="padding:4px;" class="selecionaComInput form-control" {{$variavelDisabledNaView}}>
+      @if(!isset($despesa))                  
+      <option disabled selected>Selecione...</option>
+    @endif
       @if (Request::path() == 'despesas/create')
       <option value="0">Não</option>
       <option value="1">Sim</option>
@@ -300,7 +321,7 @@
   </div> --}}
   <div class="col-sm-4">
     <select onchange="pegaIdFornecedor();" name="reembolsado" id="reembolsado" class="selecionaComInput reembolsado form-control col-sm-12" {{$variavelDisabledNaView}}>
-      
+
       @foreach ($listaFornecedores as $fornecedor)
         @isset($despesa)
         @if ($despesa->reembolsado == $fornecedor->id)
@@ -377,7 +398,7 @@
 @include('despesas/cadastracodigodespesa')
 {{-- @include('despesas/criagrupodespesa') --}}
 @include('despesas/cadastramaterial')
-@include('despesas/cadastrafornecedor')
+@include('layouts/cadastrafornecedor')
 
 <div class="container tabelaDespesas" id="tabelaDespesas">
   <div class="pb-2 container row">
@@ -388,6 +409,7 @@
     @include('despesas/tabelaparcelas')
   @endif
 </div>
+
 
 
 {{  Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}

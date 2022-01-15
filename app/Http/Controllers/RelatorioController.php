@@ -291,37 +291,37 @@ class RelatorioController extends Controller
     public function limpaTabelas()
     {
     
-    //     DB::delete('delete from conta');
-    //     DB::statement('ALTER TABLE conta 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from conta');
+         DB::statement('ALTER TABLE conta 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from clientes');
-    //     DB::statement('ALTER TABLE clientes 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from clientes');
+         DB::statement('ALTER TABLE clientes 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from ordemdeservico');
-    //     DB::statement('ALTER TABLE ordemdeservico 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from ordemdeservico');
+         DB::statement('ALTER TABLE ordemdeservico 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from fornecedores');
-    //     DB::statement('ALTER TABLE fornecedores 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from fornecedores');
+         DB::statement('ALTER TABLE fornecedores 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from formapagamento');
-    //     DB::statement('ALTER TABLE formapagamento 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from formapagamento');
+         DB::statement('ALTER TABLE formapagamento 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from funcionarios');
-    //     DB::statement('ALTER TABLE funcionarios 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from funcionarios');
+         DB::statement('ALTER TABLE funcionarios 
+    AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from grupodespesas');
-    //     DB::statement('ALTER TABLE grupodespesas 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from grupodespesas');
+         DB::statement('ALTER TABLE grupodespesas 
+     AUTO_INCREMENT=1');
 
-    //     DB::delete('delete from codigodespesas');
-    //     DB::statement('ALTER TABLE codigodespesas 
-    // AUTO_INCREMENT=1');
+         DB::delete('delete from codigodespesas');
+         DB::statement('ALTER TABLE codigodespesas 
+     AUTO_INCREMENT=1');
 
         DB::delete('delete from despesas');
         DB::statement('ALTER TABLE despesas 
@@ -338,14 +338,14 @@ class RelatorioController extends Controller
     {
         $this->limpaTabelas();
 
-        // $this->pegaJsonContas();
-        // $this->pegaJsonCliente();
-        // $this->pegaJsonOS();
-        // $this->pegaJsonFornecedor();
-        // $this->pegaJsonFormaPagamento();
-        // $this->pegaJsonFuncionarios();
-        // $this->pegaJsonGrupoDespesas();
-        // $this->pegaJsonCodigoDespesas();
+        $this->pegaJsonContas();
+        $this->pegaJsonCliente();
+        $this->pegaJsonOS();
+        $this->pegaJsonFornecedor();
+        $this->pegaJsonFormaPagamento();
+        $this->pegaJsonFuncionarios();
+        $this->pegaJsonGrupoDespesas();
+        $this->pegaJsonCodigoDespesas();
         $this->pegaJsonMovimentacoes();
     }
 
@@ -839,8 +839,8 @@ class RelatorioController extends Controller
                 $codigodespesas->ativoCodigoDespesa = '1';
                 $codigodespesas->excluidoCodigoDespesa = '0';
 
-                if (isset($jsoncodigodespesas[$contadorcodigo]['Descricao'])) {
-                    $codigodespesas->despesaCodigoDespesa = $jsoncodigodespesas[$contadorcodigo]['Descricao'];
+                if (isset($jsoncodigodespesas[$contadorcodigo]['Descrição da despesa'])) {
+                    $codigodespesas->despesaCodigoDespesa = $jsoncodigodespesas[$contadorcodigo]['Descrição da despesa'];
                 }
 
                 if (isset($jsoncodigodespesas[$contadorcodigo]['Grupo'])) {

@@ -2,6 +2,8 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apiconsultacontaspagasporgrupo";
     $titulo  = "Despesas Pagas por Grupo";
+    $campodata = 'dataDoPagamento';
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -21,15 +23,11 @@
     </div>
 </div>
 
-
-
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
     <p>{{ $message }}</p>
 </div>
 @endif
-
-{{-- @include('despesas/filtroindex') --}}
 
 
 <div id="filter-menu"></div>
@@ -47,34 +45,16 @@
                     model: {
                         fields: {
                             dataDoPagamento: { type: "date" },
-                            // idOS: { type: "string" },
-                            // razaosocialFornecedor: { type: "string" },
-                            // descricaoBensPatrimoniais: { type: "string" },
-                            // nomeFormaPagamento: { type: "string" },
                             precoReal: { type: "number" },
-                            // conta: { type: "string" },
                         }
                     },
                 },
                 group: [{field: "grupoDespesa"}],
                 aggregate: [{ field: "precoReal", aggregate: "sum" }]
-
-
-            },
-            //height: 550,
-            // width: 1280,
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
             },
 
             columns: [
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" },
+                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "idOS", title: "N° da OS", filterable: true, width: 60 },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 90 },
                 { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 90 },
@@ -83,8 +63,7 @@
                 { field: "apelidoConta", title: "Conta", filterable: true, width: 60 }            
                 ],
                 @include('layouts/helpersview/finaltabela')
+                @include('layouts/filtradata')
 
 </script>
-
-
 @endsection

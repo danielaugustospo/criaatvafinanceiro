@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use DataTables;
 use Illuminate\Support\Str;
+use App\Classes\Logger;
+
 class FormaPagamentoController extends Controller
 {
+
+    private $Enc;
+    private $Logger;
     /**
      * Display a listing of the resource.
      *
@@ -21,10 +26,12 @@ class FormaPagamentoController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:formapagamento-list|formapagamento-create|formapagamento-edit|formapagamento-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:formapagamento-create', ['only' => ['create','store']]);
-         $this->middleware('permission:formapagamento-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:formapagamento-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:formapagamento-list|formapagamento-create|formapagamento-edit|formapagamento-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:formapagamento-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:formapagamento-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:formapagamento-delete', ['only' => ['destroy']]);
+
+        $this->Logger = new Logger();
     }
     /**
      * Display a listing of the resource.
@@ -61,7 +68,7 @@ class FormaPagamentoController extends Controller
                                 return true;
                             } else if (Str::is(Str::lower($row['nomeFormaPagamento']), Str::lower($request->get('search')))) {
                                 return true;
-                            } 
+                            }
                             return false;
                         });
                     }
@@ -75,11 +82,11 @@ class FormaPagamentoController extends Controller
                 ->make(true);
         } else {
 
-        $data = FormaPagamento::orderBy('id','DESC')->paginate(5);
-        return view('formapagamentos.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            $data = FormaPagamento::orderBy('id', 'DESC')->paginate(5);
+            return view('formapagamentos.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
-}
 
 
 
@@ -112,10 +119,11 @@ class FormaPagamentoController extends Controller
 
 
         FormaPagamento::create($request->all());
+        $this->logCadastraFormaPagamento($request->nomeFormaPagamento);
 
 
         return redirect()->route('formapagamentos.index')
-                        ->with('success','Forma de Pagamento cadastrada com êxito.');
+            ->with('success', 'Forma de Pagamento cadastrada com êxito.');
     }
 
 
@@ -128,7 +136,9 @@ class FormaPagamentoController extends Controller
     public function show($id)
     {
         $formapagamento = FormaPagamento::find($id);
-        return view('formapagamentos.show',compact('formapagamento'));
+        return view('formapagamentos.show', compact('formapagamento'));
+
+        $this->logVisualizaFormaPagamento($formapagamento->id);
     }
 
 
@@ -141,11 +151,11 @@ class FormaPagamentoController extends Controller
     public function edit($id)
     {
         $formapagamento = FormaPagamento::find($id);
-        $roles = FormaPagamento::pluck('nomeFormaPagamento','nomeFormaPagamento')->all();
-        $bancoRole = $formapagamento->roles->pluck('nomeFormaPagamento','nomeFormaPagamento')->all();
+        $roles = FormaPagamento::pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
+        $bancoRole = $formapagamento->roles->pluck('nomeFormaPagamento', 'nomeFormaPagamento')->all();
 
 
-        return view('formapagamentos.edit',compact('formapagamento','roles','bancoRole'));
+        return view('formapagamentos.edit', compact('formapagamento', 'roles', 'bancoRole'));
 
         // return view('formapagamentos.edit',compact('formapagamento'));
     }
@@ -161,17 +171,17 @@ class FormaPagamentoController extends Controller
      */
     public function update(Request $request, FormaPagamento $formapagamento)
     {
-         request()->validate([
+        request()->validate([
             'nomeFormaPagamento' => 'required|min:3',
             'ativoFormaPagamento'  => 'required',
         ]);
 
 
         $formapagamento->update($request->all());
-
+        $this->logAtualizaFormaPagamento($request->nomeFormaPagamento);
 
         return redirect()->route('formapagamentos.index')
-                        ->with('success','Forma de Pagamento atualizada com êxito');
+            ->with('success', 'Forma de Pagamento atualizada com êxito');
     }
 
 
@@ -185,8 +195,29 @@ class FormaPagamentoController extends Controller
     {
 
         FormaPagamento::find($id)->delete();
+        $this->logExcluiFormaPagamento($id);
 
         return redirect()->route('formapagamentos.index')
-                        ->with('success','Forma de Pagamento excluída com êxito!');
+            ->with('success', 'Forma de Pagamento excluída com êxito!');
+    }
+
+    public function logCadastraFormaPagamento($param)
+    {
+        $this->Logger->log('info', 'Cadastrou a Forma de Pagamento ' . $param);
+    }
+
+    public function logVisualizaFormaPagamento($param)
+    {
+        $this->Logger->log('info', 'Visualizou a Forma de Pagamento id' . $param);
+    }
+
+    public function logAtualizaFormaPagamento($param)
+    {
+        $this->Logger->log('info', 'Atualizou a Forma de Pagamento ' . $param);
+    }
+
+    public function logExcluiFormaPagamento($param)
+    {
+        $this->Logger->log('info', 'Excluiu a Forma de Pagamento id' . $param);
     }
 }

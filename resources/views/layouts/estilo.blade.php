@@ -1,5 +1,5 @@
 <style>
-    p,label,h1,h2,h3,h4,h5,th,button,input,select,option,a,span,td,strong {
+    p,label,h1,h2,h3,h4,h5,th,button,input,select,option,a,span,td,strong,textarea {
         text-transform: uppercase; 
     }
     .fontenormal {

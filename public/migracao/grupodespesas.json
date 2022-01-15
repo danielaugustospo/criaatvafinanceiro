@@ -18,6 +18,9 @@
     "Grupo": "BANCO"
   },
   {
+    "Grupo": "CONCESSIONÁRIA"
+  },
+  {
     "Grupo": "TRANSPORTE"
   },
   {
@@ -39,6 +42,9 @@
     "Grupo": "EXTRA CLIENTE"
   },
   {
+    "Grupo": "SEGURADORA"
+  },
+  {
     "Grupo": "SUPERMERCADO"
   },
   {
@@ -46,6 +52,9 @@
   },
   {
     "Grupo": "MÁQUINÁRIO"
+  },
+  {
+    "Grupo": "BL CONS. - LANDEIRA"
   },
   {
     "Grupo": "PASSAGEM AÉREA"
@@ -144,16 +153,13 @@
     "Grupo": "SUPORTE FINANCEIRO"
   },
   {
-    "Grupo": ""
-  },
-  {
     "Grupo": "SEGURANÇA"
   },
   {
     "Grupo": "ÓRGÃO DE CLASSE"
   },
   {
-    "Grupo": "LANDEIRA"
+    "Grupo": "BL CONSULTORIA - LANDEIRA"
   },
   {
     "Grupo": "PESSOAL"
@@ -163,5 +169,8 @@
   },
   {
     "Grupo": "CARTÃO THIAGO"
+  },
+  {
+    "Grupo": "D2S COBRANÇA"
   }
 ]

@@ -379,6 +379,7 @@ class OrdemdeServicoController extends Controller
 
         $this->logVisualizaOS($ordemdeservico);
         return view('ordemdeservicos.show', compact('ordemdeservico', 'dataInicio', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'despesaPorOS', 'receitasPorOS', 'percentualPorOS', 'totaldespesas', 'totaldespesasAPagar', 'totaldespesasPagas', 'totalreceitas', 'totalreceitasAPagar', 'qtdDespesas', 'qtdReceitas', 'lucro', 'totalOS', 'porcentagemDespesa', 'porcentagemReceita', 'porcentagemLucro', 'porcentagemDespesaAPagar', 'porcentagemDespesaPagas', 'porcentagemReceitaAPagar', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+
     }
 
 
@@ -446,7 +447,7 @@ class OrdemdeServicoController extends Controller
             // 'dataVendaOrdemdeServico'        => 'required|min:3',
             // 'valorProjetoOrdemdeServico'     => 'required|min:3',
             'valorOrdemdeServico'            => 'required|min:3',
-            'dataOrdemdeServico'             => 'required|min:3',
+//            'dataOrdemdeServico'             => 'required|min:3',
             // 'clienteOrdemdeServico'          => 'required|min:3',
             'eventoOrdemdeServico'           => 'required|min:3',
             'servicoOrdemdeServico'          => 'required|min:3',

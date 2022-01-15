@@ -53,3 +53,20 @@ $.LoadingOverlay("show");
                 template: $("#page-template").html(),
                 scale: 0.8
             },
+            filterable: {
+                extra: false,
+                mode: "row"
+            },            
+            sortable: true,
+            resizable: true,
+            scrollable: false,
+            groupable: true,
+            columnMenu: true,
+            responsible: true,
+            // scrollable: true,
+            reorderable: true,
+            width: 'auto',
+            pageable: {
+                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                numeric: false
+            },
