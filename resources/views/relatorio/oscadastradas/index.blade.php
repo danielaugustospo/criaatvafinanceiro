@@ -57,10 +57,10 @@
                     ]
                 },
             columns: [
-                { field: "id", title: "N° OS", filterable: true, width: 30, aggregates: ["count"], footerTemplate: "Total de OS:  #=count#" },
-                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100 },
-                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 120 }
+                { field: "id", title: "N° OS", filterable: true, width: 25, aggregates: ["count"], footerTemplate: "Total de OS:  #=count#" },
+                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 25, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 50 },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 50 }
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

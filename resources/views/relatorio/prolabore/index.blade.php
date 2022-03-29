@@ -57,11 +57,11 @@
             },
 
             columns: [
-                { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 90 },
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "pago", title: "Pago", filterable: true, width: 60 },
-                { field: "nomeFuncionario", title: "Funcionário", filterable: true, width: 60 }            
+                { field: "despesa", title: "Despesa", filterable: true, width: 30 },
+                { field: "dataDoPagamento", title: "Data", filterable: true, width: 20, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "precoReal", title: "Valor", filterable: true, width: 20, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "pago", title: "Pago", filterable: true, width: 10 },
+                { field: "nomeFuncionario", title: "Funcionário", filterable: true, width: 20 }            
                 ],
         
         @include('layouts/helpersview/finaltabela')

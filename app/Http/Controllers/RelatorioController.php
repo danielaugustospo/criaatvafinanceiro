@@ -46,22 +46,35 @@ class RelatorioController extends Controller
     {
 
         $modelConta = new Conta();
-        $stringQueryExtratoConta = $modelConta->dadosRelatorio(null);
+        $datainicial = $request->input('datainicial');
+        $datafinal = $request->input('datafinal');
+        $conta = $request->input('conta');
+
+
+        $complemento = "WHERE idconta ='".$conta."' and dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."'";
+        $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
         $extrato = DB::select($stringQueryExtratoConta);
-        $contador = count($extrato);
 
-        for ($i = 0; $i < $contador; $i++) {
-            $valorAnterior = $i - 1;
+        // $contador = count($extrato);
 
-            if (($i == 0) || ($extrato[$valorAnterior]->apelidoConta != $extrato[$i]->apelidoConta)) {
-                $saldo = $extrato[$i]->valorreceita;
-            } else if (($i == 1) && ($extrato[$valorAnterior]->apelidoConta == $extrato[$i]->apelidoConta)) {
-                $saldo = $extrato[$i]->valorreceita + $extrato[$valorAnterior]->valorreceita;
-            } else if (($i > 1)  && ($extrato[$valorAnterior]->apelidoConta == $extrato[$i]->apelidoConta)) {
-                $saldo = $saldo + $extrato[$i]->valorreceita;
-            }
-            $extrato[$i]->saldo = $saldo;
-        }
+        // for ($i = 0; $i < $contador; $i++) {
+        //     $valorAnterior = $i - 1;
+
+        //     if (($i == 0) || ($extrato[$valorAnterior]->conta != $extrato[$i]->conta)) {
+        //         $saldo = $extrato[$i]->valorreceita;
+        //         $extrato[0]->saldoinicial = $saldo;
+
+        //     } else if (($i == 1) && ($extrato[$valorAnterior]->conta == $extrato[$i]->conta)) {
+        //         $saldo = $extrato[$i]->valorreceita + $extrato[$valorAnterior]->valorreceita;
+        //     } else if (($i > 1)  && ($extrato[$valorAnterior]->conta == $extrato[$i]->conta)) {
+        //         $saldo = $saldo + $extrato[$i]->valorreceita;
+        //     } else if (($i == $contador)  && ($extrato[$valorAnterior]->conta == $extrato[$i]->conta)) {
+        //         $extrato[0]->saldofinal = $saldo;
+        //     }
+        //     $extrato[$i]->saldo = $saldo;
+        // }
+        // var_dump($extrato);
+        // exit;
         return $extrato;
     }
 
@@ -72,7 +85,6 @@ class RelatorioController extends Controller
         $dadosConsulta = DB::select($stringRelatorioFornecedores);
         return $dadosConsulta;
     }
-
     public function apiFaturamentoPorCliente(Request $request)
     {
         $relatorio = new Relatorio();
@@ -133,6 +145,7 @@ class RelatorioController extends Controller
     {
         $relatorio = new Relatorio();
         $stringConsulta = $relatorio->dadosRelatorioContas(null, $pago = "desp.pago = 'S' or desp.pago = 'N'", $nomeFunc = null);
+        
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -140,7 +153,7 @@ class RelatorioController extends Controller
     public function apiConsultaProLabore(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosRelatorioContas(null, $pago = null, $nomeFunc = " (func.nomeFuncionario != '')");
+        $stringConsulta = $relatorio->dadosRelatorioContas(null, $pago = null, $nomeFunc = " (func.nomeFuncionario != '') and (despesaCodigoDespesas = 33)");
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -156,7 +169,7 @@ class RelatorioController extends Controller
     public function apiOrdemdeServicoRecebidas(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosOrdemdeServicoRecebidas(null, $parametros = "and r.idosreceita != 'CRIAATVA'");
+        $stringConsulta = $relatorio->dadosOrdemdeServicoRecebidas(null, $parametros = "and r.idosreceita = os.id");
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -173,6 +186,14 @@ class RelatorioController extends Controller
     {
         $relatorio = new Relatorio();
         $stringConsulta = $relatorio->dadosOrdemdeServicoAReceber(null, $parametros = null);
+        $dadosConsulta = DB::select($stringConsulta);
+        return $dadosConsulta;
+    }
+
+    public function apiContasAReceber(Request $request)
+    {
+        $relatorio = new Relatorio();
+        $stringConsulta = $relatorio->dadosContasAReceber(null, $parametros = null);
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -642,7 +663,7 @@ class RelatorioController extends Controller
 
                     //Verificação Vencimento
                     if (isset($jsonvencimentos[$movimentacoes]['Datapag'])) {
-                        $despesa->vencimento          = DateTime::createFromFormat('d/m/y', $jsonvencimentos[$movimentacoes]['Datapag'])->format("Y-m-d");;
+                        $despesa->vencimento          = DateTime::createFromFormat('d/m/y', $jsonvencimentos[$movimentacoes]['Datapag'])->format("Y-m-d");
                     } else {
                         $despesa->vencimento          = '';
                     }
@@ -697,7 +718,7 @@ class RelatorioController extends Controller
 
                         //Verificação Vencimento
                         if (isset($jsonvencimentos[$movimentacoes]['Datapag'])) {
-                            $receita->datapagamentoreceita          = DateTime::createFromFormat('d/m/y', $jsonvencimentos[$movimentacoes]['Datapag'])->format("Y-m-d");;
+                            $receita->datapagamentoreceita          = DateTime::createFromFormat('d/m/y', $jsonvencimentos[$movimentacoes]['Datapag'])->format("Y-m-d");
                         } else {
                             $receita->datapagamentoreceita          = '';
                         }

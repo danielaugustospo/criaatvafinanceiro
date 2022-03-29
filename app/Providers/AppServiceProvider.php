@@ -44,8 +44,6 @@ class AppServiceProvider extends ServiceProvider
         $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
         from ordemdeservico ods 
         left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');
-
-        // $listaOrdemDeServicos = DB::select('SELECT * FROM ordemdeservico WHERE (ativoOrdemdeServico = 1) AND (excluidoOrdemdeServico = 0)');
         view()->share('listaOrdemDeServicos', $listaOrdemDeServicos);
 
         $listaReceitas = DB::select('SELECT * FROM receita');
@@ -116,9 +114,7 @@ class AppServiceProvider extends ServiceProvider
         view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
 
         $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
-        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
-
-    
+        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);    
     }
 
     public static function pegaCountPedidoAprovado($id)
@@ -144,6 +140,7 @@ class AppServiceProvider extends ServiceProvider
     public static function getOptionDefault()
     {
         $optionSelect = "<option selected>Qual</option>";
-        view()->share('optionSelect', $optionSelect);    }
+        view()->share('optionSelect', $optionSelect);    
+    }
 
 }

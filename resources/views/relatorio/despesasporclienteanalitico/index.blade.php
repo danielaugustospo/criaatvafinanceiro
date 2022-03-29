@@ -52,15 +52,14 @@
                     },
                 },
 
-                group: [{
-                    field: "dados"
-                }]
+                group: { field: "dados" },
+                aggregate: [{ field: "precoReal", aggregate: "sum" }],
 
             },
 
             columns: [
                 { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 100 },
+                { field: "despesa", title: "Despesa", filterable: true, width: 100 },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100 },
                 // { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
                 { field: "precoReal", title: "Custo", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },

@@ -40,26 +40,40 @@ class Conta extends Model
         return view('contas.action', compact('contasModel'))->render();
     }
 
-    public function dadosRelatorio($stringQueryExtrato)
+    public function dadosRelatorio($stringQueryExtrato, $complemento)
     {
-        $stringQueryExtrato = "select id, dtoperacao, historico, idosreceita, apelidoConta, valorreceita, pagoreceita, nomeFormaPagamento
+        $stringQueryExtrato = "SELECT 	
+        selecionageral.*
+        FROM (
+    
+        SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
+        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao) AS saldo
+    
+            from ((select `receita`.`id`, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
+             `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
+            
+            from receita 
+            
+            inner join conta on `receita`.`contareceita` = `conta`.`id`
+            inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
+            union all (select `despesas`.`id`, `despesas`.`vencimento` as dtoperacao, `despesas`.`descricaoDespesa` as historico, `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
+             `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
+            
+            from despesas
+            
+            inner join conta on `despesas`.`conta` = `conta`.`id`
+            inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`)) as x 
+            
+            where (pagoreceita = 'S' or pagoreceita = '1') 
+            and historico != '' 
+            -- group by id
+            order by dtoperacao
+            ) as selecionageral
+            $complemento " ;
 
-        from ((select `receita`.`id`, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, `receita`.`valorreceita`,
-         `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
-        
-        from receita 
-        
-        inner join conta on `receita`.`contareceita` = `conta`.`id`
-        inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
-        union all (select `despesas`.`id`, `despesas`.`vencimento` as dtoperacao, `despesas`.`descricaoDespesa` as historico, `conta`.`apelidoConta`, `despesas`.`precoReal` * (-1),
-         `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
-        
-        from despesas
-        
-        inner join conta on `despesas`.`conta` = `conta`.`id`
-        inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`)) as x 
-        
-        where (pagoreceita = 'S' or pagoreceita = '1') order by dtoperacao";
+// var_dump($stringQueryExtrato);
+// exit;
+
         return $stringQueryExtrato;
     }
 

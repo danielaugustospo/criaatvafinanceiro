@@ -14,17 +14,25 @@ class Relatorio extends Model
 
     public function dadosRelatorioFaturamentoPorCliente($param)
     {
-        $stringQuery = "SELECT DISTINCT 
+        $stringQuery ="SELECT  
                         c.razaosocialCliente , 
                         os.valorOrdemdeServico,  
-                        sum(r.valorreceita) 'valortotal'
+                        os.dataCriacaoOrdemdeServico, 
+                        r.datapagamentoreceita,
+                        -- sum(r.valorreceita) 'valortotal'
+                        r.valorreceita  as 'valortotal'
 
-                        FROM ordemdeservico os, receita r, clientes c
-                        WHERE (os.idClienteOrdemdeServico = c.id) 
-                        and (os.id = r.idosreceita)
-                        AND (r.pagoreceita = '$param')
-                            
-                        GROUP BY os.id ";
+                        FROM ordemdeservico os
+
+                        LEFT JOIN clientes   AS c 	ON c.id = os.idClienteOrdemdeServico   
+                        LEFT JOIN receita    AS r 	ON r.idosreceita = os.id 
+
+                        -- (os.idClienteOrdemdeServico = c.id) 
+                        -- and (os.id = r.idosreceita)
+                        WHERE (r.pagoreceita = '$param')
+
+                        -- GROUP BY os.id 
+                        ";                
 
         return $stringQuery;
     }
@@ -50,10 +58,15 @@ class Relatorio extends Model
         d.vencimento,
         d.idOS,
         f.razaosocialFornecedor,
-        b.descricaoBensPatrimoniais,
+        -- b.descricaoBensPatrimoniais,
+        CASE
+            WHEN d.ehcompra = 1 THEN b.nomeBensPatrimoniais
+            ELSE d.descricaoDespesa
+        END AS despesa,
         fpg.nomeFormaPagamento, 
         d.precoReal,
         cod.despesaCodigoDespesa,
+        gp.grupoDespesa,
         cc.apelidoConta 
         FROM despesas d
         
@@ -61,15 +74,25 @@ class Relatorio extends Model
         LEFT JOIN formapagamento AS fpg ON d.idFormaPagamento = fpg.id
         LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
         LEFT JOIN codigodespesas AS cod ON d.despesaCodigoDespesas = cod.id
-        LEFT JOIN conta AS cc ON d.conta = cc.id";
+        LEFT JOIN grupodespesas AS gp   ON cod.idGrupoCodigoDespesa = gp.id
+        LEFT JOIN conta AS cc ON d.conta = cc.id
+where d.pago = 'S' ";
+
+
 
         return $stringQuery;
     }
 
     public function dadosRelatorioDespesasPorOS($stringQuery)
     {
-        $stringQuery = 'SELECT os.id as idOS, c.razaosocialCliente, fpg.nomeFormaPagamento, forn.razaosocialFornecedor , os.eventoOrdemdeServico, g.grupoDespesa, desp.vencimento, desp.dataDoPagamento, desp.notaFiscal,
-        CASE WHEN desp.despesaFixa = 1  THEN "FIXA" ELSE "NÃO FIXA" END as despesaFixa, bens.nomeBensPatrimoniais, desp.precoReal, cc.nomeConta, cc.apelidoConta,  desp.pago,
+        $stringQuery = 'SELECT os.id as idOS, c.razaosocialCliente, fpg.nomeFormaPagamento, forn.razaosocialFornecedor , os.eventoOrdemdeServico, cod.despesaCodigoDespesa, desp.vencimento, desp.dataDoPagamento, desp.notaFiscal,
+        CASE WHEN desp.despesaFixa = 1  THEN "FIXA" ELSE "NÃO FIXA" END as despesaFixa, 
+        -- bens.nomeBensPatrimoniais, 
+        CASE
+            WHEN desp.ehcompra = 1 THEN bens.nomeBensPatrimoniais
+            ELSE desp.descricaoDespesa
+        END AS despesa,
+        desp.precoReal, cc.nomeConta, cc.apelidoConta,  desp.pago,
                 CONCAT("N° OS:", os.id, "      - Cliente: ", c.razaosocialCliente, "       - Evento: ", os.eventoOrdemdeServico) AS dados
                FROM ordemdeservico os
                     
@@ -77,7 +100,7 @@ class Relatorio extends Model
                LEFT JOIN clientes         	AS c 	ON os.idClienteOrdemdeServico = c.id
                LEFT JOIN benspatrimoniais 	AS bens ON desp.descricaoDespesa = bens.id
                LEFT JOIN conta 			    AS cc  	ON desp.conta = cc.id
-               LEFT JOIN grupodespesas 	    AS g	ON desp.despesaCodigoDespesas = g.id
+               LEFT JOIN codigodespesas 	AS cod	ON desp.despesaCodigoDespesas = cod.id
                LEFT JOIN fornecedores 		AS forn	ON desp.idFornecedor = forn.id
                LEFT JOIN formapagamento   fpg	 ON desp.idFormaPagamento = fpg.id';
 
@@ -106,11 +129,18 @@ class Relatorio extends Model
         $stringQuery = "SELECT 
         desp.dataDoPagamento, 
         desp.idOS,
+        desp.vencimento,
+        desp.notaFiscal,
+        desp.dataDoPagamento,
         cli.razaosocialCliente, 
         func.nomeFuncionario,
         os.eventoOrdemdeServico, 
         forn.razaosocialFornecedor, 
-        bens.descricaoBensPatrimoniais,
+        -- bens.descricaoBensPatrimoniais,
+        CASE
+            WHEN desp.ehcompra = 1 THEN bens.nomeBensPatrimoniais
+            ELSE desp.descricaoDespesa
+        END AS despesa,
         fpg.nomeFormaPagamento,
         desp.precoReal,
         gdesp.grupoDespesa,
@@ -138,7 +168,11 @@ class Relatorio extends Model
         $stringQuery = "SELECT 
         d.dataDoPagamento, 
         forn.razaosocialFornecedor, 
-        bens.nomeBensPatrimoniais,
+        -- b.nomeBensPatrimoniais,
+        CASE
+            WHEN d.ehcompra = 1 THEN b.nomeBensPatrimoniais
+            ELSE d.descricaoDespesa
+        END AS despesa,
         os.eventoOrdemdeServico, 
         fpg.nomeFormaPagamento, 
         d.idOS, 
@@ -147,7 +181,7 @@ class Relatorio extends Model
         FROM despesas d 
         
         LEFT JOIN fornecedores     forn  ON d.reembolsado = forn.id
-        LEFT JOIN benspatrimoniais bens  ON d.descricaoDespesa = bens.id
+        LEFT JOIN benspatrimoniais b  ON d.descricaoDespesa = b.id
         LEFT JOIN ordemdeservico   os  	 ON d.idOS = os.id
         LEFT JOIN formapagamento   fpg   ON d.idFormaPagamento = fpg.id
         
@@ -187,7 +221,7 @@ class Relatorio extends Model
 
     public function dadosOrdemdeServicoAReceber($stringQuery, $parametros)
     {
-        $stringQuery = "SELECT DISTINCT 
+        $stringQuery = "SELECT  
 	
         os.id as 'idOS',
         r.datapagamentoreceita,
@@ -211,10 +245,48 @@ class Relatorio extends Model
          LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
          LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
          LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
-         LEFT JOIN (SELECT distinct rnpg.idosreceita , sum(rnpg.valorreceita) AS valnpg, rnpg.pagoreceita FROM receita rnpg WHERE rnpg.pagoreceita = 'N' group by idosreceita) AS valnaopago ON os.id = valnaopago.idosreceita
+         
+  
+   
+            LEFT JOIN (SELECT distinct rnpg.idosreceita , valorreceita AS valnpg, rnpg.pagoreceita FROM receita rnpg WHERE rnpg.pagoreceita = 'N' ) AS valnaopago ON os.id = valnaopago.idosreceita
+         
          LEFT JOIN (SELECT distinct rpg.idosreceita , sum(rpg.valorreceita) AS valpg, rpg.pagoreceita FROM receita rpg WHERE rpg.pagoreceita = 'S' group by idosreceita) AS valpago ON os.id = valpago.idosreceita 
+         
          WHERE r.pagoreceita = 'N'
-         and r.idosreceita != 'CRIAATVA'" . $parametros;
+         and r.idosreceita != 'CRIAATVA'
+         and valnaopago.valnpg !='null'
+         and valnaopago.valnpg !='' " . $parametros . " group by valnaopago.valnpg";
+
+        return $stringQuery;
+    }
+    public function dadosContasAReceber($stringQuery, $parametros)
+    {
+        $stringQuery = "SELECT 
+	
+        os.id as 'idOS',
+        os.dataCriacaoOrdemdeServico, 
+        r.datapagamentoreceita,
+        cli.razaosocialCliente,
+        clireceita.razaosocialCliente as 'cliente',
+        os.eventoOrdemdeServico,
+        r.valorreceita,	
+        r.nfreceita, 
+        cc.apelidoConta as 'conta',
+        fpg.nomeFormaPagamento,
+        os.dataCriacaoOrdemdeServico,
+        r.descricaoreceita  
+    
+    FROM receita r 
+
+     LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
+     LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
+     LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+     LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+     LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+     
+     WHERE r.pagoreceita = 'N' 
+     and r.idosreceita != ''
+     and r.idosreceita != 'CRIAATVA' " . $parametros;
 
         return $stringQuery;
     }
@@ -323,7 +395,11 @@ class Relatorio extends Model
 		    d.id,
 		    d.vencimento,
 		    f.razaosocialFornecedor, 
-		    b.descricaoBensPatrimoniais,
+		    -- b.descricaoBensPatrimoniais,
+            CASE
+                WHEN d.ehcompra = 1 THEN b.nomeBensPatrimoniais
+                ELSE d.descricaoDespesa
+            END AS despesa,
 		    cc.apelidoConta
 		    
 		    FROM despesas as d
@@ -338,7 +414,7 @@ class Relatorio extends Model
 		    d.id,
 		    d.vencimento,
 		    f.razaosocialFornecedor, 
-		    b.descricaoBensPatrimoniais,
+		    b.nomeBensPatrimoniais,
 		    cc.apelidoConta
 		    
 		    FROM despesas as d
@@ -427,6 +503,46 @@ class Relatorio extends Model
              return $stringQuery;
 
     }
+    
+    public function contaCorrente()
+    {
+        $stringQuery ="SELECT 
+        d.vencimento  as datamov,
+        d.descricaoDespesa as 'historico',
+        os.eventoOrdemdeServico as 'evento',
+        fpg.nomeFormaPagamento as 'formapag',
+        os.id as 'idOS',
+        (d.precoReal * (-1)) as 'valor',
+        c.nomeConta as 'conta' 
+        
+        from despesas d
+        LEFT JOIN ordemdeservico os  ON d.idOS = os.id
+        LEFT JOIN formapagamento fpg ON d.idFormaPagamento = fpg.id
+        LEFT JOIN conta c ON d.conta = c.id
+        where d.pago = 'S'
+
+    UNION
+
+    SELECT 
+        datapagamentoreceita as datamov,
+        descricaoreceita as 'historico',
+        os.eventoOrdemdeServico as 'evento', 
+        fpg.nomeFormaPagamento as 'formapag',
+        os.id as 'idOS',
+        valorreceita as 'valor',
+        c.nomeConta as 'conta'
+        
+        from receita r
+        
+        LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
+        LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+        LEFT JOIN conta c ON r.contareceita = c.id
+        where r.pagoreceita = 'S'
+        
+        order by datamov";
+        return $stringQuery;
+    }
+
 		
 }
 

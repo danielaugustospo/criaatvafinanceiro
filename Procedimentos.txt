@@ -3,6 +3,7 @@ PROCEDIMENTO DE MIGRACAO CRIAATVA - DANIELTECH
 -PEGAR O BACKUP MAIS ATUAL POSSÍVEL
 -ACESSAR AS TABELAS DO ACCESS
 -EXPORTAR AS TABELAS:
+ Contas
  Clientes;
  Vendas;
  Fornecedores;
@@ -14,17 +15,20 @@ PROCEDIMENTO DE MIGRACAO CRIAATVA - DANIELTECH
 Abrir o arquivo grupodespesas.xlsx e na guia dados, após filtrar, clicar em remover duplicatas e salvar.
  
 
-Após isso, submeter os arquivos a transformação no site: https://kinoar.github.io/xlsx-to-json/
-
 Padrão para os arquivos:
 Diretório-> C:\Users\DANIEL SERVER01\Documents\sistemas\criaatvafinanceiro\public\migracao
 
+Após converter os arquivos, abrir e remover a primiera chave e a última
+
 clientes1.json
-fornecedores.json
-vendas1.json
+codigo_de_despesas.json
+contas.json
 formapagamento.json
+fornecedores.json
 funcionarios.json
+grupodespesas.json
 vencimentos.json
+vendas1.json
 
 Comando de migração:
 php artisan tinker

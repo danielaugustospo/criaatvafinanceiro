@@ -62,16 +62,25 @@ for (var i = 0; i < detailGrids.length; i++) {
 });
 
 $(window).on('load', function(){
-    var counter = 0;
-    
-    setInterval(function (){    
-    ++counter;
 
-    if (counter == 5){
-        console.log('Ordenação Por Grupo Clicado Inicialmente');
-        $.LoadingOverlay("hide");
-        $('.k-link')[0].click();  
+    var $myDiv = $('#grid');
+
+    if ( $myDiv.length === 1){
+
+        var count     = 0;
+        var interval  = setInterval(function(){
+        if (count >= 100) {
+            clearInterval(interval);
+            $('.k-link')[0].click();  
+            console.log('Ordenação Por Grupo Clicado Inicialmente');
+            $.LoadingOverlay("hide");
+            return;
         }
-    }, 1000);
+        count += 10;
+        $.LoadingOverlay("progress", count);
+    }, 300);
 
+    }
 });
+
+

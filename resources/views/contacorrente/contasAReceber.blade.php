@@ -1,7 +1,9 @@
 <?php 
     $intervaloCelulas = "A1:F1"; 
-    $rotaapi = "apidespesas";
+    $rotaapi = "apicontasareceber";
     $titulo  = "Contas a Receber";
+    $campodata = 'dataCriacaoOrdemdeServico';
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -41,43 +43,36 @@
                 schema: {
                     model: {
                         fields: {
-                            precoReal: { type: "number" },
-                            razaosocialFornecedor: { type: "string" },
-                            vencimento: { type: "date" },
+                            valorreceita: { type: "number" },
+                            razaosocialCliente: { type: "string" },
+                            dataCriacaoOrdemdeServico: { type: "date" },
                         }
                     },
                 },
 
                 group: {
-                    field: "razaosocialFornecedor", aggregates: [
-                        { field: "razaosocialFornecedor", aggregate: "count" },
-                        { field: "precoReal", aggregate: "sum" },
+                    field: "razaosocialCliente", aggregates: [
+                        { field: "razaosocialCliente", aggregate: "count" },
+                        { field: "valorreceita", aggregate: "sum" },
                     ]
                 },
-                aggregate: [{ field: "razaosocialFornecedor", aggregate: "count" },
-                { field: "precoReal", aggregate: "sum" }],
+                aggregate: [{ field: "razaosocialCliente", aggregate: "count" },
+                { field: "valorreceita", aggregate: "sum" }],
             },
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
+
             columns: [
-                { field: "id", title: "ID", filterable: true, width: 50 },
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },
-                { field: "despesaCodigoDespesa", title: "Despesa", filterable: true, width: 100 },
-                { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
                 { field: "idOS", title: "OS", filterable: true, width: 100 },
-                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
-                { field: "vencimento", title: "Vencimento", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" },
-                { field: "precoReal", title: "Valor", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+                // { field: "idOS", title: "ID", filterable: true, width: 50 },
+                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 100 },
+                // { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
+                { field: "valorreceita", title: "Valor a Receber", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "conta", title: "Conta", filterable: true, width: 100 },
+                // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],
             @include('layouts/helpersview/finaltabela')
+            @include('layouts/filtradata')
 
 </script>
 

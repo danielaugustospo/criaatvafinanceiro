@@ -18,7 +18,7 @@
     <div id="app">
         @include('layouts/navbar')
         <main class="py-4" style="margin-bottom: 50px;">
-            <div class="container" >
+            <div class="m-2 justify-content-center" >
                 @yield('content')
             </div>
         </main>

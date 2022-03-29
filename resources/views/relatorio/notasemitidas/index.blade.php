@@ -1,7 +1,10 @@
 <?php 
     $intervaloCelulas = "A1:F1"; 
-    $rotaapi = "apidadosreceitaos";
-    $titulo  = "Notas Emitidas";
+    $rotaapi    = "apidadosreceitaos";
+    $titulo     = "Notas Emitidas - FORNECEDOR";
+    $campodata  = 'dataemissaoreceita';
+    $campodata2 = 'datapagamentoreceita';
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -57,20 +60,12 @@
                     ]
             },
 
-            filterable: true,
-            sortable: true,
-            resizable: true,
-            scrollable: false,
-            groupable: true,
-            pageable: {
-                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                numeric: false
-            },
+
 
             columns: [
                 { field: "idOS", title: "N° OS", aggregates: ["count"], footerTemplate: "Total de Notas: #=count#",  filterable: true, width: 30  },
-                { field: "dataemissaoreceita", title: "Data Emissão", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
-                { field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
+                { field: "dataemissaoreceita", title: "Data Emissão", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
+                //{ field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: segundoFiltroPeriodo}} },
                 { field: "nomeFormaPagamento", title: "Forma de Pag.", filterable: true, width: 60 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "pagoreceita", title: "Pago", filterable: true, width: 60 },            
@@ -78,6 +73,7 @@
                 { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },            
                 ],
                 @include('layouts/helpersview/finaltabela')
+                @include('layouts/filtradata')
 
 </script>
 

@@ -2,7 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apiconsultacontasaidentificar";
     $titulo  = "Contas a Identificar";
-    $campodata = 'dataDoPagamento';
+    $campodata = 'vencimento';
 
 ?>
 <head>
@@ -48,13 +48,8 @@
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
-                            // idOS: { type: "string" },
-                            // razaosocialFornecedor: { type: "string" },
-                            // descricaoBensPatrimoniais: { type: "string" },
-                            // nomeFormaPagamento: { type: "string" },
+                            vencimento: { type: "date" },
                             precoReal: { type: "number" },
-                            // conta: { type: "string" },
                         }
                     },
                 },
@@ -66,15 +61,15 @@
 
 
             columns: [
-                { field: "idOS", title: "N° da OS", filterable: true, width: 60 },
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "idOS", title: "N° da OS", filterable: true, width: 80 },
+                { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 90 },
-                { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 90 },
-                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 70 },
+                { field: "despesa", title: "Despesa", filterable: true, width: 120 },
+                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 80 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "notaFiscal", title: "NF", filterable: true, width: 60 },
+                { field: "notaFiscal", title: "NF", filterable: true, width: 70 },
                 { field: "pago", title: "PG", filterable: true, width: 60 },
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 60 }            
+                { field: "apelidoConta", title: "Conta", filterable: true, width: 80 }            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')

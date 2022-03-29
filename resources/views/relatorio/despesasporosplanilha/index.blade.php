@@ -41,7 +41,7 @@
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
+                            vencimento: { type: "date" },
                             precoReal: { type: "number" },
                         }
                     },
@@ -51,11 +51,12 @@
             },
 
             columns: [
-                { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "descricaoBensPatrimoniais", title: "Despesa", filterable: true, width: 90 },
-                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 90 },
-                { field: "precoReal", title: "Custo", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "pago", title: "PG", filterable: true, width: 60 },
+                { field: "vencimento", title: "Data", filterable: true, width: 15, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "despesa", title: "Despesa", filterable: true, width: 30 },
+                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 20 },
+                { field: "precoReal", title: "Custo", filterable: true, width: 15, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "idOS", title: "OS", filterable: true, width: 10 },
+                { field: "pago", title: "PG", filterable: true, width: 10 },
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
