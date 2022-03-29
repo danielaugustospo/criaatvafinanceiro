@@ -69,20 +69,36 @@
             },
 
             columns: [
-                { field: "idOS", title: "OS", aggregates: ["count"], footerTemplate: "Total de OS: #=count#",  filterable: true, width: 30  },
-                { field: "dataCriacaoOrdemdeServico", title: "Data OS", filterable: true, width: 30, format: "{0:dd/MM/yyyy}",filterable: { cell: { template: betweenFilter}} },
+                { field: "idOS", title: "OS", aggregates: ["count"], footerTemplate: "Total de OS: #=count#",  filterable: true, width: 10  },
+                { field: "dataCriacaoOrdemdeServico", title: "Data OS", filterable: true, width: 15, format: "{0:dd/MM/yyyy}",filterable: { cell: { template: betweenFilter}} },
                 // { field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
-                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 60 },
-                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 60 },
-                { field: "valorOrdemdeServico", title: "Valor do Projeto", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "custo", title: "Total de Custos", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "lucro", title: "Lucro ou Prejuízo", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "porcentagem", title: "Perc(%)", filterable: true, width: 40, decimals: 2, aggregates: ["average"], footerTemplate: "Média : #: kendo.toString(average, 'n', 'pt-BR')  # %", format: '{0:0.00} %' },            
-                { field: "status", title: "Pago", filterable: true, width: 40 },            
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 10 },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 15 },
+                { field: "valorOrdemdeServico", title: "Valor do<br>Projeto", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "custo", title: "Total de<br>Custos", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "lucro", title: "Lucro ou<br>Prejuízo", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "porcentagem", title: "Perc(%)", filterable: true, width: 10, decimals: 2, aggregates: ["average"], footerTemplate: calculaPorcentagem, format: '{0:0.00} %' },            
+                { field: "status", title: "Pago", filterable: true, width: 10 },            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
 
-</script>
+                // function calculaPorcentagem(){
+                //     var valTotalProjeto = $("#grid").data("kendoGrid").dataSource._aggregateResult.valorOrdemdeServico;
+                //     var valTotalLucro   = $("#grid").data("kendoGrid").dataSource._aggregateResult.lucro;
+
+                //     var valPorcentagem = (valTotalLucro * 100) / valTotalProjeto;
+                //     return valPorcentagem
+                // }
+
+                function calculaPorcentagem(data){
+                    var tabela = $('#grid').data('kendoGrid');
+                    
+                    // var valorPorcentagem = 100*(+data.porcentagemOS)/grid.dataSource.aggregates().porcentagemOS.sum + ' %';
+                    var valorPorcentagem = (100 * (+tabela.dataSource.aggregates().lucro.sum)) / tabela.dataSource.aggregates().valorOrdemdeServico.sum;
+                    valorPorcentagem = parseFloat(valorPorcentagem).toFixed(2)+"%";
+                    return  valorPorcentagem;
+                }
+</script>   
 
 @endsection

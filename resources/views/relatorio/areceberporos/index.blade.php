@@ -59,7 +59,6 @@
                     { field: "idOS", aggregate: "count" },
                     ]
             },
-
             columns: [
                 { field: "idOS", title: "N° OS", aggregates: ["count"], footerTemplate: "Total de Vendas Geral: #=count#",  filterable: true, width: 50  },
                 { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 65, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
@@ -72,7 +71,6 @@
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
-
 </script>
 
 

@@ -147,7 +147,7 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.despesa));
             })
         });
         $('#descricaoDespesa').select2();
@@ -245,7 +245,7 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.despesa));
             })
         });
         $('#descricaoDespesa').select2();
@@ -265,7 +265,7 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.despesa));
             })
         });
         $('#descricaoDespesaTabela').select2();

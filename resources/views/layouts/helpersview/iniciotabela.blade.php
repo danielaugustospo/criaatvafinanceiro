@@ -1,9 +1,20 @@
-$.LoadingOverlay("show");
+$.LoadingOverlay("show", {
+    image       : "",
+    progress    : true
+});
 
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "{{ route($rotaapi)}}",
+                @if(isset($urlCompleta))               
+                    url: "{{$urlCompleta}}",
+                @elseif(isset($rotaapi))
+                    url: "{{ route($rotaapi)}}",
+                @elseif(isset($urlCompletaComPeriodos))
+                    url: "{{ $urlCompletaComPeriodos}}?datainicial={{$datainicial}}&datafinal={{$datafinal}}",
+                @elseif(isset($urlContaCorrente))
+                    url: "{{ $urlContaCorrente}}?conta={{$contaSelecionada}}&datainicial={{$datainicial}}&datafinal={{$datafinal}}",
+                @endif
                 dataType: "json"
             },
         },
@@ -29,7 +40,7 @@ $.LoadingOverlay("show");
                 var sheet = e.workbook.sheets[0];
                 sheet.frozenRows = 1;
                 sheet.mergedCells = [" {{  $intervaloCelulas }} "];
-                sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
+                sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
 
                 var myHeaders = [{
                     value: "Relatório de " + document.title,
@@ -47,9 +58,11 @@ $.LoadingOverlay("show");
                 allPages: true,
                 avoidLinks: true,
                 paperSize: "A4",
-                margin: { top: "2cm", left: "1cm", right: "1cm", bottom: "1cm" },
-                landscape: true,
-                repeatHeaders: true,
+                margin: { top: "3.5cm", left: "1cm", right: "1cm", bottom: "0.5cm" },
+                
+                @if(isset($orientacao)) landscape: true, @else landscape: true, @endif
+                
+                repeatHeaders: false,
                 template: $("#page-template").html(),
                 scale: 0.8
             },
@@ -59,7 +72,7 @@ $.LoadingOverlay("show");
             },            
             sortable: true,
             resizable: true,
-            scrollable: false,
+            scrollable: true,
             groupable: true,
             columnMenu: true,
             responsible: true,

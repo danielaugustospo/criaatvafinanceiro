@@ -226,7 +226,9 @@
   
     <div class="page-template">
       <div class="header">
-        <div style="float: right">Page #: pageNum # of #: totalPages #</div>
+        <div style="float: right">Página #: pageNum # de #: totalPages #</div>
+        <img src="{{ env('ASSET_URL') }}img/logoPRETO-criaatvaPRETOWHITE.png" width="80" alt="" srcset="">
+
         Relatório de #: document.title # 
       </div>
       <div class="watermark">CRIAATVA</div>

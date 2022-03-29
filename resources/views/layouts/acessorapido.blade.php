@@ -13,7 +13,7 @@
     <!-- {{$acessarArea = "Acessar área de "}} -->
     {{$acessarArea = " "}}
     {{$titulo1 = "Ordem de Serviços"}}
-    {{$titulo2 = "Contas"}}
+    {{$titulo2 = "Extrato Contas"}}
     {{$titulo3 = "Relatórios"}}
     {{$titulo4 = "Clientes"}}
     {{$titulo5 = "Fornecedores"}}
@@ -40,23 +40,25 @@
     @endcan
 
 </div>
-    <div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;">
+
+<div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;">
         @can('conta-list')  
-
-        <a href="{{ route('contas.index') }}">
-
+<!-- Button trigger modal -->
+{{-- <button type="button" data-toggle="modal" data-target="#exampleModalCenter"> --}}
+        <a data-toggle="modal" data-target="#exampleModalCenter" style="cursor: pointer;">
         <div class="card-headernew d-flex justify-content-center"><h4 class="pt-4">{{$titulo2}}</h4></div>
         <div class="card-body mt-1"></div>
         <div class="row col-sm-12">
             <div class="col-sm-7 row">
-            <h5 class="ml-5 pt-2 card-title fontenormal">Acessar</h5>
-
+                <h5 class="ml-5 pt-2 card-title fontenormal">Acessar</h5>
+                
             </div>
             <div class="col-sm-5">
                 <img src="img/credit-card.png" style="width: 70%;" alt="">
             </div>
         </div>
-    </a>
+    {{-- </button> --}}
+    </a> 
 @endcan
     </div>
     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">

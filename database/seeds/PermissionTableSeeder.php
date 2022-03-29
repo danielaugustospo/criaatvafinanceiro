@@ -136,6 +136,9 @@ class PermissionTableSeeder extends Seeder
             // 'pedidocompra-edit',
             // 'pedidocompra-delete',
             // 'pedidocompra-analise',
+
+            // 'visualiza-contacorrente',
+            // 'visualiza-relatoriogeral',
         ];
 
 

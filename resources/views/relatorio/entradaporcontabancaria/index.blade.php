@@ -1,6 +1,8 @@
 <?php 
     $intervaloCelulas = "A1:F1"; 
-    $rotaapi = "apiordemdeservicorecebidas";
+    // $rotaapi = "apiordemdeservicorecebidas";
+    $rotaapi = "apientradaporcontabancaria";
+    
     $titulo  = "Entrada Por Conta Bancária";
     $campodata = 'datapagamentoreceita';
 
@@ -73,7 +75,8 @@
                 { field: "idosreceita", title: "N° OS", filterable: true, width: 60 },
                 { field: "descricaoreceita", title: "Receita", filterable: true, width: 100 },
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
-                { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' }
+                { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "conta", title: "Conta", filterable: true, width: 100 },
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

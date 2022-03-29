@@ -27,16 +27,16 @@
                     field: "dados"
                 }],
                 aggregate: [
-                    { field: "grupoDespesa", aggregate: "count" },
+                    { field: "despesaCodigoDespesa", aggregate: "count" },
                     { field: "apelidoConta", aggregate: "count" },
                     { field: "precoReal", aggregate: "sum" },
                     { field: "percentual", aggregate: "sum" }]
             },
             columns: [
-                { field: "idOS", title: "OS", filterable: true, width: 10 },
-                { field: "grupoDespesa", title: "Grupo", filterable: true, width: 120 },
-                { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "percentual", title: "Perc(%)", filterable: true, width: 60, footerTemplate: "100,00%", template:template }
+                { field: "idOS", title: "OS", filterable: true, width: 20 },
+                { field: "despesaCodigoDespesa", title: "Despesa", filterable: true, width: 30 },
+                { field: "precoReal", title: "Valor", filterable: true, width: 30, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "percentual", title: "Perc(%)", filterable: true, width: 20, footerTemplate: "100,00%", template:template }
             ],                
             @include('layouts/helpersview/finaltabela')
 

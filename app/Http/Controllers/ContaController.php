@@ -624,23 +624,14 @@ class ContaController extends Controller
     }
     public function extratoConta(Request $request)
     {
-        $consulta = $this->consultaExtratoConta();
+        // $consulta = $this->consultaExtratoConta();
+        $contaSelecionada = $request->get('conta');
+        $datainicial = $request->get('datainicial');
+        $datafinal = $request->get('datafinal');
 
-
-
-        if ($request->ajax()) {
-
-
-            return Datatables::of($consulta)
-                ->addIndexColumn()
-                // ->rawColumns(['action'])
-                ->make(true);
-        } else {
-            // $data = Conta::orderBy('id', 'DESC')->paginate(5);
-            return view('contacorrente.extratoConta', compact('consulta'))
-                ->with('i', ($request->input('page', 1) - 1) * 5);
-        }
+        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal'));
     }
+
     public function tabelaExtratoConta(Request $request)
     {
 

@@ -3,7 +3,7 @@
     $rotaapi = "apidespesasporos";
     $titulo  = "Nota Fiscal - Fornecedor";
     $campodata = 'dataDoPagamento';
-
+    $orientacao = 1;
 ?>
 
 <head>
@@ -57,23 +57,23 @@
                 },
 
                 group: {
-                    field: "notasfiscalfornecedor", dir: "asc"
+                    field: "notaFiscal", dir: "asc"
                 },
                 aggregate: [
-                    { field: "notasfiscalfornecedor", aggregate: "count" },
+                    { field: "notaFiscal", aggregate: "count" },
                     { field: "apelidoConta", aggregate: "count" },
                     { field: "precoReal", aggregate: "sum" }]
             },
 
             columns: [
-                { field: "idOS", title: "OS", filterable: true, width: 60 },
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100 },
-                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
-                { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "pago", title: "PG", filterable: true, width: 120 },
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 60 },
-                { field: "notasfiscalfornecedor", title: "Nota Fiscal", filterable: true, width: 60 },
+                { field: "idOS", title: "OS", filterable: true, width: 20 },
+                { field: "dataDoPagamento", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 40 },
+                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 30 },
+                { field: "precoReal", title: "Valor", filterable: true, width: 30, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "pago", title: "PG", filterable: true, width: 20 },
+                { field: "apelidoConta", title: "Conta", filterable: true, width: 30 },
+                { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 30 },
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')
