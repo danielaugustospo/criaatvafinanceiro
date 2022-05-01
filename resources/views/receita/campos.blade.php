@@ -61,7 +61,7 @@
         <select name="pagoreceita" id="pagoreceita" style="padding:4px;" class="form-control" required {{$variavelDisabledNaView}}>
             @if (Request::path() == 'receita/create')
             <option value="N">Não</option>
-            <option value="S">Sim</option>
+            <option value="S" selected>Sim</option>
             @else
             <option value="S" {{$receita->pagoreceita == 'S'?' selected':''}}>Sim</option>
             <option value="N" {{$receita->pagoreceita == 'N'?' selected':''}}>Não</option>

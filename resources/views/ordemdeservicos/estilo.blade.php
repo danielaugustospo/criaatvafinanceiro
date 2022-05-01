@@ -1,4 +1,14 @@
 <style>
+    table {
+        /* display: block !important; */
+        overflow-x: auto !important;
+        /* white-space: nowrap !important; */
+        
+    }
+    table tbody {
+        /* display: table !important; */
+        width: auto !important;
+    }
     .styled-table {
         border-collapse: collapse;
         margin: 25px 0;

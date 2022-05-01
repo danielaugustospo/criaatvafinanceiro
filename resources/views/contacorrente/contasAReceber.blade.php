@@ -1,20 +1,25 @@
+<?php 
+    $intervaloCelulas = "A1:F1"; 
+    $rotaapi = "apicontasareceber";
+    $titulo  = "Contas a Receber";
+    $campodata = 'dataCriacaoOrdemdeServico';
+
+?>
+<head>
+    <meta charset="utf-8">
+    <title>{{$titulo}}</title>
+</head>
+
 @extends('layouts.app')
 
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Contas a Receber</h2>
-        </div>
-        <div class="d-flex justify-content-between pull-right">
-            @can('receita-create')
-            <a class="btn btn-success" href="{{ route('receita.create') }}">Cadastrar Receita</a>
-            @endcan
-            @include('layouts/exibeFiltro')
+            <h2 class="text-center">Relatório de {{$titulo}}</h2>
         </div>
     </div>
 </div>
-
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -23,110 +28,52 @@
 @endif
 
 <hr>
-@include('contacorrente/filtroindex')
 
-
-<table id="data-table" class="table table-bordered data-table">
-    <thead>
-        <tr>
-            <th class="text-center">Data</th>
-            <th class="text-center">OS</th>
-            <th class="text-center">Cliente</th>
-            <th class="text-center">Evento</th>
-            <th width="text-center" class="noExport">Valor a Receber</th>
-            <th width="text-center" class="noExport">Conta</th>
-            <th width="text-center" class="noExport">NF</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="filter-menu"></div>
+<br /><br />
+<div id="grid"></div>
 
 <script>
-    @include('layouts/daterange')
 
+@include('layouts/helpersview/iniciotabela')
 
-    $('#btnReveal').hide();
-
-    $('#btnReveal').on('click', function() {
-        $('#areaTabela').show('#div_BuscaPersonalizada');
-        $('#btnReveal').hide();
-        $('#btnEsconde').show();
-        $('#div_BuscaPersonalizada').show();
-    });
-
-    $('#btnEsconde').on('click', function() {
-        $('#areaTabela').hide('#div_BuscaPersonalizada');
-        $('#btnEsconde').hide();
-        $('#btnReveal').show();
-        $('input[name=buscaData]').val('');
-        $('input[name=buscaOS]').val('');
-        $('input[name=buscaCliente]').val('');
-        $('input[name=buscaEvento]').val('');
-        $('input[name=buscaValor]').val('');
-        $('input[name=buscaConta]').val('');
-        $('input[name=buscaNF]').val('');
-        $('input[name=buscaDataInicio]').val('');
-        $('input[name=buscaDataFim]').val('');
-        $('input[name=pesquisar]').click();
-    });
-    var table = $('#data-table').DataTable({
-
-                ajax: {
-                    url: "{{ route('tabelaContasAReceber') }}",
-                    data: function(d) {
-                            d.buscaData         = $('.buscaData').val(),
-                            d.buscaOS           = $('.buscaOS').val(),
-                            d.buscaCliente      = $('.buscaCliente').val(),
-                            d.buscaEvento       = $('.buscaEvento').val(),
-                            d.buscaValor        = $('.buscaValor').val(),
-                            d.buscaConta        = $('.buscaConta').val(),
-                            d.buscaNF           = $('.buscaNF').val(),
-                            d.buscaDataInicio   = $('.buscaDataInicio').val();
-                            d.buscaDataFim      = $('.buscaDataFim').val();
-
-                        d.search = $('input[type="search"]').val()
-                    }
+            dataSource: {
+                data: data,
+                pageSize: 15,
+                schema: {
+                    model: {
+                        fields: {
+                            valorreceita: { type: "number" },
+                            razaosocialCliente: { type: "string" },
+                            dataCriacaoOrdemdeServico: { type: "date" },
+                        }
+                    },
                 },
-                columns: [{
-                        data: 'vencimento',
-                        name: 'vencimento',
-                        render: $.fn.dataTable.render.moment('DD/MM/YYYY')
-                    },
-                    {
-                        data: 'idOS',
-                        name: 'idOS'
-                    },
-                    {
-                        data: 'nomeCliente',
-                        name: 'nomeCliente'
-                    },
-                    {
-                        data: 'evento',
-                        name: 'evento'
-                    },
-                    {
-                        data: 'preco',
-                        name: 'preco',
-                        render: $.fn.dataTable.render.number('.', ',', 2)
-                    },
-                    {
-                        data: 'agencia',
-                        name: 'agencia'
-                    },
-                    {
-                        data: 'notaFiscal',
-                        name: 'notaFiscal'
-                    }
-                ],
 
-                @include('layouts/includeTabela')
+                group: {
+                    field: "razaosocialCliente", aggregates: [
+                        { field: "razaosocialCliente", aggregate: "count" },
+                        { field: "valorreceita", aggregate: "sum" },
+                    ]
+                },
+                aggregate: [{ field: "razaosocialCliente", aggregate: "count" },
+                { field: "valorreceita", aggregate: "sum" }],
+            },
 
+            columns: [
+                { field: "idOS", title: "OS", filterable: true, width: 100 },
+                // { field: "idOS", title: "ID", filterable: true, width: 50 },
+                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 100 },
+                // { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
+                { field: "valorreceita", title: "Valor a Receber", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "conta", title: "Conta", filterable: true, width: 100 },
+                // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+            ],
+            @include('layouts/helpersview/finaltabela')
+            @include('layouts/filtradata')
 
-                $("#pesquisar").click(function() {
-                    table.draw();
-                    // preventDefault();
-                });
 </script>
 
 @endsection

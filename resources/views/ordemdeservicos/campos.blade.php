@@ -12,7 +12,7 @@
 
 .rwd-table tr:first-child {
   border-top: none;
-  background: #428bca;
+  /* background: #428bca; */
   color: #fff;
 }
 
@@ -181,6 +181,7 @@ h3:after {
         </select>
     </div>
 
+
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!}
@@ -206,6 +207,15 @@ h3:after {
     </div>
 </div>
 
+<div class="form-group row">
+    <label for="obsOrdemdeServico" class="col-sm-2 col-form-label mr-3">Serviço c/ Fator R</label>
+    {{Form::radio('comFatorR', 0, null, ['class'=>'mt-3']) }} 
+    <label for="obsOrdemdeServico" class="col-sm-1  mt-1 pl-0 col-form-label">Não</label>
+
+    {{Form::radio('comFatorR', 1,  null, ['class'=>'mt-3']) }}
+    <label for="obsOrdemdeServico" class="col-sm-1 mt-1 pl-0 col-form-label">Sim</label>
+</div>
+
 
 {!! Form::hidden('ehcompra', '0', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
@@ -223,16 +233,16 @@ h3:after {
 <table class="styled-table rwd-table"  id="tabelaPagamento">
     <thead>
         <tr class="col-sm-10">
-            <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly>
+            {{-- <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly> --}}
             {{-- <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas" readonly style="cursor:pointer;"> --}}
 
             <th class="col-sm-2" style="width:20%;">Forma Pagamento</th>
-            <th class="col-sm-1" style="width:-webkit-fill-available;">Valor Parcela</th>
+            <th class="col-sm-1" style="width:-webkit-fill-available;"><nobr>Valor Parcela</nobr></th>
             <th class="col-sm-1" style="width:-webkit-fill-available;">Pago</th>
             <th class="col-sm-2" style="width:-webkit-fill-available;">Data Emissão NF</th>
             <th class="col-sm-2" style="width:-webkit-fill-available;">Data de Pagamento</th>
             <th class="col-sm-1" style="width:-webkit-fill-available;">Conta</th>
-            <th class="col-sm-1" style="width:-webkit-fill-available;">Nota <br>Fiscal</th>
+            <th class="col-sm-1" style="width:-webkit-fill-available;"><nobr>Nota Fiscal<nobr></th>
             <th></th>
         </tr>
     </thead>
@@ -263,7 +273,6 @@ h3:after {
 
 {!! Form::hidden('dataOrdemdeServico', '00-00-0000', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-{!! Form::hidden('clienteOrdemdeServico', 'Campo Nome da OS', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('servicoOrdemdeServico', 'Campo Serviço', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 
@@ -273,24 +282,19 @@ h3:after {
 
 <style>
     input,
-    select {
+    select,
+    textarea {
         text-transform: uppercase;
     }
 </style>
 
 <script>
-
-
     function pegaIdFornecedor() {
         var selecionado = $('#pagoreceita').find(':selected').val();
     }
 
-
-
     $("#btnAddColumn").click(function() {
         // $("#habilita_receita").clone(true).appendTo("#novaDivReceita");
-
-
         var row = $("#tabelaPagamento tr:last");
 
         row.find(".selecionaComInput").each(function(index) {
@@ -308,51 +312,54 @@ h3:after {
         // console.log(par);
 
         var tr = $(this).closest('tr');
-console.log(tr.attr(newrow));        
-// colore_tabela();
+        console.log(tr.attr(newrow));        
+        // colore_tabela();
     });
 
-function idSemValor(){
-  $('input.idReceita').val('000000');
-
-}
-
-$('body').on('click', '.duplicar', function() {
-        var row = $(this).closest('tr');
-        row.find(".selecionaComInput").each(function(index) {
-            $(this).select2('destroy');
-        });
-        row.find(".campo-moeda").each(function(index) {
-            $(this).maskMoney('destroy');
-        });
-        var newrow = row.clone();
-        $("#tabelaPagamento").append(newrow);
-        $("select.selecionaComInput").select2();
-        // $("input.campo-moeda").maskMoney();
-        $('input.campo-moeda')
-            .maskMoney({
-                prefix: 'R$ ',
-                allowNegative: false,
-                thousands: '.',
-                decimal: ',',
-                affixesStay: false
-            });
-            newrow.find(".idReceita").each(function(index) {
-            $(this).val('novo');
-        });
-        // $('input[type=text].idReceita').val('novo');
-    });
-
-    function removerCampos() {
-        $('.novaDivReceita').empty();
+    function idSemValor(){
+      $('input.idReceita').val('000000');
     }
 
-    $('body').on('click', '.deletar', function() {
-        var $tr = $(this).closest('tr');
-        if ($tr.attr('class') == 'linhaTabela1') {
-            $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
-        } else {
-            $tr.remove();
-        }
+  $('body').on('click', '.duplicar', function() {
+    var row = $(this).closest('tr');
+    row.find(".selecionaComInput").each(function(index) {
+            
+          $(this).select2('destroy');
+        
+      // $(this).select2('destroy');
+      // alert(alerta);
     });
+    row.find(".campo-moeda").each(function(index) {
+        $(this).maskMoney('destroy');
+    });
+    var newrow = row.clone();
+    $("#tabelaPagamento").append(newrow);
+    $("select.selecionaComInput").select2();
+    // $("input.campo-moeda").maskMoney();
+    $('input.campo-moeda')
+        .maskMoney({
+            prefix: 'R$ ',
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: false
+        });
+        newrow.find(".idReceita").each(function(index) {
+        $(this).val('novo');
+    });
+    $('input[type=text].idReceita').val('novo');
+  });
+
+  function removerCampos() {
+      $('.novaDivReceita').empty();
+  }
+
+  $('body').on('click', '.deletar', function() {
+      var $tr = $(this).closest('tr');
+      if ($tr.attr('class') == 'linhaTabela1') {
+          $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
+      } else {
+          $tr.remove();
+      }
+  });
 </script>

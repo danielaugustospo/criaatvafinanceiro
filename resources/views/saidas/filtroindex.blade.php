@@ -32,7 +32,6 @@
             </div>
             <div class="row">
                 <label for="" class="col-sm-1">Id Bem Patrimonial</label>
-                {{-- <input type="text" name="idCodigoDespesas" class="col-sm-4 form-control buscaIdCodigoDespesas" placeholder="Código de Despesas"> --}}
                 <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscaidbenspatrimoniais" name="idbenspatrimoniais" id="idbenspatrimoniais">
                     <option value="">Listar todos</option>
                     @foreach ($listaSaidas as $saidas)

@@ -6,12 +6,9 @@
                 <nobr>NOTA FISCAL</nobr>
             </th>
             <th>DESCRIÇÃO</th>
-            <th>Quantidade</th>
+            <th>UNIDADE</th>
             <th>
                 <nobr>VALOR UNITÁRIO</nobr>
-            </th>
-            <th>
-                <nobr>VALOR LÍQUIDO</nobr>
             </th>
             <th>
                 <nobr>VALOR PARCELA</nobr>
@@ -25,8 +22,21 @@
         <tr name="teste">
             <td data-th="OS">
                 <select class="form-control selecionaComInput" name="idOSTabela[]" id="">
-                    @foreach ($listaOrdemDeServicos as $os)
+                    {{-- @foreach ($listaOrdemDeServicos as $os)
                     <option value="{{ $os->id }}">{{ $os->id }}</option>
+                    @endforeach
+                     --}}
+                    <option value="CRIAATVA">SEM OS</option>
+                    @foreach ($todasOSAtivas as $listaOS)
+                      @isset($despesa)
+                        @if ($despesa->idOS == $listaOS->id)
+                          <option value="{{$listaOS->id}}" selected>{{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}</option>
+                          @if ($despesa->idOS == 'CRIAATVA')
+                            <option value="CRIAATVA" selected>SEM OS</option>              
+                          @endif
+                        @endif
+                      @endisset
+                          <option value="{{$listaOS->id}}">{{$listaOS->id}}</option>
                     @endforeach
                 </select>
             </td>
@@ -48,7 +58,7 @@
                     </select>
                 </div>
             </td>
-            <td data-th="QUANTIDADE">
+            <td data-th="UNIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
@@ -56,28 +66,24 @@
                 {!! Form::text('valorUnitarioTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control campo-moeda valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
-            <td data-th="VALOR LÍQUIDO">
-                {!! Form::text('valorLiquidoTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control campo-moeda valorliquido', 'value' => '0,00', 'maxlength' => '100',
-                $variavelReadOnlyNaView]) !!}
-            </td>
+
             <td data-th="PARCELA">
-                {!! Form::number('valorparcelaTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class'
-                => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                {!! Form::text('valorparcelaTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class'
+                => 'form-control campo-moeda valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
             <td data-th="VENCIMENTO">
                 {!! Form::date('vencimentoTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
             <td>
-                <select name="pago[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
+                <select name="pagoTabela[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
                     {{$variavelDisabledNaView}}>
                     @if (Request::path() == 'despesas/create')
                     <option value="N">Não</option>
                     <option value="S">Sim</option>
                     @else
-                    <option value="1" {{$despesa->pago == '1'?' selected':''}}>Sim</option>
-                    <option value="0" {{$despesa->pago == '0'?' selected':''}}>Não</option>
+                    <option value="N" {{$despesa->pago == 'N'?' selected':''}}>Não</option>
+                    <option value="S" {{$despesa->pago == 'S'?' selected':''}}>Sim</option>
                     @endif
                 </select>
             </td>

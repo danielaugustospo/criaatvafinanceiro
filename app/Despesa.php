@@ -25,7 +25,6 @@ class Despesa extends Model
      */
     protected $fillable = [
 
-    'idCodigoDespesas',
     'idOS',
     'idDespesaPai',
     'descricaoDespesa',
@@ -40,16 +39,15 @@ class Despesa extends Model
     'nRegistro',
     'valorEstornado',
     'vencimento',
-    'totalPrecoReal',
-    'totalPrecoCliente',
-    // 'lucro',
+    'vale',
+    'datavale',
     'despesaFixa',
     'notaFiscal',
     'idBanco',
     'cheque',
     'ativoDespesa',
     'excluidoDespesa',
-    'tipoFornecedor',
+    'idFuncionario',
     'idAlteracaoUsuario',
     'idAutor',
 

@@ -2,6 +2,8 @@
 
 
 @section('content')
+{!! Form::model($ordemdeservico, ['method' => 'PATCH','route' => ['ordemdeservicos.update', $ordemdeservico->id]]) !!}
+
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
@@ -9,10 +11,16 @@
         </div>
         <div class="pull-right">
             <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
+            <a class="btn btn-success" href="{{ route('ordemdeservicos.show',$ordemdeservico->id) }}">Financeiro</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
     </div>
 </div>
 
+<?php $contadorReceitas =  count($receitasPorOS); 
+    $readonlyOrNo = " ";
+    $disabledOrNo = " ";
+?>
 
 @if (count($errors) > 0)
 <div class="alert alert-danger">
@@ -26,7 +34,6 @@
 @endif
 
 
-{!! Form::model($ordemdeservico, ['method' => 'PATCH','route' => ['ordemdeservicos.update', $ordemdeservico->id]]) !!}
 
 @include('ordemdeservicos/campos')
 
@@ -88,7 +95,6 @@
 
 {!! Form::hidden('dataOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
-{!! Form::hidden('clienteOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 {!! Form::hidden('servicoOrdemdeServico', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
 
 {!! Form::hidden('dataExclusaoOrdemdeServico', '00', ['placeholder' => 'Data Exclusão', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'dataExclusaoOrdemdeServico']) !!}

@@ -32,8 +32,8 @@
         <thead>
             <tr>
                 <th class="text-center">Id</th>
-                <th class="text-center">Apelido</th>
                 <th class="text-center">Nome</th>
+                <th class="text-center">Apelido</th>
                 {{-- <th class="text-center">Id Banco</th> --}}
 
                 <th width="100px" class="noExport">Ações</th>
@@ -182,6 +182,7 @@
         table.draw();
     });
 </script>
+
 
 
 

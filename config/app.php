@@ -2,6 +2,7 @@
 
 return [
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -178,6 +179,9 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Geekcom\ValidatorDocs\ValidatorProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class, //DataTables
+        // PhpOffice\PhpSpreadsheet\Spreadsheet::class,
+        // PhpOffice\PhpSpreadsheet\Writer\Xlsx::class,
+        // PhpOffice\PhpSpreadsheet\IOFactory::class,
 
     ],
 

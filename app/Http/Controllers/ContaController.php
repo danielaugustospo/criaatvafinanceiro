@@ -207,7 +207,7 @@ class ContaController extends Controller
     public function update(Request $request, Conta $conta)
     {
         $request->validate([
-            'idBanco' => 'required',
+            // 'idBanco' => 'required',
             'apelidoConta'  => 'required',
 
             'nomeConta' => 'required',
@@ -624,25 +624,41 @@ class ContaController extends Controller
     }
     public function extratoConta(Request $request)
     {
-        $consulta = $this->consultaExtratoConta();
+        // $consulta = $this->consultaExtratoConta();
+        $contaSelecionada = $request->get('conta');
+        $datainicial = $request->get('datainicial');
+        $datafinal = $request->get('datafinal');
 
-        if ($request->ajax()) {
+        $modelConta = new Conta();
 
+        $complemento = "WHERE idconta ='".$contaSelecionada."' and dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."'";
+        $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
+        $extrato = DB::select($stringQueryExtratoConta);
 
-            return Datatables::of($consulta)
-                ->addIndexColumn()
-                // ->rawColumns(['action'])
-                ->make(true);
-        } else {
-            // $data = Conta::orderBy('id', 'DESC')->paginate(5);
-            return view('contacorrente.extratoConta', compact('consulta'))
-                ->with('i', ($request->input('page', 1) - 1) * 5);
+        $tamExtrato = sizeof($extrato);
+        if($tamExtrato > 0 && $tamExtrato != null){
+            $tamExtrato = $tamExtrato - 1;
+    
+            $conta   = $extrato[0]->conta;
+                       
+            $saldoFinal     = $extrato[$tamExtrato]->saldo;
+            $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
+
         }
+        else{
+            $conta   = 'Indefinido';
+            $saldoInicial   = 0;
+            $saldoFinal     = 0;
+        }
+
+        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal','conta','saldoInicial','saldoFinal'));
     }
+
     public function tabelaExtratoConta(Request $request)
     {
 
         $consulta = $this->consultaExtratoConta();
+        
 
         return Datatables::of($consulta)
             ->filter(function ($query) use ($request) {
@@ -699,7 +715,8 @@ class ContaController extends Controller
                 $consulta->where('pagoreceita', '=', 'S')
                     ->orWhere('pagoreceita', '=', '1');
             });
-
         return $consulta;
     }
+
+
 }

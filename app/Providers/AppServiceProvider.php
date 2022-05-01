@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 
-
+use Illuminate\Support\Facades\Auth;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -30,9 +30,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, idCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
+        $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
+        $listaDescricaoDespesa = DB::select('SELECT id, descricaoDespesa FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) ');
+        view()->share('listaDescricaoDespesa', $listaDescricaoDespesa);
 
         $listaGrupoDespesas = DB::select('SELECT * FROM grupodespesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaGrupoDespesas', $listaGrupoDespesas);
@@ -40,8 +42,18 @@ class AppServiceProvider extends ServiceProvider
         $listaCodigoDespesa = DB::select('SELECT * FROM codigodespesas WHERE (excluidoCodigoDespesa = 0) and (ativoCodigoDespesa = 1) order by id');
         view()->share('listaCodigoDespesa', $listaCodigoDespesa);
 
-        $listaOrdemDeServicos = DB::select('SELECT * FROM ordemdeservico WHERE (ativoOrdemdeServico = 1) AND (excluidoOrdemdeServico = 0)');
+        // $codigoDespesaSelect = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
+        // where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
+        // view()->share('codigoDespesaSelect', $codigoDespesaSelect);
+
+
+        $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
+        from ordemdeservico ods 
+        left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');
         view()->share('listaOrdemDeServicos', $listaOrdemDeServicos);
+
+        $pegaidOS = DB::select('SELECT id from ordemdeservico');
+        view()->share('pegaidOS', $pegaidOS);
 
         $listaReceitas = DB::select('SELECT * FROM receita');
         view()->share('listaReceitas', $listaReceitas);
@@ -89,10 +101,10 @@ class AppServiceProvider extends ServiceProvider
         view()->share('listaFuncionarios', $listaFuncionarios);
 
         $listaContasAPagar =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
-        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.clienteOrdemdeServico,
+        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.idClienteOrdemdeServico,
         cli.id as idCliente, cli.nomeCliente, cli.agenciaCliente1 as agencia1, cli.agenciaCliente2 as agencia2, cli.agenciaCliente3 as agencia3
         from despesas d, ordemdeservico os, clientes cli
-        where (os.clienteOrdemdeServico = cli.id)
+        where (os.idClienteOrdemdeServico = cli.id)
         and (d.idOS = os.id) 
         and (d.pago = "N")');
         view()->share('listaContasAPagar', $listaContasAPagar);
@@ -101,11 +113,43 @@ class AppServiceProvider extends ServiceProvider
         from receita r, conta c, ordemdeservico os, clientes cli
         where pagoreceita = 'N' and r.contareceita = c.id 
         and r.idosreceita = os.id
-        and os.clienteOrdemdeServico = cli.id");
+        and os.idClienteOrdemdeServico = cli.id");
         view()->share('listaContasAReceber', $listaContasAReceber);
 
         $listaReceitasEDespesas = DB::select('SELECT r.id, r.valorreceita from receita r union all (select d.id, d.precoReal  from despesas d)');
         view()->share('listaReceitasEDespesas', $listaReceitasEDespesas);
+    
+        $consultaNotasRecibosProvider = DB::select('SELECT distinct * from view_notasrecibos order by Emissao ASC');
+        view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
+
+        $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
+        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);    
+    }
+
+    public static function pegaCountPedidoAprovado($id)
+    {
+        $countpedidoaprovado = DB::select("SELECT count(id) as countpedidoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	
+        and ped_excluidopedido = 0 
+        and ped_aprovado = 1
+        and ped_novanotificacao = 1");
+        return $countpedidoaprovado;
+    }
+
+    public static function pegaCountPedidoNaoAprovado($id)
+    {
+        $countpedidonaoaprovado = DB::select("SELECT count(id) as countpedidonaoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	and ped_excluidopedido = 0 and p.ped_aprovado = 0");
+        return $countpedidonaoaprovado;
+    }
+
+    public static function pegaCountPedidoAguardandoAprovacao()
+    {
+        $countpedidoaguardandoaprov = DB::select('SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = 3');
+        return $countpedidoaguardandoaprov;
+    }
+    public static function getOptionDefault()
+    {
+        $optionSelect = "<option selected>Qual</option>";
+        view()->share('optionSelect', $optionSelect);    
     }
 
 }

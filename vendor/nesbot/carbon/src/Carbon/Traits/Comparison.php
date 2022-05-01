@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Carbon\Traits;
 
 use BadMethodCallException;
@@ -31,6 +32,12 @@ use InvalidArgumentException;
  */
 trait Comparison
 {
+    /** @var bool */
+    protected $endOfTime = false;
+
+    /** @var bool */
+    protected $startOfTime = false;
+
     /**
      * Determines if the instance is equal to another
      *
@@ -441,7 +448,7 @@ trait Comparison
      */
     public function isWeekend()
     {
-        return in_array($this->dayOfWeek, static::$weekendDays);
+        return \in_array($this->dayOfWeek, static::$weekendDays);
     }
 
     /**
@@ -616,7 +623,7 @@ trait Comparison
 
         if (!isset($units[$unit])) {
             if (isset($this->$unit)) {
-                return $this->$unit === $this->resolveCarbon($date)->$unit;
+                return $this->resolveCarbon($date)->$unit === $this->$unit;
             }
 
             if ($this->localStrictModeEnabled ?? static::isStrictModeEnabled()) {
@@ -710,8 +717,8 @@ trait Comparison
      */
     public function isDayOfWeek($dayOfWeek)
     {
-        if (is_string($dayOfWeek) && defined($constant = static::class.'::'.strtoupper($dayOfWeek))) {
-            $dayOfWeek = constant($constant);
+        if (\is_string($dayOfWeek) && \defined($constant = static::class.'::'.strtoupper($dayOfWeek))) {
+            $dayOfWeek = \constant($constant);
         }
 
         return $this->dayOfWeek === $dayOfWeek;
@@ -862,28 +869,26 @@ trait Comparison
         // E.g. "1975-5-1" (Y-n-j) will still be parsed correctly when "Y-m-d" is supplied as the format.
         // To ensure we're really testing against our desired format, perform an additional regex validation.
 
-        // Preg quote, but remove escaped backslashes since we'll deal with escaped characters in the format string.
-        $quotedFormat = str_replace('\\\\', '\\', preg_quote($format, '/'));
+        return self::matchFormatPattern((string) $date, preg_quote((string) $format, '/'), static::$regexFormats);
+    }
 
-        // Build the regex string
-        $regex = '';
-
-        for ($i = 0; $i < strlen($quotedFormat); ++$i) {
-            // Backslash – the next character does not represent a date token so add it on as-is and continue.
-            // We're doing an extra ++$i here to increment the loop by 2.
-            if ($quotedFormat[$i] === '\\') {
-                $char = $quotedFormat[++$i];
-                $regex .= $char === '\\' ? '\\\\' : $char;
-
-                continue;
-            }
-
-            $regex .= strtr($quotedFormat[$i], static::$regexFormats);
-        }
-
-        $regex = preg_replace('#(?<!\\\\)((?:\\\\{2})*)/#', '$1\\/', $regex);
-
-        return (bool) @preg_match('/^'.$regex.'$/', $date);
+    /**
+     * Checks if the (date)time string is in a given format.
+     *
+     * @example
+     * ```
+     * Carbon::hasFormatWithModifiers('31/08/2015', 'd#m#Y'); // true
+     * Carbon::hasFormatWithModifiers('31/08/2015', 'm#d#Y'); // false
+     * ```
+     *
+     * @param string $date
+     * @param string $format
+     *
+     * @return bool
+     */
+    public static function hasFormatWithModifiers($date, $format): bool
+    {
+        return self::matchFormatPattern((string) $date, (string) $format, array_merge(static::$regexFormats, static::$regexFormatModifiers));
     }
 
     /**
@@ -913,7 +918,7 @@ trait Comparison
             return false;
         }
 
-        return static::hasFormat($date, $format);
+        return static::hasFormatWithModifiers($date, $format);
     }
 
     /**
@@ -945,7 +950,7 @@ trait Comparison
         $tester = trim($tester);
 
         if (preg_match('/^\d+$/', $tester)) {
-            return $this->year === intval($tester);
+            return $this->year === (int) $tester;
         }
 
         if (preg_match('/^\d{3,}-\d{1,2}$/', $tester)) {
@@ -960,9 +965,9 @@ trait Comparison
 
         /* @var CarbonInterface $max */
         $median = static::parse('5555-06-15 12:30:30.555555')->modify($modifier);
-        $current = $this->copy();
+        $current = $this->avoidMutation();
         /* @var CarbonInterface $other */
-        $other = $this->copy()->modify($modifier);
+        $other = $this->avoidMutation()->modify($modifier);
 
         if ($current->eq($other)) {
             return true;
@@ -997,7 +1002,7 @@ trait Comparison
         ];
 
         foreach ($units as $unit => [$minimum, $startUnit]) {
-            if ($median->$unit === $minimum) {
+            if ($minimum === $median->$unit) {
                 $current = $current->startOf($startUnit);
 
                 break;
@@ -1005,5 +1010,61 @@ trait Comparison
         }
 
         return $current->eq($other);
+    }
+
+    /**
+     * Checks if the (date)time string is in a given format with
+     * given list of pattern replacements.
+     *
+     * @example
+     * ```
+     * Carbon::hasFormat('11:12:45', 'h:i:s'); // true
+     * Carbon::hasFormat('13:12:45', 'h:i:s'); // false
+     * ```
+     *
+     * @param string $date
+     * @param string $format
+     * @param array  $replacements
+     *
+     * @return bool
+     */
+    private static function matchFormatPattern(string $date, string $format, array $replacements): bool
+    {
+        // Preg quote, but remove escaped backslashes since we'll deal with escaped characters in the format string.
+        $regex = str_replace('\\\\', '\\', $format);
+        // Replace not-escaped letters
+        $regex = preg_replace_callback(
+            '/(?<!\\\\)((?:\\\\{2})*)(['.implode('', array_keys($replacements)).'])/',
+            function ($match) use ($replacements) {
+                return $match[1].strtr($match[2], $replacements);
+            },
+            $regex
+        );
+        // Replace escaped letters by the letter itself
+        $regex = preg_replace('/(?<!\\\\)((?:\\\\{2})*)\\\\(\w)/', '$1$2', $regex);
+        // Escape not escaped slashes
+        $regex = preg_replace('#(?<!\\\\)((?:\\\\{2})*)/#', '$1\\/', $regex);
+
+        return (bool) @preg_match('/^'.$regex.'$/', $date);
+    }
+
+    /**
+     * Returns true if the date was created using CarbonImmutable::startOfTime()
+     *
+     * @return bool
+     */
+    public function isStartOfTime(): bool
+    {
+        return $this->startOfTime ?? false;
+    }
+
+    /**
+     * Returns true if the date was created using CarbonImmutable::endOfTime()
+     *
+     * @return bool
+     */
+    public function isEndOfTime(): bool
+    {
+        return $this->endOfTime ?? false;
     }
 }

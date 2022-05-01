@@ -36,10 +36,13 @@
             <div class="group-row">
                 
                 <label for="" class="col-sm-1">Período</label>
-                <input type="text" class="col-sm-3 daterange" name="daterange" id="daterange">
+                <i for="daterange" class="fa fa-calendar-alt fa-2x pt-2" style="color:green;" aria-hidden="true"></i>
+                <i class="fas fa-arrows-alt-h"></i>             
+                <i for="daterange" class="fa fa-calendar-alt fa-2x pt-2 pr-2" style="color:red;" aria-hidden="true"></i>
+
+                <input type="text" class="col-sm-3 daterange" style="padding-left:50px;"  name="daterange" id="daterange">
                 <input type="hidden" class="col-sm-2 buscaDataInicio" name="buscaDataInicio" id="buscaDataInicio">
                 <input type="hidden" class="col-sm-2 buscaDataFim" name="buscaDataFim" id="buscaDataFim">
-
                 <input class="btn btn-primary ml-2 pesquisar" type="button" name="pesquisar" id="pesquisar" value="Pesquisar">                
             </div>
         </div>

@@ -1,37 +1,40 @@
+@php 
+    $intervaloCelulas = "A1:G1"; 
+    // $rotaapi = "apiextratocontarelatorio";
+    $titulo  = "Conta Corrente";
+    $campodata = 'dtoperacao';
+    $contaSelecionada = $contaSelecionada; 
+    $datainicial = $datainicial;
+    $datafinal = $datafinal;
+    $conta          = $conta;
+    $saldoInicial   = $saldoInicial;
+    $saldoFinal     = $saldoFinal;
+    $contacorrente     = 1;
+
+    $urlContaCorrente = route('apiextratocontarelatorio');
+
+@endphp
+<head>
+    <meta charset="utf-8">
+    <title>{{$titulo}}</title>
+</head>
+
 @extends('layouts.app')
 
 @section('content')
+@can('visualiza-contacorrente')
+
+
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Consulta de Extrato</h2>
-        </div>
-        <div class="d-flex justify-content-between pull-right">
-            <div class="col-sm-6">
-            @can('receita-create')
-            <a class="btn btn-success" href="{{ route('receita.create') }}">Cadastrar Receita</a>
-            <a class="btn btn-dark" href="{{ route('despesas.create') }}">Cadastrar Despesa</a>
-            @endcan
-        </div>
-            @include('layouts/exibeFiltro')
+            @php if($contaSelecionada == ""): echo "<label class='text-center' style='color:red;'>AVISO: Conta não informada. Relatório não pode ser gerado. Tente novamente a partir da página inicial</label>"; endif; @endphp
+
+            <h2 class="text-center"> <img src="img/credit-card.png" style="width: 50px;" alt="">{{$titulo}}</h2>
         </div>
     </div>
 </div>
-
-<style>
-    .green {
-        background-color: rgb(207, 241, 248);
-        color: rgb(12, 95, 109) !important;
-    }
-    .red {
-        background-color: rgb(248, 215, 215) !important;
-        color: rgb(151, 13, 13);
-    }
-    .trTabela {
-        background-color: slategray;
-    }
-
-</style>
+ <a  class="d-flex justify-content-center" data-toggle="modal" onclick="alteraRotaFormularioCC();" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -39,127 +42,87 @@
 </div>
 @endif
 
-<hr>
-@include('contacorrente/filtroextrato')
+{{-- @include('despesas/filtroindex') --}}
 
-
-<table id="data-table" class="table table-bordered data-table">
-    <thead>
-        <tr class="trTabela">
-            <th class="text-center">Data</th>
-            <th class="text-center">Conta</th>
-            <th class="text-center">Valor</th>
-            <th class="text-center">Descrição</th>
-            {{-- <th width="100px" class="noExport">Ações</th> --}}
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="filter-menu"></div>
+<br /><br />
+<div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;" >
+       
+    <div id="informacoes" class="d-flex justify-content-center" >
+        <label class="fontenormal">Conta: <b style="color: red;"> {{$conta}}  </b> - Período 
+            @php echo '<b style="color: red;"> '. date("d/m/Y", strtotime($datainicial)) .' </b>' . " até " . '<b style="color: red;">' . date("d/m/Y", strtotime($datafinal)) . ' </b>'; 
+            setlocale(LC_MONETARY, 'pt_BR');
+            echo ' - Saldo Inicial:  <b style="color: red;">' . money_format('%.2n', $saldoInicial) .'</b>';
+            echo ' - Saldo Final:    <b style="color: red;">' . money_format('%.2n', $saldoFinal) .'</b>';
+            @endphp 
+        </label>
+    </div>
+</div>
 
 <script>
-    @include('layouts/daterange')
 
-
-    $('#btnReveal').hide();
-
-    $('#btnReveal').on('click', function() {
-        $('#areaTabela').show('#div_BuscaPersonalizada');
-        $('#btnReveal').hide();
-        $('#btnEsconde').show();
-        $('#div_BuscaPersonalizada').show();
-    });
-
-    $('#btnEsconde').on('click', function() {
-        $('#areaTabela').hide('#div_BuscaPersonalizada');
-        $('#btnEsconde').hide();
-        $('#btnReveal').show();
-        
-        $('input[name=buscaData]').val('');
-        $('input[name=buscaOS]').val('');
-        // $('input[name=buscaCliente]').val('');
-        // $('input[name=buscaEvento]').val('');
-        $('input[name=buscaValor]').val('');
-        $('input[name=buscaConta]').val('');
-        // $('input[name=buscaNF]').val('');
-        $('input[name=buscaDataInicio]').val('');
-        $('input[name=buscaDataFim]').val('');
-        $('input[name=pesquisar]').click();
-    });
-    var table = $('#data-table').DataTable({
-        
-        "createdRow": function( row, data, dataIndex, cells ) {
-            var valor = 0;
-            if ( data.pagoreceita == "S" ) {
-                $(row).addClass( 'green' );
-                // console.log(data.valorreceita);
-            }
-            else if ( data.pagoreceita == "1" ) {
-                $(row).addClass( 'red' );
-            }
-        },
-
-
-        ajax: {
-                    url: "{{ route('tabelaExtratoConta') }}",
-                    data: function(d) {
-                             d.buscaData         = $('.buscaData').val(),
-                             d.buscaOS           = $('.buscaOS').val(),
-                    //         d.buscaCliente      = $('.buscaCliente').val(),
-                    //         d.buscaEvento       = $('.buscaEvento').val(),
-                             d.buscaValor        = $('.buscaValor').val(),
-                             d.buscaConta        = $('.buscaConta').val(),
-                    //         d.buscaNF           = $('.buscaNF').val(),
-                             d.buscaDataInicio   = $('.buscaDataInicio').val();
-                             d.buscaDataFim      = $('.buscaDataFim').val();
-
-                        d.search = $('input[type="search"]').val()
-                    }
+    @include('layouts/helpersview/iniciotabela')
+    pageable: true,
+            dataSource: {
+                data: data,
+                pageSize: 50,
+                schema: {
+                    model: {
+                        fields: {
+                            dtoperacao: { type: "date" },
+                            valorreceita: { type: "number" },
+                            saldo: { type: "number" },
+                            conta: { type: "string" },
+                        }
+                    },
                 },
-                columns: [{
-                        data: 'datapagamentoreceita',
-                        name: 'datapagamentoreceita',
-                        render: $.fn.dataTable.render.moment('DD/MM/YYYY'),
-                    },
-                    {
-                        data: 'apelidoConta',
-                        name: 'apelidoConta'
-                    },
-                    {
-                        data: 'valorreceita',
-                        name: 'valorreceita',
-                        render: $.fn.dataTable.render.number( '.', ',', 2)
-                    },
-                    {
-                        data: 'descricaoReceita',
-                        name: 'descricaoReceita',
-                        render: $.fn.dataTable.render.number( '.', ',', 2)
-                    }
-                    // ,
-                    // {
-                    //     data: 'action',
-                    //     name: 'action',
-                    //     orderable: false,
-                    //     searchable: false,
-                    //     exportOptions: {
-                    //     visible: false
-                    //     },
-                    // }
 
-                ],
-                columnDefs: [
-                    { className: 'text-right', targets: 2  },
-                    { className: 'text-center', targets: '_all'  }
+                group: {
+                    field: "conta", aggregates: [
+                        { field: "conta", aggregate: "count" },
+                        { field: "valorreceita", aggregate: "sum" },
+                        // { field: "saldoinicial", aggregate: "sum" },
+                    ]
+                },
+                aggregate: [{ field: "conta", aggregate: "count" },
+                { field: "valorreceita", aggregate: "sum" }],
+                sort: [
+                    // sort by "category" in descending order and then by "name" in ascending order
+                    { field: "dtoperacao", dir: "asc" },
+                    // { field: "name", dir: "asc" }
                 ],
 
+            },
 
-                @include('layouts/includeTabela')
+            columns: [
+                { field: "id", title: "ID", filterable: true, width: 80 },
+                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: 80  , filterable: false},
+                { field: "historico", title: "Histórico", filterable: true, width: 180  },
+                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: 100  },
+                // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
+                // { field: "vencimento", title: "Vencimento", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" },
+                { field: "valorreceita", title: "Valor", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                
+                // Retirada solicitada pelo Nelio dia 30/04/2022
+                { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php echo ' SALDO INICIAL:' . money_format('%.2n', $saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . money_format('%.2n', $saldoFinal); @endphp' },
+                
+                // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+            ],
 
-
-                $("#pesquisar").click(function() {
-                    table.draw();
-                    // preventDefault();
-                });
+            @include('layouts/helpersview/finaltabela')
+           
 </script>
 
-@endsection
+@else
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2 class="text-center">Não Autorizado</h2>
+        </div>
+    </div>
+</div>
+@endcan
+
+
+
+@endsection  

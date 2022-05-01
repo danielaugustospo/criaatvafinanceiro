@@ -24,8 +24,8 @@
                 {{-- <input type="text" name="contareceita" class="col-sm-2 form-control buscaPrecoReal" placeholder="Preço Real"> --}}
                 <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscaContaReceita" name="contareceita" id="contareceita">
                     <option value="">Listar todos</option>
-                    @foreach ($listaReceitas as $receita)
-                    <option value="{{ $receita->contareceita }}">{{ $receita->contareceita }}</option>
+                    @foreach ($listaContas as $contas)
+                    <option value="{{ $contas->id }}">{{ $contas->nomeConta }}</option>
                     @endforeach
                 </select>
 
@@ -33,7 +33,7 @@
             <div class="row">
                 <label for="" class="col-sm-1">Data</label><input type="date" name="datapagamentoreceita" class="col-sm-2 form-control buscaDataPagamento" placeholder="Data">
                 <label for="" class="col-sm-2">Número OS</label>
-                {{-- <input type="text" name="idCodigoDespesas" class="col-sm-4 form-control buscaIdCodigoDespesas" placeholder="Código de Despesas"> --}}
+
                 <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaOSReceita" name="idosreceita" id="idosreceita">
                     <option value="">Listar todos</option>
                     @foreach ($listaReceitas as $receita)

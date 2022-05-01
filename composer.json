@@ -15,9 +15,10 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8",
+        "phpoffice/phpspreadsheet": "^1.21",
         "spatie/laravel-permission": "^2.37",
         "vlucas/phpdotenv": "3.3",
-        "yajra/laravel-datatables-oracle": "8.5.0"
+        "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

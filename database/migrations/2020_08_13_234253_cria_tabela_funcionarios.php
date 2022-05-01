@@ -29,7 +29,7 @@ class CriaTabelaFuncionarios extends Migration
             $table->string('redesocialFuncionario')->nullable();
             $table->string('facebookFuncionario')->nullable();
             $table->string('telegramFuncionario')->nullable();
-            $table->string('cpfFuncionario');
+            $table->string('cpfFuncionario')->nullable();
             $table->string('rgFuncionario')->nullable();
             $table->string('orgaoRGFuncionario')->nullable();
             $table->string('expedicaoRGFuncionario')->nullable();
@@ -69,10 +69,10 @@ class CriaTabelaFuncionarios extends Migration
             $table->boolean('excluidoFuncionario')->default('0');
 
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
 
-            $table->index(['cpfFuncionario']);
-            $table->unique(['cpfFuncionario']);
+            // $table->index(['cpfFuncionario']);
+            // $table->unique(['cpfFuncionario']);
 
         });
     }

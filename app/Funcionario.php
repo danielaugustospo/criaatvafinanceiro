@@ -20,6 +20,10 @@ class Funcionario extends Model
      *
      * @var array
      */
+
+    protected $table = 'funcionarios';
+
+     
     protected $fillable = [
 
     'nomeFuncionario',

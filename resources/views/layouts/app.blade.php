@@ -14,11 +14,11 @@
     
 </head>
 
-<body style="background-image: url('../img/BACKGROUND-TOP.jpg');">
+<body style="background-image: url('{{ config('app.url') }}/img/BACKGROUND-TOP.jpg');">
     <div id="app">
         @include('layouts/navbar')
-        <main class="py-4">
-            <div class="container" >
+        <main class="py-4" style="margin-bottom: 50px;">
+            <div class="m-2 justify-content-center" >
                 @yield('content')
             </div>
         </main>

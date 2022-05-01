@@ -5,11 +5,11 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Gerenciamento de Prestadores de Serviço</h2>
+            <h2 class="text-center">Gerenciamento de Funcionários</h2>
         </div>
         <div class="d-flex justify-content-between pull-right">
             @can('funcionario-create')
-            <a class="btn btn-success" href="{{ route('funcionarios.create') }}">Cadastrar Prestador de Serviço</a>
+            <a class="btn btn-success" href="{{ route('funcionarios.create') }}">Cadastrar Funcionário</a>
             @endcan
             @include('layouts/exibeFiltro')
         </div>
@@ -32,9 +32,9 @@
         <tr>
             <th class="text-center">Id</th>
             <th class="text-center">CPF</th>
-            <th class="text-center">Nome Prestador de Serviço</th>
-            <th class="text-center">Telefone Prestador de Serviço</th>
-            <th class="text-center">Email Prestador de Serviço</th>
+            <th class="text-center">Nome</th>
+            <th class="text-center">Telefone</th>
+            <th class="text-center">Email</th>
             <th width="100px" class="noExport">Ações</th>
         </tr>
     </thead>

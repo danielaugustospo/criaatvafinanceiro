@@ -5,7 +5,6 @@
             <div class="group-row">
 
 
-
                 <label for="" class="col-sm-2">Nome Fantasia</label>
                 <select class="selecionaComInput form-control col-sm-3 js-example-basic-multiple" name="nomeFornecedor" id="nomeFornecedor">
                     <option value="">Listar todos</option>

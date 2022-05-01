@@ -22,11 +22,16 @@ class ValidatorProvider extends ServiceProvider
     {
         $me = $this;
 
-        $this->app['validator']->resolver(function ($translator, $data, $rules, $messages, $attributes) use ($me) {
-            $messages += $me->getMessages();
+        $validatorFormats = new ValidatorFormats();
 
-            return new Validator($translator, $data, $rules, $messages, $attributes);
-        });
+        $this->app['validator']
+            ->resolver(
+                function ($translator, $data, $rules, $messages, $attributes) use ($me, $validatorFormats) {
+                    $messages += $me->getMessages();
+
+                    return new Validator($translator, $validatorFormats, $data, $rules, $messages, $attributes);
+                }
+            );
     }
 
     protected function getMessages()
@@ -36,10 +41,13 @@ class ValidatorProvider extends ServiceProvider
             'titulo_eleitor' => 'Título de Eleitor inválido',
             'cnpj' => 'CNPJ inválido',
             'cpf' => 'CPF inválido',
+            'renavam' => 'Renavam inválido',
             'cpf_cnpj' => 'CPF ou CNPJ inválido',
             'nis' => 'PIS/PASEP/NIT/NIS inválido',
             'cns' => 'Cartão Nacional de Saúde inválido',
+            'inscricao_estadual' => 'Inscrição Estadual ou UF inválidas',
             'certidao' => 'Número da Certidão inválido',
+            'ddd' => 'DDD inválido',
             'formato_cnpj' => 'Formato inválido para CNPJ',
             'formato_cpf' => 'Formato inválido para CPF',
             'formato_cpf_cnpj' => 'Formato inválido para CPF ou CNPJ',
