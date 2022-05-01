@@ -33,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
         $listaDespesas = DB::select('SELECT id, descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
+        $listaDescricaoDespesa = DB::select('SELECT id, descricaoDespesa FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) ');
+        view()->share('listaDescricaoDespesa', $listaDescricaoDespesa);
 
         $listaGrupoDespesas = DB::select('SELECT * FROM grupodespesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaGrupoDespesas', $listaGrupoDespesas);
@@ -40,11 +42,18 @@ class AppServiceProvider extends ServiceProvider
         $listaCodigoDespesa = DB::select('SELECT * FROM codigodespesas WHERE (excluidoCodigoDespesa = 0) and (ativoCodigoDespesa = 1) order by id');
         view()->share('listaCodigoDespesa', $listaCodigoDespesa);
 
+        // $codigoDespesaSelect = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
+        // where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
+        // view()->share('codigoDespesaSelect', $codigoDespesaSelect);
+
 
         $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
         from ordemdeservico ods 
         left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');
         view()->share('listaOrdemDeServicos', $listaOrdemDeServicos);
+
+        $pegaidOS = DB::select('SELECT id from ordemdeservico');
+        view()->share('pegaidOS', $pegaidOS);
 
         $listaReceitas = DB::select('SELECT * FROM receita');
         view()->share('listaReceitas', $listaReceitas);

@@ -1,11 +1,15 @@
 @php 
-    $intervaloCelulas = "A1:F1"; 
+    $intervaloCelulas = "A1:G1"; 
     // $rotaapi = "apiextratocontarelatorio";
     $titulo  = "Conta Corrente";
     $campodata = 'dtoperacao';
     $contaSelecionada = $contaSelecionada; 
     $datainicial = $datainicial;
     $datafinal = $datafinal;
+    $conta          = $conta;
+    $saldoInicial   = $saldoInicial;
+    $saldoFinal     = $saldoFinal;
+    $contacorrente     = 1;
 
     $urlContaCorrente = route('apiextratocontarelatorio');
 
@@ -30,7 +34,7 @@
         </div>
     </div>
 </div>
- <a  class="d-flex justify-content-center" data-toggle="modal" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outra Conta</a>
+ <a  class="d-flex justify-content-center" data-toggle="modal" onclick="alteraRotaFormularioCC();" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
@@ -44,18 +48,24 @@
 <br /><br />
 <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;" >
        
-    <div id="informacoes" class="d-flex justify-content-center">
-        CONTA - PERÍODO @php echo date("d/m/Y", strtotime($datainicial)) . " até " . date("d/m/Y", strtotime($datafinal)) @endphp ATÉ {{$datafinal}} - SALDO INICIAL - SALDO FINAL 
+    <div id="informacoes" class="d-flex justify-content-center" >
+        <label class="fontenormal">Conta: <b style="color: red;"> {{$conta}}  </b> - Período 
+            @php echo '<b style="color: red;"> '. date("d/m/Y", strtotime($datainicial)) .' </b>' . " até " . '<b style="color: red;">' . date("d/m/Y", strtotime($datafinal)) . ' </b>'; 
+            setlocale(LC_MONETARY, 'pt_BR');
+            echo ' - Saldo Inicial:  <b style="color: red;">' . money_format('%.2n', $saldoInicial) .'</b>';
+            echo ' - Saldo Final:    <b style="color: red;">' . money_format('%.2n', $saldoFinal) .'</b>';
+            @endphp 
+        </label>
     </div>
 </div>
 
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-    // pageable: false,
+    pageable: true,
             dataSource: {
                 data: data,
-                // pageSize: 10000000,
+                pageSize: 50,
                 schema: {
                     model: {
                         fields: {
@@ -85,19 +95,22 @@
             },
 
             columns: [
-                // { field: "id", title: "ID", filterable: true, width: 50 },
-                { field: "dtoperacao", title: "Data", width: 100, format: "{0:dd/MM/yyyy}", filterable: false},
-                { field: "historico", title: "Histórico", filterable: true, width: 200 },
-                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 100 },
+                { field: "id", title: "ID", filterable: true, width: 80 },
+                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: 80  , filterable: false},
+                { field: "historico", title: "Histórico", filterable: true, width: 180  },
+                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: 100  },
                 // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
                 // { field: "vencimento", title: "Vencimento", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" },
-                { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Movimentações: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "saldo", title: "Saldo Após", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}' },
+                { field: "valorreceita", title: "Valor", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                
+                // Retirada solicitada pelo Nelio dia 30/04/2022
+                { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php echo ' SALDO INICIAL:' . money_format('%.2n', $saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . money_format('%.2n', $saldoFinal); @endphp' },
+                
                 // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],
 
             @include('layouts/helpersview/finaltabela')
-            @include('layouts/filtradata')
+           
 </script>
 
 @else
@@ -109,5 +122,7 @@
     </div>
 </div>
 @endcan
+
+
 
 @endsection  

@@ -58,7 +58,9 @@ use App\Providers\AppServiceProvider;
                         @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('despesa-list')
-                                <a class="dropdown-item" href="{{ route('despesas.index') }}">Consultar</a>
+                                {{-- <a class="dropdown-item" href="{{ route('despesas.index') }}">Listar todas</a> --}}
+                                <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" style="cursor:pointer;">Pesquisar por despesa</a>
+
                             @endcan
                             @can('despesa-create')
                                 <a class="dropdown-item" href="{{ route('despesas.create') }}">Cadastrar</a>
@@ -335,14 +337,12 @@ use App\Providers\AppServiceProvider;
 </nav>
 
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="{{ route('extratoConta') }}" method="get">
+            <form action="" id="formFiltraPeriodoMonetario" onsubmit="return chamaPrevencaodeClique(event)" method="get">
                 @csrf
 
                 <div class="modal-header">
@@ -372,9 +372,24 @@ use App\Providers\AppServiceProvider;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <button type="submit" id="buscarCC" class="btn btn-primary">Buscar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+@include('layouts/modalpesquisadespesas')
+
+<script>
+    function alteraRotaFormularioCC(){
+        document.getElementById("formFiltraPeriodoMonetario").setAttribute("action", "{{ route('extratoConta') }}");
+    }
+
+    function alteraRotaFormularioFluxo(){
+        document.getElementById("formFiltraPeriodoMonetario").setAttribute("action", "{{ route('fluxodecaixa') }}");
+        document.getElementById("datafinal").style.visibility = "hidden";
+        document.getElementById("datafinal").removeAttribute("required");
+    }
+</script>

@@ -13,7 +13,7 @@
     <!-- {{$acessarArea = "Acessar área de "}} -->
     {{$acessarArea = " "}}
     {{$titulo1 = "Ordem de Serviços"}}
-    {{$titulo2 = "Extrato Contas"}}
+    {{$titulo2 = "Conta Corrente"}}
     {{$titulo3 = "Relatórios"}}
     {{$titulo4 = "Clientes"}}
     {{$titulo5 = "Fornecedores"}}
@@ -23,7 +23,7 @@
     @can('ordemdeservico-list')  
 
     <a href="{{ route('ordemdeservicos.index') }}">
-    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         <div class="card-headernew d-flex justify-content-center"><h4 class="pt-4">{{$titulo1}}</h4></div>
         <div class="card-body mt-1"></div>
 
@@ -41,11 +41,11 @@
 
 </div>
 
-<div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;">
+<div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         @can('conta-list')  
-<!-- Button trigger modal -->
-{{-- <button type="button" data-toggle="modal" data-target="#exampleModalCenter"> --}}
-        <a data-toggle="modal" data-target="#exampleModalCenter" style="cursor: pointer;">
+        <!-- Button trigger modal -->
+        {{-- <button type="button" data-toggle="modal" data-target="#exampleModalCenter"> --}}
+        <a data-toggle="modal" onclick="alteraRotaFormularioCC();" data-target="#exampleModalCenter" style="cursor: pointer;">
         <div class="card-headernew d-flex justify-content-center"><h4 class="pt-4">{{$titulo2}}</h4></div>
         <div class="card-body mt-1"></div>
         <div class="row col-sm-12">
@@ -57,11 +57,11 @@
                 <img src="img/credit-card.png" style="width: 70%;" alt="">
             </div>
         </div>
-    {{-- </button> --}}
+        {{-- </button> --}}
     </a> 
 @endcan
     </div>
-    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         @can('conta-list')  
 
         <a href="relatorio">
@@ -90,7 +90,7 @@
 
     <a href="{{ route('clientes.index') }}">
 
-    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         <div class="card-headernew d-flex justify-content-center"><h4 class="pt-4">{{$titulo4}}</h4></div>
         <div class="card-body mt-1"></div>
 
@@ -106,7 +106,7 @@
     </a>
     @endcan
     </div>
-    <div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;">
+    <div class="card text-white bg-dark mb-3 ml-1 mr-1" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         @can('fornecedor-list')  
 
         <a href="{{ route('fornecedores.index') }}">
@@ -126,7 +126,7 @@
     </a>
     @endcan
     </div>
-    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
         @can('funcionario-list')  
 
         <a href="{{ route('funcionarios.index') }}">

@@ -69,7 +69,7 @@ $(window).on('load', function(){
 
         var count     = 0;
         var interval  = setInterval(function(){
-        if (count >= 100) {
+        if (count >= 500) {
             clearInterval(interval);
             $('.k-link')[0].click();  
             console.log('Ordenação Por Grupo Clicado Inicialmente');
@@ -81,6 +81,7 @@ $(window).on('load', function(){
     }, 300);
 
     }
+   
 });
 
 

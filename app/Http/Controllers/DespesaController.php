@@ -67,35 +67,78 @@ class DespesaController extends Controller
     public function index(Request $request)
     {
         $consulta = $this->consultaIndexDespesa();
-        
-        if ($request->ajax()) {
-
-            return DataTables::of($consulta)
-                ->addIndexColumn()
-                ->addColumn('action', function($consulta) {
-
-                $btnVisualizar = '<div class="row col-sm-12">
-                    <a href="despesas/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Despesa">Visualizar</a>
-                </div>';
-
-                return $btnVisualizar;
-                })
-
-                ->rawColumns(['action'])
-                ->make(true);
-        } else {
-            return view('despesas.index', compact('consulta'))
-                ->with('i', ($request->input('page', 1) - 1) * 5);
+        if ($request->get('id')) {
+            $iddespesa = $request->get('id');
+            settype($iddespesa, "integer");
+            $this->show($iddespesa);
+            header("Location: despesas/$iddespesa");
+            exit();
         }
+        if ($request->get('despesas')) :     $despesas = $request->get('despesas');
+        else : $despesas = '';
+        endif;
+        if ($request->get('valor')) :        $valor = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valor'));
+        else : $valor = '';
+        endif;
+        if ($request->get('dtinicio')) :     $dtinicio = $request->get('dtinicio');
+        else : $dtinicio = '';
+        endif;
+        if ($request->get('dtfim')) :        $dtfim = $request->get('dtfim');
+        else : $dtfim = '';
+        endif;
+        if ($request->get('coddespesa')) :   $coddespesa = $request->get('coddespesa');
+        else : $coddespesa = '';
+        endif;
+        if ($request->get('fornecedor')) :   $fornecedor = $request->get('fornecedor');
+        else : $fornecedor = '';
+        endif;
+        if ($request->get('ordemservico')) : $ordemservico = $request->get('ordemservico');
+        else : $ordemservico = '';
+        endif;
+        if ($request->get('conta')) :        $conta = $request->get('conta');
+        else : $conta = '';
+        endif;
+
+
+        return view('despesas.index', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta'));
     }
 
 
     public function apidespesas(Request $request)
     {
-        $data = Despesa::all();
+        $descricao = "";
+        $verificaInputCampos = 0;
+        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
+        $verificaInputCampos++;
+        endif;
+
+        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
+            $verificaInputCampos++;
+        endif;
+
+        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        elseif($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
+        endif;
+
+        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
+        elseif($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
+            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+        endif;
+
         $listaDespesas = DB::select('SELECT distinct d.id, 
         c.despesaCodigoDespesa,
-        -- b.nomeBensPatrimoniais, 
         d.descricaoDespesa,
         d.idOS, 
         f.razaosocialFornecedor,
@@ -103,80 +146,88 @@ class DespesaController extends Controller
         d.precoReal, 
         d.vale,
         d.datavale,
+        d.pago,
         d.precoReal - d.vale as despesareal,
         d.notaFiscal,
         cc.nomeConta,
-        cc.apelidoConta
+        cc.apelidoConta,
+        os.eventoOrdemdeServico
         
         
-        FROM despesas d, fornecedores f, codigodespesas c, benspatrimoniais b, conta cc
+        FROM despesas d, fornecedores f, codigodespesas c, benspatrimoniais b, conta cc, ordemdeservico os
         WHERE  
         d.idFornecedor = f.id
         AND
         d.despesaCodigoDespesas =  c.id 
-        -- AND d.descricaoDespesa = b.id
         AND 
         cc.id = d.conta 
+        AND 
+        os.id = d.idOS 
         
-        AND excluidoDespesa = 0');
+        AND excluidoDespesa = 0 ' . $descricao);
 
+
+// var_dump($listaDespesas);
+// exit;
+
+        // DB::select($listaDespesas);
         return $listaDespesas;
     }
 
-    public function tabelaDespesas(Request $request){
+    public function tabelaDespesas(Request $request)
+    {
 
         $consulta = $this->consultaIndexDespesa();
 
         return Datatables::of($consulta)
-        ->filter(function ($query) use ($request) {
+            ->filter(function ($query) use ($request) {
 
 
-            if (($request->has('idOS')) && ($request->idOS != NULL)) {
-                $query->where('idOS', '=', "{$request->get('idOS')}");
-            }
-            if (($request->has('descricaoDespesa')) && ($request->descricaoDespesa != NULL)) {
-                $query->where('descricaoDespesa', '=', "{$request->get('descricaoDespesa')}");
-            }
-            if (($request->has('precoReal')) && ($request->precoReal != NULL)) {
-                $query->where('precoReal', '=', "{$request->get('precoReal')}");
-            }
-            if (($request->has('notaFiscal')) && ($request->notaFiscal != NULL)) {
-                $query->where('notaFiscal', 'like', "{$request->get('notaFiscal')}%");
-            }
-            if (($request->has('idFornecedor')) && ($request->idFornecedor != NULL)) {
-                $query->where('idFornecedor', '=', "{$request->get('idFornecedor')}");
-            }
-            if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
-                $query->where('vencimento', '=', "{$request->get('vencimento')}");
-            }
-            if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
-                $query->whereDate('vencimento', ">=", "{$request->buscaDataInicio}")
-                    ->whereDate('vencimento', "<=", "{$request->buscaDataFim}");
-            }
-        })
-        ->addIndexColumn()
-        ->addColumn('action', function($consulta) {
+                if (($request->has('idOS')) && ($request->idOS != NULL)) {
+                    $query->where('idOS', '=', "{$request->get('idOS')}");
+                }
+                if (($request->has('descricaoDespesa')) && ($request->descricaoDespesa != NULL)) {
+                    $query->where('descricaoDespesa', '=', "{$request->get('descricaoDespesa')}");
+                }
+                if (($request->has('precoReal')) && ($request->precoReal != NULL)) {
+                    $query->where('precoReal', '=', "{$request->get('precoReal')}");
+                }
+                if (($request->has('notaFiscal')) && ($request->notaFiscal != NULL)) {
+                    $query->where('notaFiscal', 'like', "{$request->get('notaFiscal')}%");
+                }
+                if (($request->has('idFornecedor')) && ($request->idFornecedor != NULL)) {
+                    $query->where('idFornecedor', '=', "{$request->get('idFornecedor')}");
+                }
+                if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
+                    $query->where('vencimento', '=', "{$request->get('vencimento')}");
+                }
+                if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
+                    $query->whereDate('vencimento', ">=", "{$request->buscaDataInicio}")
+                        ->whereDate('vencimento', "<=", "{$request->buscaDataFim}");
+                }
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function ($consulta) {
 
-        $btnVisualizar = '<div class="row col-sm-12">
+                $btnVisualizar = '<div class="row col-sm-12">
             <a href="despesas/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Despesa">Visualizar</a>
         </div>';
 
-        return $btnVisualizar;
-        })
-    
-        ->rawColumns(['action'])
-        ->make(true);
+                return $btnVisualizar;
+            })
 
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     public function consultaIndexDespesa()
     {
         $consulta = DB::table('despesas')
-        ->join('benspatrimoniais as bens', 'despesas.descricaoDespesa', 'bens.id')
-        ->join('codigodespesas as cod', 'despesas.despesaCodigoDespesas', 'cod.id')
-        ->join('fornecedores as forn', 'despesas.idFornecedor', 'forn.id')
+            ->join('benspatrimoniais as bens', 'despesas.descricaoDespesa', 'bens.id')
+            ->join('codigodespesas as cod', 'despesas.despesaCodigoDespesas', 'cod.id')
+            ->join('fornecedores as forn', 'despesas.idFornecedor', 'forn.id')
 
-        ->select(['despesas.id','bens.nomeBensPatrimoniais as descricaoDespesa','cod.despesaCodigoDespesa as codDespesa','despesas.precoReal as precoReal', 'despesas.idFornecedor', 'forn.razaosocialFornecedor','despesas.vencimento as vencimento','despesas.notaFiscal as notaFiscal','despesas.idOS as idOS']);    
+            ->select(['despesas.id', 'bens.nomeBensPatrimoniais as descricaoDespesa', 'cod.despesaCodigoDespesa as codDespesa', 'despesas.precoReal as precoReal', 'despesas.idFornecedor', 'forn.razaosocialFornecedor', 'despesas.vencimento as vencimento', 'despesas.notaFiscal as notaFiscal', 'despesas.idOS as idOS']);
         return $consulta;
     }
 
@@ -218,14 +269,23 @@ class DespesaController extends Controller
 
         $request->validate([
 
-            'descricaoDespesa'          => 'required',
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
             'despesaFixa'               => 'required',
         ]);
 
         $verificaCompra =  $request->get('a');
-        if($verificaCompra == 'S'){ $despesa->ehcompra = 1; } else { $despesa->ehcompra = 0; }
+
+        if ($verificaCompra == 'S') : $despesa->ehcompra = 1;
+        else :
+            $request->validate(
+                ['descricaoDespesaNaoCompra' => 'required'],
+                ['descricaoDespesaNaoCompra.required' => 'Informe a descrição da despesa']
+            );
+            $despesa->ehcompra = 0;
+            $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
+        endif;
+
         $compraparcelada =  $request->get('compraparcelada');
 
         $despesa->idFuncionario         =  $request->get('idFuncionario');
@@ -257,7 +317,12 @@ class DespesaController extends Controller
             $tamanhoArrayQuantidade = count($quantidade);
 
             for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
+
                 $despesa = new Despesa();
+                $request->validate(
+                    [$request->get('descricaoTabela')[$i] => 'required'],
+                    ['descricaoTabela.required' => 'Informe os itens comprados']
+                );
 
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
                 $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
@@ -295,23 +360,43 @@ class DespesaController extends Controller
             }
         } elseif ($compraparcelada == 'N') {
 
+            if ($despesa->ehcompra == 1) :
+                $request->validate(
+                    ['descricaoDespesa' => 'required'],
+                    ['descricaoDespesa.required' => 'Informe o que foi comprado']
+                );
+
+            endif;
+
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
             $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
             $despesa->descricaoDespesa      =  $request->get('descricaoDespesa');
+            $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
+            $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
             $despesa->save();
             $this->logCadastraDespesas($despesa);
-
-        } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S')) {
+        } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
             return redirect()->route('despesas.index')
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
+        if ( $despesa->ehcompra == 0){
+
+            $despesa->idOS                  =  $request->get('idOS');
+            $despesa->vencimento            =  $request->get('vencimento');
+            $despesa->notaFiscal            =  $request->get('notaFiscal');
+            $despesa->pago                  =  $request->get('pago')[0];
+
+
+            $despesa->save();
+            $this->logCadastraDespesas($despesa);
+        }
 
         return redirect()->route('despesas.index')
-            ->with('success', 'Despesa cadastrada com êxito.');
+            ->with('success', 'Despesa id '. $despesa->id . ' cadastrada com êxito.');
     }
 
 
@@ -324,6 +409,10 @@ class DespesaController extends Controller
     public function show($id)
     {
         $despesa = Despesa::find($id);
+        if (!isset($despesa)) {
+            $mensagemErro = "Não encontramos o id referente a esta despesa.";
+            return view('home', compact('mensagemErro'));
+        }
 
         $listaContas  = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
 
@@ -392,55 +481,191 @@ class DespesaController extends Controller
      * @param  \App\Despesa  $despesa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Despesa $despesa)
-    {
-        request()->validate([
-            'descricaoDespesa'          => 'required',
+    // public function update(Request $request, Despesa $despesa)
+    // {
+    //     request()->validate([
+    //         'descricaoDespesa'          => 'required',
+    //         'idFormaPagamento'          => 'required',
+    //         'conta'                     => 'required',
+    //         'despesaFixa'               => 'required',
+    //     ]);
+
+    //     $valorMonetario                  = $request->get('precoReal');
+    //     $quantia = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
+
+    //     $despesa->idOS                       = $request->get('idOS');
+    //     $despesa->idDespesaPai               = $request->get('idDespesaPai');
+    //     $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
+    //     $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
+    //     $despesa->idFuncionario              = $request->get('idFuncionario');
+    //     $despesa->idFornecedor               = $request->get('idFornecedor');
+    //     $despesa->precoReal                  = $quantia;
+    //     $despesa->ehcompra                   = $request->get('ehcompra');
+    //     $despesa->pago                       = $request->get('pago');
+    //     $despesa->reembolsado                = $request->get('reembolsado');
+    //     $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
+    //     $despesa->conta                      = $request->get('conta');
+    //     $despesa->nRegistro                  = $request->get('nRegistro');
+    //     $despesa->dataDaCompra               = $request->get('dataDaCompra');
+    //     $despesa->dataDoTrabalho             = $request->get('dataDoTrabalho');
+    //     $despesa->vencimento                 = $request->get('vencimento');
+    //     $despesa->datavale                   = $request->get('datavale');
+    //     $despesa->vale                       = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
+    //     $despesa->despesaFixa                = $request->get('despesaFixa');
+    //     $despesa->notaFiscal                 = $request->get('notaFiscal');
+    //     $despesa->idBanco                    = $request->get('idBanco');
+    //     $despesa->cheque                     = $request->get('cheque');
+    //     $despesa->ativoDespesa               = $request->get('ativoDespesa');
+    //     $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
+    //     $despesa->idAlteracaoUsuario         = auth()->user()->id;
+
+
+    //     $original   = $despesa->getOriginal();
+    //     $despesa->update();
+    //     $alteracoes = $despesa->getChanges();
+
+    //     $this->logAtualizaDespesas($despesa, $alteracoes, $original);
+
+    //     return redirect()->route('despesas.index')
+    //         ->with('success', 'Despesa atualizada com êxito');
+    // }
+
+    public function update(Request $request, Despesa $despesa){
+        $request->validate([
+
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
             'despesaFixa'               => 'required',
         ]);
 
-        $valorMonetario                  = $request->get('precoReal');
-        $quantia = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
+        $verificaCompra =  $request->get('a');
 
-        $despesa->idOS                       = $request->get('idOS');
-        $despesa->idDespesaPai               = $request->get('idDespesaPai');
-        $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
-        $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
-        $despesa->idFuncionario              = $request->get('idFuncionario');
-        $despesa->idFornecedor               = $request->get('idFornecedor');
-        $despesa->precoReal                  = $quantia;
-        $despesa->ehcompra                   = $request->get('ehcompra');
-        $despesa->pago                       = $request->get('pago');
-        $despesa->reembolsado                = $request->get('reembolsado');
-        $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
-        $despesa->conta                      = $request->get('conta');
-        $despesa->nRegistro                  = $request->get('nRegistro');
-        $despesa->dataDaCompra               = $request->get('dataDaCompra');
-        $despesa->dataDoTrabalho             = $request->get('dataDoTrabalho');
-        $despesa->vencimento                 = $request->get('vencimento');
-        $despesa->datavale                   = $request->get('datavale');
-        $despesa->vale                       = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
-        $despesa->despesaFixa                = $request->get('despesaFixa');
-        $despesa->notaFiscal                 = $request->get('notaFiscal');
-        $despesa->idBanco                    = $request->get('idBanco');
-        $despesa->cheque                     = $request->get('cheque');
-        $despesa->ativoDespesa               = $request->get('ativoDespesa');
-        $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
-        $despesa->idAlteracaoUsuario         = auth()->user()->id;
+        if ($verificaCompra == 'S') : $despesa->ehcompra = 1;
+        else :
+            $request->validate(
+                ['descricaoDespesaNaoCompra' => 'required'],
+                ['descricaoDespesaNaoCompra.required' => 'Informe a descrição da despesa']
+            );
+            $despesa->ehcompra = 0;
+            $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
+        endif;
+
+        $compraparcelada =  $request->get('compraparcelada');
+
+        $despesa->idFuncionario         =  $request->get('idFuncionario');
+        $despesa->idFornecedor          =  $request->get('idFornecedor');
+        $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
+        $despesa->conta                 =  $request->get('conta');
+        $despesa->precoReal             =  $request->get('precoReal');
+        $despesa->dataDaCompra          =  $request->get('dataDaCompra');
+        $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
+        $despesa->quemcomprou           =  $request->get('quemcomprou');
+        $despesa->idBanco               =  $request->get('idBanco');
+        $despesa->cheque                =  $request->get('cheque');
+        $despesa->reembolsado           =  $request->get('reembolsado');
+        $despesa->despesaFixa           =  $request->get('despesaFixa');
+        $despesa->nRegistro             =  $request->get('nRegistro');
+        $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
+        $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+        $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
+        $despesa->vale                  =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
+        $despesa->datavale              =  $request->get('datavale');
+        $despesa->idDespesaPai          =  $request->get('idDespesaPai');
+        $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+        $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
+        $despesa->idAutor               =  auth()->user()->id;
 
 
-        $original   = $despesa->getOriginal();
-        $despesa->update();
-        $alteracoes = $despesa->getChanges();
+        if ($compraparcelada == 'S') {
+            $quantidade = $request->get('quantidadeTabela');
+            $tamanhoArrayQuantidade = count($quantidade);
 
-        $this->logAtualizaDespesas($despesa, $alteracoes, $original);
-        
-        return redirect()->route('despesas.index')
-            ->with('success', 'Despesa atualizada com êxito');
+            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
+
+                $despesa = new Despesa();
+                $request->validate(
+                    [$request->get('descricaoTabela')[$i] => 'required'],
+                    ['descricaoTabela.required' => 'Informe os itens comprados']
+                );
+
+                $despesa->idOS                  =  $request->get('idOSTabela')[$i];
+                $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
+                $despesa->notaFiscal            =  $request->get('notaFiscalTabela')[$i];
+                $despesa->pago                  =  $request->get('pagoTabela')[$i];
+                $despesa->quantidade            =  $request->get('quantidadeTabela')[$i];
+                $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioTabela')[$i]);
+
+                $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
+                $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
+                $despesa->descricaoDespesa      =  $request->get('descricaoTabela')[$i];
+
+                $despesa->idFornecedor          =  $request->get('selecionaFornecedor');
+                $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
+                $despesa->conta                 =  $request->get('conta');
+                $despesa->dataDaCompra          =  $request->get('dataDaCompra');
+                $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
+                $despesa->quemcomprou           =  $request->get('quemcomprou');
+                $despesa->idBanco               =  $request->get('idBanco');
+                $despesa->cheque                =  $request->get('cheque');
+                $despesa->reembolsado           =  $request->get('reembolsado');
+                $despesa->despesaFixa           =  $request->get('despesaFixa');
+                $despesa->nRegistro             =  $request->get('nRegistro');
+                $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
+                $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+                $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
+                $despesa->vale                  =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
+                $despesa->datavale              =  $request->get('datavale');
+                $despesa->idDespesaPai          =  $request->get('idDespesaPai');
+                $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+                $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
+
+                $despesa->save();
+                $this->logCadastraDespesas($despesa);
+            }
+        } elseif ($compraparcelada == 'N') {
+
+            if ($despesa->ehcompra == 1) :
+                $request->validate(
+                    ['descricaoDespesa' => 'required'],
+                    ['descricaoDespesa.required' => 'Informe o que foi comprado']
+                );
+
+            endif;
+
+            $despesa->idOS                  =  $request->get('idOS');
+            $despesa->vencimento            =  $request->get('vencimento');
+            $despesa->notaFiscal            =  $request->get('notaFiscal');
+            $despesa->pago                  =  $request->get('pago')[0];
+            $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
+            $despesa->descricaoDespesa      =  $request->get('descricaoDespesa');
+            $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
+            $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
+
+            $despesa->save();
+            $this->logCadastraDespesas($despesa);
+        } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
+            return redirect()->route('despesas.index')
+                ->with('error', 'Ocorreu um erro ao salvar.');
+        }
+        if ( $despesa->ehcompra == 0){
+
+            $despesa->idOS                  =  $request->get('idOS');
+            $despesa->vencimento            =  $request->get('vencimento');
+            $despesa->notaFiscal            =  $request->get('notaFiscal');
+            $despesa->pago                  =  $request->get('pago')[0];
+
+
+            $despesa->save();
+            $this->logCadastraDespesas($despesa);
+        }
+
+        header("Location: ../despesas/$despesa->id");
+        exit();
+        // return redirect()->route('despesas.index')
+        //     ->with('success', 'Despesa id '. $despesa->id . ' atualizada com êxito.');
     }
 
+    
 
     /**
      * Remove the specified resource from storage.
@@ -487,50 +712,101 @@ class DespesaController extends Controller
 
     public function logCadastraDespesas($despesa = null)
     {
-            $this->Logger->log('info', 'Cadastrou a despesa '. $despesa->id);
+        $this->Logger->log('info', 'Cadastrou a despesa ' . $despesa->id);
     }
 
     public function logVisualizaDespesas($despesa = null)
     {
-            $this->Logger->log('info', 'Visualizou a despesa '. $despesa->id);
+        $this->Logger->log('info', 'Visualizou a despesa ' . $despesa->id);
     }
 
     public function logAtualizaDespesas($despesa = null, $alteracoes, $original)
-    {   
+    {
         $trechoMensagem =  $despesa->id . " Dados Alterados: " . PHP_EOL;
-        if(isset($alteracoes['despesaCodigoDespesas']) != NULL)  { $trechoMensagem .= 'Id Cod Desp Atual: '.       $alteracoes['despesaCodigoDespesas'] .    '. Antigo: '.  $original['despesaCodigoDespesas'] . PHP_EOL  ; }
-        if(isset($alteracoes['idOS']) != NULL )                  { $trechoMensagem .= 'Id OS Atual: '.             $alteracoes['idOS'] .                     '. Antigo: '.  $original['idOS'] . PHP_EOL  ; }
-        if(isset($alteracoes['idDespesaPai']) != NULL )          { $trechoMensagem .= 'Id Desp Pai Atual: '.       $alteracoes['idDespesaPai'] .             '. Antigo: '.  $original['idDespesaPai'] . PHP_EOL  ; }
-        if(isset($alteracoes['descricaoDespesa']) != NULL )      { $trechoMensagem .= 'Desc Desp Atual: '.         $alteracoes['descricaoDespesa'] .         '. Antigo: '.  $original['descricaoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['idFornecedor']) != NULL )          { $trechoMensagem .= 'Id Fornecedor Atual: '.     $alteracoes['idFornecedor'] .             '. Antigo: '.  $original['idFornecedor'] . PHP_EOL  ; }
-        if(isset($alteracoes['precoReal']) != NULL )             { $trechoMensagem .= 'Valor Atual: '.             $alteracoes['precoReal'] .                '. Antigo: '.  $original['precoReal'] . PHP_EOL  ; }
-        if(isset($alteracoes['ehcompra']) != NULL )              { $trechoMensagem .= 'Foi uma compra Atual: '.    $alteracoes['ehcompra'] .                 '. Antigo: '.  $original['ehcompra'] . PHP_EOL  ; }
-        if(isset($alteracoes['pago']) != NULL )                  { $trechoMensagem .= 'Pago Atual: '.              $alteracoes['pago'] .                     '. Antigo: '.  $original['pago'] . PHP_EOL  ; }
-        if(isset($alteracoes['quempagou']) != NULL )             { $trechoMensagem .= 'Quem Pagou Atual: '.        $alteracoes['quempagou'] .                '. Antigo: '.  $original['quempagou'] . PHP_EOL  ; }
-        if(isset($alteracoes['idFormaPagamento']) != NULL )      { $trechoMensagem .= 'Forma PG Atual: '.          $alteracoes['idFormaPagamento'] .         '. Antigo: '.  $original['idFormaPagamento'] . PHP_EOL  ; }
-        if(isset($alteracoes['conta']) != NULL )                 { $trechoMensagem .= 'Id Conta Atual: '.          $alteracoes['conta'] .                    '. Antigo: '.  $original['conta'] . PHP_EOL  ; }
-        if(isset($alteracoes['nRegistro']) != NULL )             { $trechoMensagem .= 'Num Reg Atual: '.           $alteracoes['nRegistro'] .                '. Antigo: '.  $original['nRegistro'] . PHP_EOL  ; }
-        if(isset($alteracoes['valorEstornado']) != NULL )        { $trechoMensagem .= 'Estornado Atual: '.         $alteracoes['valorEstornado'] .           '. Antigo: '.  $original['valorEstornado'] . PHP_EOL  ; }
-        if(isset($alteracoes['vencimento']) != NULL )            { $trechoMensagem .= 'Vencimento Atual: '.        $alteracoes['vencimento'] .               '. Antigo: '.  $original['vencimento'] . PHP_EOL  ; }
-        if(isset($alteracoes['despesaFixa']) != NULL )           { $trechoMensagem .= 'Desp Fixa Atual: '.         $alteracoes['despesaFixa'] .              '. Antigo: '.  $original['despesaFixa'] . PHP_EOL  ; }
-        if(isset($alteracoes['notaFiscal']) != NULL )            { $trechoMensagem .= 'Nota Fiscal Atual: '.       $alteracoes['notaFiscal'] .               '. Antigo: '.  $original['notaFiscal'] . PHP_EOL  ; }
-        if(isset($alteracoes['idBanco']) != NULL )               { $trechoMensagem .= 'Id Banco Atual: '.          $alteracoes['idBanco'] .                  '. Antigo: '.  $original['idBanco'] . PHP_EOL  ; }
-        if(isset($alteracoes['reembolsado']) != NULL )           { $trechoMensagem .= 'Id Reembolsado Atual: '.    $alteracoes['reembolsado'] .              '. Antigo: '.  $original['reembolsado'] . PHP_EOL  ; }
-        if(isset($alteracoes['cheque']) != NULL )                { $trechoMensagem .= 'Cheque Atual: '.            $alteracoes['cheque'] .                   '. Antigo: '.  $original['cheque'] . PHP_EOL  ; }
-        if(isset($alteracoes['dataDoTrabalho']) != NULL )        { $trechoMensagem .= 'Data do Trabalho Atual: '.  $alteracoes['dataDoTrabalho'] .           '. Antigo: '.  $original['dataDoTrabalho'] . PHP_EOL  ; }
-        if(isset($alteracoes['dataDaCompra']) != NULL )          { $trechoMensagem .= 'Data da Compra Atual: '.    $alteracoes['dataDaCompra'] .             '. Antigo: '.  $original['dataDaCompra'] . PHP_EOL  ; }
-        if(isset($alteracoes['ativoDespesa']) != NULL )          { $trechoMensagem .= 'Despesa Ativa Atual: '.     $alteracoes['ativoDespesa'] .             '. Antigo: '.  $original['ativoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['excluidoDespesa']) != NULL )       { $trechoMensagem .= 'Despesa Excluída Atual: '.  $alteracoes['excluidoDespesa'] .          '. Antigo: '.  $original['excluidoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['idFuncionario']) != NULL )        { $trechoMensagem .= 'Tipo Fornecedor Atual: '.   $alteracoes['idFuncionario'] .           '. Antigo: '.  $original['idFuncionario'] . PHP_EOL  ; }
-        if(isset($alteracoes['idAlteracaoUsuario']) != NULL )    { $trechoMensagem .= 'Id Alter. Usuario Atual: '. $alteracoes['idAlteracaoUsuario'] .       '. Antigo: '.  $original['idAlteracaoUsuario'] . PHP_EOL  ; }
-        if(isset($alteracoes['idAutor']) != NULL )               { $trechoMensagem .= 'Id Usuario Autor Atual: '.  $alteracoes['idAutor'] .                  '. Antigo: '.  $original['idAutor'] . PHP_EOL  ; }
-        
-        $this->Logger->log('info', 'Atualizou a despesa '.  $trechoMensagem);
+        if (isset($alteracoes['despesaCodigoDespesas']) != NULL) {
+            $trechoMensagem .= 'Id Cod Desp Atual: ' .       $alteracoes['despesaCodigoDespesas'] .    '. Antigo: ' .  $original['despesaCodigoDespesas'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idOS']) != NULL) {
+            $trechoMensagem .= 'Id OS Atual: ' .             $alteracoes['idOS'] .                     '. Antigo: ' .  $original['idOS'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idDespesaPai']) != NULL) {
+            $trechoMensagem .= 'Id Desp Pai Atual: ' .       $alteracoes['idDespesaPai'] .             '. Antigo: ' .  $original['idDespesaPai'] . PHP_EOL;
+        }
+        if (isset($alteracoes['descricaoDespesa']) != NULL) {
+            $trechoMensagem .= 'Desc Desp Atual: ' .         $alteracoes['descricaoDespesa'] .         '. Antigo: ' .  $original['descricaoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idFornecedor']) != NULL) {
+            $trechoMensagem .= 'Id Fornecedor Atual: ' .     $alteracoes['idFornecedor'] .             '. Antigo: ' .  $original['idFornecedor'] . PHP_EOL;
+        }
+        if (isset($alteracoes['precoReal']) != NULL) {
+            $trechoMensagem .= 'Valor Atual: ' .             $alteracoes['precoReal'] .                '. Antigo: ' .  $original['precoReal'] . PHP_EOL;
+        }
+        if (isset($alteracoes['ehcompra']) != NULL) {
+            $trechoMensagem .= 'Foi uma compra Atual: ' .    $alteracoes['ehcompra'] .                 '. Antigo: ' .  $original['ehcompra'] . PHP_EOL;
+        }
+        if (isset($alteracoes['pago']) != NULL) {
+            $trechoMensagem .= 'Pago Atual: ' .              $alteracoes['pago'] .                     '. Antigo: ' .  $original['pago'] . PHP_EOL;
+        }
+        if (isset($alteracoes['quempagou']) != NULL) {
+            $trechoMensagem .= 'Quem Pagou Atual: ' .        $alteracoes['quempagou'] .                '. Antigo: ' .  $original['quempagou'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idFormaPagamento']) != NULL) {
+            $trechoMensagem .= 'Forma PG Atual: ' .          $alteracoes['idFormaPagamento'] .         '. Antigo: ' .  $original['idFormaPagamento'] . PHP_EOL;
+        }
+        if (isset($alteracoes['conta']) != NULL) {
+            $trechoMensagem .= 'Id Conta Atual: ' .          $alteracoes['conta'] .                    '. Antigo: ' .  $original['conta'] . PHP_EOL;
+        }
+        if (isset($alteracoes['nRegistro']) != NULL) {
+            $trechoMensagem .= 'Num Reg Atual: ' .           $alteracoes['nRegistro'] .                '. Antigo: ' .  $original['nRegistro'] . PHP_EOL;
+        }
+        if (isset($alteracoes['valorEstornado']) != NULL) {
+            $trechoMensagem .= 'Estornado Atual: ' .         $alteracoes['valorEstornado'] .           '. Antigo: ' .  $original['valorEstornado'] . PHP_EOL;
+        }
+        if (isset($alteracoes['vencimento']) != NULL) {
+            $trechoMensagem .= 'Vencimento Atual: ' .        $alteracoes['vencimento'] .               '. Antigo: ' .  $original['vencimento'] . PHP_EOL;
+        }
+        if (isset($alteracoes['despesaFixa']) != NULL) {
+            $trechoMensagem .= 'Desp Fixa Atual: ' .         $alteracoes['despesaFixa'] .              '. Antigo: ' .  $original['despesaFixa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['notaFiscal']) != NULL) {
+            $trechoMensagem .= 'Nota Fiscal Atual: ' .       $alteracoes['notaFiscal'] .               '. Antigo: ' .  $original['notaFiscal'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idBanco']) != NULL) {
+            $trechoMensagem .= 'Id Banco Atual: ' .          $alteracoes['idBanco'] .                  '. Antigo: ' .  $original['idBanco'] . PHP_EOL;
+        }
+        if (isset($alteracoes['reembolsado']) != NULL) {
+            $trechoMensagem .= 'Id Reembolsado Atual: ' .    $alteracoes['reembolsado'] .              '. Antigo: ' .  $original['reembolsado'] . PHP_EOL;
+        }
+        if (isset($alteracoes['cheque']) != NULL) {
+            $trechoMensagem .= 'Cheque Atual: ' .            $alteracoes['cheque'] .                   '. Antigo: ' .  $original['cheque'] . PHP_EOL;
+        }
+        if (isset($alteracoes['dataDoTrabalho']) != NULL) {
+            $trechoMensagem .= 'Data do Trabalho Atual: ' .  $alteracoes['dataDoTrabalho'] .           '. Antigo: ' .  $original['dataDoTrabalho'] . PHP_EOL;
+        }
+        if (isset($alteracoes['dataDaCompra']) != NULL) {
+            $trechoMensagem .= 'Data da Compra Atual: ' .    $alteracoes['dataDaCompra'] .             '. Antigo: ' .  $original['dataDaCompra'] . PHP_EOL;
+        }
+        if (isset($alteracoes['ativoDespesa']) != NULL) {
+            $trechoMensagem .= 'Despesa Ativa Atual: ' .     $alteracoes['ativoDespesa'] .             '. Antigo: ' .  $original['ativoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['excluidoDespesa']) != NULL) {
+            $trechoMensagem .= 'Despesa Excluída Atual: ' .  $alteracoes['excluidoDespesa'] .          '. Antigo: ' .  $original['excluidoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idFuncionario']) != NULL) {
+            $trechoMensagem .= 'Tipo Fornecedor Atual: ' .   $alteracoes['idFuncionario'] .           '. Antigo: ' .  $original['idFuncionario'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idAlteracaoUsuario']) != NULL) {
+            $trechoMensagem .= 'Id Alter. Usuario Atual: ' . $alteracoes['idAlteracaoUsuario'] .       '. Antigo: ' .  $original['idAlteracaoUsuario'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idAutor']) != NULL) {
+            $trechoMensagem .= 'Id Usuario Autor Atual: ' .  $alteracoes['idAutor'] .                  '. Antigo: ' .  $original['idAutor'] . PHP_EOL;
+        }
+
+        $this->Logger->log('info', 'Atualizou a despesa ' .  $trechoMensagem);
     }
 
     public function logExcluiDespesas($despesa = null)
     {
-        $this->Logger->log('info', 'Excluiu a despesa '. $despesa->id);
+        $this->Logger->log('info', 'Excluiu a despesa ' . $despesa->id);
     }
-
 }

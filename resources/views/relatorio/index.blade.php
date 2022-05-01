@@ -68,6 +68,8 @@
 
 <div class="divCategoria col-sm-5">
     <h4 class="text-center">Fechamento</h4>
+    {{-- <a  class="d-flex justify-content-center" data-toggle="modal" onclick="alteraRotaFormularioCC();" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a> --}}
+    <a href="#" data-toggle="modal" onclick="alteraRotaFormularioFluxo();" data-target="#exampleModalCenter"><label class="text-center fontenormal row"  for="">Fluxo de Caixa  &nbsp; </label></a>
     <a href="fechamentofinal"><label class="text-center fontenormal row" for="">Relatório Fechamento Final  &nbsp; </label></a>
     </div>
 </div>

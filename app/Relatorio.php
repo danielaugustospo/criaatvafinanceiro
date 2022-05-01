@@ -276,17 +276,17 @@ where d.pago = 'S' ";
         os.dataCriacaoOrdemdeServico,
         r.descricaoreceita  
     
-    FROM receita r 
+        FROM receita r 
 
-     LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
-     LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
-     LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
-     LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
-     LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+        LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
+        LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
+        LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+        LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+        LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
      
-     WHERE r.pagoreceita = 'N' 
-     and r.idosreceita != ''
-     and r.idosreceita != 'CRIAATVA' " . $parametros;
+        WHERE r.pagoreceita = 'N' 
+        and r.idosreceita != ''
+        and r.idosreceita != 'CRIAATVA' " . $parametros;
 
         return $stringQuery;
     }
@@ -311,16 +311,16 @@ where d.pago = 'S' ";
         CONCAT( 'Nº OS: ', os.id, ' - Data da OS: ', DATE_FORMAT(os.dataCriacaoOrdemdeServico,'%d/%m/%Y'), ' - Valor do Projeto: ', os.valorOrdemdeServico, ' - Cliente: ', cli.razaosocialCliente, ' - Evento: ', os.eventoOrdemdeServico) AS dados,
         r.pagoreceita  
     
-    FROM receita r 
+        FROM receita r 
 
-     LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
-     LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
-     LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
-     LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
-     LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
-     where os.id != ''";
+         LEFT JOIN ordemdeservico os  ON r.idosreceita = os.id
+         LEFT JOIN clientes		  cli ON os.idClienteOrdemdeServico = cli.id
+         LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
+         LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
+         LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
+         where os.id != ''";
 
-    return $stringQuery;
+        return $stringQuery;
 
     }
 
@@ -337,7 +337,7 @@ where d.pago = 'S' ";
         os.valorOrdemdeServico - COALESCE(valdesp.valpg, '0') as 'lucro',
         (os.valorOrdemdeServico - COALESCE(valdesp.valpg, '0')) * 100 / (os.valorOrdemdeServico) as 'porcentagem',
         valpago.valpg,
-        CASE WHEN os.valorOrdemdeServico <= valpago.valpg  THEN 'PAGO' ELSE 'NÃO PAGO' END as status
+        CASE WHEN os.valorOrdemdeServico <= valpago.valpg  THEN 'S' ELSE 'N' END as status
          
     	FROM ordemdeservico os
 
@@ -427,6 +427,61 @@ where d.pago = 'S' ";
 
         var_dump($stringQuery);
         exit;
+    }
+
+    public function dadosFluxoDeCaixa($mes, $ano, $conta)
+    {
+
+        $stringQuery ="SELECT 	
+            selecionageral.*
+            FROM (
+            
+            SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
+            SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao) AS saldo,
+            
+            CASE
+		        WHEN dtoperacao BETWEEN '".$ano[0]."-".$mes[0]."-01' and '".$ano[0]."-".$mes[0]."-31' THEN valorreceita
+		        ELSE '0.0'
+		    END AS primeiromes,
+            
+		    CASE
+		        WHEN dtoperacao BETWEEN '".$ano[1]."-".$mes[1]."-01' and '".$ano[1]."-".$mes[1]."-31' THEN valorreceita
+		        ELSE '0.0'
+		    END AS segundomes,
+            
+		    CASE
+		        WHEN dtoperacao BETWEEN '".$ano[2]."-".$mes[2]."-01' and '".$ano[2]."-".$mes[2]."-31' THEN valorreceita
+		        ELSE '0.0'
+		    END AS terceiromes		
+            
+                from ((select `receita`.`id`, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
+                 `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
+
+                from receita 
+
+                inner join conta on `receita`.`contareceita` = `conta`.`id`
+                inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
+                union all (select `despesas`.`id`, `despesas`.`vencimento` as dtoperacao, `despesas`.`descricaoDespesa` as historico, `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
+                 `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
+
+                from despesas
+
+                inner join conta on `despesas`.`conta` = `conta`.`id`
+                inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`)) as x 
+
+                where 
+                -- (pagoreceita = 'N' or pagoreceita = '0') and 
+                historico != '' 
+                -- group by id
+                order by dtoperacao
+                ) as selecionageral
+
+
+                WHERE idconta ='".$conta."' and selecionageral.dtoperacao  BETWEEN '".$ano[0]."-".$mes[0]."-01' AND '".$ano[2]."-".$mes[2]."-31'";
+        
+        // var_dump($stringQuery);
+        // exit;
+                return $stringQuery;
     }
 
     public function dadosReceitaProjecaoTrimestral($stringQuery, $mes, $ano)
@@ -521,9 +576,8 @@ where d.pago = 'S' ";
         LEFT JOIN conta c ON d.conta = c.id
         where d.pago = 'S'
 
-    UNION
-
-    SELECT 
+        UNION
+        SELECT 
         datapagamentoreceita as datamov,
         descricaoreceita as 'historico',
         os.eventoOrdemdeServico as 'evento', 
@@ -542,7 +596,6 @@ where d.pago = 'S' ";
         order by datamov";
         return $stringQuery;
     }
-
 		
 }
 

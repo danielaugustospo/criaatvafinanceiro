@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Relatorio;
 use App\Despesa;
@@ -19,11 +17,7 @@ use App\Providers\FormatacoesServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Receita;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use DataTables;
-use Illuminate\Support\Str;
-use PhpParser\Node\Stmt\Label;
 use DateTime;
 
 class RelatorioController extends Controller
@@ -222,58 +216,106 @@ class RelatorioController extends Controller
         return $dadosConsulta;
     }
 
-    public function apiProjecaoTrimestral(Request $request)
+    public function displayFluxoDeCaixa(Request $request)
     {
 
-        // $mesAno = $this->pegaMesCorrenteEAno();
-        // $mes = $mesAno[0];
-        // $ano = $mesAno[1];
+        $contaSelecionada   = $request->get('conta');
+        $datainicial        = $request->get('datainicial');
 
-        // $relatorio = new Relatorio();
+        return view('relatorio.fluxodecaixa.index', compact('contaSelecionada','datainicial'));
+    }
+
+    public function apiFluxoDeCaixa(Request $request)
+    {
+        $conta = $request->get('conta');
+        $datainicial = $request->get('datainicial');
+        // $datainicial = $request->get('datainicial');
+        // $datafinal = $request->get('datafinal');
+
+        
+        $anoinicial = date('Y', strtotime ($datainicial));
+        $mesinicial = date('m', strtotime ($datainicial));
+                
+        $mesAno = $this->pegaMesCorrenteEAno($anoinicial, $mesinicial);
+        $mes = $mesAno[0];
+        $ano = $mesAno[1];
+
+        $relatorio = new Relatorio();
 
         // $stringConsultaDespesa = $relatorio->dadosDespesaProjecaoTrimestral(null, $mes, $ano);
+        // $stringConsultaDespesa = $relatorio->dadosDespesaProjecaoTrimestral(null, $mes, $ano);
         // $dadosConsultaDespesa = DB::select($stringConsultaDespesa);
-
-
+        
+        
         // $stringConsultaReceita = $relatorio->dadosReceitaProjecaoTrimestral(null, $mes, $ano);
         // $dadosConsultaReceita = DB::select($stringConsultaReceita);
-
-
+        
+        
         // $contadorReceita = count($dadosConsultaReceita);
         // if ($contadorReceita == 0) { $dadosReceita = "{}"; }  
         // else { $dadosReceita = $dadosConsultaReceita[0]; }  
+        
+        $stringConsulta = $relatorio->dadosFluxoDeCaixa($mes, $ano, $conta);
+        $dadosConsulta = DB::select($stringConsulta);
 
-        $dadosConsultaDespesa = $this->pegaJsonOS();
-
-        return $dadosConsultaDespesa;
-
-        // array_push($dadosConsultaDespesa, $dadosReceita);
-
-        // return $dadosConsultaDespesa;
-
-        // $dadosConsulta = array($dadosConsultaDespesa, $dadosConsultaReceita);
-        // return $dadosConsulta;
-
-
-
-        // $mesCorrente    = $mesAno[0][0];
-        // $mesSegundo     = $mesAno[0][1];
-        // $mesTerceiro    = $mesAno[0][2];
-
-        // $anoCorrente            = $mesAno[1][0];
-        // $anoMesCorrenteSegundo  = $mesAno[1][1];
-        // $anoMesCorrenteTerceiro = $mesAno[1][2];
-
-        // return $mesCorrente;
+        return $dadosConsulta;
 
     }
 
-    public function pegaMesCorrenteEAno()
+    // public function apiProjecaoTrimestral(Request $request)
+    // {
+
+    //     $mesAno = $this->pegaMesCorrenteEAno();
+    //     $mes = $mesAno[0];
+    //     $ano = $mesAno[1];
+
+    //     $relatorio = new Relatorio();
+
+    //     $stringConsultaDespesa = $relatorio->dadosDespesaProjecaoTrimestral(null, $mes, $ano);
+    //     $dadosConsultaDespesa = DB::select($stringConsultaDespesa);
+
+
+    //     $stringConsultaReceita = $relatorio->dadosReceitaProjecaoTrimestral(null, $mes, $ano);
+    //     $dadosConsultaReceita = DB::select($stringConsultaReceita);
+
+
+    //     $contadorReceita = count($dadosConsultaReceita);
+    //     if ($contadorReceita == 0) { $dadosReceita = "{}"; }  
+    //     else { $dadosReceita = $dadosConsultaReceita[0]; }  
+
+    //     $dadosConsultaDespesa = $this->pegaJsonOS();
+
+    //     return $dadosConsultaDespesa;
+
+    //     // array_push($dadosConsultaDespesa, $dadosReceita);
+
+    //     // return $dadosConsultaDespesa;
+
+    //     // $dadosConsulta = array($dadosConsultaDespesa, $dadosConsultaReceita);
+    //     // return $dadosConsulta;
+
+
+
+    //     // $mesCorrente    = $mesAno[0][0];
+    //     // $mesSegundo     = $mesAno[0][1];
+    //     // $mesTerceiro    = $mesAno[0][2];
+
+    //     // $anoCorrente            = $mesAno[1][0];
+    //     // $anoMesCorrenteSegundo  = $mesAno[1][1];
+    //     // $anoMesCorrenteTerceiro = $mesAno[1][2];
+
+    //     // return $mesCorrente;
+
+    // }
+
+    public function pegaMesCorrenteEAno($anoinicial, $mesinicial)
     {
-        $mesAtual = date("m");
+        // $mesAtual = date("m");
+        $mesAtual = $mesinicial;
         $mesAtual = intval($mesAtual);
 
-        $anoAtual = date("Y");
+        // $anoAtual = date("Y");
+        $anoAtual = $anoinicial;
         $anoAtual = intval($anoAtual);
 
         $segundoMes = $mesAtual + 1;
@@ -311,7 +353,6 @@ class RelatorioController extends Controller
 
     public function limpaTabelas()
     {
-    
          DB::delete('delete from conta');
          DB::statement('ALTER TABLE conta 
      AUTO_INCREMENT=1');
@@ -334,7 +375,7 @@ class RelatorioController extends Controller
 
          DB::delete('delete from funcionarios');
          DB::statement('ALTER TABLE funcionarios 
-    AUTO_INCREMENT=1');
+     AUTO_INCREMENT=1');
 
          DB::delete('delete from grupodespesas');
          DB::statement('ALTER TABLE grupodespesas 
@@ -346,11 +387,11 @@ class RelatorioController extends Controller
 
         DB::delete('delete from despesas');
         DB::statement('ALTER TABLE despesas 
-    AUTO_INCREMENT=1');
+     AUTO_INCREMENT=1');
 
         DB::delete('delete from receita');
         DB::statement('ALTER TABLE receita 
-    AUTO_INCREMENT=1');
+     AUTO_INCREMENT=1');
 
         print_r("Tabelas limpas \n");
     }

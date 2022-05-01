@@ -63,15 +63,15 @@
 
 
             columns: [
-                { field: "idOS", title: "N° OS", filterable: true, width: 90 },
-                { field: "nfreceita", title: "NFS", filterable: true, width: 90 },
-                { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "eventoOrdemdeServico", title: "Descrição da Receita", filterable: true, width: 90 },
-                { field: "datapagamentoreceita", title: "Data PG", filterable: true, width: 85, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: segundoFiltroPeriodo}} },
+                { field: "idOS", title: "N° OS", filterable: true, width: 80 },
+                { field: "nfreceita", title: "NFS", filterable: true, width: 50 },
+                { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 90, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "eventoOrdemdeServico", title: "Desc. da Receita", filterable: true, width: 120 },
+                { field: "datapagamentoreceita", title: "Data PG", filterable: true, width: 90, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: segundoFiltroPeriodo}} },
                 { field: "nomeFormaPagamento", title: "Forma de Pag.", filterable: true, width: 90 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 90 },
-                { field: "conta", title: "Conta", filterable: true, width: 60 }            
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 90, exportable:false },
+                { field: "conta", title: "Conta", filterable: true, width: 80, exportable:false }            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')

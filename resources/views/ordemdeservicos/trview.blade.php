@@ -24,10 +24,10 @@
         </select>
     </td>
     <td>
-        {!! Form::date('dataemissaoreceita[]', $dadosreceita->dataemissaoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100', 'required', $readonlyOrNo]) !!}
+        {!! Form::date('dataemissaoreceita[]', $dadosreceita->dataemissaoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100',  $readonlyOrNo]) !!}
     </td>
     <td>
-        {!! Form::date('datapagamentoreceita[]', $dadosreceita->datapagamentoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100', 'required', $readonlyOrNo ]) !!}
+        {!! Form::date('datapagamentoreceita[]', $dadosreceita->datapagamentoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100',  $readonlyOrNo ]) !!}
     </td>
     <td>
         <select name="contareceita[]" id="contaReceita" class="col-lg-12 selecionaComInput form-control" {{ $disabledOrNo }}>

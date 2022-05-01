@@ -76,14 +76,14 @@
                 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
             <td>
-                <select name="pago[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
+                <select name="pagoTabela[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
                     {{$variavelDisabledNaView}}>
                     @if (Request::path() == 'despesas/create')
                     <option value="N">Não</option>
                     <option value="S">Sim</option>
                     @else
-                    <option value="1" {{$despesa->pago == '1'?' selected':''}}>Sim</option>
-                    <option value="0" {{$despesa->pago == '0'?' selected':''}}>Não</option>
+                    <option value="N" {{$despesa->pago == 'N'?' selected':''}}>Não</option>
+                    <option value="S" {{$despesa->pago == 'S'?' selected':''}}>Sim</option>
                     @endif
                 </select>
             </td>

@@ -139,6 +139,8 @@ class PermissionTableSeeder extends Seeder
 
             // 'visualiza-contacorrente',
             // 'visualiza-relatoriogeral',
+
+             'relatorio-list',
         ];
 
 
