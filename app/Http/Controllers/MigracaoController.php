@@ -47,7 +47,7 @@ class MigracaoController extends Controller
         $horarioInicio = date('d-m-Y H:i:s');
 
         $this->criaJsonClientes();
-        $this->criaJsonContas();
+        // $this->criaJsonContas();
         $this->criaJsonFormaPagamento();
         $this->criaJsonFornecedores();
         $this->criaJsonFuncionarios();
@@ -58,7 +58,7 @@ class MigracaoController extends Controller
 
         $this->limpaTabelas();
 
-        $this->pegaJsonContas();
+        // $this->pegaJsonContas();
         $this->pegaJsonCliente();
         $this->pegaJsonOS();
         $this->pegaJsonFornecedor();
@@ -204,6 +204,13 @@ class MigracaoController extends Controller
     }
     public function criaJsonContas()
     {
+        //C1 - TAILORMADE
+        //C2 - THIAGO
+        //C3 - CAIXINHA
+        //C4 - VIRA
+        //C5 - NELIO
+        //C6 - THIAGO POUPANÇA
+        //C7 - VIROLA
 
         $nomeArquivo = 'contas';
         $dadosJsonInicio = $this->criaJsonInicio($nomeArquivo);
@@ -592,8 +599,8 @@ class MigracaoController extends Controller
     public function limpaTabelas()
     {
 
-        DB::delete('delete from conta');
-        DB::statement('ALTER TABLE conta AUTO_INCREMENT=1');
+        // DB::delete('delete from conta');
+        // DB::statement('ALTER TABLE conta AUTO_INCREMENT=1');
 
         DB::delete('delete from clientes');
         DB::statement('ALTER TABLE clientes AUTO_INCREMENT=1');
@@ -824,8 +831,11 @@ class MigracaoController extends Controller
 
                         foreach ($listaFuncionario as $funcionario) {
 
-                            if ($jsonvencimentos[$movimentacoes]['Codfunci'] == $funcionario->nomeFuncionario) {
+                            if (($jsonvencimentos[$movimentacoes]['Codfunci'] == $funcionario->nomeFuncionario) && ($jsonvencimentos[$movimentacoes]['Codfunci'] != null || $jsonvencimentos[$movimentacoes]['Codfunci'] != '')) {
                                 $jsonvencimentos[$movimentacoes]['Codfunci'] = $funcionario->id;
+                            }
+                            elseif($jsonvencimentos[$movimentacoes]['Codfunci'] == null || $jsonvencimentos[$movimentacoes]['Codfunci'] == ''){
+                                $jsonvencimentos[$movimentacoes]['Codfunci'] = '';
                             }
                         }
                         $despesa->idFuncionario                  = $jsonvencimentos[$movimentacoes]['Codfunci'];

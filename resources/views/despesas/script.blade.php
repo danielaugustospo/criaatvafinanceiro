@@ -2,26 +2,41 @@
     $(function() {
         $("#comprou").click(function() {
             if ($(this).is(":checked")) {
-                $("#divComprou").show();
-                alteraIdComprador();
 
+                $("#divComprou").show();
+                $("#despesaCompra").show();
+                $("#telaCadastrarMateriais").show();
+                alteraIdComprador();
                 $("#telaFornecedor").show();
-                $("#telaFuncionario").hide();
+                $("#tabelaDespesas").show();
+                $("#telaQuantidade").show();
+                $("#telaDataCompra").show();
+                $("#telaCompraParcelada").show();
                 // pegaIdFornecedor();
 
-                $("#telaParcelas").show();
 
+                $("#telaFuncionario").hide();
+                $("#despesaNaoCompra").hide();
                 $("#telaDataTrabalho").hide();
                 $("#telaPrestador").hide();
-                $("#telaDataCompra").show();
+
 
             } else {
                 $("#divComprou").hide();
+
+                $("#despesaCompra").hide();
+                $("#despesaNaoCompra").show();
+
+                $("#telaCadastrarMateriais").hide();
                 resetaIdComprador();
+                // comboDescricaoNaoComprou();
 
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 // pegaIdFuncionario();
+                $("#telaQuantidade").hide();
+                $("#telaCompraParcelada").hide();
+
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
@@ -32,39 +47,59 @@
         $("#naocomprou").click(function() {
             if ($(this).is(":checked")) {
                 $("#divComprou").hide();
+
+                $("#despesaNaoCompra").show();
+
+                $("#telaCadastrarMateriais").hide();
+
                 resetaIdComprador();
+                // comboDescricaoNaoComprou();
 
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
+                $("#telaCompraParcelada").hide();
+                
                 // pegaIdFuncionario();
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
                 $("#telaPrestador").show();
 
-                $("#telaParcelas").hide();
+                $("#tabelaDespesas").hide();
 
                 $("#tabelaDespesas").hide();
                 $("#telaOS").show();
                 $("#telaDescricao").show();
                 $("#telaValor").show();
+                $("#telaQuantidade").hide();
                 $("#telaDataPagamento").show();
                 $("#telaNF").show();
                 $("#telaPago").show();
+                $('#naocomprou').prop('checked', true);
                 $('#naoparcelada').prop('checked', true);
+                $("#despesaCompra").hide();
+
             } else {
                 $("#divComprou").show();
+
+                $("#despesaCompra").show();
+                $("#despesaNaoCompra").hide();
+
+                $("#telaCadastrarMateriais").show();
+
                 alteraIdComprador();
 
                 $("#telaFornecedor").show();
+                $("#telaCompraParcelada").show();
                 $("#telaFuncionario").hide();
+                $("#telaQuantidade").hide();
                 pegaIdFornecedor();
 
                 $("#telaDataTrabalho").hide();
                 $("#telaDataCompra").show();
                 $("#telaPrestador").hide();
 
-                $("#telaParcelas").show();
+                $("#tabelaDespesas").show();
             }
         });
         $("#parcelada").click(function() {
@@ -73,18 +108,22 @@
                 $("#telaOS").hide();
                 $("#telaDescricao").hide();
                 $("#telaValor").hide();
+                $("#telaQuantidade").hide();
                 $("#telaDataPagamento").hide();
                 $("#telaNF").hide();
                 $("#telaPago").show();
+
             } else {
                 $("#tabelaDespesas").hide();
                 $("#telaOS").show();
                 $("#telaDescricao").show();
                 $("#telaValor").show();
+                $("#telaQuantidade").show();
                 $("#telaDataPagamento").show();
                 $("#telaNF").show();
                 $("#telaPago").show();
-                $("#telaParcelas").hide();
+                $("#tabelaDespesas").hide();
+
             }
         });
         $("#naoparcelada").click(function() {
@@ -93,37 +132,84 @@
                 $("#telaOS").show();
                 $("#telaDescricao").show();
                 $("#telaValor").show();
+                $("#telaQuantidade").show();
                 $("#telaDataPagamento").show();
                 $("#telaNF").show();
                 $("#telaPago").show();
+
             } else {
                 $("#tabelaDespesas").show();
                 $("#telaOS").hide();
                 $("#telaDescricao").hide();
                 $("#telaValor").hide();
+                $("#telaQuantidade").hide();
                 $("#telaDataPagamento").hide();
                 $("#telaNF").hide();
                 $("#telaPago").show();
+
             }
         });
+
+        checaCompra = document.getElementById('comprou');
+        checaNaoCompra = document.getElementById('naocomprou');
+        if (checaCompra.checked) {
+            $("#despesaCompra").show();
+            $("#telaQuantidade").show();
+            $("#divComprou").show();
+            $("#telaCadastrarMateriais").show();
+            alteraIdComprador();
+            $("#telaFornecedor").show();
+            $("#tabelaDespesas").show();
+            $("#telaQuantidade").show();
+            $("#telaDataCompra").show();
+            $("#telaCompraParcelada").show();
+            
+            $("#telaFuncionario").hide();
+            $("#despesaNaoCompra").hide();
+            $("#telaDataTrabalho").hide();
+            $("#telaPrestador").hide();
+
+        } else if (checaNaoCompra.checked) {
+            $("#despesaCompra").hide();
+            $("#telaQuantidade").hide();
+            $("#divComprou").hide();
+            $("#telaCadastrarMateriais").hide();
+            resetaIdComprador();
+            $("#telaFornecedor").hide();
+            $("#tabelaDespesas").hide();
+            $("#telaQuantidade").hide();
+            $("#telaDataCompra").hide();
+            $("#telaCompraParcelada").hide();
+            $("#tabelalistadespesa").hide();
+            
+            $("#telaFuncionario").show();
+            $("#despesaNaoCompra").show();
+            $("#telaDataTrabalho").show();
+            $("#telaPrestador").show();
+            
+
+
+        }
+
+
     });
 
 
     function pegaIdFornecedor() {
         var selecionado = $('.selecionaFornecedor').find(':selected').val();
-        console.log(selecionado);
+        // console.log(selecionado);
         document.getElementById("idFornecedor").value = selecionado;
     }
 
     function pegaIdFuncionario() {
         var selecionado = $('.selecionaFuncionario').find(':selected').val();
-        console.log(selecionado);
+        // console.log(selecionado);
         document.getElementById("idFornecedor").value = selecionado;
     }
 
     function alteraIdComprador() {
         var idComprador = $('.quemComprouSelect').find(':selected').val();
-        console.log(idComprador);
+        // console.log(idComprador);
         document.getElementById("quemcomprou").value = idComprador;
     }
 
@@ -131,12 +217,13 @@
         document.getElementById("quemcomprou").value = "";
     }
 
+
     $('body').on('click', '.recarregaMateriais', function() {
         // var row = $("#tabelalistadespesa tr:first");
         var row = $(this).closest('tr');
         row.find("#descricaoDespesa").each(function(index) {
             $(this).select2('destroy');
-            
+
         });
 
         dropdown.empty();
@@ -147,7 +234,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(
+                    dadosjson.nomeBensPatrimoniais));
             })
         });
         $('#descricaoDespesa').select2();
@@ -157,6 +245,12 @@
         // var row = $("#tabelalistadespesa tr:first");
         var row = $(this).closest('tr');
         row.find(".selecionaComInput").each(function(index) {
+            // var coluna = $(this).closest('td');
+
+            // var coluna = $('#idOSTabela').find(':selected');
+            // console.log(coluna);
+            
+            console.log(coluna);
             $(this).select2('destroy');
         });
         row.find(".campo-moeda").each(function(index) {
@@ -226,7 +320,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.despesaCodigoDespesa + ' | ' + dadosjson.grupoDespesa));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .despesaCodigoDespesa + ' | ' + dadosjson.grupoDespesa));
             })
         });
         $('#despesaCodigoDespesas').select2();
@@ -245,7 +340,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .nomeBensPatrimoniais));
             })
         });
         $('#descricaoDespesa').select2();
@@ -265,7 +361,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.nomeBensPatrimoniais));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .nomeBensPatrimoniais));
             })
         });
         $('#descricaoDespesaTabela').select2();
@@ -283,7 +380,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialFornecedor));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .razaosocialFornecedor));
             })
         });
         $('#selecionaFornecedor').select2();
@@ -303,7 +401,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialFornecedor));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .razaosocialFornecedor));
             })
         });
         $('#selecionaPrestadorServico').select2();
@@ -321,7 +420,8 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialFornecedor));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .razaosocialFornecedor));
             })
         });
         $('#selecionaComprador').select2();
@@ -339,9 +439,30 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialFornecedor));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
+                    .razaosocialFornecedor));
             })
         });
         $('#reembolsado').select2();
     }
 </script>
+
+{{-- @isset($despesa)
+    @if ($despesa->ehcompra == 1)
+        <script>
+            setInterval(clicaCompra, 10000);
+
+            function clicaCompra() {
+                $("input").first().trigger("#comprou");
+            }
+        </script>
+    @else
+        <script>
+            setInterval(clicaNaoCompra, 10000);
+
+            function clicaNaoCompra() {
+                $("input").first().trigger("#naocomprou");
+            }
+        </script>
+    @endif
+@endisset --}}

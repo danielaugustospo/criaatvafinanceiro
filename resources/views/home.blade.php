@@ -2,6 +2,18 @@
 
 @section('content')
 
+
+@if(isset($mensagemErro))
+<div class="text-center alert alert-danger">
+    <p>{{ $mensagemErro }}</p>
+</div>
+@endif
+@if(isset($mensagemExito))
+<div class="text-center alert alert-success">
+    <p>{{ $mensagemExito }}</p>
+</div>
+@endif
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

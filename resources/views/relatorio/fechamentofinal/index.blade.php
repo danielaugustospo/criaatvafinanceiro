@@ -78,7 +78,7 @@
                 { field: "custo", title: "Total de<br>Custos", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "lucro", title: "Lucro ou<br>Prejuízo", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "porcentagem", title: "Perc(%)", filterable: true, width: 10, decimals: 2, aggregates: ["average"], footerTemplate: calculaPorcentagem, format: '{0:0.00} %' },            
-                { field: "status", title: "Pago", filterable: true, width: 10 },            
+                { field: "status", title: "Pago", filterable: true, width: 8 },            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')

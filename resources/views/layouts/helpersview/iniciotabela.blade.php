@@ -32,24 +32,39 @@ $.LoadingOverlay("show", {
             toolbar: ["excel", "pdf"],
             excel: {
                 fileName: "Relatório de " + document.title + ".xlsx",
+                allPages: true
                 // proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
                 // filterable: true
             },
             excelExport: function (e) {
 
                 var sheet = e.workbook.sheets[0];
+                @if(isset($contacorrente))
+                    for (var rowIndex = 1; rowIndex < sheet.rows.length; rowIndex++) {
+                        if (rowIndex < (sheet.rows.length - 1)) {
+                            var row = sheet.rows[rowIndex];
+                            for (var cellIndex = 5; cellIndex < row.cells.length; cellIndex ++) {
+                                row.cells[cellIndex].format = "[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;"
+                                {{-- console.log(cellIndex); --}}
+                            }
+                        }
+                    }
+                @endif
+                
                 sheet.frozenRows = 1;
-                sheet.mergedCells = [" {{  $intervaloCelulas }} "];
+                @if(isset($intervaloCelulas)) sheet.mergedCells = ["{{$intervaloCelulas}}"]; @else ["A1:F1"]; @endif
                 sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
-
+                
                 var myHeaders = [{
                     value: "Relatório de " + document.title,
                     textAlign: "center",
                     background: "black",
                     color: "#ffffff"
                 }];
+                
 
-                sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 70 });
+                console.log(e.workbook);
+                sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 20 });
             },
 
             pdf: {
@@ -76,7 +91,7 @@ $.LoadingOverlay("show", {
             groupable: true,
             columnMenu: true,
             responsible: true,
-            // scrollable: true,
+            mobile: true,
             reorderable: true,
             width: 'auto',
             pageable: {
