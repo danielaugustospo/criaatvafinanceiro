@@ -7,10 +7,13 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Despesa n° {{$despesa->id}}</h2>
+            <h2>Edição - Despesa ID {{ $despesa->id }} - {{ $despesa->descricaoDespesa }}</h2>
+
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('despesas.index') }}"> Voltar</a>
+            {{-- <a class="btn btn-primary" href="{{ route('despesas.index') }}"> Voltar</a> --}}
+            <a class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="color: white; cursor:pointer;" > Pesquisar Outra Despesa</a>
+
         </div>
     </div>
 </div>

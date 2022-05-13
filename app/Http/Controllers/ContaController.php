@@ -629,7 +629,29 @@ class ContaController extends Controller
         $datainicial = $request->get('datainicial');
         $datafinal = $request->get('datafinal');
 
-        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal'));
+        $modelConta = new Conta();
+
+        $complemento = "WHERE idconta ='".$contaSelecionada."' and dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."'";
+        $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
+        $extrato = DB::select($stringQueryExtratoConta);
+
+        $tamExtrato = sizeof($extrato);
+        if($tamExtrato > 0 && $tamExtrato != null){
+            $tamExtrato = $tamExtrato - 1;
+    
+            $conta   = $extrato[0]->conta;
+                       
+            $saldoFinal     = $extrato[$tamExtrato]->saldo;
+            $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
+
+        }
+        else{
+            $conta   = 'Indefinido';
+            $saldoInicial   = 0;
+            $saldoFinal     = 0;
+        }
+
+        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal','conta','saldoInicial','saldoFinal'));
     }
 
     public function tabelaExtratoConta(Request $request)

@@ -4,6 +4,43 @@
     return document.querySelector('base').href;
 }       
 
+function chamaPrevencaodeClique(e) {
+    $('#buscarCC').attr('disabled','disabled');
+      form.submit();
+  }
+
+  function verificaPreenchimento(e){
+    var pegaId = document.getElementById("id").value;
+    if(pegaId != null && pegaId != ''){ 
+        document.getElementById("formFiltraDespesa").setAttribute("action", "{{ route('displaydespesas') }}");
+        form.submit(); 
+
+    } 
+    else{ 
+        var pegadespesas        = document.getElementById("despesas").value;
+        var pegadtinicio        = document.getElementById("dtinicio").value;
+        var pegadtfim           = document.getElementById("dtfim").value;
+        var pegacoddespesa      = document.getElementById("coddespesa").value;
+        var pegafornecedor      = document.getElementById("fornecedor").value;
+        var pegaordemservico    = document.getElementById("ordemservico").value;
+        if(
+            (pegadespesas       == null || pegadespesas == '') && 
+            (pegadtinicio       == null || pegadtinicio == '') && 
+            (pegadtfim          == null || pegadtfim == '') && 
+            (pegacoddespesa     == null || pegacoddespesa == '') && 
+            (pegafornecedor     == null || pegafornecedor == '') && 
+            (pegaordemservico   == null || pegaordemservico == '')
+        
+        ){
+            alert("Preencha ao menos um campo e tente novamente");
+        }else{
+            document.getElementById("formFiltraDespesa").setAttribute("action", "{{ route('displaydespesas') }}");
+            form.submit(); 
+        }
+    }
+
+  }
+
     $(document).ready(function() {
    
     jQuery('.campo-moeda')
@@ -219,6 +256,14 @@
             });
         });
 
+        function abreModal(param){
+        // console.log(param);
+        $('#exampleModal').modal('toggle');
+        document.getElementById("tpRel").value = param;
+        
+        // $('#myModal').modal('show');
+        // $('#exampleModal').modal('hide');
+    }
 </script>
 
  
@@ -232,8 +277,8 @@
         Relatório de #: document.title # 
       </div>
       <div class="watermark">CRIAATVA</div>
-      <div class="footer">
+      {{-- <div class="footer">
         Página #: pageNum # de #: totalPages #
-      </div>
+      </div> --}}
     </div>
   </script>

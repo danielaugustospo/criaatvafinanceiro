@@ -27,7 +27,7 @@ Route::get('/modalcodigodespesa', function () { return view('codigodespesas.camp
 Route::get('/modalfornecedor', function () { return view('fornecedores.camposmodal'); });
 
 //Rotas de relatório
-Route::get('/relatorio', function () { return view('relatorio.index'); })->name('relatorio');
+// Route::get('/relatorio', function () { return view('relatorio.index'); })->name('relatorio');
 Route::get('/fatporcliente', function () { return view('relatorio.fatporcliente.index'); });
 Route::get('/entradaporcontabancaria', function () { return view('relatorio.entradaporcontabancaria.index'); });
 Route::get('/despesaspagasporcontabancaria', function () { return view('relatorio.despesaspagasporcontabancaria.index'); });
@@ -71,9 +71,11 @@ Route::get('/relatorioFornecedores', 'FornecedorController@relatorioFornecedores
 Route::get('/tabelaContasAReceber', 'ContaController@tabelaContasAReceber')->name('tabelaContasAReceber');
 Route::get('/tabelaContasAPagar', 'ContaController@tabelaContasAPagar')->name('tabelaContasAPagar');
 Route::get('/extratoConta', 'ContaController@extratoConta')->name('extratoConta');
+Route::get('/fluxodecaixa', 'RelatorioController@displayFluxoDeCaixa')->name('fluxodecaixa');
 Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('tabelaExtratoConta');
 Route::get('/tabelaRelatorioFornecedores', 'FornecedorController@tabelaRelatorioFornecedores')->name('tabelaRelatorioFornecedores');
 Route::get('/tabelaDespesas', 'DespesaController@tabelaDespesas')->name('tabelaDespesas');
+Route::get('/displaydespesas', 'DespesaController@index')->name('displaydespesas');
 Route::get('/tabelaReceitas', 'ReceitaController@tabelaReceitas')->name('tabelaReceitas');
 Route::get('/tabelaOrdemServicos', 'OrdemdeServicoController@tabelaOrdemServicos')->name('tabelaOrdemServicos');
 
@@ -119,5 +121,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('notasrecibos','NotasRecibosController');
     Route::resource('aliquotamensal','AliquotaMensalController');
     Route::resource('pedidocompra','PedidoCompraController');
+    Route::resource('relatorio','RelatorioController');
 
 });

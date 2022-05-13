@@ -7,9 +7,15 @@
     }
 
 /*Início estilo PDF Kendo Grid */
-    .k-grid {
+    .k-grid td, .k-input, .k-item {
             font-family: "DejaVu Sans", "Arial", sans-serif;
+            font-size: 7pt;
         }
+    .k-datepicker{
+        height: 30%;
+        width: 120px;
+    }
+
      /* Page Template for the exported PDF */
      .page-template {
           font-family: "DejaVu Sans", "Arial", sans-serif;
@@ -38,7 +44,7 @@
         }
         .page-template .watermark {
           font-weight: bold;
-          font-size: 400%;
+          font-size: 300%;
           text-align: center;
           margin-top: 30%;
           color: #aaaaaa;

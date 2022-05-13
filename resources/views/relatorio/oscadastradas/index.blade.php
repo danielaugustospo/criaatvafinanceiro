@@ -48,7 +48,7 @@
                         }
                     },
             },
-            group: [{field: "razaosocialCliente", aggregate: "count"}],
+            // group: [{field: "razaosocialCliente", aggregate: "count"}],
 
                 aggregate: [
                     { field: "id", aggregate: "count" },

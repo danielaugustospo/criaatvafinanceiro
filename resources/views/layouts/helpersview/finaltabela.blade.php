@@ -71,9 +71,27 @@ $(window).on('load', function(){
         var interval  = setInterval(function(){
         if (count >= 100) {
             clearInterval(interval);
-            $('.k-link')[0].click();  
-            console.log('Ordenação Por Grupo Clicado Inicialmente');
-            $.LoadingOverlay("hide");
+
+            var verificador = document.getElementsByClassName('k-link')[0];
+        
+            if(verificador != null){
+                $('.k-link')[0].click();
+                console.log('Ordenação Por Grupo Clicado Inicialmente');
+                $.LoadingOverlay("hide");
+            }else{
+                var temporizador = setInterval(feedbackCarregamentoRelatorio, 5000);
+            }
+
+            function feedbackCarregamentoRelatorio() {
+                console.log('Funcionalidade ainda não carregada. Aguarde alguns segundos');
+                var verificador = document.getElementsByClassName('k-link')[0];
+                if(verificador != null){
+                    $('.k-link')[0].click();
+                    clearInterval(temporizador);
+                    console.log('Ordenação Por Grupo Clicado Inicialmente');
+                    $.LoadingOverlay("hide");
+                }
+            }                          
             return;
         }
         count += 10;
@@ -81,6 +99,8 @@ $(window).on('load', function(){
     }, 300);
 
     }
+
+   
 });
 
 

@@ -23,6 +23,7 @@ Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas')
 Route::get('/apipedidocompra', 'PedidoCompraController@apipedidocompra')->name('apipedidocompra');
 
 Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('apiextratocontarelatorio');
+Route::get('/apifluxodecaixa', 'RelatorioController@apiFluxoDeCaixa')->name('apifluxodecaixa');
 Route::get('/apicontaareceberporosrelatorio', 'RelatorioController@apiAReceberPorOSRelatorio')->name('apicontaareceberporosrelatorio');
 Route::get('/apifaturamentoporcliente', 'RelatorioController@apiFaturamentoPorCliente')->name('apifaturamentoporcliente');
 Route::get('/apientradaporcontabancaria', 'RelatorioController@apiEntradasPorContaBancaria')->name('apientradaporcontabancaria');

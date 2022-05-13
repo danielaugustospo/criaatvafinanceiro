@@ -47,16 +47,16 @@ class Conta extends Model
         FROM (
     
         SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
-        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao) AS saldo
+        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo
     
-            from ((select `receita`.`id`, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
+            from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
              `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
             
             from receita 
             
             inner join conta on `receita`.`contareceita` = `conta`.`id`
             inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
-            union all (select `despesas`.`id`, `despesas`.`vencimento` as dtoperacao, `despesas`.`descricaoDespesa` as historico, `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
+            union all (select concat('D-',`despesas`.`id`) as id, `despesas`.`vencimento` as dtoperacao, `despesas`.`descricaoDespesa` as historico, `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
              `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
             
             from despesas
