@@ -1,4 +1,5 @@
 ## Tutorial de configuração
+Sistema atualmente com php 7.4
 Comandos
 ----------------------------------------------------------------------------------------------------------------------------
 php artisan make:migration create_users_table --create=users
