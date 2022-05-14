@@ -1,4 +1,4 @@
-
+vendor/
 de_modules/
 npm-debug.log
 yarn-error.log
@@ -21,3 +21,11 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+
+
+Específicos do ISPCONFIG
+error/
+favicon.ico
+robots.txt
+standard_index.html
+stats/

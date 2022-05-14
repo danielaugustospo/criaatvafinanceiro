@@ -42,6 +42,7 @@ return array(
     'App\\Http\\Controllers\\FuncionarioController' => $baseDir . '/app/Http/Controllers/FuncionarioController.php',
     'App\\Http\\Controllers\\GrupoDespesaController' => $baseDir . '/app/Http/Controllers/GrupoDespesaController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Http\\Controllers\\MigracaoController' => $baseDir . '/app/Http/Controllers/MigracaoController.php',
     'App\\Http\\Controllers\\NotasRecibosController' => $baseDir . '/app/Http/Controllers/NotasRecibosController.php',
     'App\\Http\\Controllers\\OrdemdeServicoController' => $baseDir . '/app/Http/Controllers/OrdemdeServicoController.php',
     'App\\Http\\Controllers\\OrgaosRGController' => $baseDir . '/app/Http/Controllers/OrgaosRGController.php',
