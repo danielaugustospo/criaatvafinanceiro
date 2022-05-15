@@ -50,10 +50,12 @@
        
     <div id="informacoes" class="d-flex justify-content-center" >
         <label class="fontenormal">Conta: <b style="color: red;"> {{$conta}}  </b> - Período 
-            @php echo '<b style="color: red;"> '. date("d/m/Y", strtotime($datainicial)) .' </b>' . " até " . '<b style="color: red;">' . date("d/m/Y", strtotime($datafinal)) . ' </b>'; 
+            @php 
+            $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); 
+            echo '<b style="color: red;"> '. date("d/m/Y", strtotime($datainicial)) .' </b>' . " até " . '<b style="color: red;">' . date("d/m/Y", strtotime($datafinal)) . ' </b>'; 
             setlocale(LC_MONETARY, 'pt_BR');
-            echo ' - Saldo Inicial:  <b style="color: red;">' . money_format('%.2n', $saldoInicial) .'</b>';
-            echo ' - Saldo Final:    <b style="color: red;">' . money_format('%.2n', $saldoFinal) .'</b>';
+            echo ' - Saldo Inicial:  <b style="color: red;">' . $numberFormatter->format($saldoInicial) .'</b>';
+            echo ' - Saldo Final:    <b style="color: red;">' . $numberFormatter->format($saldoFinal)  .'</b>';
             @endphp 
         </label>
     </div>
@@ -104,7 +106,7 @@
                 { field: "valorreceita", title: "Valor", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 
                 // Retirada solicitada pelo Nelio dia 30/04/2022
-                { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php echo ' SALDO INICIAL:' . money_format('%.2n', $saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . money_format('%.2n', $saldoFinal); @endphp' },
+                { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoInicial); @endphp' },
                 
                 // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],
