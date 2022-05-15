@@ -140,11 +140,11 @@
 
         </div>
         <div id="despesaNaoCompra">
-            <input class="form-control" list="datalistDescricao" id="descricaoDespesa" value="@php
-                if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
-                    echo $despesa->descricaoDespesa;
+            <input class="form-control" list="datalistDescricao" id="descricaoDespesa" @php
+            if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null): 
+                echo 'value="'. $despesa->descricaoDespesa .'"';
                 endif;
-            @endphp"
+            @endphp
                 name="descricaoDespesaNaoCompra" placeholder="Digite ou selecione...">
             <datalist id="datalistDescricao">
                 @foreach ($listaDespesas as $listaDespesas)
