@@ -29,7 +29,7 @@
     @can('despesa-create')
     <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
     @endcan
-    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target="#exampleModal" style="cursor: pointer; color: white;"><i class="fas fa-sync" ></i>Nova Consulta</a>
+    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modaldepesas" style="cursor: pointer; color: white;"><i class="fas fa-sync" ></i>Nova Consulta</a>
 </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
         transport: {
             read: {
                 @if(isset($despesas))               
-                    url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}",
+                    url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}&notafiscal={{$notafiscal}}&cliente={{$cliente}}&fixavariavel={{$fixavariavel}}&pago={{$pago}}",
                 @else
                     url: "{{ $rotaapi}}",
                 @endif

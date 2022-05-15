@@ -84,10 +84,14 @@ class DespesaController extends Controller
         $fornecedor     = $validacoesPesquisa[5];
         $ordemservico   = $validacoesPesquisa[6];
         $conta          = $validacoesPesquisa[7];
+        $notafiscal     = $validacoesPesquisa[8];
+        $cliente        = $validacoesPesquisa[9];
+        $fixavariavel   = $validacoesPesquisa[10];
+        $pago           = $validacoesPesquisa[11];
 
         $rota = $this->verificaRelatorio($request);
-         
-        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta'));
+
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago'));
     }
 
 
@@ -142,6 +146,8 @@ class DespesaController extends Controller
         WHERE d.excluidoDespesa = 0 ' . $descricao);
 
         return $listaDespesas;
+        // var_dump($listaDespesas);
+        // exit;
     }
 
     private function montaFiltrosConsulta($request)
@@ -149,7 +155,7 @@ class DespesaController extends Controller
         $descricao = "";
         $verificaInputCampos = 0;
         if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
-        $verificaInputCampos++;
+            $verificaInputCampos++;
         endif;
 
         if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
@@ -167,9 +173,6 @@ class DespesaController extends Controller
         if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
             $verificaInputCampos++;
         endif;
-        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
-            $verificaInputCampos++;
-        endif;
         if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
             $verificaInputCampos++;
         endif;
@@ -177,16 +180,30 @@ class DespesaController extends Controller
             $verificaInputCampos++;
         endif;
 
+       
+        if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->fixavariavel) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
+            $verificaInputCampos++;
+        endif;
+
+
         if ($request->dtfim) :        $datafim    = $request->dtfim;
-        elseif($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
+        elseif ($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
         endif;
 
         if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
+        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
             $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
         endif;
         return $descricao;
-
     }
 
     private function validaPesquisa($request)
@@ -215,53 +232,66 @@ class DespesaController extends Controller
         if ($request->get('conta')) :        $conta = $request->get('conta');
         else : $conta = '';
         endif;
+        if ($request->get('notafiscal')) :    $notafiscal = $request->get('notafiscal');
+        else : $notafiscal = '';
+        endif;
+        if ($request->get('cliente')) :       $cliente = $request->get('cliente');
+        else : $cliente = '';
+        endif;
+        if ($request->get('fixavariavel')) :  $fixavariavel = $request->get('fixavariavel');
+        else : $fixavariavel = '';
+        endif;
+        if ($request->get('pago')) :        $pago = $request->get('pago');
+        else : $pago = '';
+        endif;
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta);
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago);
         return $solicitacaoArray;
     }
 
-    private function verificaRelatorio($request){
-        
+    private function verificaRelatorio($request)
+    {
+
         $rotaRetorno = 'despesas.index';
-        if ($request->get('tpRel') ==  'fornecedor') : 
+        if ($request->get('tpRel') ==  'fornecedor') :
             $rotaRetorno = 'relatorio.fornecedor.index';
-        
-        elseif($request->get('tpRel') ==  'pclienteanalitico') : 
-            $rotaRetorno = 'relatorio.despesasporclienteanalitico.index';    
-        
-        elseif($request->get('tpRel') ==  'contasapagarporgrupo') :  
-            $rotaRetorno = 'relatorio.contasapagarporgrupo.index';           
-        
-        elseif($request->get('tpRel') ==  'contaspagasporgrupo') :  
-            $rotaRetorno = 'relatorio.contaspagasporgrupo.index';    
-        
-        elseif($request->get('tpRel') ==  'despesasfixavariavel') :  
-            $rotaRetorno = 'relatorio.despesasfixavariavel.index';    
-        
-        elseif($request->get('tpRel') ==  'notafiscalfornecedor') :  
-            $rotaRetorno = 'relatorio.notafiscalfornecedor.index';    
-        
-        elseif($request->get('tpRel') ==  'despesaspagasporcontabancaria') :  
-            $rotaRetorno = 'relatorio.despesaspagasporcontabancaria.index';    
-        
-        elseif($request->get('tpRel') ==  'despesasporos') :  
-            $rotaRetorno = 'relatorio.despesasporos.index';    
-        
-        elseif($request->get('tpRel') ==  'despesasporosplanilha') :  
-            $rotaRetorno = 'relatorio.despesasporosplanilha.index';    
-        
-        elseif($request->get('tpRel') ==  'despesassinteticaporos') :  
-            $rotaRetorno = 'relatorio.despesassinteticaporos.index';    
-        
-        elseif($request->get('tpRel') ==  'prolabore') :  
-            $rotaRetorno = 'relatorio.prolabore.index';    
-        
-        elseif($request->get('tpRel') ==  'reembolso') :  
-            $rotaRetorno = 'relatorio.reembolso.index';    
-        
+
+        elseif ($request->get('tpRel') ==  'pclienteanalitico') :
+            $rotaRetorno = 'relatorio.despesasporclienteanalitico.index';
+
+        elseif ($request->get('tpRel') ==  'contasapagarporgrupo') :
+            $rotaRetorno = 'relatorio.contasapagarporgrupo.index';
+
+        elseif ($request->get('tpRel') ==  'contaspagasporgrupo') :
+            $rotaRetorno = 'relatorio.contaspagasporgrupo.index';
+
+        elseif ($request->get('tpRel') ==  'despesasfixavariavel') :
+            $rotaRetorno = 'relatorio.despesasfixavariavel.index';
+
+        elseif ($request->get('tpRel') ==  'notafiscalfornecedor') :
+            $rotaRetorno = 'relatorio.notafiscalfornecedor.index';
+
+        elseif ($request->get('tpRel') ==  'despesaspagasporcontabancaria') :
+            $rotaRetorno = 'relatorio.despesaspagasporcontabancaria.index';
+
+        elseif ($request->get('tpRel') ==  'despesasporos') :
+            $rotaRetorno = 'relatorio.despesasporos.index';
+
+        elseif ($request->get('tpRel') ==  'despesasporosplanilha') :
+            $rotaRetorno = 'relatorio.despesasporosplanilha.index';
+
+        elseif ($request->get('tpRel') ==  'despesassinteticaporos') :
+            $rotaRetorno = 'relatorio.despesassinteticaporos.index';
+
+        elseif ($request->get('tpRel') ==  'prolabore') :
+            $rotaRetorno = 'relatorio.prolabore.index';
+
+        elseif ($request->get('tpRel') ==  'reembolso') :
+            $rotaRetorno = 'relatorio.reembolso.index';
+
         endif;
 
-        return $rotaRetorno; 
+        return $rotaRetorno;
     }
 
     public function tabelaDespesas(Request $request)
@@ -376,8 +406,8 @@ class DespesaController extends Controller
 
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
 
-            // dd($despesa->descricaoDespesa);
-            // exit;
+        // dd($despesa->descricaoDespesa);
+        // exit;
         endif;
 
         $compraparcelada =  $request->get('compraparcelada');
@@ -451,7 +481,7 @@ class DespesaController extends Controller
                 $despesa->idDespesaPai          =  $request->get('idDespesaPai');
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-                
+
                 $despesa->save();
                 $this->logCadastraDespesas($despesa);
             }
@@ -462,7 +492,8 @@ class DespesaController extends Controller
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
                 $request->validate(
-                    ['descricaoDespesaCompra' => 'required'], ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
+                    ['descricaoDespesaCompra' => 'required'],
+                    ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
                 );
             endif;
 
@@ -480,7 +511,7 @@ class DespesaController extends Controller
             return redirect()->route('despesas.index')
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
-        if ( $despesa->ehcompra == 0){
+        if ($despesa->ehcompra == 0) {
             // Não é uma compra
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
@@ -492,7 +523,7 @@ class DespesaController extends Controller
         }
 
         return redirect()->route('despesas.index')
-            ->with('success', 'Despesa id '. $despesa->id . ' cadastrada com êxito.');
+            ->with('success', 'Despesa id ' . $despesa->id . ' cadastrada com êxito.');
     }
 
 
@@ -626,7 +657,8 @@ class DespesaController extends Controller
     //         ->with('success', 'Despesa atualizada com êxito');
     // }
 
-    public function update(Request $request, Despesa $despesa){
+    public function update(Request $request, Despesa $despesa)
+    {
         $despesa = new Despesa();
 
         $request->validate([
@@ -677,8 +709,8 @@ class DespesaController extends Controller
 
             $quantidade = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
-            
-            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {               
+
+            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
                 $despesa = new Despesa();
 
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
@@ -711,7 +743,7 @@ class DespesaController extends Controller
                 $despesa->idDespesaPai          =  $request->get('idDespesaPai');
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-                
+
                 $despesa->save();
                 $this->logCadastraDespesas($despesa);
             }
@@ -722,7 +754,8 @@ class DespesaController extends Controller
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
                 $request->validate(
-                    ['descricaoDespesaCompra' => 'required'], ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
+                    ['descricaoDespesaCompra' => 'required'],
+                    ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
                 );
             endif;
 
@@ -740,7 +773,7 @@ class DespesaController extends Controller
             return redirect()->route('despesas.index')
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
-        if ( $despesa->ehcompra == 0){
+        if ($despesa->ehcompra == 0) {
             // Não é uma compra
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
@@ -755,7 +788,7 @@ class DespesaController extends Controller
         exit();
     }
 
-    
+
 
     /**
      * Remove the specified resource from storage.

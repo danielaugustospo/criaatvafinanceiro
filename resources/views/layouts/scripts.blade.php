@@ -258,7 +258,7 @@ function chamaPrevencaodeClique(e) {
 
         function abreModal(param){
         // console.log(param);
-        $('#exampleModal').modal('toggle');
+        $('.modaldepesas').modal('toggle');
         document.getElementById("tpRel").value = param;
         
         // $('#myModal').modal('show');
