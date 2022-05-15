@@ -245,20 +245,43 @@
         // var row = $("#tabelalistadespesa tr:first");
         var row = $(this).closest('tr');
         row.find(".selecionaComInput").each(function(index) {
-            // var coluna = $(this).closest('td');
-
-            // var coluna = $('#idOSTabela').find(':selected');
-            // console.log(coluna);
+            var coluna = $(this).closest('td');
+            coluna.find("#idOSTabela").each(function(index) {
+                 valorIdOS = $(this).select2().val();
+            });
             
-            console.log(coluna);
+            // var colunaDescricao = $(this).closest('td');
+            coluna.find("#descricaoDespesaTabela").each(function(index) {
+                 valorDescricao = $(this).select2().val();
+            });
+            // var colunapg = $(this).closest('td');
+            coluna.find("#pago").each(function(index) {
+                 valorpg = $(this).select2().val();
+            });
             $(this).select2('destroy');
         });
         row.find(".campo-moeda").each(function(index) {
             $(this).maskMoney('destroy');
         });
+        
         var newrow = row.clone();
         $("#tabelalistadespesa").append(newrow);
+
+        newrow.find("#idOSTabela").each(function(index) {
+            $(this).val(valorIdOS);
+            $(this).trigger('change'); // Notify any JS components that the value changed
+        });
+        newrow.find("#descricaoDespesaTabela").each(function(index) {
+            $(this).val(valorDescricao);
+            $(this).trigger('change'); // Notify any JS components that the value changed
+        });
+        newrow.find("#pago").each(function(index) {
+            $(this).val(valorpg);
+            $(this).trigger('change');  // Notify any JS components that the value changed
+        });
+
         $("select.selecionaComInput").select2();
+        
         // $("input.campo-moeda").maskMoney();
         $('input.campo-moeda')
             .maskMoney({
