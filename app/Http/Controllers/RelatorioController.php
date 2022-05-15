@@ -35,6 +35,11 @@ class RelatorioController extends Controller
         // $this->middleware('permission:conta-delete', ['only' => ['destroy']]);
     }
 
+    public function index(Request $request)
+    {         
+        return view('relatorio.index');
+    }
+
 
     public function apiextratocontarelatorio(Request $request)
     {
@@ -221,8 +226,16 @@ class RelatorioController extends Controller
 
         $contaSelecionada   = $request->get('conta');
         $datainicial        = $request->get('datainicial');
+        $modorelatorio      = $request->get('modorelatorio');
 
-        return view('relatorio.fluxodecaixa.index', compact('contaSelecionada','datainicial'));
+
+        if($modorelatorio == "analitico"){
+            return view('relatorio.fluxodecaixaanalitico.index', compact('contaSelecionada','datainicial'));
+        }
+        else if($modorelatorio == "sintetico"){
+            return view('relatorio.fluxodecaixasintetico.index', compact('contaSelecionada','datainicial'));
+        }
+
     }
 
     public function apiFluxoDeCaixa(Request $request)
@@ -308,16 +321,9 @@ class RelatorioController extends Controller
 
     // }
 
-    public function pegaMesCorrenteEAno($anoinicial, $mesinicial)
-    {
-        // $mesAtual = date("m");
-        $mesAtual = $mesinicial;
-        $mesAtual = intval($mesAtual);
-
         // $anoAtual = date("Y");
         $anoAtual = $anoinicial;
         $anoAtual = intval($anoAtual);
-
         $segundoMes = $mesAtual + 1;
         $terceiroMes = $segundoMes + 1;
 

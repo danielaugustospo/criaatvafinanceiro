@@ -54,6 +54,7 @@
                           <input class="form-control" list="datalistContas" id="conta"
                               name="conta" placeholder="Digite ou selecione...">
                       </div>
+                      <input type="hidden" name="tpRel" id="tpRel" value="">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

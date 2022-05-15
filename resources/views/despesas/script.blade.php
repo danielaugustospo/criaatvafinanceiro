@@ -245,6 +245,12 @@
         // var row = $("#tabelalistadespesa tr:first");
         var row = $(this).closest('tr');
         row.find(".selecionaComInput").each(function(index) {
+            // var coluna = $(this).closest('td');
+
+            // var coluna = $('#idOSTabela').find(':selected');
+            // console.log(coluna);
+            
+            console.log(coluna);
             $(this).select2('destroy');
         });
         row.find(".campo-moeda").each(function(index) {

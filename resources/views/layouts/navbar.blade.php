@@ -44,8 +44,8 @@ use App\Providers\AppServiceProvider;
                             @endcan
 
                             {{-- @can('tabelapercentual-list')
-                        <a class="dropdown-item" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a>
-                        @endcan --}}
+                                <a class="dropdown-item" href="{{ route('tabelapercentual.index') }}">Tabela Percentual</a>
+                            @endcan --}}
                         </div>
                     </li>
 
@@ -91,7 +91,7 @@ use App\Providers\AppServiceProvider;
                     </li>
 
                     <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('relatorio') }}" role="button">
+                        <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
                             Relatórios <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -367,6 +367,7 @@ use App\Providers\AppServiceProvider;
 
                     <input type="date" required class="form-control col-sm-5 ml-4 mr-1" name="datainicial" id="datainicial">
                     <input type="date" required class="form-control col-sm-5 " name="datafinal" id="datafinal">
+                    <input type="hidden" value="" name="modorelatorio" id="modorelatorio">
                 </div>
 
                 </div>
@@ -387,7 +388,14 @@ use App\Providers\AppServiceProvider;
         document.getElementById("formFiltraPeriodoMonetario").setAttribute("action", "{{ route('extratoConta') }}");
     }
 
-    function alteraRotaFormularioFluxo(){
+    function alteraRotaFormularioFluxo(relatorio){
+        if(relatorio === 'sintetico'){
+            document.getElementById("modorelatorio").value = "sintetico";
+        }
+        if(relatorio === 'analitico'){
+            document.getElementById("modorelatorio").value = 'analitico';
+
+        }
         document.getElementById("formFiltraPeriodoMonetario").setAttribute("action", "{{ route('fluxodecaixa') }}");
         document.getElementById("datafinal").style.visibility = "hidden";
         document.getElementById("datafinal").removeAttribute("required");

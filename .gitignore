@@ -23,9 +23,12 @@ Homestead.json
 .phpunit.result.cache
 
 
-Específicos do ISPCONFIG
+# Específicos do ISPCONFIG
 error/
 favicon.ico
 robots.txt
 standard_index.html
 stats/
+
+# 
+public/migracao/

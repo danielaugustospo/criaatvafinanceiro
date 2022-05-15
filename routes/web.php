@@ -27,7 +27,7 @@ Route::get('/modalcodigodespesa', function () { return view('codigodespesas.camp
 Route::get('/modalfornecedor', function () { return view('fornecedores.camposmodal'); });
 
 //Rotas de relatório
-Route::get('/relatorio', function () { return view('relatorio.index'); })->name('relatorio');
+// Route::get('/relatorio', function () { return view('relatorio.index'); })->name('relatorio');
 Route::get('/fatporcliente', function () { return view('relatorio.fatporcliente.index'); });
 Route::get('/entradaporcontabancaria', function () { return view('relatorio.entradaporcontabancaria.index'); });
 Route::get('/despesaspagasporcontabancaria', function () { return view('relatorio.despesaspagasporcontabancaria.index'); });
@@ -121,5 +121,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('notasrecibos','NotasRecibosController');
     Route::resource('aliquotamensal','AliquotaMensalController');
     Route::resource('pedidocompra','PedidoCompraController');
+    Route::resource('relatorio','RelatorioController');
 
 });

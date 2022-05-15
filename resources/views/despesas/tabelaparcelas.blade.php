@@ -21,7 +21,7 @@
         </div>
         <tr name="teste">
             <td data-th="OS">
-                <select class="form-control selecionaComInput" name="idOSTabela[]" id="">
+                <select class="form-control selecionaComInput" name="idOSTabela[]" id="idOSTabela">
                     {{-- @foreach ($listaOrdemDeServicos as $os)
                     <option value="{{ $os->id }}">{{ $os->id }}</option>
                     @endforeach
@@ -61,6 +61,24 @@
             <td data-th="UNIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+
+                {{-- <input list="tipoUnidade" name="quantidadeTabela[]" id="browser" value="">
+
+                <datalist id="tipoUnidade">
+                <option value="Metro">
+                <option value="Galão">
+                <option value="Vidro">
+                <option value="Litro">
+                <option value="Saco">
+                <option value="Pote"> --}}
+
+
+
+
+
+
+                </datalist>
+
             </td>
             <td data-th="VALOR UNITÁRIO">
                 {!! Form::text('valorUnitarioTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>

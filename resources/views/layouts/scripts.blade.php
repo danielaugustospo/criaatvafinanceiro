@@ -256,6 +256,14 @@ function chamaPrevencaodeClique(e) {
             });
         });
 
+        function abreModal(param){
+        // console.log(param);
+        $('#exampleModal').modal('toggle');
+        document.getElementById("tpRel").value = param;
+        
+        // $('#myModal').modal('show');
+        // $('#exampleModal').modal('hide');
+    }
 </script>
 
  

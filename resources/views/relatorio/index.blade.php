@@ -42,21 +42,46 @@
     <div class="col-sm-1"></div>
     <div class="divCategoria col-sm-5">
         <h4 class="text-center">Despesas</h4>
-        <a href="contasapagarporgrupo">             <label class="text-center fontenormal row" for="">Contas a Pagar              &nbsp; </label></a>
-        <a href="contasaidentificar">               <label class="text-center fontenormal row" for="">Contas a Identificar        &nbsp; </label></a>
-        <a href="contaspagasporgrupo">              <label class="text-center fontenormal row" for="">Contas Pagas por Grupo      &nbsp; </label></a>
-        <a href="despesasfixavariavel">             <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
-        <a href="fornecedor">                       <label class="text-center fontenormal row" for="">Fornecedor                  &nbsp; </label></a>
-        <a href="notafiscalfornecedor">             <label class="text-center fontenormal row" for="">Nota Fiscal (Fornecedor)                &nbsp; </label></a>
-        <a href="despesasporclienteanalitico">      <label class="text-center fontenormal row" for="">Por Cliente (Analítico)     &nbsp; </label></a>
-        <a href="despesaspagasporcontabancaria">    <label class="text-center fontenormal row" for="">Por Conta Bancária          &nbsp; </label></a>
-        <a href="despesasporos">                    <label class="text-center fontenormal row" for="">Por OS                      &nbsp; </label></a>
-        <a href="despesasporosplanilha">            <label class="text-center fontenormal row" for="">Por OS - Planilha           &nbsp; </label></a>
-        <a href="prolabore">                        <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a>
-        <a href="reembolso">                        <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>
-        <a href="despesassinteticaporos">           <label class="text-center fontenormal row" for="">Sintética por OS            &nbsp; </label></a>
+        <a onclick="abreModal(param = 'contasapagarporgrupo');" 
+        href="#"> <label class="text-center fontenormal row" for="">Contas a Pagar              &nbsp; </label></a>
+        
+        {{-- <a href="contasaidentificar">                   <label class="text-center fontenormal row" for="">Contas a Identificar        &nbsp; </label></a> --}}
+
+        <a onclick="abreModal(param = 'contaspagasporgrupo');"
+        href="#">  <label class="text-center fontenormal row" for="">Contas Pagas por Grupo      &nbsp; </label></a>
+
+        <a onclick="abreModal(param = 'despesasfixavariavel');"
+        href="#"> <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'fornecedor');"
+        href="#">  <label class="text-center fontenormal row" for="">Fornecedor                  &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'notafiscalfornecedor');" 
+        href="#">  <label class="text-center fontenormal row" for="">Nota Fiscal (Fornecedor)    &nbsp; </label></a>
+        
+        <a  onclick="abreModal(param = 'pclienteanalitico');"
+        href="#"> <label class="text-center fontenormal row" for="">Por Cliente (Analítico)     &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'despesaspagasporcontabancaria');"
+        href="#">  <label class="text-center fontenormal row" for="">Por Conta Bancária          &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'despesasporos');"
+        href="#"> <label class="text-center fontenormal row" for="">Por OS                      &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'despesasporosplanilha');"
+        href="#"> <label class="text-center fontenormal row" for="">Por OS - Planilha           &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'prolabore');"
+        href="#"> <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a>
+        
+        <a onclick="abreModal(param = 'reembolso');"
+        href="#"> <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>
+        
+        <a onclick="abreModal(param= 'despesassinteticaporos');" 
+        href="#">               <label class="text-center fontenormal row" for="">Sintética por OS            &nbsp; </label></a>
     </div>
 </div>
+
 <div class="row  justify-content-center mt-5">
 
 <div class="divCategoria col-sm-5">
@@ -69,7 +94,8 @@
 <div class="divCategoria col-sm-5">
     <h4 class="text-center">Fechamento</h4>
     {{-- <a  class="d-flex justify-content-center" data-toggle="modal" onclick="alteraRotaFormularioCC();" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a> --}}
-    <a href="#" data-toggle="modal" onclick="alteraRotaFormularioFluxo();" data-target="#exampleModalCenter"><label class="text-center fontenormal row"  for="">Fluxo de Caixa  &nbsp; </label></a>
+    <a href="#" data-toggle="modal" onclick="alteraRotaFormularioFluxo(relatorio = 'analitico');" data-target="#exampleModalCenter"><label class="text-center fontenormal row"  for="">Fluxo de Caixa Analítico (antigo) &nbsp; </label></a>
+    <a href="#" data-toggle="modal" onclick="alteraRotaFormularioFluxo(relatorio = 'sintetico');" data-target="#exampleModalCenter"><label class="text-center fontenormal row"  for="">Fluxo de Caixa Sintético &nbsp; </label></a>
     <a href="fechamentofinal"><label class="text-center fontenormal row" for="">Relatório Fechamento Final  &nbsp; </label></a>
     </div>
 </div>
@@ -80,9 +106,9 @@
     .divCategoria {
         -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
         box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
-}
-label {
-    margin: 0px !important;
-}
+    }
+    label {
+        margin: 0px !important;
+    }
 
 </style>

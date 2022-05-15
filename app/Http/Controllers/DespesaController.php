@@ -74,6 +74,124 @@ class DespesaController extends Controller
             header("Location: despesas/$iddespesa");
             exit();
         }
+        $validacoesPesquisa = $this->validaPesquisa($request);
+
+        $despesas       = $validacoesPesquisa[0];
+        $valor          = $validacoesPesquisa[1];
+        $dtinicio       = $validacoesPesquisa[2];
+        $dtfim          = $validacoesPesquisa[3];
+        $coddespesa     = $validacoesPesquisa[4];
+        $fornecedor     = $validacoesPesquisa[5];
+        $ordemservico   = $validacoesPesquisa[6];
+        $conta          = $validacoesPesquisa[7];
+
+        $rota = $this->verificaRelatorio($request);
+         
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta'));
+    }
+
+
+    public function apidespesas(Request $request)
+    {
+        // TODO: Montar filtro genérico de despesas
+
+        $descricao = $this->montaFiltrosConsulta($request);
+
+        $listaDespesas = DB::select('SELECT distinct d.id, 
+        c.despesaCodigoDespesa,
+        g.grupoDespesa,
+        CASE
+            WHEN d.ehcompra = 1 THEN b.nomeBensPatrimoniais
+            ELSE d.descricaoDespesa
+        END AS descricaoDespesa,
+        CASE 
+            WHEN d.despesaFixa = 1  THEN "FIXA" 
+            ELSE "NÃO FIXA" 
+        END as despesaFixa,
+        CONCAT("N° OS:", os.id, "      - Cliente: ", cli.razaosocialCliente, "       - Evento: ", os.eventoOrdemdeServico) AS dados,
+        d.idOS, 
+        f.razaosocialFornecedor,
+        fun.nomeFuncionario,
+        d.vencimento, 
+        d.dataDoPagamento, 
+        d.precoReal, 
+        d.vale,
+        d.datavale,
+        d.pago,
+        d.precoReal - d.vale as despesareal,
+        d.notaFiscal,
+        cc.nomeConta,
+        cc.apelidoConta,
+        os.eventoOrdemdeServico,
+        fpg.nomeFormaPagamento
+        
+        
+        FROM despesas d  
+
+        LEFT JOIN fornecedores      AS f 	ON d.idFornecedor = f.id
+        LEFT JOIN funcionarios      AS fun 	ON d.idFuncionario = fun.id
+        LEFT JOIN codigodespesas    AS c    ON d.despesaCodigoDespesas = c.id
+        LEFT JOIN conta             AS cc   ON d.conta = cc.id
+        LEFT JOIN ordemdeservico    AS os   ON d.idOS = os.id
+        LEFT JOIN grupodespesas     AS g    ON c.idGrupoCodigoDespesa = g.id
+        LEFT JOIN formapagamento    AS fpg  ON d.idFormaPagamento = fpg.id
+        LEFT JOIN benspatrimoniais  AS b    ON d.descricaoDespesa = b.id
+        LEFT JOIN clientes          AS cli  ON os.idClienteOrdemdeServico = cli.id
+     
+        
+        WHERE d.excluidoDespesa = 0 ' . $descricao);
+
+        // DB::select($listaDespesas);
+        return $listaDespesas;
+    }
+
+    private function montaFiltrosConsulta($request)
+    {
+        $descricao = "";
+        $verificaInputCampos = 0;
+        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
+        $verificaInputCampos++;
+        endif;
+
+        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
+            $verificaInputCampos++;
+        endif;
+        if ($request->reembolso) : $descricao .= " AND d.reembolsado != '0'";
+            $verificaInputCampos++;
+        endif;
+
+        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        elseif($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
+        endif;
+
+        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
+        elseif($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
+            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+        endif;
+        return $descricao;
+
+    }
+
+    private function validaPesquisa($request)
+    {
         if ($request->get('despesas')) :     $despesas = $request->get('despesas');
         else : $despesas = '';
         endif;
@@ -99,79 +217,52 @@ class DespesaController extends Controller
         else : $conta = '';
         endif;
 
-
-        return view('despesas.index', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta'));
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta);
+        return $solicitacaoArray;
     }
 
-
-    public function apidespesas(Request $request)
-    {
-        $descricao = "";
-        $verificaInputCampos = 0;
-        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
-        $verificaInputCampos++;
-        endif;
-
-        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
-            $verificaInputCampos++;
-        endif;
-
-        if ($request->dtfim) :        $datafim    = $request->dtfim;
-        elseif($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
-        endif;
-
-        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
-            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
-        endif;
-
-        $listaDespesas = DB::select('SELECT distinct d.id, 
-        c.despesaCodigoDespesa,
-        d.descricaoDespesa,
-        d.idOS, 
-        f.razaosocialFornecedor,
-        d.vencimento, 
-        d.precoReal, 
-        d.vale,
-        d.datavale,
-        d.pago,
-        d.precoReal - d.vale as despesareal,
-        d.notaFiscal,
-        cc.nomeConta,
-        cc.apelidoConta,
-        os.eventoOrdemdeServico
+    private function verificaRelatorio($request){
         
+        $rotaRetorno = 'despesas.index';
+        if ($request->get('tpRel') ==  'fornecedor') : 
+            $rotaRetorno = 'relatorio.fornecedor.index';
         
-        FROM despesas d, fornecedores f, codigodespesas c, benspatrimoniais b, conta cc, ordemdeservico os
-        WHERE  
-        d.idFornecedor = f.id
-        AND
-        d.despesaCodigoDespesas =  c.id 
-        AND 
-        cc.id = d.conta 
-        AND 
-        os.id = d.idOS 
+        elseif($request->get('tpRel') ==  'pclienteanalitico') : 
+            $rotaRetorno = 'relatorio.despesasporclienteanalitico.index';    
         
-        AND excluidoDespesa = 0 ' . $descricao);
+        elseif($request->get('tpRel') ==  'contasapagarporgrupo') :  
+            $rotaRetorno = 'relatorio.contasapagarporgrupo.index';           
+        
+        elseif($request->get('tpRel') ==  'contaspagasporgrupo') :  
+            $rotaRetorno = 'relatorio.contaspagasporgrupo.index';    
+        
+        elseif($request->get('tpRel') ==  'despesasfixavariavel') :  
+            $rotaRetorno = 'relatorio.despesasfixavariavel.index';    
+        
+        elseif($request->get('tpRel') ==  'notafiscalfornecedor') :  
+            $rotaRetorno = 'relatorio.notafiscalfornecedor.index';    
+        
+        elseif($request->get('tpRel') ==  'despesaspagasporcontabancaria') :  
+            $rotaRetorno = 'relatorio.despesaspagasporcontabancaria.index';    
+        
+        elseif($request->get('tpRel') ==  'despesasporos') :  
+            $rotaRetorno = 'relatorio.despesasporos.index';    
+        
+        elseif($request->get('tpRel') ==  'despesasporosplanilha') :  
+            $rotaRetorno = 'relatorio.despesasporosplanilha.index';    
+        
+        elseif($request->get('tpRel') ==  'despesassinteticaporos') :  
+            $rotaRetorno = 'relatorio.despesassinteticaporos.index';    
+        
+        elseif($request->get('tpRel') ==  'prolabore') :  
+            $rotaRetorno = 'relatorio.prolabore.index';    
+        
+        elseif($request->get('tpRel') ==  'reembolso') :  
+            $rotaRetorno = 'relatorio.reembolso.index';    
+        
+        endif;
 
-
-// var_dump($listaDespesas);
-// exit;
-
-        // DB::select($listaDespesas);
-        return $listaDespesas;
+        return $rotaRetorno; 
     }
 
     public function tabelaDespesas(Request $request)

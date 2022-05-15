@@ -24,16 +24,17 @@
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2 class="text-center">Consulta de {{ $titulo }}</h2>
-        </div>
-        <div class="d-flex justify-content-between pull-right">
-            @can('despesa-create')
-            <a class="btn btn-success" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
-            @endcan
+        <div class="form-row d-flex justify-content-center">
+    
+    @can('despesa-create')
+    <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
+    @endcan
+    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target="#exampleModal" style="cursor: pointer; color: white;"><i class="fas fa-sync" ></i>Nova Consulta</a>
+</div>
         </div>
     </div>
 </div>
 
-<a  class="d-flex justify-content-center"data-toggle="modal" data-target="#exampleModal" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Nova Consulta</a>
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
