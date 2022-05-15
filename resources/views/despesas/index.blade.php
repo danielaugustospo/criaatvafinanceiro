@@ -206,7 +206,7 @@
                             e.preventDefault();
                             var tr = $(e.target).closest("tr"); // get the current table row (tr)
                             var data = this.dataItem(tr);
-                            window.location.href = "@php echo env('APP_URL'); @endphp" + "despesas/" + data.id;
+                            window.location.href = "@php echo env('APP_URL'); @endphp" + "/despesas/" + data.id;
                         }
                     }],
                     width: 130,

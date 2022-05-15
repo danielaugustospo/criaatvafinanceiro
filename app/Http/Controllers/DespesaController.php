@@ -373,7 +373,11 @@ class DespesaController extends Controller
                 ['descricaoDespesaNaoCompra.required' => 'Informe a descrição da despesa']
             );
             $despesa->ehcompra = 0;
+
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
+
+            // dd($despesa->descricaoDespesa);
+            // exit;
         endif;
 
         $compraparcelada =  $request->get('compraparcelada');
@@ -403,16 +407,19 @@ class DespesaController extends Controller
 
 
         if ($compraparcelada == 'S') {
+
             $quantidade = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
 
-            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
+            // var_dump($request->get('descricaoTabela')[0]);
+            // exit;
 
+            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
                 $despesa = new Despesa();
-                $request->validate(
-                    [$request->get('descricaoTabela')[$i] => 'required'],
-                    ['descricaoTabela.required' => 'Informe os itens comprados']
-                );
+
+                // $request->validate(
+                //     [$request->get('descricaoTabela')[$i] => 'required'], ['descricaoTabela.required' => 'Informe os itens comprados']
+                // );
 
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
                 $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
@@ -444,18 +451,19 @@ class DespesaController extends Controller
                 $despesa->idDespesaPai          =  $request->get('idDespesaPai');
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-
+                
                 $despesa->save();
                 $this->logCadastraDespesas($despesa);
             }
         } elseif ($compraparcelada == 'N') {
 
+            //Não é uma compra parcelada
             if ($despesa->ehcompra == 1) :
-                $request->validate(
-                    ['descricaoDespesa' => 'required'],
-                    ['descricaoDespesa.required' => 'Informe o que foi comprado']
-                );
+                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
+                $request->validate(
+                    ['descricaoDespesaCompra' => 'required'], ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
+                );
             endif;
 
             $despesa->idOS                  =  $request->get('idOS');
@@ -463,7 +471,6 @@ class DespesaController extends Controller
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
             $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
-            $despesa->descricaoDespesa      =  $request->get('descricaoDespesa');
             $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
@@ -474,12 +481,11 @@ class DespesaController extends Controller
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
         if ( $despesa->ehcompra == 0){
-
+            // Não é uma compra
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
-
 
             $despesa->save();
             $this->logCadastraDespesas($despesa);
@@ -621,6 +627,8 @@ class DespesaController extends Controller
     // }
 
     public function update(Request $request, Despesa $despesa){
+        $despesa = new Despesa();
+
         $request->validate([
 
             'idFormaPagamento'          => 'required',
@@ -665,18 +673,13 @@ class DespesaController extends Controller
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
 
-
         if ($compraparcelada == 'S') {
+
             $quantidade = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
-
-            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
-
+            
+            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {               
                 $despesa = new Despesa();
-                $request->validate(
-                    [$request->get('descricaoTabela')[$i] => 'required'],
-                    ['descricaoTabela.required' => 'Informe os itens comprados']
-                );
 
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
                 $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
@@ -708,18 +711,19 @@ class DespesaController extends Controller
                 $despesa->idDespesaPai          =  $request->get('idDespesaPai');
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-
+                
                 $despesa->save();
                 $this->logCadastraDespesas($despesa);
             }
         } elseif ($compraparcelada == 'N') {
 
+            //Não é uma compra parcelada
             if ($despesa->ehcompra == 1) :
-                $request->validate(
-                    ['descricaoDespesa' => 'required'],
-                    ['descricaoDespesa.required' => 'Informe o que foi comprado']
-                );
+                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
+                $request->validate(
+                    ['descricaoDespesaCompra' => 'required'], ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
+                );
             endif;
 
             $despesa->idOS                  =  $request->get('idOS');
@@ -727,7 +731,6 @@ class DespesaController extends Controller
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
             $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
-            $despesa->descricaoDespesa      =  $request->get('descricaoDespesa');
             $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
@@ -738,12 +741,11 @@ class DespesaController extends Controller
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
         if ( $despesa->ehcompra == 0){
-
+            // Não é uma compra
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
-
 
             $despesa->save();
             $this->logCadastraDespesas($despesa);
@@ -751,8 +753,6 @@ class DespesaController extends Controller
 
         header("Location: ../despesas/$despesa->id");
         exit();
-        // return redirect()->route('despesas.index')
-        //     ->with('success', 'Despesa id '. $despesa->id . ' atualizada com êxito.');
     }
 
     
