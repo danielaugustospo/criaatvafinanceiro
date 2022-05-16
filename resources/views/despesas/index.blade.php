@@ -1,5 +1,5 @@
 <?php 
-    $intervaloCelulas = "A1:F1"; 
+    $intervaloCelulas = "A1:H1"; 
     $rotaapi = "api/apidespesas";
     $titulo  = "Despesas";
     $campodata = 'vencimento';
@@ -219,7 +219,7 @@
                             e.preventDefault();
                             var tr = $(e.target).closest("tr"); // get the current table row (tr)
                             var data = this.dataItem(tr);
-                            window.location.href = "@php echo env('APP_URL'); @endphp" + "despesas/" + data.id + '/edit';
+                            window.location.href = "@php echo env('APP_URL'); @endphp" + "/despesas/" + data.id + '/edit';
                         }
                     }],
                     autowidth: true,

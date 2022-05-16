@@ -44,8 +44,9 @@ $.LoadingOverlay("show", {
                         if (rowIndex < (sheet.rows.length - 1)) {
                             var row = sheet.rows[rowIndex];
                             for (var cellIndex = 5; cellIndex < row.cells.length; cellIndex ++) {
-                                row.cells[cellIndex].format = "[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;"
-                                {{-- console.log(cellIndex); --}}
+                                if(row.cells[cellIndex].value != sheet.rows[1].cells[5].value){
+                                    row.cells[cellIndex].format = "[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;";
+                                }
                             }
                         }
                     }
@@ -63,8 +64,13 @@ $.LoadingOverlay("show", {
                 }];
                 
 
-                console.log(e.workbook);
+                {{-- console.log(e.workbook); --}}
                 sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 20 });
+                var columns = e.workbook.sheets[0].columns;
+                columns.forEach(function(column){
+                  delete column.width;
+                  column.autoWidth = true;
+                });
             },
 
             pdf: {
