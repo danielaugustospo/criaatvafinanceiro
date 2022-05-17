@@ -141,8 +141,8 @@
         </div>
         <div id="despesaNaoCompra">
             <input class="form-control" list="datalistDescricao" id="descricaoDespesa" @php
-            if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null): 
-                echo 'value="'. $despesa->descricaoDespesa .'"';
+                if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
+                    echo 'value="' . $despesa->descricaoDespesa . '"';
                 endif;
             @endphp
                 name="descricaoDespesaNaoCompra" placeholder="Digite ou selecione...">
@@ -317,26 +317,20 @@
     <div class="col-sm-4">
 
         <select name="idBanco" id="idBanco" class="selecionaComInput form-control" {{ $variavelDisabledNaView }}>
-            @if (Request::path() == 'despesas/create')
-                <option value="0" selected>SEM BANCO</option>
-                @foreach ($todosOSBancos as $listaBancosViewCadastro)
-                    <option value="{{ $listaBancosViewCadastro->id }}">{{ $listaBancosViewCadastro->codigoBanco }}
-                        | {{ $listaBancosViewCadastro->nomeBanco }}</option>
-                @endforeach
-            @else
-                @foreach ($listabancos as $listaBancosViewEdit)
-                    @isset($despesa)
-                        @if ($despesa->idBanco == $listaBancosViewEdit->id)
-                            <option value="{{ $listaBancosViewEdit->id }}" selected>
-                                {{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}
-                            </option>
-                        @endif
-                        @if ($despesa->idBanco == '0')
-                            <option value="0" selected>SEM BANCO</option>
-                        @endif
-                    @endisset
-                @endforeach
+            @if (!isset($despesa->idBanco) || $despesa->idBanco == null || $despesa->idBanco == 0)
+            <option value="0" selected>SEM BANCO</option>
             @endif
+            @foreach ($listaBancos as $listaBancosViewEdit)
+            @isset($despesa)
+                @if ($despesa->idBanco == $listaBancosViewEdit->id)
+                <option value="{{ $listaBancosViewEdit->id }}" selected>
+                    {{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}
+                </option>
+            @endif
+            @endisset
+            <option value="{{ $listaBancosViewEdit->id }}">
+                {{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}
+            </option>            @endforeach
         </select>
 
     </div>
@@ -474,7 +468,7 @@
 </div>
 
 
-{{ Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo','class' => 'form-control','maxlength' => '10',$variavelReadOnlyNaView]) }}
+{{ Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 <!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
