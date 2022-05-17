@@ -78,7 +78,7 @@
         href="#"> <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>
         
         <a onclick="abreModal(param= 'despesassinteticaporos');" 
-        href="#">               <label class="text-center fontenormal row" for="">Sintética por OS            &nbsp; </label></a>
+        href="#">               <label class="text-center fontenormal row" for="">Sintética por OS (%)          &nbsp; </label></a>
     </div>
 </div>
 
