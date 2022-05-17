@@ -549,7 +549,7 @@ class DespesaController extends Controller
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1 order by id = :idFornecedor desc', ['idFornecedor' => $despesa->idFornecedor]);
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
-        $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
+        $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
         $valorDespesa = $despesa->precoReal;
         $valorVale = $despesa->vale;
         $precoReal = FormatacoesServiceProvider::validaValoresParaView($valorDespesa);
@@ -563,7 +563,7 @@ class DespesaController extends Controller
 
         $this->logVisualizaDespesas($despesa);
 
-        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -585,7 +585,7 @@ class DespesaController extends Controller
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id = :idFormaPagamento desc', ['idFormaPagamento' => $despesa->idFormaPagamento]);
         $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1 order by id = :idOS desc', ['idOS' => $despesa->idOS]);
-        $listabancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
+        $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1 order by id = :idBanco desc', ['idBanco' => $despesa->idBanco]);
 
         $valorDespesa = $despesa->precoReal;
         $valorVale = $despesa->vale;
@@ -597,7 +597,7 @@ class DespesaController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'listabancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -744,9 +744,18 @@ class DespesaController extends Controller
                 $despesa->ativoDespesa          =  $request->get('ativoDespesa');
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
-                $despesa->save();
-                $this->logCadastraDespesas($despesa);
-            }
+                // $despesa->save();
+                // $this->logCadastraDespesas($despesa);
+                
+        $original   = $despesa->getOriginal();
+        $despesa->update();
+        $alteracoes = $despesa->getChanges();
+
+        $this->logAtualizaDespesas($despesa, $alteracoes, $original);
+
+        return redirect()->route('despesas.index')
+        ->with('success', 'Despesa id ' . $despesa->id . ' atualizada com êxito.');
+    }
         } elseif ($compraparcelada == 'N') {
 
             //Não é uma compra parcelada
@@ -767,11 +776,17 @@ class DespesaController extends Controller
             $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
-            $despesa->save();
-            $this->logCadastraDespesas($despesa);
+            $original   = $despesa->getOriginal();
+            $despesa->update();
+            $alteracoes = $despesa->getChanges();
+    
+            $this->logAtualizaDespesas($despesa, $alteracoes, $original);
+
+            // $despesa->save();
+            // $this->logCadastraDespesas($despesa);
         } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
             return redirect()->route('despesas.index')
-                ->with('error', 'Ocorreu um erro ao salvar.');
+                ->with('error', 'Ocorreu um erro ao atualizar.');
         }
         if ($despesa->ehcompra == 0) {
             // Não é uma compra
@@ -780,12 +795,19 @@ class DespesaController extends Controller
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
 
-            $despesa->save();
-            $this->logCadastraDespesas($despesa);
+
+        $original   = $despesa->getOriginal();
+        $despesa->update();
+        $alteracoes = $despesa->getChanges();
+
+        $this->logAtualizaDespesas($despesa, $alteracoes, $original);
+
+        return redirect()->route('despesas.index')
+            ->with('success', 'Despesa atualizada com êxito');
         }
 
-        header("Location: ../despesas/$despesa->id");
-        exit();
+        // header("Location: ../despesas/$despesa->id");
+        // exit();
     }
 
 
