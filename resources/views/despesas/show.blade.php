@@ -8,7 +8,7 @@
         </div>
         <div class="pull-right">
             {{-- <a class="btn btn-primary" href="{{ route('despesas.index') }}"> Voltar</a> --}}
-            <a class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="color: white; cursor:pointer;" > Pesquisar Outra Despesa</a>
+            <a class="btn btn-primary" data-toggle="modal" data-target=".modaldepesas" style="color: white; cursor:pointer;" > Pesquisar Outra Despesa</a>
 
             <hr />
             <br>
