@@ -146,8 +146,7 @@ class DespesaController extends Controller
         WHERE d.excluidoDespesa = 0 ' . $descricao);
 
         return $listaDespesas;
-        // var_dump($listaDespesas);
-        // exit;
+
     }
 
     private function montaFiltrosConsulta($request)
@@ -180,7 +179,7 @@ class DespesaController extends Controller
             $verificaInputCampos++;
         endif;
 
-       
+
         if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
             $verificaInputCampos++;
         endif;
@@ -608,61 +607,11 @@ class DespesaController extends Controller
      * @param  \App\Despesa  $despesa
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, Despesa $despesa)
-    // {
-    //     request()->validate([
-    //         'descricaoDespesa'          => 'required',
-    //         'idFormaPagamento'          => 'required',
-    //         'conta'                     => 'required',
-    //         'despesaFixa'               => 'required',
-    //     ]);
-
-    //     $valorMonetario                  = $request->get('precoReal');
-    //     $quantia = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetario);
-
-    //     $despesa->idOS                       = $request->get('idOS');
-    //     $despesa->idDespesaPai               = $request->get('idDespesaPai');
-    //     $despesa->descricaoDespesa           = $request->get('descricaoDespesa');
-    //     $despesa->despesaCodigoDespesas      = $request->get('despesaCodigoDespesas');
-    //     $despesa->idFuncionario              = $request->get('idFuncionario');
-    //     $despesa->idFornecedor               = $request->get('idFornecedor');
-    //     $despesa->precoReal                  = $quantia;
-    //     $despesa->ehcompra                   = $request->get('ehcompra');
-    //     $despesa->pago                       = $request->get('pago');
-    //     $despesa->reembolsado                = $request->get('reembolsado');
-    //     $despesa->idFormaPagamento           = $request->get('idFormaPagamento');
-    //     $despesa->conta                      = $request->get('conta');
-    //     $despesa->nRegistro                  = $request->get('nRegistro');
-    //     $despesa->dataDaCompra               = $request->get('dataDaCompra');
-    //     $despesa->dataDoTrabalho             = $request->get('dataDoTrabalho');
-    //     $despesa->vencimento                 = $request->get('vencimento');
-    //     $despesa->datavale                   = $request->get('datavale');
-    //     $despesa->vale                       = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
-    //     $despesa->despesaFixa                = $request->get('despesaFixa');
-    //     $despesa->notaFiscal                 = $request->get('notaFiscal');
-    //     $despesa->idBanco                    = $request->get('idBanco');
-    //     $despesa->cheque                     = $request->get('cheque');
-    //     $despesa->ativoDespesa               = $request->get('ativoDespesa');
-    //     $despesa->excluidoDespesa            = $request->get('excluidoDespesa');
-    //     $despesa->idAlteracaoUsuario         = auth()->user()->id;
-
-
-    //     $original   = $despesa->getOriginal();
-    //     $despesa->update();
-    //     $alteracoes = $despesa->getChanges();
-
-    //     $this->logAtualizaDespesas($despesa, $alteracoes, $original);
-
-    //     return redirect()->route('despesas.index')
-    //         ->with('success', 'Despesa atualizada com êxito');
-    // }
-
     public function update(Request $request, Despesa $despesa)
     {
         $despesa = new Despesa();
 
         $request->validate([
-
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
             'despesaFixa'               => 'required',
@@ -680,8 +629,9 @@ class DespesaController extends Controller
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
         endif;
 
-        $compraparcelada =  $request->get('compraparcelada');
+        // $compraparcelada                =  $request->get('compraparcelada');
 
+        $despesa->id                    =  $request->get('id');
         $despesa->idFuncionario         =  $request->get('idFuncionario');
         $despesa->idFornecedor          =  $request->get('idFornecedor');
         $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
@@ -705,60 +655,8 @@ class DespesaController extends Controller
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
 
-        if ($compraparcelada == 'S') {
 
-            $quantidade = $request->get('quantidadeTabela');
-            $tamanhoArrayQuantidade = count($quantidade);
-
-            for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
-                $despesa = new Despesa();
-
-                $despesa->idOS                  =  $request->get('idOSTabela')[$i];
-                $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
-                $despesa->notaFiscal            =  $request->get('notaFiscalTabela')[$i];
-                $despesa->pago                  =  $request->get('pagoTabela')[$i];
-                $despesa->quantidade            =  $request->get('quantidadeTabela')[$i];
-                $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioTabela')[$i]);
-
-                $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
-                $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
-                $despesa->descricaoDespesa      =  $request->get('descricaoTabela')[$i];
-
-                $despesa->idFornecedor          =  $request->get('selecionaFornecedor');
-                $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
-                $despesa->conta                 =  $request->get('conta');
-                $despesa->dataDaCompra          =  $request->get('dataDaCompra');
-                $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
-                $despesa->quemcomprou           =  $request->get('quemcomprou');
-                $despesa->idBanco               =  $request->get('idBanco');
-                $despesa->cheque                =  $request->get('cheque');
-                $despesa->reembolsado           =  $request->get('reembolsado');
-                $despesa->despesaFixa           =  $request->get('despesaFixa');
-                $despesa->nRegistro             =  $request->get('nRegistro');
-                $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
-                $despesa->ativoDespesa          =  $request->get('ativoDespesa');
-                $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-                $despesa->vale                  =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
-                $despesa->datavale              =  $request->get('datavale');
-                $despesa->idDespesaPai          =  $request->get('idDespesaPai');
-                $despesa->ativoDespesa          =  $request->get('ativoDespesa');
-                $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
-
-                // $despesa->save();
-                // $this->logCadastraDespesas($despesa);
-                
-        $original   = $despesa->getOriginal();
-        $despesa->update();
-        $alteracoes = $despesa->getChanges();
-
-        $this->logAtualizaDespesas($despesa, $alteracoes, $original);
-
-        return redirect()->route('despesas.index')
-        ->with('success', 'Despesa id ' . $despesa->id . ' atualizada com êxito.');
-    }
-        } elseif ($compraparcelada == 'N') {
-
-            //Não é uma compra parcelada
+            //É compra, mas não é parcelada
             if ($despesa->ehcompra == 1) :
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
@@ -776,18 +674,7 @@ class DespesaController extends Controller
             $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
-            $original   = $despesa->getOriginal();
-            $despesa->update();
-            $alteracoes = $despesa->getChanges();
-    
-            $this->logAtualizaDespesas($despesa, $alteracoes, $original);
-
-            // $despesa->save();
-            // $this->logCadastraDespesas($despesa);
-        } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
-            return redirect()->route('despesas.index')
-                ->with('error', 'Ocorreu um erro ao atualizar.');
-        }
+        
         if ($despesa->ehcompra == 0) {
             // Não é uma compra
             $despesa->idOS                  =  $request->get('idOS');
@@ -795,22 +682,82 @@ class DespesaController extends Controller
             $despesa->notaFiscal            =  $request->get('notaFiscal');
             $despesa->pago                  =  $request->get('pago')[0];
 
-
-        $original   = $despesa->getOriginal();
-        $despesa->update();
-        $alteracoes = $despesa->getChanges();
-
-        $this->logAtualizaDespesas($despesa, $alteracoes, $original);
-
-        return redirect()->route('despesas.index')
-            ->with('success', 'Despesa atualizada com êxito');
         }
 
-        // header("Location: ../despesas/$despesa->id");
-        // exit();
+        $original   = $despesa->getOriginal();
+
+
+
+        try {
+            // $despesa->update();
+            
+            Despesa::where('id', $despesa->id)
+            ->where('excluidoDespesa', '0')
+            ->update([
+                'ehcompra'                =>  $despesa->ehcompra,
+                'idFuncionario'           =>  $despesa->idFuncionario,
+                'idFornecedor'            =>  $despesa->idFornecedor,
+                'idFormaPagamento'        =>  $despesa->idFormaPagamento,
+                'conta'                   =>  $despesa->conta,
+                'precoReal'               =>  $despesa->precoReal,
+                'dataDaCompra'            =>  $despesa->dataDaCompra,
+                'dataDoTrabalho'          =>  $despesa->dataDoTrabalho,
+                'quemcomprou'             =>  $despesa->quemcomprou,
+                'idBanco'                 =>  $despesa->idBanco,
+                'cheque'                  =>  $despesa->cheque,
+                'reembolsado'             =>  $despesa->reembolsado,
+                'despesaFixa'             =>  $despesa->despesaFixa,
+                'nRegistro'               =>  $despesa->nRegistro,
+                'despesaCodigoDespesas'   =>  $despesa->despesaCodigoDespesas,
+                'ativoDespesa'            =>  $despesa->ativoDespesa,
+                'excluidoDespesa'         =>  $despesa->excluidoDespesa,
+                'vale'                    =>  $despesa->vale,
+                'datavale'                =>  $despesa->datavale,
+                'idDespesaPai'            =>  $despesa->idDespesaPai,
+                'ativoDespesa'            =>  $despesa->ativoDespesa,
+                'excluidoDespesa'         =>  $despesa->excluidoDespesa,
+                'idAutor'                 =>  $despesa->idAutor,
+                'idOS'                    =>  $despesa->idOS, 
+                'vencimento'              =>  $despesa->vencimento, 
+                'notaFiscal'              =>  $despesa->notaFiscal, 
+                'pago'                    =>  $despesa->pago, 
+                'quantidade'              =>  $despesa->quantidade, 
+                'valorUnitario'           =>  $despesa->valorUnitario, 
+                'valorparcela'            =>  $despesa->valorparcela,  
+                'precoReal'               =>  $despesa->precoReal,  
+                'descricaoDespesa'        =>  $despesa->descricaoDespesa,  
+                'idFornecedor'            =>  $despesa->idFornecedor,  
+                'idFormaPagamento'        =>  $despesa->idFormaPagamento,  
+                'conta'                   =>  $despesa->conta,  
+                'dataDaCompra'            =>  $despesa->dataDaCompra,  
+                'dataDoTrabalho'          =>  $despesa->dataDoTrabalho,  
+                'quemcomprou'             =>  $despesa->quemcomprou,  
+                'idBanco'                 =>  $despesa->idBanco,  
+                'cheque'                  =>  $despesa->cheque,  
+                'reembolsado'             =>  $despesa->reembolsado,  
+                'despesaFixa'             =>  $despesa->despesaFixa,  
+                'nRegistro'               =>  $despesa->nRegistro,  
+                'despesaCodigoDespesas'   =>  $despesa->despesaCodigoDespesas,  
+                'ativoDespesa'            =>  $despesa->ativoDespesa,  
+                'excluidoDespesa'         =>  $despesa->excluidoDespesa,  
+                'vale'                    =>  $despesa->vale,  
+                'datavale'                =>  $despesa->datavale,  
+                'idDespesaPai'            =>  $despesa->idDespesaPai,  
+                'ativoDespesa'            =>  $despesa->ativoDespesa,  
+                'excluidoDespesa'         =>  $despesa->excluidoDespesa,  
+            ]);
+
+            $alteracoes = $despesa->getChanges();
+            $this->logAtualizaDespesas($despesa, $alteracoes, $original);
+
+            return redirect()->route('despesas.show', ['id' => $despesa->id])
+                ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('despesas.show', ['id' => $despesa->id])
+                ->with('error', 'Ocorreu um erro ao atualizar.');
+        }
+
     }
-
-
 
     /**
      * Remove the specified resource from storage.
