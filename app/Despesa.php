@@ -25,6 +25,7 @@ class Despesa extends Model
      */
     protected $fillable = [
 
+    'id',
     'idOS',
     'idDespesaPai',
     'descricaoDespesa',

@@ -38,7 +38,9 @@ if (isset($despesas)) {
 
 <div id="filter-menu"></div>
 <br /><br />
-<div id="grid"></div>
+    <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
+        @include('layouts/helpersview/infofiltrosdepesa')
+    </div>
 
 <script>
 $.LoadingOverlay("show", {
