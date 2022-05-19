@@ -1,6 +1,8 @@
 @include('despesas/script')
 @include('despesas/estilo')
 
+@csrf
+
 <br>
 <hr>
 <div class="form-group row">
@@ -11,31 +13,27 @@
             <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" />
                 SIM</label> <br />
             <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" /> NÃO</label>
-        @else
-            @isset($despesa)
-                @if ($despesa->ehcompra == 1)
-                    <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou"
-                            checked /> SIM</label> <br />
-                    <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" /> NÃO</label>
-                @else
-                    <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" />
-                        SIM</label> <br />
-                    <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" checked /> NÃO</label>
-                @endif
-            @endisset
         @endif
+            @isset($despesa)
+                
+                    <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 1) checked @endif /> SIM</label> <br />
+
+                    <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 0) checked @endif /> NÃO</label>
+                
+            @endisset
+        
     </div>
-    {{-- @if (Request::path() == 'despesas/create') --}}
+
     <div class="form-group row" id="telaCompraParcelada">
         <h5 for="descricaoDespesa" style="color: red;" class="col-sm-5 mr-5"><b>Compra Parcelada?</b></h5>
         <div class="col-sm-3 mt-2">
             <label for="parcelada" class="mr-2 ml-2"><input type="radio" value="S" name="compraparcelada"
-                    id="parcelada" /> SIM</label> <br />
+                @if(isset($despesa)) disabled @endif id="parcelada" /> SIM</label> <br />
             <label for="naoparcelada" class="ml-2"><input type="radio" value="N" name="compraparcelada"
-                    id="naoparcelada" /> NÃO</label>
+                @if(isset($despesa)) disabled checked @endif id="naoparcelada" /> NÃO</label>
         </div>
     </div>
-    {{-- @endif --}}
+    
 </div>
 
 <div class="form-group row">
@@ -92,37 +90,12 @@
                 </option>
             @endforeach
         </select>
-
     </div>
 </div>
 <div class="form-group row" id="telaDescricao">
     <label for="descricaoDespesa" class="col-sm-2 col-form-label">Descrição da Despesa</label>
     <div class="col-sm-6">
-        {{-- @isset($despesa)
-            <select class="selecionaComInput form-control col-sm-10" name="descricaoDespesa" id="descricaoDespesa">
-                @if (isset($despesa->descricaoDespesa) && $despesa->ehcompra == 1)
 
-                    @foreach ($listaBensPatrimoniais as $bempatrimonial)
-                        @if ($despesa->descricaoDespesa == $bempatrimonial->id)
-                            <option value="{{ $bempatrimonial->id }}" selected>
-                                {{ $bempatrimonial->nomeBensPatrimoniais }}</option>
-                        @endif
-                        <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
-                    @endforeach
-                    @if (isset($despesa->descricaoDespesa) && ($despesa->ehcompra == 0 || $despesa->ehcompra == null))
-                        @foreach ($listaDespesas as $listaDespesas)
-                            @if ($despesa->descricaoDespesa == $listaDespesas->descricaoDespesa)
-                                <option value="{{ $listaDespesas->descricaoDespesa }}" selected>
-                                    {{ $listaDespesas->descricaoDespesa }}</option>
-                            @endif
-                            <option value="{{ $listaDespesas->descricaoDespesa }}">
-                                {{ $listaDespesas->descricaoDespesa }}
-                            </option>
-                        @endforeach
-                    @endif
-                @endif
-            </select>
-        @endisset --}}
         <div id="despesaCompra">
             <select class="selecionaComInput form-control" id="descricaoDespesa" name="descricaoDespesaCompra">
 
@@ -154,12 +127,14 @@
             </datalist>
         </div>
     </div>
+    
     <div class="col-sm-4" id="telaCadastrarMateriais">
         <button type="button" onclick="recarregaDescricaoDespesa()" class="btn btn-dark"><i
                 class="fas fa-sync"></i></i></button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".materiais"><i
                 class="fas fa-industry pr-1"></i>Cadastrar Materiais</button>
     </div>
+
 </div>
 
 
@@ -182,6 +157,7 @@
             @endforeach
         </select>
     </div>
+
     <div class="col-sm-4 pl-0">
         <button type="button" onclick="recarregaFornecedorDespesa()" class="btn btn-dark"><i
                 class="fas fa-sync"></i></i></button>
@@ -189,7 +165,6 @@
                 class="fas fa-industry pr-1"></i>Cadastrar Fornecedor</button>
     </div>
 </div>
-
 
 <br>
 
@@ -306,7 +281,6 @@
                 @endisset
                 <option value="{{ $fornecedor->id }}">{{ $fornecedor->razaosocialFornecedor }}</option>
             @endforeach
-
         </select>
     </div>
     <input type="hidden" value="{{ old('quemcomprou') }}" name="quemcomprou" id="quemcomprou">
@@ -315,7 +289,6 @@
 <div class="form-group row">
     <label for="idBanco" class="col-sm-2 col-form-label">Banco</label>
     <div class="col-sm-4">
-
         <select name="idBanco" id="idBanco" class="selecionaComInput form-control" {{ $variavelDisabledNaView }}>
             @if (!isset($despesa->idBanco) || $despesa->idBanco == null || $despesa->idBanco == 0)
             <option value="0" selected>SEM BANCO</option>
@@ -332,7 +305,6 @@
                 {{ $listaBancosViewEdit->codigoBanco }} | {{ $listaBancosViewEdit->nomeBanco }}
             </option>            @endforeach
         </select>
-
     </div>
 </div>
 
@@ -348,7 +320,6 @@
     <div class="col-sm-2">
         <select name="pago" id="pago" style="padding:4px;" class="selecionaComInput form-control"
             {{ $variavelDisabledNaView }}>
-
             @if (Request::path() == 'despesas/create')
                 <option value="N">Não</option>
                 <option value="S">Sim</option>
@@ -367,9 +338,7 @@
 
 <div class="form-group row">
     <label for="reembolsado" class="col-sm-2 col-form-label">Reembolsado</label>
-    {{-- <div class="col-sm-4">
-    {!! Form::text('reembolsado', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', $variavelReadOnlyNaView ]) !!}
-  </div> --}}
+
     <div class="col-sm-4">
         <select name="reembolsado" id="reembolsado" class="selecionaComInput reembolsado form-control col-sm-12"
             {{ $variavelDisabledNaView }}>
@@ -391,9 +360,7 @@
                 echo '<option value="0" selected>SEM REEMBOLSO</option>';
             } ?>
         </select>
-
     </div>
-
 </div>
 
 
@@ -461,19 +428,20 @@
 @include('despesas/cadastramaterial')
 @include('layouts/cadastrafornecedor')
 
-<div class="tabelaDespesas" id="tabelaDespesas">
-    <div class="pb-2 container row">
+@if(!isset($despesa))
+    <div class="tabelaDespesas" id="tabelaDespesas">
+        <div class="pb-2 container row">
+        </div>
+        @include('despesas/tabelaparcelas')
     </div>
-    @include('despesas/tabelaparcelas')
-</div>
+@endif
 
 
 {{ Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 <!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
-{{-- {!! Form::hidden('totalPrecoCliente', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
-{{-- {!! Form::hidden('totalPrecoReal', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
+
 {!! Form::hidden('idDespesaPai', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 {!! Form::hidden('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!}
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
