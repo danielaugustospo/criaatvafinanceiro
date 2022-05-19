@@ -59,8 +59,10 @@
                                   {{-- Segunda Coluna --}}
                                 <div class="row mt-2 ml-2 mr-2">
                                     <label for="">Nota Fiscal</label>
-                                    <input class="form-control" list="datalistnotaFiscal" id="notafiscal" name="notafiscal"
-                                        placeholder="Digite ou selecione...">
+                                    <input class="form-control" 
+                                    {{-- list="datalistnotaFiscal"  --}}
+                                    id="notafiscal" 
+                                    name="notafiscal" placeholder="Digite ou selecione...">
                                 </div>
                                 <div class="row ml-2 mr-2"><label for="">Fornecedor </label>
                                     <input class="form-control" list="datalistFornecedor" id="fornecedor"
@@ -153,11 +155,11 @@
           </option>
       @endforeach
   </datalist>
-  <datalist id="datalistNotaFiscal">
+  {{-- <datalist id="datalistNotaFiscal">
       @foreach ($listaDespesas as $despesas)
           <option value="{{ $despesas->notaFiscal }}">{{ $despesas->notaFiscal }}</option>
       @endforeach
-  </datalist>
+  </datalist> --}}
   <datalist id="datalistCliente">
       @foreach ($listaClientes as $cliente)
           <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>
