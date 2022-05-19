@@ -288,13 +288,13 @@ class ReceitaController extends Controller
         request()->validate([
             'idformapagamentoreceita'   => 'required',
             'datapagamentoreceita'      => 'required',
-            'dataemissaoreceita'        => 'required',
+         //   'dataemissaoreceita'        => 'required',
             'valorreceita'              => 'required',
             'pagoreceita'               => 'required',
             'contareceita'              => 'required',
             // 'descricaoreceita'          => 'required',
-            'registroreceita'           => 'required',
-            'nfreceita'                 => 'required',
+          //  'registroreceita'           => 'required',
+           // 'nfreceita'                 => 'required',
             // 'idosreceita'               => 'required'
         ]);
 
