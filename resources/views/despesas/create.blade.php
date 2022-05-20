@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -13,30 +12,22 @@
     </div>
 </div>
 
+@include('layouts/helpersview/mensagemRetorno')
 
-@if (count($errors) > 0)
-<div class="alert alert-danger">
-    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
-
-{!! Form::open(array('route' => 'despesas.store','method'=>'POST')) !!}
+{!! Form::open(array('route' => 'despesas.store','method'=>'POST', 'id'=>'criaDespesas')) !!}
 
 @include('despesas/campos')
 
 <!-- Seção Despesas -->
 {!! Form::hidden('idAlteracaoUsuario', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
 {!! Form::hidden('idAutor', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
-{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
+
+<input type="hidden" name="tpRetorno" id="tpRetorno" value="" />
+{{-- <input type="submit" style="display:none;" class="btn btn-success" name="btnSalvar" value="Salvar" /> --}}
+<input type="button" class="btn btn-success" id="btnSalvareVisualizar" value="Salvar e Visualizar" onclick="alteraRetornoCadastroDespesa(retorno = 'visualiza');" />
+<input type="button" class="btn btn-success" id="btnSalvareNovo" value="Salvar e Lançar Nova Despesa" onclick="alteraRetornoCadastroDespesa(retorno = 'novo');" />
+
 {!! Form::close() !!}
-
-
 
 
 @endsection

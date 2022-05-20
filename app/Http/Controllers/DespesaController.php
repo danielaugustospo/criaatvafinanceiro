@@ -520,9 +520,17 @@ class DespesaController extends Controller
             $despesa->save();
             $this->logCadastraDespesas($despesa);
         }
+        $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
+        
+        if($request->get('tpRetorno') == 'visualiza'):
+            
+            return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito);
 
-        return redirect()->route('despesas.index')
-            ->with('success', 'Despesa id ' . $despesa->id . ' cadastrada com êxito.');
+        elseif($request->get('tpRetorno') == 'novo'):  $rotaRetorno = 'despesas.create';
+        else: $rotaRetorno = 'despesas.index';
+        endif;
+        
+        return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
     }
 
 
