@@ -568,7 +568,7 @@ class DespesaController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        $this->logVisualizaDespesas($despesa);
+        // $this->logVisualizaDespesas($despesa);
 
         return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
@@ -775,13 +775,13 @@ class DespesaController extends Controller
      */
     public function destroy($id)
     {
-        $despesa->id = Despesa::find($id);
-        Despesa::find($id)->delete();
+        Despesa::where('id', $id)
+        ->update(['excluidoDespesa' => 0]);
 
-        $this->logExcluiDespesas($despesa);
+        $this->logExcluiDespesas($id);
 
         return redirect()->route('despesas.index')
-            ->with('success', 'Despesa excluída com êxito!');
+            ->with('success', 'Despesa '. $id .' excluída com êxito!');
     }
 
 
@@ -905,8 +905,8 @@ class DespesaController extends Controller
         $this->Logger->log('info', 'Atualizou a despesa ' .  $trechoMensagem);
     }
 
-    public function logExcluiDespesas($despesa = null)
+    public function logExcluiDespesas($id = null)
     {
-        $this->Logger->log('info', 'Excluiu a despesa ' . $despesa->id);
+        $this->Logger->log('info', 'Excluiu a despesa ' . $id);
     }
 }
