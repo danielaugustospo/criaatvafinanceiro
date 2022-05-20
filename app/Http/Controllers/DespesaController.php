@@ -195,11 +195,11 @@ class DespesaController extends Controller
 
 
         if ($request->dtfim) :        $datafim    = $request->dtfim;
-        elseif ($verificaInputCampos == 0) : $datafim = date('Y') . '-12-31';
+        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
         endif;
 
         if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y') . '-01-01';
+        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
             $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
         endif;
         return $descricao;
@@ -520,9 +520,17 @@ class DespesaController extends Controller
             $despesa->save();
             $this->logCadastraDespesas($despesa);
         }
+        $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
+        
+        if($request->get('tpRetorno') == 'visualiza'):
+            
+            return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito);
 
-        return redirect()->route('despesas.index')
-            ->with('success', 'Despesa id ' . $despesa->id . ' cadastrada com êxito.');
+        elseif($request->get('tpRetorno') == 'novo'):  $rotaRetorno = 'despesas.create';
+        else: $rotaRetorno = 'despesas.index';
+        endif;
+        
+        return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
     }
 
 
