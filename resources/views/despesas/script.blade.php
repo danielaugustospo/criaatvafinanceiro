@@ -217,6 +217,14 @@
         document.getElementById("quemcomprou").value = "";
     }
 
+    function alteraRetornoCadastroDespesa(retorno) {
+        console.log(retorno);
+        document.getElementById("tpRetorno").value = retorno;
+        $('#btnSalvareVisualizar').attr('disabled','disabled');
+        $('#btnSalvareNovo').attr('disabled','disabled');
+        $( "#criaDespesas" ).submit();
+
+    }
 
     $('body').on('click', '.recarregaMateriais', function() {
         // var row = $("#tabelalistadespesa tr:first");

@@ -7,16 +7,7 @@
     <a class="btn btn-primary" href="{{ route('funcionarios.index') }}"> Voltar</a>
 </div>
 
-@if (count($errors) > 0)
-<div class="alert alert-danger">
-    <strong>Ops!</strong> Ocorreram alguns erros com os valores inseridos.<br><br>
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
 
 {!! Form::open(array('route' => 'funcionarios.store','method'=>'POST', 'enctype'=>'multipart/form-data' )) !!}
 <div class="form-group row col-lg-12 mt-4">
