@@ -35,13 +35,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
             </div>
         </div>
     </div>
+    @include('layouts/helpersview/mensagemRetorno')
 
-
-    @if ($message = Session::get('success'))
+    {{-- @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
-    @endif
+    @endif --}}
 
     <hr>
 

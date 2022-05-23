@@ -71,8 +71,16 @@ class DespesaController extends Controller
             $iddespesa = $request->get('id');
             settype($iddespesa, "integer");
             $this->show($iddespesa);
-            header("Location: despesas/$iddespesa");
-            exit();
+
+            $despesas = Despesa::where('id', $iddespesa)->where('excluidoDespesa', 0)->get();
+            if(count($despesas) == 1){
+                header("Location: despesas/$iddespesa");
+                exit();
+            }
+            else{
+                return redirect()->route('despesas.index')
+                        ->with('warning', 'Depesa '. $iddespesa .' é um dado excluído, não podendo ser acessado');
+            }
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
 
@@ -776,7 +784,7 @@ class DespesaController extends Controller
     public function destroy($id)
     {
         Despesa::where('id', $id)
-        ->update(['excluidoDespesa' => 0]);
+        ->update(['excluidoDespesa' => 1]);
 
         $this->logExcluiDespesas($id);
 
