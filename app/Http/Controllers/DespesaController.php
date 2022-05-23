@@ -79,7 +79,7 @@ class DespesaController extends Controller
             }
             else{
                 return redirect()->route('despesas.index')
-                        ->with('warning', 'Depesa '. $iddespesa .' é um dado excluído, não podendo ser acessado');
+                        ->with('warning', 'Depesa '. $iddespesa .' é um dado excluído, ou uma despesa inexistente, não podendo ser acessado');
             }
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
