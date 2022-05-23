@@ -226,7 +226,8 @@ class OrdemdeServicoController extends Controller
                     'nfreceita'                     => 'required',
 
                 ]);
-
+                $receita->descricaoreceita              = $ordemdeservico->eventoOrdemdeServico;
+                $receita->idclientereceita              = $ordemdeservico->idClienteOrdemdeServico;
                 $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
                 $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
                 $receita->dataemissaoreceita            = $request->get('dataemissaoreceita')[$i];
@@ -438,6 +439,7 @@ class OrdemdeServicoController extends Controller
      */
     public function update(Request $request, OrdemdeServico $ordemdeservico, Receita $receita)
     {
+
         $temReceita = $request->get('idformapagamentoreceita');
         $tamanhoArrayReceita = count($temReceita);
 
@@ -493,6 +495,9 @@ class OrdemdeServicoController extends Controller
                 // $receita->emissaoreceita             = $request->get('emissaoreceita');
                 $receita->nfreceita                     = $request->get('nfreceita')[$i];
                 $receita->idosreceita                   = $request->get('idosreceita');
+                $receita->descricaoreceita              = $request->get('eventoOrdemdeServico');
+                $receita->idclientereceita              = $request->get('idClienteOrdemdeServico');
+
 
                 $receita['idosreceita'] = $ordemdeservico->id;
 
@@ -508,7 +513,9 @@ class OrdemdeServicoController extends Controller
                     contareceita,
                     registroreceita,
                     nfreceita,
-                    idosreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    idosreceita,
+                    descricaoreceita,
+                    idclientereceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         [
                             $receita->idformapagamentoreceita,
                             $receita->datapagamentoreceita,
@@ -518,7 +525,10 @@ class OrdemdeServicoController extends Controller
                             $receita->contareceita,
                             $receita->registroreceita,
                             $receita->nfreceita,
-                            $receita->idosreceita
+                            $receita->idosreceita,
+                            $receita->descricaoreceita,
+                            $receita->idclientereceita ,
+            
                         ]
                     );
                 } else {
