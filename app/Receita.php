@@ -41,6 +41,7 @@ class Receita extends Model
         'registroreceita',
         'nfreceita',
         'idosreceita',
+        'idclientereceita',
 
     ];
 
