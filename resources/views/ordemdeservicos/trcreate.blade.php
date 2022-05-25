@@ -19,7 +19,7 @@
         </select>
     </td>
     <td data-label="Data Emissão">
-        {!! Form::date('dataemissaoreceita[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
+        {!! Form::date('dataemissaoreceita[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </td>
     <td data-label="Data de Pagamento">
         {!! Form::date('datapagamentoreceita[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'required']) !!}
