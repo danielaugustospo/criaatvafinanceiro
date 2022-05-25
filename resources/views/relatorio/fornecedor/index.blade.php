@@ -27,7 +27,8 @@ if (isset($despesas)) {
         </div>
     </div>
 
-    <a onclick="abreModal(param = 'fornecedor');" class="d-flex justify-content-center" href="#"> <i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
+    <a onclick="abreModal(param = 'fornecedor');" class="d-flex justify-content-center" href="#"> <i
+            class="fas fa-sync"></i>Acessar Outro Período/Conta</a>
 
 
     @if ($message = Session::get('success'))
@@ -39,7 +40,7 @@ if (isset($despesas)) {
 
     <div id="filter-menu"></div>
     <br /><br />
-        <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
+    <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
         @include('layouts/helpersview/infofiltrosdepesa')
     </div>
 
@@ -53,7 +54,7 @@ if (isset($despesas)) {
             transport: {
                 read: {
                     @if (isset($despesas))
-                    url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}&notafiscal={{$notafiscal}}&cliente={{$cliente}}&fixavariavel={{$fixavariavel}}&pago={{$pago}}",
+                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
                     @else
                         url: "{{ $rotaapi }}",
                     @endif
@@ -82,9 +83,18 @@ if (isset($despesas)) {
 
                                     var sheet = e.workbook.sheets[0];
                                     @if (isset($contacorrente))
-                                        for (var rowIndex = 1; rowIndex < sheet.rows.length; rowIndex++) { if (rowIndex < (sheet.rows.length - 1)) { var
-                                            row=sheet.rows[rowIndex]; for (var cellIndex=4; cellIndex < row.cells.length; cellIndex ++) {
-                                            row.cells[cellIndex].format="[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;" {{-- console.log(cellIndex); --}} } } } @endif
+                                        for (var rowIndex = 1; rowIndex < sheet.rows.length; rowIndex++) {
+                                            if (rowIndex < (sheet.rows.length - 1)) {
+                                                var
+                                                    row = sheet.rows[rowIndex];
+                                                for (var cellIndex = 4; cellIndex < row.cells.length; cellIndex++) {
+                                                    row.cells[cellIndex].format =
+                                                        "[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;"
+                                                    {{-- console.log(cellIndex); --}}
+                                                }
+                                            }
+                                        }
+                                    @endif
 
                                     sheet.frozenRows = 1;
                                     sheet.mergedCells = ["A1:F1"];

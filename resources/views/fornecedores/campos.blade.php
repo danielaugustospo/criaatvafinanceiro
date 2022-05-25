@@ -1,4 +1,3 @@
-
 <div class="form-group row">
     <label for="nomeFornecedor" class="col-sm-2 col-form-label">Nome Fantasia</label>
     <div class="col-sm-10">
@@ -115,28 +114,3 @@
 <!--BANCO/AGENCIA/CONTA-->
 
 @include('fornecedores/dadosbancarios')
-
-<!-- <h5 class="pr-2">Chaves Pix</h5> -->
-{{-- <div class="d-flex justify-content-center">
-    <img src="{{env('APP_URL')}}img/logo_pix.png" class="mb-3" width="200px;" alt="">
-</div>
-<div class="form-group row">
-
-    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 1</label>
-    <div class="col-sm-2">
-        {!! Form::text('chavePix1Fornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25', $variavelReadOnlyNaView ]) !!}
-    </div>
-    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 2</label>
-    <div class="col-sm-2">
-        {!! Form::text('chavePix2Fornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25', $variavelReadOnlyNaView ]) !!}
-    </div>
-    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 3</label>
-    <div class="col-sm-2">
-        {!! Form::text('chavePix3Fornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25', $variavelReadOnlyNaView ]) !!}
-    </div>
-    <label for="agenciaFornecedor" class="col-sm-1 col-form-label">Chave 4</label>
-    <div class="col-sm-2">
-        {!! Form::text('chavePix4Fornecedor', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '25', $variavelReadOnlyNaView ]) !!}
-    </div>
-
-</div> --}}
