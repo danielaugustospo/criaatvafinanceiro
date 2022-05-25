@@ -62,7 +62,9 @@ class Conta extends Model
             from despesas
             
             inner join conta on `despesas`.`conta` = `conta`.`id`
-            inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`)) as x 
+            inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`
+            
+            where `despesas`.`excluidoDespesa` = 0)) as x 
             
             where (pagoreceita = 'S' or pagoreceita = '1') 
             and historico != '' 
