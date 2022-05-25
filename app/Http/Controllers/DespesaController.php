@@ -423,7 +423,7 @@ class DespesaController extends Controller
         $despesa->idFornecedor          =  $request->get('idFornecedor');
         $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
         $despesa->conta                 =  $request->get('conta');
-        $despesa->precoReal             =  $request->get('precoReal');
+        $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
         $despesa->dataDaCompra          =  $request->get('dataDaCompra');
         $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
         $despesa->quemcomprou           =  $request->get('quemcomprou');
@@ -652,7 +652,7 @@ class DespesaController extends Controller
         $despesa->idFornecedor          =  $request->get('idFornecedor');
         $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
         $despesa->conta                 =  $request->get('conta');
-        $despesa->precoReal             =  $request->get('precoReal');
+        $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
         $despesa->dataDaCompra          =  $request->get('dataDaCompra');
         $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
         $despesa->quemcomprou           =  $request->get('quemcomprou');
@@ -740,7 +740,6 @@ class DespesaController extends Controller
                 'quantidade'              =>  $despesa->quantidade, 
                 'valorUnitario'           =>  $despesa->valorUnitario, 
                 'valorparcela'            =>  $despesa->valorparcela,  
-                'precoReal'               =>  $despesa->precoReal,  
                 'descricaoDespesa'        =>  $despesa->descricaoDespesa,  
                 'idFornecedor'            =>  $despesa->idFornecedor,  
                 'idFormaPagamento'        =>  $despesa->idFormaPagamento,  
