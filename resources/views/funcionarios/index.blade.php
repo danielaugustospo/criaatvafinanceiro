@@ -1,5 +1,5 @@
+@php $legadoDatatables = 1; @endphp
 @extends('layouts.app')
-
 
 @section('content')
 <div class="row">

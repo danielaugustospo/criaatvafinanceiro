@@ -276,4 +276,5 @@
       {{-- <div class="footer">
         Página #: pageNum # de #: totalPages #
       </div> --}}
-    </div></script>
+    </div>
+</script>
