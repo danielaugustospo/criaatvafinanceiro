@@ -1,3 +1,13 @@
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    
 <style>
     p,label,h1,h2,h3,h4,h5,th,button,input,select,option,a,span,td,strong,textarea {
         text-transform: uppercase; 
