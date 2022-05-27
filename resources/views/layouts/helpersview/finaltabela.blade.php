@@ -69,7 +69,7 @@ $(window).on('load', function(){
 
         var count     = 0;
         var interval  = setInterval(function(){
-        if (count >= 100) {
+        if (count >= 50) {
             clearInterval(interval);
 
             var verificador = document.getElementsByClassName('k-link')[0];
@@ -96,7 +96,7 @@ $(window).on('load', function(){
         }
         count += 10;
         $.LoadingOverlay("progress", count);
-    }, 300);
+    }, 100);
 
     }
 
