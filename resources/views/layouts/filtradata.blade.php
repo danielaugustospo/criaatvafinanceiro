@@ -30,22 +30,6 @@ function betweenFilter(args) {
                 dataDoisFormatoAmericano = dataSegundoPeriodo.toISOString().substring(0, 10);
                 dataDois = dataDoisFormatoAmericano.split("-").reverse().join("/");
 
-
-                var contadorArraySelecao = $("#grid").data("kendoGrid").dataSource.view()[0].items;
-                var posicaoArraySelecaoFinal =  contadorArraySelecao.length - 1;
-
-                var saldoInicial = $("#grid").data("kendoGrid").dataSource.view()[0].items[0].saldo;
-                var valorMovimentacao = $("#grid").data("kendoGrid").dataSource.view()[0].items[0].valorreceita;              
-                saldoInicial = saldoInicial - valorMovimentacao;
-                saldoInicial = saldoInicial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                
-                var saldoFinal = $("#grid").data("kendoGrid").dataSource.view()[0].items[posicaoArraySelecaoFinal].saldo;
-                {{-- saldoInicial    = saldoInicial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}); --}}
-                {{-- console.log(saldoFinal); --}}
-                saldoFinal      = saldoFinal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                
-                document.getElementById("informacoes").innerHTML = "<label class='text-center' style='color:red;'>Conta: "+pegaApelidoConta+"&nbsp;&nbsp; - &nbsp;&nbsp; Período: "+ dataUm + " até " + dataDois + "&nbsp;&nbsp; - &nbsp;&nbsp; Saldo Anterior: "+saldoInicial +" &nbsp;&nbsp; - &nbsp;&nbsp; Total do Período: "+saldoFinal +"</label>";
-
             }
         }
     });
@@ -72,20 +56,6 @@ function betweenFilter(args) {
                 dataDois = dataDoisFormatoAmericano.split("-").reverse().join("/");
 
 
-                var contadorArraySelecao = $("#grid").data("kendoGrid").dataSource.view()[0].items;
-                var posicaoArraySelecaoFinal =  contadorArraySelecao.length - 1;
-
-                var saldoInicial = $("#grid").data("kendoGrid").dataSource.view()[0].items[0].saldo;
-                var valorMovimentacao = $("#grid").data("kendoGrid").dataSource.view()[0].items[0].valorreceita;              
-                saldoInicial = saldoInicial - valorMovimentacao;
-                saldoInicial = saldoInicial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                
-                var saldoFinal = $("#grid").data("kendoGrid").dataSource.view()[0].items[posicaoArraySelecaoFinal].saldo;
-                {{-- saldoInicial    = saldoInicial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}); --}}
-                {{-- console.log(saldoFinal); --}}
-                saldoFinal      = saldoFinal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                
-                document.getElementById("informacoes").innerHTML = "<label class='text-center' style='color:red;'>Conta: "+pegaApelidoConta+"&nbsp;&nbsp; - &nbsp;&nbsp; Período: "+ dataUm + " até " + dataDois + "&nbsp;&nbsp; - &nbsp;&nbsp; Saldo Anterior: "+saldoInicial +" &nbsp;&nbsp; - &nbsp;&nbsp; Total do Período: "+saldoFinal +"</label>";
 
 
             }
