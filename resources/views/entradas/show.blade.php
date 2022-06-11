@@ -2,6 +2,7 @@
 
 
 @section('content')
+@include('entradas/script')
 
 <div class="row">
     <div class="col-lg-12 margin-tb">

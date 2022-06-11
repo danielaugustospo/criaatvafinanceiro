@@ -5,6 +5,10 @@
         font-family: 'Open Sans', sans-serif;
     }
 
+    .swal2-html-container {
+        text-align: left !important;
+    }
+
     .rwd-table {
         margin: auto;
         min-width: 300px;

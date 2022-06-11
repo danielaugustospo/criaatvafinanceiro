@@ -42,6 +42,8 @@ class Receita extends Model
         'nfreceita',
         'idosreceita',
         'idclientereceita',
+        'ativoreceita',
+        'excluidoreceita'
 
     ];
 

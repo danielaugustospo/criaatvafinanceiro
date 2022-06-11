@@ -85,7 +85,6 @@
 </div>
 
 
-{!! Form::hidden('ativadosaida', null, ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativadosaida']) !!}
 {!! Form::hidden('excluidosaida', null, ['placeholder' => 'Excluído Saída', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidosaida']) !!}
 
 

@@ -29,6 +29,8 @@ class CriaTabelaReceita extends Migration
             $table->string('registroreceita')->nullable();
             // $table->string('emissaoreceita');
             $table->string('nfreceita')->nullable();
+            $table->string('ativoreceita')->default('1');
+            $table->string('excluidoreceita')->default('0');
 
 
             $table->timestamps();

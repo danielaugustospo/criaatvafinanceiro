@@ -52,15 +52,18 @@
                         class="fas fa-plus"></i></i></button>
                     
                     <select class="selecionaComInput pt-3" name="descricaoTabela[]" id="descricaoDespesaTabela">
+                        @if (!isset($despesa))
+                            <option disabled selected>Selecione...</option>
+                        @endif
                         @foreach ($listaBensPatrimoniais as $bempatrimonial)
-                        <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
+                            <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
                         @endforeach
                     </select>
                 </div>
             </td>
             <td data-th="UNIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                'form-control valoresoperacao quantidadeTabela', 'maxlength' => '100', 'id' => 'quantidadeTabela', $variavelReadOnlyNaView]) !!}
 
                 {{-- <input list="tipoUnidade" name="quantidadeTabela[]" id="browser" value="">
 

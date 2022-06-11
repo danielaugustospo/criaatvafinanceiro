@@ -457,7 +457,7 @@ class DespesaController extends Controller
                 // $request->validate(
                 //     [$request->get('descricaoTabela')[$i] => 'required'], ['descricaoTabela.required' => 'Informe os itens comprados']
                 // );
-
+                $despesa->ehcompra              =  1;
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
                 $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
                 $despesa->notaFiscal            =  $request->get('notaFiscalTabela')[$i];
@@ -497,6 +497,7 @@ class DespesaController extends Controller
             //Não é uma compra parcelada
             if ($despesa->ehcompra == 1) :
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
+                $despesa->ehcompra              =  1;
 
                 $request->validate(
                     ['descricaoDespesaCompra' => 'required'],
@@ -520,6 +521,7 @@ class DespesaController extends Controller
         }
         if ($despesa->ehcompra == 0) {
             // Não é uma compra
+            $despesa->ehcompra              =  0;
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
             $despesa->notaFiscal            =  $request->get('notaFiscal');
@@ -634,7 +636,6 @@ class DespesaController extends Controller
         ]);
 
         $verificaCompra =  $request->get('a');
-
         if ($verificaCompra == 'S') : $despesa->ehcompra = 1;
         else :
             $request->validate(
