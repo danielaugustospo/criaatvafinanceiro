@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Estoque;
 use App\Saidas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +11,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
+use App\Providers\FormatacoesServiceProvider;
+
 
 class SaidasController extends Controller
 {
@@ -21,10 +23,10 @@ class SaidasController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:saidas-list|saidas-create|saidas-edit|saidas-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:saidas-create', ['only' => ['create','store']]);
-         $this->middleware('permission:saidas-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:saidas-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:saidas-list|saidas-create|saidas-edit|saidas-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:saidas-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:saidas-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:saidas-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -32,108 +34,165 @@ class SaidasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        // $consulta = $this->consultaIndexDespesa();
+        if ($request->get('id')) {
+            $idsaida = $request->get('id');
+            settype($idsaida, "integer");
+            $this->show($idsaida);
 
-        $data = Saidas::latest()->get();
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                $id                             = $request->get('id');
-                $nomesaida                      = $request->get('nomesaida');
-                $descricaosaida                 = $request->get('descricaosaida');
-                $idbenspatrimoniais             = $request->get('idbenspatrimoniais');
-                $portadorsaida                  = $request->get('portadorsaida');
-                $datapararetiradasaida          = $request->get('datapararetiradasaida');
-                $dataretiradasaida              = $request->get('dataretiradasaida');
-                $dataretornoretiradasaida       = $request->get('dataretornoretiradasaida');
-                $ocorrenciasaida                = $request->get('ocorrenciasaida');
-                if (!empty($id)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['id'], $request->get('id')) ? true : false;
-                    });
-                }
-                if (!empty($nomesaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['nomesaida'], $request->get('nomesaida')) ? true : false;
-                    });
-                }
-                if (!empty($descricaosaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['descricaosaida'], $request->get('descricaosaida')) ? true : false;
-                    });
-                }
-                if (!empty($idbenspatrimoniais)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['idbenspatrimoniais'], $request->get('idbenspatrimoniais')) ? true : false;
-                    });
-                }
-                if (!empty($portadorsaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['portadorsaida'], $request->get('portadorsaida')) ? true : false;
-                    });
-                }
-                if (!empty($datapararetiradasaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['datapararetiradasaida'], $request->get('datapararetiradasaida')) ? true : false;
-                    });
-                }
-                if (!empty($dataretiradasaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['dataretiradasaida'], $request->get('dataretiradasaida')) ? true : false;
-                    });
-                }
-                if (!empty($dataretornoretiradasaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['dataretornoretiradasaida'], $request->get('dataretornoretiradasaida')) ? true : false;
-                    });
-                }
-                if (!empty($ocorrenciasaida)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::is($row['ocorrenciasaida'], $request->get('ocorrenciasaida')) ? true : false;
-                    });
-                }
+            $saida = Saidas::where('id', $idsaida)->where('excluidosaida', 0)->get();
+            if (count($saida) == 1) {
+                header("Location: saidas/$idsaida");
+                exit();
+            } else {
+                return redirect()->route('saidas.index')
+                    ->with('warning', 'A retirada ' . $idsaida . ' é um dado excluído, ou uma retirada inexistente, não podendo ser acessada');
+            }
+        }
+        $validacoesPesquisa = $this->validaPesquisa($request);
 
-                if (!empty($request->get('search'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+        $saida       = $validacoesPesquisa[0];
+        $valor          = $validacoesPesquisa[1];
+        $dtinicio       = $validacoesPesquisa[2];
+        $dtfim          = $validacoesPesquisa[3];
+        $coddespesa     = $validacoesPesquisa[4];
+        $fornecedor     = $validacoesPesquisa[5];
+        $ordemservico   = $validacoesPesquisa[6];
+        $conta          = $validacoesPesquisa[7];
+        $notafiscal     = $validacoesPesquisa[8];
+        $cliente        = $validacoesPesquisa[9];
+        $fixavariavel   = $validacoesPesquisa[10];
+        $pago           = $validacoesPesquisa[11];
 
-                        if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['nomesaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['descricaosaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['idbenspatrimoniais']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['portadorsaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['datapararetiradasaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        } else if (Str::is(Str::lower($row['dataretiradasaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
-                        else if (Str::is(Str::lower($row['dataretornoretiradasaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
-                        else if (Str::is(Str::lower($row['ocorrenciasaida']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-            })
-            ->addColumn('action', function ($row) {
+        $rota = $this->verificaRelatorio($request);
 
-                $btnVisualizar = '<a href="saidas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
-                return $btnVisualizar;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    } else {
-
-        $data = Saidas::orderBy('id','DESC')->paginate(5);
-        return view('saidas.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view($rota, compact('saida', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago'));
     }
+
+
+    public function apisaida(Request $request)
+    {
+        // TODO: Montar filtro genérico de despesas
+
+        // $descricao = $this->montaFiltrosConsulta($request);
+        $descricao = '';
+        $listaDespesas = DB::select('SELECT s.*, b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
+            WHERE s.excluidosaida = 0' . $descricao);
+
+        return $listaDespesas;
+    }
+
+    private function montaFiltrosConsulta($request)
+    {
+        $descricao = "";
+        $verificaInputCampos = 0;
+        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
+            $verificaInputCampos++;
+        endif;
+
+        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
+            $verificaInputCampos++;
+        endif;
+        if ($request->reembolso) : $descricao .= " AND d.reembolsado != '0'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->fixavariavel) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
+        endif;
+
+        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
+        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
+            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+        endif;
+        return $descricao;
+    }
+
+    private function validaPesquisa($request)
+    {
+        if ($request->get('despesas')) :     $despesas = $request->get('despesas');
+        else : $despesas = '';
+        endif;
+        if ($request->get('valor')) :        $valor = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valor'));
+        else : $valor = '';
+        endif;
+        if ($request->get('dtinicio')) :     $dtinicio = $request->get('dtinicio');
+        else : $dtinicio = '';
+        endif;
+        if ($request->get('dtfim')) :        $dtfim = $request->get('dtfim');
+        else : $dtfim = '';
+        endif;
+        if ($request->get('coddespesa')) :   $coddespesa = $request->get('coddespesa');
+        else : $coddespesa = '';
+        endif;
+        if ($request->get('fornecedor')) :   $fornecedor = $request->get('fornecedor');
+        else : $fornecedor = '';
+        endif;
+        if ($request->get('ordemservico')) : $ordemservico = $request->get('ordemservico');
+        else : $ordemservico = '';
+        endif;
+        if ($request->get('conta')) :        $conta = $request->get('conta');
+        else : $conta = '';
+        endif;
+        if ($request->get('notafiscal')) :    $notafiscal = $request->get('notafiscal');
+        else : $notafiscal = '';
+        endif;
+        if ($request->get('cliente')) :       $cliente = $request->get('cliente');
+        else : $cliente = '';
+        endif;
+        if ($request->get('fixavariavel')) :  $fixavariavel = $request->get('fixavariavel');
+        else : $fixavariavel = '';
+        endif;
+        if ($request->get('pago')) :        $pago = $request->get('pago');
+        else : $pago = '';
+        endif;
+
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago);
+        return $solicitacaoArray;
+    }
+
+    private function verificaRelatorio($request)
+    {
+
+        $rotaRetorno = 'saidas.index';
+        if ($request->get('tpRel') ==  'fornecedor') :
+            $rotaRetorno = 'relatorio.fornecedor.index';
+        endif;
+
+        return $rotaRetorno;
     }
 
     /**
@@ -158,27 +217,42 @@ class SaidasController extends Controller
 
         $request->validate([
 
-            'nomesaida'                 => 'required', 
-            'descricaosaida'            => 'required',    
-            'idbenspatrimoniais'        => 'required',    
-            'portadorsaida'             => 'required', 
-            'datapararetiradasaida'     => 'required', 
+            'descricaosaida'            => 'required',
+            'idbenspatrimoniais'        => 'required',
+            'portadorsaida'             => 'required',
+            // 'ordemdeservico'             => 'required',
+            // 'datapararetiradasaida'     => 'required',
             // 'dataretiradasaida'         => 'required', 
-            'dataretornoretiradasaida'  => 'required',  
-            'ocorrenciasaida'           => 'required',
-            'ativadosaida'              => 'required',    
-            'excluidosaida'             => 'required'    
-
-
-
+            // 'dataretornoretiradasaida'  => 'required',
+            // 'ocorrenciasaida'           => 'required',
+            // 'ativadosaida'              => 'required',    
+            // 'excluidosaida'             => 'required'
         ]);
 
 
-        Saidas::create($request->all());
+        try {
+            DB::beginTransaction();
+            $salvaSaidas = Saidas::create($request->all());
+            if($salvaSaidas){
+            Estoque::where('codbarras', $request->codbarras)
+                ->where('ativadoestoque', '1')
+                ->update(['ativadoestoque' =>  0]);
 
+            DB::commit();
 
-        return redirect()->route('saidas.index')
-                        ->with('success','Saída criada com êxito.');
+            }
+            else{
+                DB::rollBack();
+            }
+
+            return redirect()->route('saidas.index')->with('success', 'Saída criada com êxito.');
+        
+        } catch (\Throwable $th) {
+            // return redirect()->route('saidas.create')
+            //     ->with('error', 'Erro ao salvar. Favor, tente novamente');
+
+                return $th;
+        }
     }
 
 
@@ -191,9 +265,9 @@ class SaidasController extends Controller
     public function show($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id ='. $saidas->idbenspatrimoniais .' desc');
+        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.show',compact('saidas','bensPatrimoniais'));
+        return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
     }
 
 
@@ -206,9 +280,9 @@ class SaidasController extends Controller
     public function edit($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id ='. $saidas->idbenspatrimoniais .' desc');
+        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.edit',compact('saidas','bensPatrimoniais'));
+        return view('saidas.edit', compact('saidas', 'bensPatrimoniais'));
     }
 
 
@@ -223,16 +297,17 @@ class SaidasController extends Controller
     {
         $request->validate([
 
-            'nomesaida'                 => 'required', 
-            'descricaosaida'            => 'required',    
-            'idbenspatrimoniais'        => 'required',    
-            'portadorsaida'             => 'required', 
-            'datapararetiradasaida'     => 'required', 
+            'nomesaida'                 => 'required',
+            'descricaosaida'            => 'required',
+            'idbenspatrimoniais'        => 'required',
+            'portadorsaida'             => 'required',
+            'ordemdeservico'             => 'required',
+            'datapararetiradasaida'     => 'required',
             // 'dataretiradasaida'         => 'required', 
-            'dataretornoretiradasaida'  => 'required',  
+            'dataretornoretiradasaida'  => 'required',
             'ocorrenciasaida'           => 'required',
-            'ativadosaida'              => 'required',    
-            'excluidosaida'             => 'required'    
+            // 'ativadosaida'              => 'required',    
+            'excluidosaida'             => 'required'
         ]);
 
         $saidas = Saidas::find($id);
@@ -240,18 +315,19 @@ class SaidasController extends Controller
         $saidas->descricaosaida             = $request->input('descricaosaida');
         $saidas->idbenspatrimoniais         = $request->input('idbenspatrimoniais');
         $saidas->portadorsaida              = $request->input('portadorsaida');
+        $saidas->ordemdeservico              = $request->input('ordemdeservico');
         $saidas->datapararetiradasaida      = $request->input('datapararetiradasaida');
         $saidas->dataretiradasaida          = $request->input('dataretiradasaida');
         $saidas->dataretornoretiradasaida   = $request->input('dataretornoretiradasaida');
         $saidas->ocorrenciasaida            = $request->input('ocorrenciasaida');
-        $saidas->ativadosaida               = $request->input('ativadosaida');
+        // $saidas->ativadosaida               = $request->input('ativadosaida');
         $saidas->excluidosaida              = $request->input('excluidosaida');
         $saidas->save();
 
         // $saidas->update($request->all());
 
         return redirect()->route('saidas.index')
-                        ->with('success','Saída atualizada com sucesso');
+            ->with('success', 'Saída atualizada com sucesso');
     }
 
 
@@ -267,6 +343,6 @@ class SaidasController extends Controller
         Saidas::find($id)->delete();
 
         return redirect()->route('saidas.index')
-                        ->with('success','Saída excluído com êxito!');
+            ->with('success', 'Saída excluído com êxito!');
     }
 }

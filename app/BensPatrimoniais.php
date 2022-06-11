@@ -20,6 +20,7 @@ class BensPatrimoniais extends Model
         'descricaoBensPatrimoniais',
         'ativadoBensPatrimoniais',
         'excluidoBensPatrimoniais',
-        'statusbenspatrimoniais'
+        'statusbenspatrimoniais',
+        'qtdestoqueminimo'
         ];
 }

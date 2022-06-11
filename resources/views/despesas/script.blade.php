@@ -58,7 +58,7 @@
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
-                
+
                 // pegaIdFuncionario();
 
                 $("#telaDataCompra").hide();
@@ -163,7 +163,7 @@
             $("#telaQuantidade").show();
             $("#telaDataCompra").show();
             $("#telaCompraParcelada").show();
-            
+
             $("#telaFuncionario").hide();
             $("#despesaNaoCompra").hide();
             $("#telaDataTrabalho").hide();
@@ -181,35 +181,132 @@
             $("#telaDataCompra").hide();
             $("#telaCompraParcelada").hide();
             $("#tabelalistadespesa").hide();
-            
+
             $("#telaFuncionario").show();
             $("#despesaNaoCompra").show();
             $("#telaDataTrabalho").show();
             $("#telaPrestador").show();
-            
+
 
 
         }
 
+        @if ((Request::path() == 'despesas/create') || (Request::path() == 'despesas/'.$despesa->id.'/edit' ))
+
+        window.addEventListener("beforeunload", function(event) { 
+            event.preventDefault();
+
+            event.returnValue = "Confirme que deseja ser redirecionado"; 
+            return "Confirme que deseja ser redirecionado";
+        });
+        @endif
 
     });
 
 
-    function pegaIdFornecedor() {
-        var selecionado = $('.selecionaFornecedor').find(':selected').val();
-        // console.log(selecionado);
-        document.getElementById("idFornecedor").value = selecionado;
+
+    function validaFormulario() {
+        contadorErros = 0;
+        var ehcompra = document.querySelector('input[name=a]:checked')?.value;
+
+        var fornecedor = $('#selecionaFornecedor').val();
+        var formapagamento = $('#idFormaPagamento').val();
+        var conta = $('.conta').val();
+        var precoReal = $('.precoReal').val();
+        texto = '';
+
+
+
+        //Verifica se não o campo compra foi informado
+        if ((ehcompra != "N") && (ehcompra != "S")) {
+            texto = '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é compra ou não</label></br>';
+            contadorErros++;
+        }
+        if ((formapagamento == 0) || (formapagamento == '') || (formapagamento == null)) {
+            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>';
+            contadorErros++;
+        }
+        if ((precoReal == '') || (precoReal == null)) {
+            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
+            contadorErros++;
+        }
+        if ((conta == '') || (conta == null)) {
+            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Conta</label></br>';
+            contadorErros++;
+        }
+        if ((despesaFixa == '') || (despesaFixa == null)) {
+            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>';
+            contadorErros++;
+        }
+
+        //Verifica se é compra
+        else if ((ehcompra == 1) || (ehcompra == 'S')) {
+
+            //--------------------------------------------------------------
+            // Validações se for compra
+            //--------------------------------------------------------------
+            var descricaoDespesaCompra = $('.descricaoDespesaCompra').val();
+            var compraparcelada = document.querySelector('input[name=compraparcelada]:checked')?.value;
+
+
+            if ((fornecedor == 0) || (fornecedor == '') || (fornecedor == null)) {
+                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>';
+                contadorErros++;
+            }
+            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && compraparcelada != 'S') {
+                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                contadorErros++;
+            }
+            if ((compraparcelada != 'S') && (compraparcelada != 'N')) {
+                texto = texto + '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
+                contadorErros++;
+            }else if(compraparcelada = 'S'){
+                //TODO: FAZER AJUSTE PARA PEGAR AS OBRIGATORIEDADES NAS TABELAS
+
+                var tabela = document.getElementById("tabelalistadespesa");
+            }
+
+        }
+        //Verifica se não é compra
+        else if ((ehcompra == 0) || (ehcompra == 'N')) {
+
+            var descricaoDespesaCompra = $('.descricaoDespesa').val();
+            var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
+
+
+            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
+                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                contadorErros++;
+            }
+
+        }
+
+        if (contadorErros > 0) {
+
+
+
+            var span = document.createElement("span");
+            span.innerHTML = texto;
+
+
+            Swal.fire({
+                icon: 'error',
+                html: span,
+                title: 'Validações Necessárias',
+                // text: span ,
+                footer: 'Restam  ' + contadorErros + ' pendentes.'
+            })
+
+        }
+        return contadorErros;
     }
 
-    function pegaIdFuncionario() {
-        var selecionado = $('.selecionaFuncionario').find(':selected').val();
-        // console.log(selecionado);
-        document.getElementById("idFornecedor").value = selecionado;
+    function pegaIdFornecedor() {
+        $('#selecionaFornecedor').val();
     }
 
     function alteraIdComprador() {
-        var idComprador = $('.quemComprouSelect').find(':selected').val();
-        // console.log(idComprador);
+        var idComprador = $('#selecionaComprador').val();
         document.getElementById("quemcomprou").value = idComprador;
     }
 
@@ -218,20 +315,21 @@
     }
 
     function alteraRetornoCadastroDespesa(retorno) {
-        console.log(retorno);
-        document.getElementById("tpRetorno").value = retorno;
-        $('#btnSalvareVisualizar').attr('disabled','disabled');
-        $('#btnSalvareNovo').attr('disabled','disabled');
-        $( "#criaDespesas" ).submit();
+
+        validador = validaFormulario();
+        if (validador == 0) {
+            document.getElementById("tpRetorno").value = retorno;
+            $('#btnSalvareVisualizar').attr('disabled', 'disabled');
+            $('#btnSalvareNovo').attr('disabled', 'disabled');
+            $("#criaDespesas").submit();
+        }
 
     }
 
     $('body').on('click', '.recarregaMateriais', function() {
-        // var row = $("#tabelalistadespesa tr:first");
         var row = $(this).closest('tr');
         row.find("#descricaoDespesa").each(function(index) {
             $(this).select2('destroy');
-
         });
 
         dropdown.empty();
@@ -255,23 +353,23 @@
         row.find(".selecionaComInput").each(function(index) {
             var coluna = $(this).closest('td');
             coluna.find("#idOSTabela").each(function(index) {
-                 valorIdOS = $(this).select2().val();
+                valorIdOS = $(this).select2().val();
             });
-            
+
             // var colunaDescricao = $(this).closest('td');
             coluna.find("#descricaoDespesaTabela").each(function(index) {
-                 valorDescricao = $(this).select2().val();
+                valorDescricao = $(this).select2().val();
             });
             // var colunapg = $(this).closest('td');
             coluna.find("#pago").each(function(index) {
-                 valorpg = $(this).select2().val();
+                valorpg = $(this).select2().val();
             });
             $(this).select2('destroy');
         });
         row.find(".campo-moeda").each(function(index) {
             $(this).maskMoney('destroy');
         });
-        
+
         var newrow = row.clone();
         $("#tabelalistadespesa").append(newrow);
 
@@ -285,11 +383,11 @@
         });
         newrow.find("#pago").each(function(index) {
             $(this).val(valorpg);
-            $(this).trigger('change');  // Notify any JS components that the value changed
+            $(this).trigger('change'); // Notify any JS components that the value changed
         });
 
         $("select.selecionaComInput").select2();
-        
+
         // $("input.campo-moeda").maskMoney();
         $('input.campo-moeda')
             .maskMoney({
@@ -310,29 +408,6 @@
             $tr.remove();
         }
     });
-
-    function invertePontosMoeda() {
-        $('table input').on('input', function() {
-            var $linha = $(this).closest('tr');
-            var tot = 0
-            var anterior = 1
-            $linha.find('input.valoresoperacao:not("button")').each(function() {
-                tot = $(this).val();
-                console.log('tot ' + tot)
-
-                tot = tot.toString($(this).val()).replace(/\D/g, "");
-                tot = tot.toString($(this).val()).replace(/(\d)(\d{8})$/, "$1$2");
-                tot = tot.toString($(this).val()).replace(/(\d)(\d{5})$/, "$1$2");
-                tot = tot.toString($(this).val()).replace(/(\d)(\d{2})$/, "$1.$2");
-                tot = parseFloat(tot);
-
-                tot = (isNaN(tot) ? 0 : tot) * anterior;
-                anterior = tot;
-                console.log('anterior ' + anterior);
-
-            });
-        }).trigger("input");
-    }
 
 
     function idSemValor() {
@@ -477,23 +552,3 @@
         $('#reembolsado').select2();
     }
 </script>
-
-{{-- @isset($despesa)
-    @if ($despesa->ehcompra == 1)
-        <script>
-            setInterval(clicaCompra, 10000);
-
-            function clicaCompra() {
-                $("input").first().trigger("#comprou");
-            }
-        </script>
-    @else
-        <script>
-            setInterval(clicaNaoCompra, 10000);
-
-            function clicaNaoCompra() {
-                $("input").first().trigger("#naocomprou");
-            }
-        </script>
-    @endif
-@endisset --}}

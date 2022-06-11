@@ -2,6 +2,7 @@
 
 
 @section('content')
+@include('entradas/script')
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
@@ -60,7 +61,6 @@
     </div>
 </div>
 
-{!! Form::hidden('ativoentrada', null, ['placeholder' => 'Ativo', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoentrada']) !!}
 {!! Form::hidden('excluidoentrada', null, ['placeholder' => 'Excluído', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoentrada']) !!}
 
 

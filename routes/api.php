@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
 Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
+Route::get('/apireceita', 'ReceitaController@apireceita')->name('apireceita');
+Route::get('/apiestoque', 'EstoqueController@apiestoque')->name('apiestoque');
+Route::get('/apientrada', 'EntradasController@apientrada')->name('apientrada');
+Route::get('/apisaida', 'SaidasController@apisaida')->name('apisaida');
 Route::get('/apipedidocompra', 'PedidoCompraController@apipedidocompra')->name('apipedidocompra');
 
 Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('apiextratocontarelatorio');
@@ -37,6 +41,7 @@ Route::get('/apiconsultareembolso', 'RelatorioController@apiConsultaReembolso')-
 Route::get('/apientradareceitarecebidas', 'RelatorioController@apiEntradaReceitaRecebidas')->name('apientradareceitarecebidas');
 Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServicoRecebidas')->name('apiordemdeservicorecebidas');
 Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('apiareceber');
+Route::get('/apiareceita', 'RelatorioController@consultaIndexReceita')->name('apireceita');
 Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('apicontasareceber');
 Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('apiconsultaprolabore');
 Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('apidespesasfixavariavel');

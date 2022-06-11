@@ -12,12 +12,16 @@ class Entradas extends Model
      * @var array
      */
     protected $fillable = [
+        'codbarras',
         'descricaoentrada',
         'qtdeEntrada',
         'idbenspatrimoniais',
         'valorunitarioentrada',
-        'ativoentrada',
-        'excluidoentrada'
+        // 'ativoentrada',
+        'dtdevolucao',
+        'excluidoentrada',
+        'quemdevolveu',
+        'ocorrenciadevolucao'
         ];
 }
 

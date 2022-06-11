@@ -254,7 +254,7 @@
         });
     });
 
-    function abreModal(param) {
+    function abreModalDespesas(param) {
         // console.log(param);
         $('.modaldepesas').modal('toggle');
         document.getElementById("tpRel").value = param;

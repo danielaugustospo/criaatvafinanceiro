@@ -27,6 +27,7 @@ class CriaTabelaBensPatrimoniais extends Migration
             // ->on('products')
             // ->onDelete('cascade');
 
+            $table->unsignedBigInteger('qtdestoqueminimo');
             $table->boolean('ativadobenspatrimoniais');
             $table->boolean('excluidobenspatrimoniais');
 

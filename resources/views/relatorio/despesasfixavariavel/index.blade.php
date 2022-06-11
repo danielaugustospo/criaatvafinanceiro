@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <a onclick="abreModal(param = 'despesasfixavariavel');" class="d-flex justify-content-center" href="#"> <i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
+    <a onclick="abreModalDespesas(param = 'despesasfixavariavel');" class="d-flex justify-content-center" href="#"> <i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
 
 
     @if ($message = Session::get('success'))

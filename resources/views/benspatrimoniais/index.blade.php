@@ -9,12 +9,25 @@
 <div class="row">
   <div class="col-lg-12 margin-tb">
     <div class="pull-left">
-      <h2 class="text-center">Bens Patrimoniais</h2>
+      <h2 class="text-center">Bens Patrimoniais / Catálogo de Materiais</h2>
     </div>
     <div class="d-flex justify-content-between pull-right">
       @can('benspatrimoniais-create')
-      <a class="btn btn-success" href="{{ route('benspatrimoniais.create') }}"> Cadastrar Bem Patrimonial</a>
+      <a class="btn btn-success" href="{{ route('benspatrimoniais.create') }}"> Adicionar item</a>
       @endcan
+
+      @can('entradas-list')
+        <a class="btn btn-dark" href="{{ route('entradas.index') }}">Entrada </a>
+      @endcan
+
+      @can('saidas-list')
+        <a class="btn btn-dark" href="{{ route('saidas.index') }}">Saídas (Baixa de Materiais)</a>
+      @endcan
+
+      @can('estoque-list')
+        <a class="btn btn-success" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
+      @endcan
+
       {{-- @include('layouts/exibeFiltro') --}}
 
     </div>

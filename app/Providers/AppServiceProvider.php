@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');
         view()->share('listaOrdemDeServicos', $listaOrdemDeServicos);
 
-        $pegaidOS = DB::select('SELECT id from ordemdeservico');
+        $pegaidOS = DB::select('SELECT * from ordemdeservico');
         view()->share('pegaidOS', $pegaidOS);
 
         $listaReceitas = DB::select('SELECT * FROM receita');
@@ -77,20 +77,32 @@ class AppServiceProvider extends ServiceProvider
         $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
         view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
 
-        $listaEntradas = DB::select('SELECT * FROM  entradas where ativoentrada = 1');
+        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais 
+                                        FROM  entradas e 
+                                        LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+                                        where e.excluidoentrada = 0');
         view()->share('listaEntradas', $listaEntradas);
 
-        $listaSaidas = DB::select('SELECT * FROM  saidas where ativadosaida = 1');
+        $listaSaidas = DB::select('SELECT s.*, b.nomeBensPatrimoniais 
+                                    FROM  saidas s 
+                                    LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
+                                    WHERE s.excluidosaida = 0');
         view()->share('listaSaidas', $listaSaidas);
 
-        $listaInventario = DB::select('SELECT * FROM estoques where ativadoestoque = 1');
+        $listaInventario = DB::select('SELECT * FROM estoque where ativadoestoque = 1  and excluidoestoque = 0');
         view()->share('listaInventario', $listaInventario);
+
+        $listaInventarioaDevolver = DB::select('SELECT * FROM estoque where ativadoestoque = 0 and excluidoestoque = 0');
+        view()->share('listaInventarioaDevolver', $listaInventarioaDevolver);
 
         $listaFornecedores =  DB::select('SELECT * from fornecedores where ativoFornecedor = 1');
         view()->share('listaFornecedores', $listaFornecedores);
 
         $listaClientes =  DB::select('SELECT * from clientes where ativoCliente = 1');
         view()->share('listaClientes', $listaClientes);
+
+        $nomeclientes =  DB::select('SELECT id, razaosocialCliente from clientes where ativoCliente = 1');
+        view()->share('nomeclientes', $nomeclientes);
 
         $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
         view()->share('listaFuncionarios', $listaFuncionarios);
@@ -113,12 +125,12 @@ class AppServiceProvider extends ServiceProvider
 
         $listaReceitasEDespesas = DB::select('SELECT r.id, r.valorreceita from receita r union all (select d.id, d.precoReal  from despesas d)');
         view()->share('listaReceitasEDespesas', $listaReceitasEDespesas);
-    
+
         $consultaNotasRecibosProvider = DB::select('SELECT distinct * from view_notasrecibos order by Emissao ASC');
         view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
 
         $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
-        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);    
+        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
     }
 
     public static function pegaCountPedidoAprovado($id)
@@ -144,7 +156,6 @@ class AppServiceProvider extends ServiceProvider
     public static function getOptionDefault()
     {
         $optionSelect = "<option selected>Qual</option>";
-        view()->share('optionSelect', $optionSelect);    
+        view()->share('optionSelect', $optionSelect);
     }
-
 }
