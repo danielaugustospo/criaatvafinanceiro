@@ -96,6 +96,9 @@
             rightAlign: true,
             unmaskAsNumber: true
         });
+
+
+
     });
 
     $(document).ready(function($) {
@@ -276,5 +279,4 @@
       {{-- <div class="footer">
         Página #: pageNum # de #: totalPages #
       </div> --}}
-    </div>
-</script>
+    </div></script>

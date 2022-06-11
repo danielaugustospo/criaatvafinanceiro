@@ -445,6 +445,7 @@ class DespesaController extends Controller
 
         if ($compraparcelada == 'S') {
 
+
             $quantidade = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
 
