@@ -51,17 +51,18 @@
                     <button type="button"  data-toggle="modal" data-target=".materiais" class="btn btn-primary"><i
                         class="fas fa-plus"></i></i></button>
                     
-                    <select class="selecionaComInput pt-3" name="descricaoTabela[]" id="descricaoDespesaTabela">
+                    <select class="selecionaComInput pt-3 required descricaoTabela" name="descricaoTabela[]" id="descricaoDespesaTabela">
                         @if (!isset($despesa))
-                            <option disabled selected>Selecione...</option>
+                            <option disabled value="" selected>Selecione...</option>
                         @endif
                         @foreach ($listaBensPatrimoniais as $bempatrimonial)
                             <option value="{{ $bempatrimonial->id }}">{{ $bempatrimonial->nomeBensPatrimoniais }}</option>
                         @endforeach
+                        required
                     </select>
                 </div>
             </td>
-            <td data-th="UNIDADE">
+            <td data-th="QUANTIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control valoresoperacao quantidadeTabela', 'maxlength' => '100', 'id' => 'quantidadeTabela', $variavelReadOnlyNaView]) !!}
 
@@ -90,7 +91,7 @@
 
             <td data-th="PARCELA">
                 {!! Form::text('valorparcelaTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class'
-                => 'form-control campo-moeda valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                => 'form-control campo-moeda valoresoperacao valorparcelaTabela', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
             <td data-th="VENCIMENTO">
                 {!! Form::date('vencimentoTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>

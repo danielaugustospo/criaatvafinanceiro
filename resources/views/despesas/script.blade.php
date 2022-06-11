@@ -191,19 +191,32 @@
 
         }
 
-        @if ((Request::path() == 'despesas/create') || (Request::path() == 'despesas/'.$despesa->id.'/edit' ))
+        @if (Request::path() == 'despesas/create' || Request::path() == 'despesas/' . $despesa->id . '/edit')
 
-        window.addEventListener("beforeunload", function(event) { 
-            event.preventDefault();
+            window.addEventListener("beforeunload", function(event) {
+                event.preventDefault();
 
-            event.returnValue = "Confirme que deseja ser redirecionado"; 
-            return "Confirme que deseja ser redirecionado";
-        });
+                event.returnValue = "Confirme que deseja ser redirecionado";
+                return "Confirme que deseja ser redirecionado";
+            });
         @endif
 
     });
 
+    function sum(input) {
 
+        if (toString.call(input) !== "[object Array]")
+            return false;
+
+        var total = 0;
+        for (var i = 0; i < input.length; i++) {
+            if (isNaN(input[i])) {
+                continue;
+            }
+            total += Number(input[i]);
+        }
+        return total;
+    }
 
     function validaFormulario() {
         contadorErros = 0;
@@ -212,30 +225,37 @@
         var fornecedor = $('#selecionaFornecedor').val();
         var formapagamento = $('#idFormaPagamento').val();
         var conta = $('.conta').val();
-        var precoReal = $('.precoReal').val();
+        var precoReal = $('#precoReal').val();
+        var despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
         texto = '';
 
 
 
         //Verifica se não o campo compra foi informado
         if ((ehcompra != "N") && (ehcompra != "S")) {
-            texto = '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é compra ou não</label></br>';
+            texto =
+                '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é compra ou não</label></br>';
+            contadorErros++;
+        }
+        if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
+            texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>';
             contadorErros++;
         }
         if ((formapagamento == 0) || (formapagamento == '') || (formapagamento == null)) {
-            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>';
+            texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>';
             contadorErros++;
         }
-        if ((precoReal == '') || (precoReal == null)) {
-            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
-            contadorErros++;
-        }
+
         if ((conta == '') || (conta == null)) {
-            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Conta</label></br>';
+            texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Conta</label></br>';
             contadorErros++;
         }
         if ((despesaFixa == '') || (despesaFixa == null)) {
-            texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>';
+            texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>';
             contadorErros++;
         }
 
@@ -250,21 +270,49 @@
 
 
             if ((fornecedor == 0) || (fornecedor == '') || (fornecedor == null)) {
-                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>';
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>';
                 contadorErros++;
             }
             if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && compraparcelada != 'S') {
-                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
                 contadorErros++;
             }
             if ((compraparcelada != 'S') && (compraparcelada != 'N')) {
-                texto = texto + '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
+                texto = texto +
+                    '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
                 contadorErros++;
-            }else if(compraparcelada = 'S'){
+            } else if (compraparcelada = 'S') {
                 //TODO: FAZER AJUSTE PARA PEGAR AS OBRIGATORIEDADES NAS TABELAS
 
                 var tabela = document.getElementById("tabelalistadespesa");
             }
+
+            var data = [];
+            var table               = document.getElementById('tabelalistadespesa');
+            var descricaoTabela     = table.getElementsByClassName('descricaoTabela');
+            var valorparcelaTabela  = table.getElementsByClassName('valorparcelaTabela');
+            
+            for (var i = 0; i < descricaoTabela.length; i++) {
+                data.push(descricaoTabela[i].value);
+                if ((data[i] == '') || ((data[i] == null))) {
+                    texto = texto +
+                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
+                        sum([i, 1]) + '</label></br>';
+                    contadorErros++;
+                }
+            }
+            for (var i = 0; i < valorparcelaTabela.length; i++) {
+                data.push(valorparcelaTabela[i].value);
+                if ((data[i] == '') || ((data[i] == null))) {
+                    texto = texto +
+                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
+                        sum([i, 1]) + '</label></br>';
+                    contadorErros++;
+                }
+            }
+
 
         }
         //Verifica se não é compra
@@ -272,10 +320,15 @@
 
             var descricaoDespesaCompra = $('.descricaoDespesa').val();
             var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
-
+            if ((precoReal == '') || (precoReal == null)) {
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
+                contadorErros++;
+            }
 
             if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
-                texto = texto + '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
                 contadorErros++;
             }
 
@@ -383,6 +436,11 @@
         });
         newrow.find("#pago").each(function(index) {
             $(this).val(valorpg);
+            $(this).trigger('change'); // Notify any JS components that the value changed
+        });
+        newrow.find("#quantidadeTabela").each(function(index) {
+            $(this).val(
+                ''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
             $(this).trigger('change'); // Notify any JS components that the value changed
         });
 
