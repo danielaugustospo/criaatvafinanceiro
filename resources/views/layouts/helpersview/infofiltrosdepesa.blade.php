@@ -18,8 +18,8 @@
     @if ($fornecedor != '')
         <label><b>Fornecedor:</b> {{ $fornecedor }} &nbsp; </label>
     @endif
-    @if ($fornecedor != '')
-        <label><b>Ordem de Serviço:</b> {{ $fornecedor }} &nbsp; </label>
+    @if ($ordemservico != '')
+        <label><b>Ordem de Serviço:</b> {{ $ordemservico }} &nbsp; </label>
     @endif
     @if ($conta != '')
         <label><b>Conta:</b> {{ $conta }} &nbsp; </label>

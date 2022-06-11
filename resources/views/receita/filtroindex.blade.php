@@ -19,6 +19,7 @@
                     <option value="{{ $receita->valorreceita }}">{{ $receita->valorreceita }}</option>
                     @endforeach
                 </select>
+                <input type="text" name="valorreceita"  id="valorreceita"/>
 
                 <label for="" class="col-sm-1">Conta</label>
                 {{-- <input type="text" name="contareceita" class="col-sm-2 form-control buscaPrecoReal" placeholder="Preço Real"> --}}

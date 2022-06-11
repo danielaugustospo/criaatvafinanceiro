@@ -11,6 +11,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
+use App\Providers\FormatacoesServiceProvider;
+
 
 class ReceitaController extends Controller
 {
@@ -53,33 +55,212 @@ class ReceitaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index(Request $request)
+    // {
+
+    //     $consulta = $this->consultaIndexReceita();
+        
+    //     if ($request->ajax()) {
+
+    //         return Datatables::of($consulta)
+    //             ->addIndexColumn()
+    //             ->addColumn('action', function($consulta) {
+
+    //             $btnVisualizar = '<div class="row col-sm-12">
+    //                 <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg"  title="Visualizar Receita">Visualizar</a>
+    //             </div>';
+
+    //             return $btnVisualizar;
+    //             })
+
+    //             ->rawColumns(['action'])
+    //             ->make(true);
+    //     }        else {
+    //         $data = Receita::orderBy('id', 'DESC')->paginate(5);
+    //         return view('receita.index', compact('data'))
+    //             ->with('i', ($request->input('page', 1) - 1) * 5);
+    //     }
+    // }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-
         $consulta = $this->consultaIndexReceita();
-        
-        if ($request->ajax()) {
+        if ($request->get('id')) {
+            $idreceita = $request->get('id');
+            settype($idreceita, "integer");
+            $this->show($idreceita);
 
-            return Datatables::of($consulta)
-                ->addIndexColumn()
-                ->addColumn('action', function($consulta) {
-
-                $btnVisualizar = '<div class="row col-sm-12">
-                    <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg"  title="Visualizar Receita">Visualizar</a>
-                </div>';
-
-                return $btnVisualizar;
-                })
-
-                ->rawColumns(['action'])
-                ->make(true);
-        }        else {
-            $data = Receita::orderBy('id', 'DESC')->paginate(5);
-            return view('receita.index', compact('data'))
-                ->with('i', ($request->input('page', 1) - 1) * 5);
+            $receita = Receita::where('id', $idreceita)->where('excluidoreceita', 0)->get();
+            if(count($receita) == 1){
+                header("Location: receita/$idreceita");
+                exit();
+            }
+            else{
+                return redirect()->route('receita.index')
+                        ->with('warning', 'Receita '. $idreceita .' é um dado excluído, ou uma receita inexistente, não podendo ser acessado');
+            }
         }
+        $validacoesPesquisa = $this->validaPesquisa($request);
+
+        $receita        = $validacoesPesquisa[0];
+        $valorreceita   = $validacoesPesquisa[1];
+        $dtinicio       = $validacoesPesquisa[2];
+        $dtfim          = $validacoesPesquisa[3];
+        // $coddespesa     = $validacoesPesquisa[4];
+        // $fornecedor     = $validacoesPesquisa[4];
+        $ordemservico   = $validacoesPesquisa[4];
+        $contareceita   = $validacoesPesquisa[5];
+        $nfreceita      = $validacoesPesquisa[6];
+        $cliente        = $validacoesPesquisa[7];
+        // $fixavariavel   = $validacoesPesquisa[10];
+        $pagoreceita    = $validacoesPesquisa[8];
+
+        $rota = $this->verificaRelatorio($request);
+
+        return view($rota, compact('consulta', 'receita', 'valorreceita', 'dtinicio', 'dtfim', 'ordemservico', 'contareceita', 'nfreceita', 'cliente',  'pagoreceita'));
     }
 
+    
+    public function apireceita(Request $request)
+    {
+        // TODO: Montar filtro genérico de receita
+
+        $descricao = $this->montaFiltrosConsulta($request);
+
+        $listaReceita = DB::select('SELECT distinct r.id, 
+        r.idosreceita,
+        r.idclientereceita,
+        r.idformapagamentoreceita,
+        r.datapagamentoreceita,
+        r.dataemissaoreceita,
+        r.valorreceita,
+        r.pagoreceita,
+        r.contareceita,
+        r.descricaoreceita,
+        r.registroreceita,
+        r.nfreceita,
+        r.ativoreceita,
+        r.excluidoreceita,
+        r.created_at,
+        r.updated_at,
+        cc.nomeConta,
+        cc.apelidoConta,
+        os.eventoOrdemdeServico,
+        fpg.nomeFormaPagamento, 
+        cli.razaosocialCliente
+        
+        
+        FROM receita r
+
+        LEFT JOIN conta             AS cc   ON r.contareceita = cc.id
+        LEFT JOIN ordemdeservico    AS os   ON r.idosreceita = os.id
+        LEFT JOIN formapagamento    AS fpg  ON r.idformapagamentoreceita = fpg.id
+        LEFT JOIN clientes          AS cli  ON os.idClienteOrdemdeServico = cli.id
+     
+        
+        WHERE r.excluidoreceita = 0 ' . $descricao);
+
+        return $listaReceita;
+
+    }
+
+    private function montaFiltrosConsulta($request)
+    {
+        $descricao = "";
+        $verificaInputCampos = 0;
+        if ($request->receita) :     $descricao .= " AND r.descricaoreceita like  '%$request->receita%'";
+            $verificaInputCampos++;
+        endif;
+
+        if ($request->ordemservico) : $descricao .= " AND r.idosreceita = '$request->ordemservico'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->valorreceita) :        $descricao .= " AND r.valorreceita = '$request->valorreceita'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->contareceita) :        $descricao .= " AND cc.apelidoConta = '$request->contareceita'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if ($request->nfreceita) : $descricao  .= " AND r.nfreceita = '$request->nfreceita'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+            $verificaInputCampos++;
+        endif;
+
+        if ($request->pagoreceita) :        $descricao .= " AND r.pagoreceita = '$request->pagoreceita'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
+        endif;
+
+        if ($request->dtinicio) :     $descricao .= " AND r.datapagamentoreceita BETWEEN  '$request->dtinicio' and '$datafim'";
+        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
+            $descricao .= " AND r.datapagamentoreceita BETWEEN  '$datainicio' and '$datafim'";
+        endif;
+        return $descricao;
+    }
+
+    private function validaPesquisa($request)
+    {
+        if ($request->get('receita')) :     $receita = $request->get('receita');
+        else : $receita = '';
+        endif;
+        if ($request->get('valorreceita')) :        $valorreceita = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorreceita'));
+        else : $valorreceita = '';
+        endif;
+        if ($request->get('dtinicio')) :     $dtinicio = $request->get('dtinicio');
+        else : $dtinicio = '';
+        endif;
+        if ($request->get('dtfim')) :        $dtfim = $request->get('dtfim');
+        else : $dtfim = '';
+        endif;
+
+        if ($request->get('ordemservico')) : $ordemservico = $request->get('ordemservico');
+        else : $ordemservico = '';
+        endif;
+        if ($request->get('contareceita')) :        $contareceita = $request->get('contareceita');
+        else : $contareceita = '';
+        endif;
+        if ($request->get('nfreceita')) :    $nfreceita = $request->get('nfreceita');
+        else : $nfreceita = '';
+        endif;
+        if ($request->get('cliente')) :       $cliente = $request->get('cliente');
+        else : $cliente = '';
+        endif;
+        if ($request->get('pagoreceita')) :        $pagoreceita = $request->get('pagoreceita');
+        else : $pagoreceita = '';
+        endif;
+
+        $solicitacaoArray = array($receita, $valorreceita, $dtinicio, $dtfim, $ordemservico, $contareceita, $nfreceita, $cliente,  $pagoreceita);
+        return $solicitacaoArray;
+    }
+
+    private function verificaRelatorio($request)
+    {
+
+        $rotaRetorno = 'receita.index';
+        if ($request->get('tpRel') ==  'fornecedor') :
+            $rotaRetorno = 'relatorio.fornecedor.index';
+
+        elseif ($request->get('tpRel') ==  'pclienteanalitico') :
+            $rotaRetorno = 'relatorio.despesasporclienteanalitico.index';
+        endif;
+
+        return $rotaRetorno;
+    }
 
     public function tabelaReceitas(Request $request){
 
@@ -105,8 +286,8 @@ class ReceitaController extends Controller
             if (($request->has('idosreceita')) && ($request->idosreceita != NULL)) {
                 $query->where('idosreceita', '=', "{$request->get('idosreceita')}");
             }
-            if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
-                $query->where('vencimento', '=', "{$request->get('vencimento')}");
+            if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
+                $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
             }
         })
         ->addIndexColumn()

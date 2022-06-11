@@ -77,7 +77,9 @@ use App\Providers\AppServiceProvider;
                         @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('receita-list')
-                                <a class="dropdown-item" href="{{ route('receita.index') }}">Consultar</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target=".modalreceita" style="cursor:pointer;">Pesquisar por receita</a>
+
+                                {{-- <a class="dropdown-item" href="{{ route('receita.index') }}">Consultar</a> --}}
                             @endcan
                             @can('receita-create')
                                 <a class="dropdown-item" href="{{ route('receita.create') }}">Cadastrar</a>
@@ -286,7 +288,7 @@ use App\Providers\AppServiceProvider;
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('benspatrimoniais-list')
-                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Listar Materiais</a>
+                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Catálogo de Materiais</a>
                                 @endcan
 
                                 @can('entradas-list')
@@ -376,7 +378,10 @@ use App\Providers\AppServiceProvider;
 </div>
 
 
-@include('layouts/modalpesquisadespesas')
+@include('layouts/modal/modalpesquisadespesas')
+@include('layouts/modal/modalpesquisareceita')
+@include('layouts/modal/modalpesquisaentrada')
+
 
 <script>
     function alteraRotaFormularioCC(){
@@ -396,3 +401,92 @@ use App\Providers\AppServiceProvider;
         document.getElementById("datafinal").removeAttribute("required");
     }
 </script>
+
+
+
+<datalist id="datalistIdReceita">
+    @foreach ($listaReceitas as $receitas)
+        <option value="{{ $receitas->id }}">{{ $receitas->id }}
+          </option>
+      @endforeach
+  </datalist>
+  
+  <datalist id="datalistDescricaoReceita">
+      @foreach ($listaReceitas as $receitas)
+          <option value="{{ $receitas->descricaoreceita }}">{{ $receitas->descricaoreceita }}
+          </option>
+      @endforeach
+  </datalist>
+
+  {{-- <datalist id="datalistOrdemServicoReceita">
+      @foreach ($pegaidOS as $ordemdeservico)
+          <option value="{{ $ordemdeservico->id }}">{{ $ordemdeservico->id }}
+          </option>
+      @endforeach
+  </datalist> --}}
+
+  {{-- <datalist id="datalistContasReceita">
+      @foreach ($listaContas as $contareceita)
+          <option value="{{ $contareceita->apelidoConta }}">{{ $contareceita->nomeConta }} - {{ $contareceita->apelidoConta }}
+          </option>
+      @endforeach
+  </datalist> --}}
+
+  {{-- <datalist id="datalistClienteReceita">
+      @foreach ($nomeclientes as $cliente)
+          <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>
+      @endforeach
+  </datalist> --}}
+
+
+  <datalist id="datalistIdDespesa">
+    @foreach ($listaDespesas as $despesas)
+        <option value="{{ $despesas->id }}">{{ $despesas->id }}
+        </option>
+    @endforeach
+</datalist>
+
+<datalist id="datalistDescricaoDespesa">
+    @foreach ($listaDespesas as $despesas)
+        <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
+        </option>
+    @endforeach
+</datalist>
+
+<datalist id="datalistOrdemServico">
+    @foreach ($pegaidOS as $ordemdeservico)
+        <option value="{{ $ordemdeservico->id }}">{{ $ordemdeservico->id }}
+        </option>
+    @endforeach
+
+</datalist>
+
+<datalist id="datalistFornecedor">
+    @foreach ($listaFornecedores as $fornecedores)
+        <option value="{{ $fornecedores->razaosocialFornecedor }}">{{ $fornecedores->razaosocialFornecedor }}
+        </option>
+    @endforeach
+</datalist>
+
+<datalist id="datalistCodDespesa">
+    @foreach ($listaCodigoDespesa as $coddespesa)
+        <option value="{{ $coddespesa->despesaCodigoDespesa }}">{{ $coddespesa->despesaCodigoDespesa }}
+        </option>
+    @endforeach
+</datalist>
+<datalist id="datalistContas">
+    @foreach ($listaContas as $conta)
+        <option value="{{ $conta->apelidoConta }}">{{ $conta->nomeConta }} - {{ $conta->apelidoConta }}
+        </option>
+    @endforeach
+</datalist>
+{{-- <datalist id="datalistNotaFiscal">
+    @foreach ($listaDespesas as $despesas)
+        <option value="{{ $despesas->notaFiscal }}">{{ $despesas->notaFiscal }}</option>
+    @endforeach
+</datalist> --}}
+<datalist id="datalistCliente">
+    @foreach ($listaClientes as $cliente)
+        <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>
+    @endforeach
+</datalist>

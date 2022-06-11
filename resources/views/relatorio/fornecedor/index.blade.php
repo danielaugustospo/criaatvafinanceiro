@@ -27,7 +27,7 @@ if (isset($despesas)) {
         </div>
     </div>
 
-    <a onclick="abreModal(param = 'fornecedor');" class="d-flex justify-content-center" href="#"> <i
+    <a onclick="abreModalDespesas(param = 'fornecedor');" class="d-flex justify-content-center" href="#"> <i
             class="fas fa-sync"></i>Acessar Outro Período/Conta</a>
 
 

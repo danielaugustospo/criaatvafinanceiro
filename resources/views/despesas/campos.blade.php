@@ -17,7 +17,6 @@
             @isset($despesa)
                 
                     <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 1) checked @endif /> SIM</label> <br />
-
                     <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 0) checked @endif /> NÃO</label>
                 
             @endisset
@@ -97,8 +96,10 @@
     <div class="col-sm-6">
 
         <div id="despesaCompra">
-            <select class="selecionaComInput form-control" id="descricaoDespesa" name="descricaoDespesaCompra">
-
+            <select class="selecionaComInput form-control descricaoDespesaCompra" id="descricaoDespesa" name="descricaoDespesaCompra">
+                @if (!isset($despesa))
+                    <option disabled selected>Selecione...</option>
+                @endif
                 @foreach ($listaBensPatrimoniais as $bempatrimonial)
                     <option value="{{ $bempatrimonial->id }}" @php
                         if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa == $bempatrimonial->id):
@@ -113,7 +114,7 @@
 
         </div>
         <div id="despesaNaoCompra">
-            <input class="form-control" list="datalistDescricao" id="descricaoDespesa" @php
+            <input class="form-control descricaoDespesa" list="datalistDescricao" id="descricaoDespesa" @php
                 if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
                     echo 'value="' . $despesa->descricaoDespesa . '"';
                 endif;
@@ -191,7 +192,7 @@
 <div class="form-group row">
     <label for="conta" class="col-sm-2 col-form-label">Conta</label>
     <div class="col-sm-4">
-        <select name="conta" id="conta" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple"
+        <select name="conta" id="conta" class="selecionaComInput form-control col-sm-12  js-example-basic-multiple conta"
             {{ $variavelDisabledNaView }}>
             @if (!isset($despesa))
                 <option disabled selected>Selecione...</option>
@@ -209,11 +210,11 @@
 </div>
 
 <div class="form-group row" id="telaQuantidade">
-    <label for="precoReal" class="col-sm-2 col-form-label">Quantidade / Unidade</label>
+    <label for="quantidadeSemParcelamento" class="col-sm-2 col-form-label">Quantidade / Unidade</label>
     <div class="col-sm-2">
         {!! Form::text('quantidadeSemParcelamento', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
     </div>
-    <label for="precoReal" class="col-sm-1 col-form-label">Valor Unitário</label>
+    <label for="valorUnitarioSemParcelamento" class="col-sm-1 col-form-label">Valor Unitário</label>
     <div class="col-sm-2">
         {!! Form::text('valorUnitarioSemParcelamento', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control campo-moeda valoresoperacao', 'maxlength' => '50', $variavelReadOnlyNaView]) !!}
     </div>
@@ -222,7 +223,7 @@
 <div class="form-group row" id="telaValor">
     <label for="precoReal" class="col-sm-2 col-form-label">Valor</label>
     <div class="col-sm-2">
-        {!! Form::text('precoReal', $precoReal, ['class' => 'campo-moeda form-control', 'maxlength' => '100', 'id' => 'precoReal', $variavelReadOnlyNaView]) !!}
+        {!! Form::text('precoReal', $precoReal, ['class' => 'campo-moeda form-control precoReal', 'maxlength' => '100', 'id' => 'precoReal', $variavelReadOnlyNaView]) !!}
     </div>
     <label for="precoReal" style="color: red;" class="col-sm-1 col-form-label">Vale</label>
     <div class="col-sm-2">
@@ -439,7 +440,7 @@
 
 {{ Form::hidden('nRegistro', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10', $variavelReadOnlyNaView]) }}
 {!! Form::hidden('ativoDespesa', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
-<!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!} -->
+{{-- <!-- {!! Form::hidden('ehcompra', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'ehcompra']) !!} --> --}}
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
 
 {!! Form::hidden('idDespesaPai', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
