@@ -42,42 +42,42 @@
     <div class="col-sm-1"></div>
     <div class="divCategoria col-sm-5">
         <h4 class="text-center">Despesas</h4>
-        <a onclick="abreModal(param = 'contasapagarporgrupo');" 
+        <a onclick="abreModalDespesas(param = 'contasapagarporgrupo');" 
         href="#"> <label class="text-center fontenormal row" for="">Contas a Pagar              &nbsp; </label></a>
         
         {{-- <a href="contasaidentificar">                   <label class="text-center fontenormal row" for="">Contas a Identificar        &nbsp; </label></a> --}}
 
-        <a onclick="abreModal(param = 'contaspagasporgrupo');"
+        <a onclick="abreModalDespesas(param = 'contaspagasporgrupo');"
         href="#">  <label class="text-center fontenormal row" for="">Contas Pagas por Grupo      &nbsp; </label></a>
 
-        <a onclick="abreModal(param = 'despesasfixavariavel');"
+        <a onclick="abreModalDespesas(param = 'despesasfixavariavel');"
         href="#"> <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'fornecedor');"
+        <a onclick="abreModalDespesas(param = 'fornecedor');"
         href="#">  <label class="text-center fontenormal row" for="">Fornecedor                  &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'notafiscalfornecedor');" 
+        <a onclick="abreModalDespesas(param = 'notafiscalfornecedor');" 
         href="#">  <label class="text-center fontenormal row" for="">Nota Fiscal (Fornecedor)    &nbsp; </label></a>
         
-        <a  onclick="abreModal(param = 'pclienteanalitico');"
+        <a  onclick="abreModalDespesas(param = 'pclienteanalitico');"
         href="#"> <label class="text-center fontenormal row" for="">Por Cliente (Analítico)     &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'despesaspagasporcontabancaria');"
+        <a onclick="abreModalDespesas(param = 'despesaspagasporcontabancaria');"
         href="#">  <label class="text-center fontenormal row" for="">Por Conta Bancária          &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'despesasporos');"
+        <a onclick="abreModalDespesas(param = 'despesasporos');"
         href="#"> <label class="text-center fontenormal row" for="">Por OS                      &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'despesasporosplanilha');"
+        <a onclick="abreModalDespesas(param = 'despesasporosplanilha');"
         href="#"> <label class="text-center fontenormal row" for="">Por OS - Planilha           &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'prolabore');"
+        <a onclick="abreModalDespesas(param = 'prolabore');"
         href="#"> <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a>
         
-        <a onclick="abreModal(param = 'reembolso');"
+        <a onclick="abreModalDespesas(param = 'reembolso');"
         href="#"> <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>
         
-        <a onclick="abreModal(param= 'despesassinteticaporos');" 
+        <a onclick="abreModalDespesas(param= 'despesassinteticaporos');" 
         href="#">               <label class="text-center fontenormal row" for="">Sintética por OS (%)          &nbsp; </label></a>
     </div>
 </div>

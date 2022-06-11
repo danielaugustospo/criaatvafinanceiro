@@ -14,21 +14,17 @@ class CriaTabelaEstoque extends Migration
     public function up()
     {
         //
-        Schema::create('estoques', function (Blueprint $table) {
+        Schema::create('estoque', function (Blueprint $table) {
             $table->bigincrements('id');
 
-            $table->string('nomeestoque');
-            $table->string('descricaoestoque');
-
+            $table->string('codbarras');
+            $table->string('nomematerial');
+            $table->string('descricao')->nullable();
 
             $table->unsignedBigInteger('idbenspatrimoniais');
-            // $table->foreign('idbenspatrimoniais')
-            // ->references('id')
-            // ->on('bens_patrimoniais')
-            // ->onDelete('cascade');
 
-            $table->boolean('ativadoestoque');
-            $table->boolean('excluidoestoque');
+            $table->boolean('ativadoestoque')->default('1');
+            $table->boolean('excluidoestoque')->default('0');
 
             $table->timestamps();
 
@@ -43,7 +39,7 @@ class CriaTabelaEstoque extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('estoques');
+        Schema::dropIfExists('estoque');
 
     }
 }
