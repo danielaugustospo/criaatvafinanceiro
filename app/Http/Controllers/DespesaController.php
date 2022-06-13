@@ -413,8 +413,6 @@ class DespesaController extends Controller
 
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
 
-        // dd($despesa->descricaoDespesa);
-        // exit;
         endif;
 
         $compraparcelada =  $request->get('compraparcelada');
