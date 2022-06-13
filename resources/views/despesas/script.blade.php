@@ -225,7 +225,7 @@
         var fornecedor = $('#selecionaFornecedor').val();
         var formapagamento = $('#idFormaPagamento').val();
         var conta = $('.conta').val();
-        var precoReal = $('#precoReal').val();
+        precoReal = $('.precoReal').val();
         var despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
         texto = '';
 
@@ -283,44 +283,52 @@
                 texto = texto +
                     '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
                 contadorErros++;
-            } else if (compraparcelada = 'S') {
+            } else if (compraparcelada == 'N') {
+                if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
+                    texto = texto +
+                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
+                    contadorErros++;
+                }
+            } else if (compraparcelada == 'S') {
                 //TODO: FAZER AJUSTE PARA PEGAR AS OBRIGATORIEDADES NAS TABELAS
 
                 var tabela = document.getElementById("tabelalistadespesa");
-            }
 
-            var data = [];
-            var table               = document.getElementById('tabelalistadespesa');
-            var descricaoTabela     = table.getElementsByClassName('descricaoTabela');
-            var valorparcelaTabela  = table.getElementsByClassName('valorparcelaTabela');
-            
-            for (var i = 0; i < descricaoTabela.length; i++) {
-                data.push(descricaoTabela[i].value);
-                if ((data[i] == '') || ((data[i] == null))) {
-                    texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
-                        sum([i, 1]) + '</label></br>';
-                    contadorErros++;
+
+                var data = [];
+                var table = document.getElementById('tabelalistadespesa');
+                var descricaoTabela = table.getElementsByClassName('descricaoTabela');
+                var valorparcelaTabela = table.getElementsByClassName('valorparcelaTabela');
+
+                for (var i = 0; i < descricaoTabela.length; i++) {
+                    data.push(descricaoTabela[i].value);
+                    if ((data[i] == '') || ((data[i] == null))) {
+                        texto = texto +
+                            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
+                            sum([i, 1]) + '</label></br>';
+                        contadorErros++;
+                    }
                 }
-            }
-            for (var i = 0; i < valorparcelaTabela.length; i++) {
-                data.push(valorparcelaTabela[i].value);
-                if ((data[i] == '') || ((data[i] == null))) {
-                    texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
-                        sum([i, 1]) + '</label></br>';
-                    contadorErros++;
+
+                for (var i = 0; i < valorparcelaTabela.length; i++) {
+                    data.push(valorparcelaTabela[i].value);
+                    if ((valorparcelaTabela[i].value == '') || (valorparcelaTabela[i].value == ' ') || (valorparcelaTabela[i].value == null) || (valorparcelaTabela[i].value == undefined)) {
+                        
+                        texto = texto +
+                            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
+                            sum([i, 1]) + '</label></br>';
+                        contadorErros++;
+                    }
                 }
+
             }
-
-
         }
         //Verifica se não é compra
         else if ((ehcompra == 0) || (ehcompra == 'N')) {
 
             var descricaoDespesaCompra = $('.descricaoDespesa').val();
             var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
-            if ((precoReal == '') || (precoReal == null)) {
+            if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
                 texto = texto +
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
                 contadorErros++;
@@ -335,24 +343,19 @@
         }
 
         if (contadorErros > 0) {
-
-
-
             var span = document.createElement("span");
             span.innerHTML = texto;
-
 
             Swal.fire({
                 icon: 'error',
                 html: span,
                 title: 'Validações Necessárias',
-                // text: span ,
                 footer: 'Restam  ' + contadorErros + ' pendentes.'
             })
-
         }
         return contadorErros;
     }
+
 
     function pegaIdFornecedor() {
         $('#selecionaFornecedor').val();
@@ -440,7 +443,8 @@
         });
         newrow.find("#quantidadeTabela").each(function(index) {
             $(this).val(
-                ''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
+                ''
+            ); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
             $(this).trigger('change'); // Notify any JS components that the value changed
         });
 
