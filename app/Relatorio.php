@@ -285,8 +285,9 @@ where d.pago = 'S' ";
         LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
      
         WHERE r.pagoreceita = 'N' 
-        and r.idosreceita != ''
-        and r.idosreceita != 'CRIAATVA' " . $parametros;
+        and r.valorreceita  != 0
+        and r.idosreceita   != ''
+        and r.idosreceita   != 'CRIAATVA' " . $parametros;
 
         return $stringQuery;
     }

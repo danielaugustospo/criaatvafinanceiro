@@ -2,7 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apicontasareceber";
     $titulo  = "Contas a Receber";
-    $campodata = 'dataCriacaoOrdemdeServico';
+    $campodata = 'datapagamentoreceita';
 
 ?>
 <head>
@@ -45,7 +45,7 @@
                         fields: {
                             valorreceita: { type: "number" },
                             razaosocialCliente: { type: "string" },
-                            dataCriacaoOrdemdeServico: { type: "date" },
+                            datapagamentoreceita: { type: "date" },
                         }
                     },
                 },
@@ -63,7 +63,7 @@
             columns: [
                 { field: "idOS", title: "OS", filterable: true, width: 100 },
                 // { field: "idOS", title: "ID", filterable: true, width: 50 },
-                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
+                { field: "datapagamentoreceita", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
                 { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 100 },
                 // { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
