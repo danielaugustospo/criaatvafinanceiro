@@ -16,11 +16,11 @@
                 <a class="btn btn-primary" href="{{ route('benspatrimoniais.edit',$benspatrimoniais->id) }}">Editar</a>
             @endcan
 
-            @csrf
+            {{-- @csrf
             @method('DELETE')
             @can('benspatrimoniais-delete')
                 <button type="submit" class="btn btn-danger">Excluir</button>
-            @endcan
+            @endcan --}}
         </form>
 
     </div>
@@ -31,22 +31,28 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Nome:</strong>
-            {{ $benspatrimoniais->nomeBensPatrimoniais }}
+            <label for="">{{ $benspatrimoniais->nomeBensPatrimoniais }}</label>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Estoque Mínimo:</strong>
+            <label for="">{{ $benspatrimoniais->qtdestoqueminimo }}</label>
+        </div>
+    </div>
+    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Descrição:</strong>
             {{ $benspatrimoniais->descricaoBensPatrimoniais }}
         </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div> --}}
+    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Tipo Bem Patrimonial:</strong>
             {{ $benspatrimoniais->idTipoBensPatrimoniais }}
         </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    </div> --}}
+    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Status Bem Patrimonial:</strong>
             @if ( $benspatrimoniais->statusbenspatrimoniais  = 1)
@@ -58,7 +64,7 @@
             @endif
 
         </div>
-    </div>
+    </div> --}}
 </div>
 
 

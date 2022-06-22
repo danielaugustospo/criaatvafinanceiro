@@ -173,10 +173,13 @@ h3:after {
 
     <label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
     <div class="col-sm-6">
-        {{-- {!! Form::text('idClienteOrdemdeServico', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}  --}}
         <select name="idClienteOrdemdeServico" id="idClienteOrdemdeServico" class="selecionaComInput form-control">
+            <option value="" selected disabled >Selecione...</option>
             @foreach ($cliente as $clientes)
-            <option value="{{ $clientes->id }}">{{ $clientes->razaosocialCliente }}</option>
+            <option value="{{ $clientes->id }}" 
+              @if(isset($ordemdeservico))
+                @if($ordemdeservico->idClienteOrdemdeServico == $clientes->id) selected @endif
+              @endif>{{ $clientes->razaosocialCliente }}</option>
             @endforeach
         </select>
     </div>
@@ -185,8 +188,6 @@ h3:after {
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!}
-
-        {{-- {!! Form::text('valorOrdemdeServico',$valorInput,['class' => 'campo-moeda form-control','step'=>'any', 'id'=>'campo-moeda']) !!} --}}
     </div>
 </div>
 
@@ -233,8 +234,6 @@ h3:after {
 <table class="styled-table rwd-table"  id="tabelaPagamento">
     <thead>
         <tr class="col-sm-10">
-            {{-- <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela" readonly> --}}
-            {{-- <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas" readonly style="cursor:pointer;"> --}}
 
             <th class="col-sm-2" style="width:20%;">Forma Pagamento</th>
             <th class="col-sm-1" style="width:-webkit-fill-available;"><nobr>Valor Parcela</nobr></th>
@@ -294,7 +293,6 @@ h3:after {
     }
 
     $("#btnAddColumn").click(function() {
-        // $("#habilita_receita").clone(true).appendTo("#novaDivReceita");
         var row = $("#tabelaPagamento tr:last");
 
         row.find(".selecionaComInput").each(function(index) {
@@ -306,14 +304,9 @@ h3:after {
         $("#tabelaPagamento").append(newrow);
 
         $("select.selecionaComInput").select2();
-        // $('input[type=text].idReceita').val('');
-
-        // var par = $(this).parent().parent();
-        // console.log(par);
 
         var tr = $(this).closest('tr');
         console.log(tr.attr(newrow));        
-        // colore_tabela();
     });
 
     function idSemValor(){
@@ -326,8 +319,6 @@ h3:after {
             
           $(this).select2('destroy');
         
-      // $(this).select2('destroy');
-      // alert(alerta);
     });
     row.find(".campo-moeda").each(function(index) {
         $(this).maskMoney('destroy');
@@ -335,7 +326,6 @@ h3:after {
     var newrow = row.clone();
     $("#tabelaPagamento").append(newrow);
     $("select.selecionaComInput").select2();
-    // $("input.campo-moeda").maskMoney();
     $('input.campo-moeda')
         .maskMoney({
             prefix: 'R$ ',

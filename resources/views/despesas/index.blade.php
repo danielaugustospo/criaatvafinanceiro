@@ -113,8 +113,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         color: "#ffffff"
                     }];
 
-
-                    console.log(e.workbook);
                     sheet.rows.splice(0, 0, {
                         cells: myHeaders,
                         type: "header",

@@ -77,7 +77,9 @@ class SaidasController extends Controller
 
         // $descricao = $this->montaFiltrosConsulta($request);
         $descricao = '';
-        $listaDespesas = DB::select('SELECT s.*, b.nomeBensPatrimoniais 
+        $listaDespesas = DB::select('SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+         b.nomeBensPatrimoniais 
             FROM  saidas s 
             LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
             WHERE s.excluidosaida = 0' . $descricao);
@@ -217,8 +219,8 @@ class SaidasController extends Controller
 
         $request->validate([
 
-            'descricaosaida'            => 'required',
-            'idbenspatrimoniais'        => 'required',
+            // 'descricaosaida'            => 'required',
+            // 'idbenspatrimoniais'        => 'required',
             'portadorsaida'             => 'required',
             // 'ordemdeservico'             => 'required',
             // 'datapararetiradasaida'     => 'required',
@@ -229,30 +231,58 @@ class SaidasController extends Controller
             // 'excluidosaida'             => 'required'
         ]);
 
-
-        try {
-            DB::beginTransaction();
-            $salvaSaidas = Saidas::create($request->all());
+            $salvaSaidas = Saidas::create([
+                'codbarras'             => $request->codbarras,
+                'descricaosaida'        => $request->descricaosaida,
+                'idbenspatrimoniais'    => $request->idbenspatrimoniais,
+                'excluidosaida'         => $request->excluidosaida,
+                'portador'              => $request->portadorsaida,
+                'ordemdeservico'        => $request->ordemdeservico,
+                'datapararetirada'      => $request->datapararetiradasaida,
+                'dataretirada'          => $request->dataretiradasaida,
+                'datapararetorno'       => $request->dataretornoretiradasaida,
+                'ocorrencia'            => $request->ocorrenciasaida,
+            ]);
             if($salvaSaidas){
             Estoque::where('codbarras', $request->codbarras)
                 ->where('ativadoestoque', '1')
                 ->update(['ativadoestoque' =>  0]);
 
-            DB::commit();
-
             }
             else{
-                DB::rollBack();
+                return redirect()->route('saidas.index')->with('error', 'Saída criada com êxito, mas item não foi retirado do estoque');
+            }
+            $id = $salvaSaidas->id;
+            $mensagemExito = 'Saída de material lançada com êxito.';
+
+            if($request->tpRetorno == 'visualiza'){
+                $rotaRetorno = 'saidas.show';
+                $visualiza = 1;
+                $saidas = Saidas::find($id);
+
+            }
+            elseif($request->tpRetorno == 'novo'){  
+                $rotaRetorno = 'saidas.create';
+                $visualiza = 0;
+            }
+            else{
+                $rotaRetorno = 'saidas.index';
+                $visualiza = null;
+            }
+     
+            if($visualiza == 1){
+                $saidas = Saidas::find($id);
+                $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
+        
+                return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
+            }
+            elseif($visualiza == 0){
+                return redirect()->route($rotaRetorno)->with('success', $mensagemExito);
+            }
+            else{
+                return redirect()->route($rotaRetorno);
             }
 
-            return redirect()->route('saidas.index')->with('success', 'Saída criada com êxito.');
-        
-        } catch (\Throwable $th) {
-            // return redirect()->route('saidas.create')
-            //     ->with('error', 'Erro ao salvar. Favor, tente novamente');
-
-                return $th;
-        }
     }
 
 
@@ -269,6 +299,7 @@ class SaidasController extends Controller
 
         return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
     }
+
 
 
     /**
