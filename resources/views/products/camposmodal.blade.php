@@ -23,9 +23,9 @@
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Detalhes:</strong>
-		            <textarea class="form-control" style="height:150px" name="detail" placeholder="Detalhes" value="0" required></textarea>
 		        </div>
             </div>
+			<input type="hidden" value="0" name="detail" class="form-control" placeholder="Detalhes"/>
             <input type="hidden" value="1" name="ativotipobenspatrimoniais" class="form-control" placeholder="Ativo">
             <input type="hidden" value="0" name="excluidotipobenspatrimoniais" class="form-control" placeholder="Excluido">
 

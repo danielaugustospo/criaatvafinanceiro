@@ -209,21 +209,21 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         width: 130,
                         exportable: false,
                     },
-                    {
-                        command: [{
-                            name: "Editar",
-                            click: function(e) {
-                                e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
-                                var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                                    data.id + '/edit';
-                            }
-                        }],
-                        width: 130,
-                        exportable: false,
-                    },
+                    // {
+                    //     command: [{
+                    //         name: "Editar",
+                    //         click: function(e) {
+                    //             e.preventDefault();
+                    //             var tr = $(e.target).closest(
+                    //                 "tr"); // get the current table row (tr)
+                    //             var data = this.dataItem(tr);
+                    //             window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
+                    //                 data.id + '/edit';
+                    //         }
+                    //     }],
+                    //     width: 130,
+                    //     exportable: false,
+                    // },
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {

@@ -85,6 +85,7 @@ Route::get('/tabelaOrdemServicos', 'OrdemdeServicoController@tabelaOrdemServicos
 Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name('listaCodigoDespesa');
 Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');
 Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
+Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('listaTipoMateriais');
 
 Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
 Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');

@@ -2,6 +2,8 @@
 $intervaloCelulas = 'A1:H1';
 $rotaapi = 'api/apisaida';
 $titulo = 'Estoque - Saídas (Baixa de Material)';
+$campodata  = 'dataretirada';
+$campodata2 = 'datapararetorno';
 
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
@@ -158,6 +160,12 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 },
                                 descricao: {
                                     type: "string"
+                                },
+                                dataretirada: {
+                                    type: "date"
+                                },
+                                datapararetorno: {
+                                    type: "date"
                                 }
                             }
                         },
@@ -185,11 +193,42 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         width: 100
                     },
                     {
-                        field: "descricao",
+                        field: "descricaosaida",
                         title: "Descrição",
                         filterable: true,
                         width: 100
                     },
+                    {
+                        field: "dataretirada",
+                        title: "Data Retirada",
+                        filterable: true,
+                        width: 100,
+                        format: "{0:dd/MM/yyyy}",
+                        filterable: {
+                            cell: {
+                                template: betweenFilter
+                            }
+                        }
+                    },
+                    {
+                        field: "qtddiasemprestado",
+                        title: "Dias Emprestados",
+                        filterable: true,
+                        width: 100,
+                    },
+                    {
+                        field: "datapararetorno",
+                        title: "Data Retorno",
+                        filterable: true,
+                        width: 100,
+                        format: "{0:dd/MM/yyyy}",
+                        filterable: {
+                            cell: {
+                                template: betweenFilter
+                            }
+                        }
+                    },
+                    
                     {
                         command: [{
                             name: "Visualizar",
@@ -198,28 +237,28 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 var tr = $(e.target).closest(
                                     "tr"); // get the current table row (tr)
                                 var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
+                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/saidas/" +
                                     data.id;
                             }
                         }],
                         width: 130,
                         exportable: false,
                     },
-                    {
-                        command: [{
-                            name: "Editar",
-                            click: function(e) {
-                                e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
-                                var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                                    data.id + '/edit';
-                            }
-                        }],
-                        width: 130,
-                        exportable: false,
-                    },
+                    // {
+                    //     command: [{
+                    //         name: "Editar",
+                    //         click: function(e) {
+                    //             e.preventDefault();
+                    //             var tr = $(e.target).closest(
+                    //                 "tr"); // get the current table row (tr)
+                    //             var data = this.dataItem(tr);
+                    //             window.location.href = "@php echo env('APP_URL'); @endphp" + "/saidas/" +
+                    //                 data.id + '/edit';
+                    //         }
+                    //     }],
+                    //     width: 130,
+                    //     exportable: false,
+                    // },
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {
@@ -289,11 +328,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                         var count = 0;
                         var interval = setInterval(function() {
-                                @if (isset($despesas))
-                                    if (count >= 100) {
-                                    @else
-                                        if (count >= 800) {
-                                        @endif
+
+                                        if (count >= 50) {
+                                
                                         clearInterval(interval);
                                         $('.k-link')[0].click();
                                         console.log('Ordenação Por Grupo Clicado Inicialmente');

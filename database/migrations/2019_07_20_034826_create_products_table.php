@@ -16,10 +16,10 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->text('detail');
+            $table->text('detail')->nullable();
 
-            $table->boolean('ativotipobenspatrimoniais');
-            $table->boolean('excluidotipobenspatrimoniais');
+            $table->boolean('ativotipobenspatrimoniais')->default('1');
+            $table->boolean('excluidotipobenspatrimoniais')->default('0');
 
 
             $table->timestamps();
