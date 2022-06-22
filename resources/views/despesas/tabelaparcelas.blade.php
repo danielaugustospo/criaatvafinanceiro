@@ -64,7 +64,7 @@
             </td>
             <td data-th="QUANTIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control valoresoperacao quantidadeTabela', 'maxlength' => '100', 'id' => 'quantidadeTabela', $variavelReadOnlyNaView]) !!}
+                'form-control valoresoperacao quantidadeTabela', 'max' => '2999-12-31', 'id' => 'quantidadeTabela', $variavelReadOnlyNaView]) !!}
 
                 {{-- <input list="tipoUnidade" name="quantidadeTabela[]" id="browser" value="">
 
@@ -95,7 +95,7 @@
             </td>
             <td data-th="VENCIMENTO">
                 {!! Form::date('vencimentoTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                'form-control', 'min' => '2000-01-01', 'max' => '2099-12-31', $variavelReadOnlyNaView]) !!}
             </td>
             <td>
                 <select name="pagoTabela[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
