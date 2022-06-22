@@ -12,6 +12,7 @@
                 $("#telaQuantidade").show();
                 $("#telaDataCompra").show();
                 $("#telaCompraParcelada").show();
+                // $("#telaInsereEstoque").show();
                 // pegaIdFornecedor();
 
 
@@ -36,6 +37,7 @@
                 // pegaIdFuncionario();
                 $("#telaQuantidade").hide();
                 $("#telaCompraParcelada").hide();
+                // $("#telaInsereEstoque").hide();
 
 
                 $("#telaDataCompra").hide();
@@ -58,6 +60,7 @@
                 $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
+                // $("#telaInsereEstoque").hide();
 
                 // pegaIdFuncionario();
 
@@ -91,6 +94,7 @@
 
                 $("#telaFornecedor").show();
                 $("#telaCompraParcelada").show();
+                // $("#telaInsereEstoque").show();
                 $("#telaFuncionario").hide();
                 $("#telaQuantidade").hide();
                 pegaIdFornecedor();

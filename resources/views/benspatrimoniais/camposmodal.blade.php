@@ -1,18 +1,25 @@
 @include('layouts/modal/includesmodal')
 
 @if (isset($mensagem))
-<div class="alert alert-success" role="alert">
-    <p>{{ $mensagem }}</p>
-</div>
+    <div class="alert alert-success" role="alert">
+        <p>{{ $mensagem }}</p>
+    </div>
 @endif
 
 
-{!! Form::open(array('route' => 'cadastromateriais','method'=>'POST')) !!}
+{!! Form::open(['route' => 'cadastromateriais', 'method' => 'POST']) !!}
 
 <div class="form-group row">
-    <label for="nomeBensPatrimoniais" class="col-sm-1 col-form-label">Descrição de item comprado </label>
+    <label for="nomeBensPatrimoniais" class="col-sm-2 col-form-label">Descrição do Material </label>
     <div class="col-sm-10">
         {!! Form::text('nomeBensPatrimoniais', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="qtdestoqueminimo" class="col-sm-2 col-form-label">Estoque Mínimo</label>
+    <div class="col-sm-5">
+        <input type="number" class="form-control" name="qtdestoqueminimo" id="qtdestoqueminimo">
     </div>
 </div>
 
@@ -21,12 +28,13 @@
     <div class="col-sm-10">
         <select name="idTipoBensPatrimoniais" id="idTipoBensPatrimoniais" class="selecionaComInput form-control">
             @foreach ($listaTiposBensPatrimoniais as $tipo)
-            <option value="{{ $tipo->id }}">{{ $tipo->name }}</option>
+                <option value="{{ $tipo->id }}">{{ $tipo->name }}</option>
             @endforeach
         </select>
     </div>
 </div>
-<input type="button" class="btn btn-primary" data-toggle="modal"  data-target=".tipomaterial" value="Cadastrar Novo Tipo" style="cursor: pointer;">
+<input type="button" class="btn btn-primary" data-toggle="modal" data-target=".tipomaterial"
+    value="Cadastrar Novo Tipo" style="cursor: pointer;">
 @include('despesas/cadastratipomaterial')
 
 
@@ -38,5 +46,5 @@
 {!! Form::hidden('ativadoBensPatrimoniais', '1', ['placeholder' => 'Ativo', 'class' => 'form-control', 'id' => 'ativadoBensPatrimoniais', 'maxlength' => '1']) !!}
 {!! Form::hidden('excluidoBensPatrimoniais', '0', ['placeholder' => 'Excluído', 'class' => 'form-control', 'id' => 'excluidoBensPatrimoniais', 'maxlength' => '1']) !!}
 
-{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
+{!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
 {!! Form::close() !!}

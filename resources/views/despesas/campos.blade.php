@@ -32,6 +32,17 @@
                 @if(isset($despesa)) disabled checked @endif id="naoparcelada" /> NÃO</label>
         </div>
     </div>
+    {{-- @if (Request::path() == 'despesas/create')
+
+    <div class="form-group row" id="telaInsereEstoque">
+        <h5 style="color: red;" class="col-sm-5 mr-5"><b>Inserir compra no estoque?</b></h5>
+        <div class="col-sm-3 mt-2">
+            <label class="mr-2 ml-2">   <input type="radio" value="S" name="inserirestoque" id="inserirestoque" /> SIM</label> <br />
+            <label class="ml-2">        <input type="radio" value="N" name="inserirestoque" id="naoinserirestoque" checked /> NÃO</label>
+        </div>
+    </div>
+    @endif --}}
+
     
 </div>
 

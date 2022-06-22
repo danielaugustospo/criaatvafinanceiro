@@ -138,6 +138,7 @@ public function apibenspatrimoniais(Request $request)
 
             'nomeBensPatrimoniais'      => 'required|min:3',
             'idTipoBensPatrimoniais'    => 'required',
+            'qtdestoqueminimo'          => 'required',
             'descricaoBensPatrimoniais' => 'required',
             'statusbenspatrimoniais'    => 'required',
             'ativadoBensPatrimoniais'   => 'required',
@@ -151,7 +152,7 @@ public function apibenspatrimoniais(Request $request)
 
 
         return redirect()->route('benspatrimoniais.index')
-                        ->with('success','Bem Patrimonial criado com êxito.');
+                        ->with('success','Material cadastrado com êxito.');
     }
     public function salvarmodal(Request $request)
     {
@@ -159,6 +160,7 @@ public function apibenspatrimoniais(Request $request)
         $request->validate([
             'nomeBensPatrimoniais'      => 'required|min:3',
             'idTipoBensPatrimoniais'    => 'required',
+            'qtdestoqueminimo'          => 'required',
             'descricaoBensPatrimoniais' => 'required',
             'statusbenspatrimoniais'    => 'required',
             'ativadoBensPatrimoniais'   => 'required',
@@ -224,6 +226,7 @@ public function apibenspatrimoniais(Request $request)
         $benspatrimoniais = BensPatrimoniais::find($id);
         $benspatrimoniais->nomeBensPatrimoniais         = $request->input('nomeBensPatrimoniais');
         $benspatrimoniais->idTipoBensPatrimoniais       = $request->input('idTipoBensPatrimoniais');
+        $benspatrimoniais->qtdestoqueminimo             = $request->input('qtdestoqueminimo');
         $benspatrimoniais->descricaoBensPatrimoniais    = $request->input('descricaoBensPatrimoniais');
         $benspatrimoniais->statusbenspatrimoniais       = $request->input('statusbenspatrimoniais');
         $benspatrimoniais->save();

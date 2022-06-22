@@ -147,6 +147,23 @@ class EstoqueController extends Controller
             ->with('success', 'Item do estoque atualizado com sucesso');
     }
 
+    public function verificaSeExisteNoEstoque(Request $request){
+        $pesquisa = $request->codbarras; // get data to check
+
+        $temNoEstoque = Estoque::where('codbarras', $pesquisa)->get();
+        $contador = $temNoEstoque->count();
+        if ($contador > 0){
+            return response()->json(true);
+        }
+        else{
+            return response()->json(false);
+        }
+        // if($temNoEstoque){ return true; }
+        // else{ return false; }
+        
+        // passing your where condition to check
+        // return $model->where($where)->get()->count() > 0;
+    }
 
     /**
      * Remove the specified resource from storage.

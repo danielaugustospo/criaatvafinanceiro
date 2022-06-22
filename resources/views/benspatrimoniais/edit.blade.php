@@ -22,8 +22,6 @@
     <label for="nomeBensPatrimoniais" class="col-sm-2 col-form-label">Nome </label>
     <div class="col-sm-10">
         {!! Form::text('nomeBensPatrimoniais', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
-
-        <!-- <input type="text" class="form-control" nome="nomeFuncionario" id="nomeFuncionario" placeholder="Nome do Prestador de Serviço"> -->
     </div>
 </div>
 <div class="form-group row">
@@ -35,38 +33,21 @@
             @endforeach
         </select>
         <!-- {!! Form::text('idTipoBensPatrimoniais', '', ['placeholder' => 'Tipo de Bem Patrimonial', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idTipoBensPatrimoniais','onblur' =>'pesquisacep(this.value)']) !!} -->
-        <!-- <input type="text" class="form-control" id="descricaoBensPatrimoniais" placeholder="Endereço"> -->
     </div>
 
 </div>
 <div class="form-group row">
-    <label for="statusbenspatrimoniais" class="col-sm-2 col-form-label">Status do Bem Patrimonial</label>
-    <div class="col-sm-2">
-        <select class="form-control" name="statusbenspatrimoniais" id="statusbenspatrimoniais">
-            <option value="1">Disponível</option>
-            <option value="2">Em Uso</option>
-            <option value="3">Manutenção</option>
-        </select>
-        <!-- <input type="text" class="form-control" id="descricaoBensPatrimoniais" placeholder="Endereço"> -->
-    </div>
-    <label for="descricaoBensPatrimoniais" class="col-sm-1 col-form-label">Descrição</label>
-    <div class="col-sm-7">
-        {!! Form::text('descricaoBensPatrimoniais', null, ['placeholder' => 'Descrição', 'class' => 'form-control', 'id' => 'descricaoBensPatrimoniais', 'maxlength' => '100']) !!}
-        <!-- <input type="text" class="form-control" id="descricaoBensPatrimoniais" placeholder="Endereço"> -->
+
+    <label for="qtdestoqueminimo" class="col-sm-2 col-form-label">Estoque Mínimo</label>
+    <div class="col-sm-3">
+        {!! Form::text('qtdestoqueminimo', null, ['placeholder' => 'Estoque Mínimo', 'class' => 'form-control', 'id' => 'qtdestoqueminimo', 'maxlength' => '100']) !!}
     </div>
 </div>
-<!-- <div class="form-group row ">
-    <label for="ativadoBensPatrimoniais" class="col-sm-2 col-form-label">Ativo?</label>
-    <div class="col-sm-3"> -->
+{!! Form::hidden('descricaoBensPatrimoniais', null, ['placeholder' => 'Descrição', 'class' => 'form-control', 'id' => 'descricaoBensPatrimoniais', 'maxlength' => '100']) !!}
+{!! Form::hidden('statusbenspatrimoniais', null, ['placeholder' => 'Status do Bem Patrimonial', 'class' => 'form-control', 'id' => 'statusbenspatrimoniais', 'maxlength' => '100']) !!}
 {!! Form::hidden('ativadoBensPatrimoniais', null, ['placeholder' => 'Ativo', 'class' => 'form-control', 'id' => 'ativadoBensPatrimoniais', 'maxlength' => '1']) !!}
-<!-- <input type="text" class="form-control" id="ativadoBensPatrimoniais" placeholder="Bairro"> -->
-<!-- </div> -->
-<!-- <label for="excluidoBensPatrimoniais" class="col-sm-2 col-form-label">Excluído</label>
-    <div class="col-sm-3"> -->
 {!! Form::hidden('excluidoBensPatrimoniais', null, ['placeholder' => 'Excluído', 'class' => 'form-control', 'id' => 'excluidoBensPatrimoniais', 'maxlength' => '1']) !!}
-<!-- <input type="text" class="form-control" id="excluidoBensPatrimoniais" placeholder="Cidade"> -->
-<!-- </div> -->
-<!-- </div> -->
+
 
 
 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

@@ -12,7 +12,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'detail','ativotipobenspatrimoniais','excluidotipobenspatrimoniais',
+        'name', 'detail','ativotipobenspatrimoniais','excluidotipobenspatrimoniais', 
     ];
 
     public static function laratablesCustomAction($tipoBensPatrimoniaisModel)

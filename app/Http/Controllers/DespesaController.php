@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\App;
 use App\Classes\Logger;
 use Auth;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+use App\Estoque;
 
 class DespesaController extends Controller
 {
@@ -489,6 +490,14 @@ class DespesaController extends Controller
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
                 $despesa->save();
+                // if($request->inserirestoque == 'S'){
+                //     $salvaEstoque  = Estoque::create([
+                //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
+                //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                //         'ativadoestoque'        => 1,
+                //         'excluidoestoque'       => 0,
+                //     ]);
+                // }
                 $this->logCadastraDespesas($despesa);
             }
         } elseif ($compraparcelada == 'N') {
@@ -513,6 +522,14 @@ class DespesaController extends Controller
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
             $despesa->save();
+            // if($request->inserirestoque == 'S'){
+            //     $salvaEstoque  = Estoque::create([
+            //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
+            //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+            //         'ativadoestoque'        => 1,
+            //         'excluidoestoque'       => 0,
+            //     ]);
+            // }
             $this->logCadastraDespesas($despesa);
         } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
             return redirect()->route('despesas.index')
@@ -527,6 +544,16 @@ class DespesaController extends Controller
             $despesa->pago                  =  $request->get('pago')[0];
 
             $despesa->save();
+
+            // if($request->inserirestoque == 'S'){
+                
+            //     $salvaEstoque  = Estoque::create([
+            //         'codbarras'             => 'CRIA-D'.$despesa->id,
+            //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+            //         'ativadoestoque'        => 1,
+            //         'excluidoestoque'       => 0,
+            //     ]);
+            // }
             $this->logCadastraDespesas($despesa);
         }
         $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
@@ -808,6 +835,12 @@ class DespesaController extends Controller
     public function listaMateriais()
     {
         $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
+        echo json_encode($listaBensPatrimoniais);
+    }
+
+    public function listaTipoMateriais()
+    {
+        $listaBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
         echo json_encode($listaBensPatrimoniais);
     }
 

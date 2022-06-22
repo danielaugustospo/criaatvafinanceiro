@@ -117,7 +117,7 @@
       columns: [
         { field: "id", title: "ID", filterable: true, width: 30 },
         { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: 200 },
-        { field: "descricaoBensPatrimoniais", title: "Descrição", filterable: true, width: 100 },
+        { field: "qtdestoqueminimo", title: "Estoque Mínimo", filterable: true, width: 100 },
 
         {
           command: [{
