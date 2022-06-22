@@ -226,14 +226,12 @@
         contadorErros = 0;
         var ehcompra = document.querySelector('input[name=a]:checked')?.value;
 
-        var fornecedor = $('#selecionaFornecedor').val();
-        var formapagamento = $('#idFormaPagamento').val();
-        var conta = $('.conta').val();
+        fornecedor = $('.selecionaFornecedor').val();
+        formapagamento = $('.idFormaPagamento').val();
+        conta = $('.conta').val();
         precoReal = $('.precoReal').val();
-        var despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
+        despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
         texto = '';
-
-
 
         //Verifica se não o campo compra foi informado
         if ((ehcompra != "N") && (ehcompra != "S")) {
