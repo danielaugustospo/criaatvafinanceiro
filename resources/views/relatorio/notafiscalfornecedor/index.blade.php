@@ -2,7 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "api/apidespesas";
     $titulo  = "Nota Fiscal - Fornecedor";
-    $campodata = 'dataDoPagamento';
+    $campodata = 'vencimento';
     if (isset($despesas)) {
         $despesas = $despesas;
     } else {
@@ -150,7 +150,7 @@
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
+                            vencimento: { type: "date" },
                             precoReal: { type: "number" },
                         }
                     },
@@ -167,7 +167,7 @@
 
             columns: [
                 { field: "idOS", title: "OS", filterable: true, width: 20 },
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "vencimento", title: "Data", filterable: true, width: 50, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 40 },
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 30 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 30, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },

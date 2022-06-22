@@ -49,7 +49,7 @@
 <div class="form-group row">
     <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
     <div class="col-sm-4">
-        <select name="despesaCodigoDespesas" id="despesaCodigoDespesas" class="selecionaComInput col-sm-12"
+        <select name="despesaCodigoDespesas" id="despesaCodigoDespesas" class="selecionaComInput col-sm-12 despesaCodigoDespesas"
             {{ $variavelDisabledNaView }} required>
             @if (!isset($despesa))
                 <option disabled selected>Selecione...</option>
@@ -184,7 +184,7 @@
     <label for="idFormaPagamento" class="col-sm-2 col-form-label">Forma Pagamento</label>
     <div class="col-sm-4">
         <select name="idFormaPagamento" id="idFormaPagamento"
-            class="selecionaComInput form-control col-sm-12 js-example-basic-multiple" {{ $variavelDisabledNaView }}>
+            class="selecionaComInput form-control col-sm-12 idFormaPagamento" {{ $variavelDisabledNaView }}>
             @if (!isset($despesa))
                 <option disabled selected>Selecione...</option>
             @endif
