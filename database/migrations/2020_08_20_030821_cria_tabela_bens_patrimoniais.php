@@ -18,20 +18,16 @@ class CriaTabelaBensPatrimoniais extends Migration
             $table->bigincrements('id');
 
             $table->string('nomeBensPatrimoniais');
-            $table->string('descricaoBensPatrimoniais');
+            $table->string('descricaoBensPatrimoniais')->nullable();
 
 
             $table->unsignedBigInteger('idTipoBensPatrimoniais');
-            // $table->foreign('idTipoBensPatrimoniais')
-            // ->references('id')
-            // ->on('products')
-            // ->onDelete('cascade');
 
-            $table->unsignedBigInteger('qtdestoqueminimo');
-            $table->boolean('ativadobenspatrimoniais');
-            $table->boolean('excluidobenspatrimoniais');
+            $table->unsignedBigInteger('qtdestoqueminimo')->default('0');
+            $table->boolean('ativadobenspatrimoniais')->default('1');
+            $table->boolean('excluidobenspatrimoniais')->default('0');
 
-            $table->boolean('statusbenspatrimoniais');
+            $table->boolean('statusbenspatrimoniais')->default('1');
 
             $table->timestamps();
 

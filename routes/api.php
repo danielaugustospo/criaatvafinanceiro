@@ -25,6 +25,7 @@ Route::get('/apiestoque', 'EstoqueController@apiestoque')->name('apiestoque');
 Route::get('/apientrada', 'EntradasController@apientrada')->name('apientrada');
 Route::get('/apisaida', 'SaidasController@apisaida')->name('apisaida');
 Route::get('/apipedidocompra', 'PedidoCompraController@apipedidocompra')->name('apipedidocompra');
+Route::get('duplicidadeestoque', 'EstoqueController@verificaSeExisteNoEstoque')->name('duplicidadeestoque');
 
 Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('apiextratocontarelatorio');
 Route::get('/apifluxodecaixa', 'RelatorioController@apiFluxoDeCaixa')->name('apifluxodecaixa');

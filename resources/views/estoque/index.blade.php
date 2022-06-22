@@ -308,31 +308,28 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
         $(window).on('load', function() {
 
-                    var $myDiv = $('#grid');
+            var $myDiv = $('#grid');
 
-                    if ($myDiv.length === 1) {
+            if ($myDiv.length === 1) {
 
-                        var count = 0;
-                        var interval = setInterval(function() {
-                                @if (isset($despesas))
-                                    if (count >= 100) {
-                                    @else
-                                        if (count >= 800) {
-                                        @endif
-                                        clearInterval(interval);
-                                        $('.k-link')[0].click();
-                                        console.log('Ordenação Por Grupo Clicado Inicialmente');
-                                        $.LoadingOverlay("hide");
-                                        return;
-                                    }
-                                    count += 10;
-                                    $.LoadingOverlay("progress", count);
-                                }, 300);
+                var count = 0;
+                var interval = setInterval(function() {
 
-                        }
+                    if (count >= 50) {
 
-                    });
+                        clearInterval(interval);
+                        $('.k-link')[0].click();
+                        console.log('Ordenação Por Grupo Clicado Inicialmente');
+                        $.LoadingOverlay("hide");
+                        return;
+                    }
+                    count += 10;
+                    $.LoadingOverlay("progress", count);
+                }, 300);
+            }
 
-                @include('layouts/filtradata')
+        });
+
+        @include('layouts/filtradata')
     </script>
 @endsection
