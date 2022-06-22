@@ -242,21 +242,21 @@
     </div>
     <label for="datavale" style="color: red;" class="col-sm-1 col-form-label">Data Vale</label>
     <div class="col-sm-2">
-        {!! Form::date('datavale', $valorInput, ['class' => 'campo-moeda form-control', 'style' => 'color: red;', 'maxlength' => '100', 'id' => 'datavale', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('datavale', $valorInput, ['class' => 'campo-moeda form-control', 'style' => 'color: red;',  'min' => '2000-01-01', 'max' => '2099-12-31', 'id' => 'datavale', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
 <div class="form-group row" id="telaDataCompra">
     <label for="dataDaCompra" class="col-sm-2 col-form-label">Data da Compra</label>
     <div class="col-sm-3">
-        {!! Form::date('dataDaCompra', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('dataDaCompra', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
 <div class="form-group row" id="telaDataTrabalho">
     <label for="dataDoTrabalho" class="col-sm-2 col-form-label">Data do Trabalho</label>
     <div class="col-sm-3">
-        {!! Form::date('dataDoTrabalho', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('dataDoTrabalho', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
@@ -264,7 +264,7 @@
 <div class="form-group row" id="telaDataPagamento">
     <label for="vencimento" class="col-sm-2 col-form-label">Data do Pagamento (Vencimento)</label>
     <div class="col-sm-3">
-        {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo',  'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 

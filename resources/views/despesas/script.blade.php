@@ -7,7 +7,7 @@
                 $("#despesaCompra").show();
                 $("#telaCadastrarMateriais").show();
                 alteraIdComprador();
-                $("#telaFornecedor").show();
+                // $("#telaFornecedor").show();
                 $("#tabelaDespesas").show();
                 $("#telaQuantidade").show();
                 $("#telaDataCompra").show();
@@ -32,7 +32,7 @@
                 resetaIdComprador();
                 // comboDescricaoNaoComprou();
 
-                $("#telaFornecedor").show();
+                // $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 // pegaIdFuncionario();
                 $("#telaQuantidade").hide();
@@ -57,7 +57,7 @@
                 resetaIdComprador();
                 // comboDescricaoNaoComprou();
 
-                $("#telaFornecedor").show();
+                // $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
                 // $("#telaInsereEstoque").hide();
@@ -92,7 +92,7 @@
 
                 alteraIdComprador();
 
-                $("#telaFornecedor").show();
+                // $("#telaFornecedor").show();
                 $("#telaCompraParcelada").show();
                 // $("#telaInsereEstoque").show();
                 $("#telaFuncionario").hide();
@@ -162,7 +162,7 @@
             $("#divComprou").show();
             $("#telaCadastrarMateriais").show();
             alteraIdComprador();
-            $("#telaFornecedor").show();
+            // $("#telaFornecedor").show();
             $("#tabelaDespesas").show();
             $("#telaQuantidade").show();
             $("#telaDataCompra").show();
@@ -179,7 +179,7 @@
             $("#divComprou").hide();
             $("#telaCadastrarMateriais").hide();
             resetaIdComprador();
-            $("#telaFornecedor").hide();
+            // $("#telaFornecedor").hide();
             $("#tabelaDespesas").hide();
             $("#telaQuantidade").hide();
             $("#telaDataCompra").hide();
