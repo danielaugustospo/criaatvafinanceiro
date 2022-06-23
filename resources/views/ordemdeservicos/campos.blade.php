@@ -252,8 +252,9 @@ h3:after {
 
         @else
         @foreach ($receitasPorOS as $dadosreceita)
-
-        @include('ordemdeservicos/trview')
+        @if($dadosreceita->valorreceita != '0.00')
+          @include('ordemdeservicos/trview')
+        @endif
         @endforeach
 
         @endif
