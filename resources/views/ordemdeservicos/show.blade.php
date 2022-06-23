@@ -453,8 +453,8 @@
             <?php $contador =  count($receitasPorOS); ?>
             @if ($contador > 0 )
             @foreach ($receitasPorOS as $dadosreceita)
-                @if($dadosreceita->valorreceita != '0.00')
-                    @include('ordemdeservicos/trview')
+            @if($dadosreceita->valorreceita != '0.00' && $dadosreceita->valorreceita != '0,00')
+            @include('ordemdeservicos/trview')
                 @endif
             @endforeach
             @else
