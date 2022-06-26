@@ -202,6 +202,7 @@ where d.pago = 'S' ";
             r.valorreceita,	
             r.nfreceita, 
             cc.apelidoConta as 'conta',
+            cc.nomeConta,
             fpg.nomeFormaPagamento,
             os.dataCriacaoOrdemdeServico,
             r.descricaoreceita  
