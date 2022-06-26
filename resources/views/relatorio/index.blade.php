@@ -48,7 +48,7 @@
         {{-- <a href="contasaidentificar">                   <label class="text-center fontenormal row" for="">Contas a Identificar        &nbsp; </label></a> --}}
 
         <a onclick="abreModalDespesas(param = 'contaspagasporgrupo');"
-        href="#">  <label class="text-center fontenormal row" for="">Contas Pagas por Grupo      &nbsp; </label></a>
+        href="#">  <label class="text-center fontenormal row" for="">Contas Pagas Por Despesa/Grupo      &nbsp; </label></a>
 
         <a onclick="abreModalDespesas(param = 'despesasfixavariavel');"
         href="#"> <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
