@@ -69,7 +69,7 @@
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "cliente", title: "Cliente", filterable: true, width: 60 },
-                // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" }
+                { field: "nomeConta", title: "Conta", filterable: true, width: 60 }
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

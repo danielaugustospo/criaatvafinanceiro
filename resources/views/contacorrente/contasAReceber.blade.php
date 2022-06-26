@@ -69,7 +69,7 @@
                 // { field: "nomeBensPatrimoniais", title: "Bens Patrimoniais", filterable: true, width: 100 },
                 { field: "valorreceita", title: "Valor a Receber", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Subtotal: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "conta", title: "Conta", filterable: true, width: 100 },
-                // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
+                { field: "nfreceita", title: "Nota Fiscal", filterable: true, width: 100 }
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

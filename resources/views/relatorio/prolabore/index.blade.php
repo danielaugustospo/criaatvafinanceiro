@@ -2,7 +2,7 @@
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "api/apidespesas";
     $titulo  = "Pró-Labore";
-    $campodata = 'dataDoPagamento';
+    $campodata = 'vencimento';
     if (isset($despesas)) {
         $despesas = $despesas;
     } else {
@@ -151,7 +151,7 @@ dataSource.fetch().then(function() {
             schema: {
                 model: {
                     fields: {
-                        dataDoPagamento: { type: "date" },
+                        vencimento: { type: "date" },
                         precoReal: { type: "number" },
                     }
                 },
@@ -165,7 +165,7 @@ dataSource.fetch().then(function() {
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
+                            vencimento: { type: "date" },
                             nomeFuncionario: { type: "string" },
                             precoReal: { type: "number" }
                         }
@@ -178,7 +178,7 @@ dataSource.fetch().then(function() {
 
             columns: [
                 { field: "descricaoDespesa", title: "Despesa", filterable: true, width: 30 },
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 20, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "vencimento", title: "Data", filterable: true, width: 20, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "precoReal", title: "Valor", filterable: true, width: 20, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "pago", title: "Pago", filterable: true, width: 10 },
                 { field: "nomeFuncionario", title: "Funcionário", filterable: true, width: 20 }            

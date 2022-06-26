@@ -1,7 +1,7 @@
 <?php 
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "api/apidespesas";
-    $titulo  = "Contas Pagas por Grupo";
+    $titulo  = "CONTAS PAGAS POR DESPESA/GRUPO";
     $campodata = 'vencimento';
     if (isset($despesas)) {
         $despesas = $despesas;
@@ -152,12 +152,12 @@
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
+                            vencimento: { type: "date" },
                             precoReal: { type: "number" },
                         }
                     },
                 },
-                group: [{field: "grupoDespesa"}],
+                group: [{field: "despesaCodigoDespesa"}],
                 aggregate: [{ field: "precoReal", aggregate: "sum" }]
             },
 
@@ -169,6 +169,7 @@
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 70 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "apelidoConta", title: "Conta", filterable: true, width: 60 },            
+                { field: "despesaCodigoDespesa", title: "Cód Despesa", filterable: true, width: 60 },            
                 { field: "grupoDespesa", title: "Grupo", filterable: true, width: 60 }            
                 ],
                 @include('layouts/helpersview/finaltabela')

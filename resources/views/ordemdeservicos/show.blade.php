@@ -201,105 +201,104 @@
 
 
 @section('content')
-<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
-<style>
-    .shadowDiv {
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
-    }
-</style>
-<div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="row pull-left">
-            <h2> Dados da OS: </h2>
-            <h1 class="ml-2" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }}</h1>
-        </div>
-
-        <div class="pull-right">
-            <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
-
-            @can('ordemdeservico-edit')
-            <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit',$ordemdeservico->id) }}">Editar</a>
-            @endcan
-
-
-            <hr />
-            <br>
-
-            <!-- <form action="{{ route('ordemdeservicos.destroy',$ordemdeservico->id) }}" method="POST">
-                @can('ordemdeservico-edit')
-                <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit',$ordemdeservico->id) }}">Editar</a>
-                @endcan
-
-                @csrf
-                @method('DELETE')
-                @can('ordemdeservico-delete')
-                <button type="submit" class="btn btn-danger">Excluir</button>
-                @endcan
-            </form> -->
-
-        </div>
-    </div>
-</div>
-
-
-
-<script>
-    $(document).ready(function () {
-        sum();
-        $("#num1, #num2").on("keydown keyup", function () {
-            sum();
-        });
-    });
-
-    function formatarValor(valor) {
-        return valor.toLocaleString('pt-BR', {
-            minimumFractionDigits: 2
-        });
-    }
-
-    function sum() {
-
-        var num1 = document.getElementById('num1').value;
-        var num2 = document.getElementById('num2').value;
-        var num3 = document.getElementById('num3').value;
-        var result = (parseFloat(num1) * 100 + parseFloat(num2) * 100) / 100;
-        var result1 = (((parseFloat(num2) * 100 - parseFloat(num1) * 100) / 100) * -1);
-
-
-        var receita = (formatarValor(parseFloat(num3)));
-        var despesa = (formatarValor(parseFloat(num2)));
-        var lucro = (formatarValor(result1));
-        if (!isNaN(result)) {
-            document.getElementById('subt').value = lucro;
-            document.getElementById('despesa').value = despesa;
-            document.getElementById('receita').value = receita;
-
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <style>
+        .shadowDiv {
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
         }
-    }
-</script>
+    </style>
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="row pull-left">
+                <h2 class="ml-2"> Dados da OS: </h2>
+                <h1 class="ml-2" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }} - {{ $ordemdeservico->eventoOrdemdeServico }}</h1>
+            </div>
 
-<div class="d-flex justify-content-center">
-    <?php $contadorReceitas =  count($receitasPorOS); 
-    $readonlyOrNo = "readonly";
-    $disabledOrNo = "disabled";
-    ?>
+            <div class="pull-right">
+                <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
+
+                @can('ordemdeservico-edit')
+                    <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit', $ordemdeservico->id) }}">Editar</a>
+                @endcan
 
 
-    @if (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas == 0))
-    <div class="alert alert-danger col-sm-12" role="alert">
-        Não há receitas para esta OS!
+                <hr />
+                <br>
+
+                <!-- <form action="{{ route('ordemdeservicos.destroy', $ordemdeservico->id) }}" method="POST">
+                    @can('ordemdeservico-edit')
+        <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit', $ordemdeservico->id) }}">Editar</a>
+    @endcan
+
+                    @csrf
+                    @method('DELETE')
+                    @can('ordemdeservico-delete')
+        <button type="submit" class="btn btn-danger">Excluir</button>
+    @endcan
+                </form> -->
+
+            </div>
+        </div>
     </div>
-    @elseif (($porcentagemReceitaAPagar == 0.00) && ($contadorReceitas > 0))
-    <h3 class="" style="color:blue;">100% PAGA</h3>
-    @else
-    <h3 style="color:red;"> {{$porcentagemReceitaAPagar}} % A receber </h3>
-    @endif
-</div>
 
-<h3 class="text-center">Resumo Financeiro</h3>
 
-{{-- <div class="shadow-lg p-3 mb-5 bg-white rounded" style="background-color: lightslategray; color:white;"> --}}
+
+    <script>
+        $(document).ready(function() {
+            sum();
+            $("#num1, #num2").on("keydown keyup", function() {
+                sum();
+            });
+        });
+
+        function formatarValor(valor) {
+            return valor.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2
+            });
+        }
+
+        function sum() {
+
+            var num1 = document.getElementById('num1').value;
+            var num2 = document.getElementById('num2').value;
+            var num3 = document.getElementById('num3').value;
+            var result = (parseFloat(num1) * 100 + parseFloat(num2) * 100) / 100;
+            var result1 = (((parseFloat(num2) * 100 - parseFloat(num1) * 100) / 100) * -1);
+
+
+            var receita = (formatarValor(parseFloat(num3)));
+            var despesa = (formatarValor(parseFloat(num2)));
+            var lucro = (formatarValor(result1));
+            if (!isNaN(result)) {
+                document.getElementById('subt').value = lucro;
+                document.getElementById('despesa').value = despesa;
+                document.getElementById('receita').value = receita;
+
+            }
+        }
+    </script>
+
+    <div class="d-flex justify-content-center">
+        <?php $contadorReceitas = count($receitasPorOS);
+        $readonlyOrNo = 'readonly';
+        $disabledOrNo = 'disabled';
+        ?>
+
+
+        @if ($porcentagemReceitaAPagar == 0.0 && $contadorReceitas == 0)
+            <div class="alert alert-danger col-sm-12" role="alert">
+                Não há receitas para esta OS!
+            </div>
+        @elseif ($porcentagemReceitaAPagar == 0.0 && $contadorReceitas > 0)
+            <h3 class="" style="color:blue;">100% PAGA</h3>
+        @else
+            <h3 style="color:red;"> {{ $porcentagemReceitaAPagar }} % A receber </h3>
+        @endif
+    </div>
+
+    <h3 class="text-center">Resumo Financeiro</h3>
+
     <div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center"
         style="background-color: black !important; color:white;">
 
@@ -313,23 +312,24 @@
                     <div class="row ml-0">
                         <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">Receita</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
-                            value="{{$totalreceitas}}" readonly />
+                            value="{{ $totalreceitas }}" readonly />
                         <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceita }}
                             %</label>
                     </div>
 
                     <div class="row ml-0">
-                        <label class="btn badge-danger col-sm-4 mr-2"
-                            style="background-color:#FA8E3B; cursor: unset;">Desp. Paga</label>
+                        <label class="btn badge-danger col-sm-4 mr-2" style="background-color:#FA8E3B; cursor: unset;">Desp.
+                            Paga</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
-                            value="{{$totaldespesasPagas}}" readonly />
-                        <label class="btn badge-danger col-sm-3" style="background-color:#FA8E3B; cursor: unset;">{{
-                            $porcentagemDespesaPagas }} %</label>
+                            value="{{ $totaldespesasPagas }}" readonly />
+                        <label class="btn badge-danger col-sm-3"
+                            style="background-color:#FA8E3B; cursor: unset;">{{ $porcentagemDespesaPagas }}
+                            %</label>
                     </div>
                     <div class="row ml-0">
                         <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Desp. A Pagar</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
-                            value="{{$totaldespesasAPagar}}" readonly />
+                            value="{{ $totaldespesasAPagar }}" readonly />
                         <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesaAPagar }}
                             %</label>
                     </div>
@@ -343,7 +343,7 @@
                     <div class="row ml-0">
                         <label class="btn badge-primary col-sm-4 mr-2" style="cursor: unset;">A Receber</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
-                            value="{{$totalreceitasAPagar}}" readonly />
+                            value="{{ $totalreceitasAPagar }}" readonly />
                         <label class="btn badge-primary col-sm-3" style="cursor: unset;">{{ $porcentagemReceitaAPagar }}
                             %</label>
                     </div>
@@ -351,7 +351,7 @@
                     <div class="row ml-0">
                         <label class="btn badge-danger col-sm-4 mr-2" style="cursor: unset;">Total. Desp</label>
                         <input class="form-control col-sm-4 mr-2" style="text-align:center;" type="text"
-                            value="{{$totaldespesas}}" readonly />
+                            value="{{ $totaldespesas }}" readonly />
                         <label class="btn badge-danger col-sm-3" style="cursor: unset;">{{ $porcentagemDespesa }}
                             %</label>
                     </div>
@@ -366,26 +366,17 @@
             </div>
 
     </div>
-    {{--
-</div> --}}
 
-<div class="shadowDiv p-3 mb-5 bg-white rounded pt-2 text-lg-center"
-    style="background-color: white !important; color:black;">
+    <div class="shadowDiv p-3 mb-5 bg-white rounded pt-2 text-lg-center"
+        style="background-color: white !important; color:black;">
 
-    {{-- <div class="form-group row"> --}}
-        {{-- <label for="nomeFormaPagamento" class="col-sm-2 col-form-label">Forma de Pagamento</label>
-        <div class="col-sm-4">
-            @foreach($formapagamento as $pg)
-            <label class="form-control">{{ $pg->nomeFormaPagamento }}</label>
-            @endforeach
 
-        </div> --}}
         <div class="form-group row mb-0">
             <label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
             <div class="col-sm-6">
                 <label class="form-control">
                     @foreach ($cliente as $listaCliente)
-                    {{ $listaCliente->razaosocialCliente }}
+                        {{ $listaCliente->razaosocialCliente }}
                     @endforeach
                 </label>
 
@@ -435,7 +426,9 @@
                 {{-- <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas" readonly
                     style="cursor:pointer;"> --}}
 
-                <th class="col-sm-2" style="width:20%;"><nobr>Forma Pagamento</nobr></th>
+                <th class="col-sm-2" style="width:20%;">
+                    <nobr>Forma Pagamento</nobr>
+                </th>
                 <th class="col-sm-1" style="width:-webkit-fill-available;">
                     <nobr>Valor Parcela</nobr>
                 </th>
@@ -450,17 +443,17 @@
             </tr>
         </thead>
         <tbody id="habilita_receita" class="habilita_receita">
-            <?php $contador =  count($receitasPorOS); ?>
-            @if ($contador > 0 )
-            @foreach ($receitasPorOS as $dadosreceita)
-            @if($dadosreceita->valorreceita != '0.00' && $dadosreceita->valorreceita != '0,00')
-            @include('ordemdeservicos/trview')
-                @endif
-            @endforeach
+            <?php $contador = count($receitasPorOS); ?>
+            @if ($contador > 0)
+                @foreach ($receitasPorOS as $dadosreceita)
+                    @if ($dadosreceita->valorreceita != '0.00' && $dadosreceita->valorreceita != '0,00')
+                        @include('ordemdeservicos/trview')
+                    @endif
+                @endforeach
             @else
-            <div class="alert alert-danger" role="alert">
-                Não há receitas para esta OS!
-            </div>
+                <div class="alert alert-danger" role="alert">
+                    Não há receitas para esta OS!
+                </div>
             @endif
 
         </tbody>
@@ -705,15 +698,14 @@
         </tr>
         @endforeach
 
-    </table>
-    --}}
+    </table> --}}
 
 
 
     <script>
         function createFilter(table, columns) {
 
-            $.fn.dataTable.ext.search.push(function (
+            $.fn.dataTable.ext.search.push(function(
                 settings,
                 searchData,
                 index,
@@ -734,7 +726,7 @@
             return input;
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
 
             $("#tabelaPercentualPorOS").DataTable({
@@ -760,4 +752,4 @@
 
 
 
-    @endsection
+@endsection
