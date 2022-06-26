@@ -2,7 +2,7 @@
 $intervaloCelulas = "A1:F1"; 
 $rotaapi = "api/apidespesas";
 $titulo  = "Reembolso";
-$campodata = 'dataDoPagamento';
+$campodata = 'vencimento';
 if (isset($despesas)) {
     $despesas = $despesas;
 } else {
@@ -151,7 +151,7 @@ dataSource.fetch().then(function() {
                 schema: {
                     model: {
                         fields: {
-                            dataDoPagamento: { type: "date" },
+                            vencimento: { type: "date" },
                             razaosocialFornecedor: { type: "string" },
                             precoReal: { type: "number" }
                         }
@@ -163,7 +163,7 @@ dataSource.fetch().then(function() {
             },
 
             columns: [
-                { field: "dataDoPagamento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "despesa", title: "Descrição", filterable: true, width: 90 },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 90 },
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 70 },
