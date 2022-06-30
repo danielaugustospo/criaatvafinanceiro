@@ -95,7 +95,7 @@
             </td>
             <td data-th="VENCIMENTO">
                 {!! Form::date('vencimentoTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control', 'min' => '2000-01-01', 'max' => '2099-12-31', $variavelReadOnlyNaView]) !!}
+                'form-control vencimentoTabela', 'min' => '2000-01-01', 'max' => '2099-12-31', $variavelReadOnlyNaView]) !!}
             </td>
             <td>
                 <select name="pagoTabela[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
