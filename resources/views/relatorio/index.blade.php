@@ -27,7 +27,7 @@
 <div class="row  justify-content-center">
     <div class="divCategoria col-sm-5">
         <h4 class="text-center">Receitas</h4>
-        <a href="areceberporcliente">           <label class="text-center fontenormal row" for="">A Receber por Cliente/Data  &nbsp;    </label></a>
+        {{-- <a href="areceberporcliente">           <label class="text-center fontenormal row" for="">A Receber por Cliente/Data  &nbsp;    </label></a> --}}
         <!-- <a href="areceberporos">                <label class="text-center fontenormal row" for="">A Receber por OS &nbsp; </label></a> -->
         <a href="contasAReceber">               <label class="text-center fontenormal row" for="">Contas a Receber &nbsp;</label></a>
         <a href="entradasdereceitasrecebidas">  <label class="text-center fontenormal row" for="">Entradas de Receitas Recebidas  &nbsp;</label></a>    
