@@ -249,14 +249,14 @@
 <div class="form-group row" id="telaDataCompra">
     <label for="dataDaCompra" class="col-sm-2 col-form-label">Data da Compra</label>
     <div class="col-sm-3">
-        {!! Form::date('dataDaCompra', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('dataDaCompra', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', 'id' => 'dataDaCompra', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
 <div class="form-group row" id="telaDataTrabalho">
     <label for="dataDoTrabalho" class="col-sm-2 col-form-label">Data do Trabalho</label>
     <div class="col-sm-3">
-        {!! Form::date('dataDoTrabalho', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('dataDoTrabalho', $valorInput, ['placeholder' => 'Preencha este campo', 'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', 'id' => 'dataDoTrabalho', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
@@ -264,7 +264,7 @@
 <div class="form-group row" id="telaDataPagamento">
     <label for="vencimento" class="col-sm-2 col-form-label">Data do Pagamento (Vencimento)</label>
     <div class="col-sm-3">
-        {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo',  'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', $variavelReadOnlyNaView]) !!}
+        {!! Form::date('vencimento', $valorInput, ['placeholder' => 'Preencha este campo',  'min' => '2000-01-01', 'max' => '2099-12-31', 'class' => 'form-control', 'id' => 'vencimento', $variavelReadOnlyNaView]) !!}
     </div>
 </div>
 
