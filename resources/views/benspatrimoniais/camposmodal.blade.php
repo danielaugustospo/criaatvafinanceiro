@@ -8,6 +8,7 @@
 
 
 {!! Form::open(['route' => 'cadastromateriais', 'method' => 'POST']) !!}
+{!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
 
 <div class="form-group row">
     <label for="nomeBensPatrimoniais" class="col-sm-2 col-form-label">Descrição do Material </label>

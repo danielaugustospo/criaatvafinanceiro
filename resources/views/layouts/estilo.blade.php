@@ -14,6 +14,7 @@
     }
     .fontenormal {
         text-transform: initial;
+        font-size: 12pt;
     }
 
 /*Início estilo PDF Kendo Grid */

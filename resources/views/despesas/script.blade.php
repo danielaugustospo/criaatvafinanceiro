@@ -7,14 +7,15 @@
                 $("#despesaCompra").show();
                 $("#telaCadastrarMateriais").show();
                 alteraIdComprador();
-                // $("#telaFornecedor").show();
-                $("#tabelaDespesas").show();
+                $("#telaFornecedor").show();
                 $("#telaQuantidade").show();
                 $("#telaDataCompra").show();
                 $("#telaCompraParcelada").show();
                 // $("#telaInsereEstoque").show();
                 // pegaIdFornecedor();
+                document.getElementById("dataDoTrabalho").value = "";
 
+                
 
                 $("#telaFuncionario").hide();
                 $("#despesaNaoCompra").hide();
@@ -32,7 +33,7 @@
                 resetaIdComprador();
                 // comboDescricaoNaoComprou();
 
-                // $("#telaFornecedor").show();
+                $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 // pegaIdFuncionario();
                 $("#telaQuantidade").hide();
@@ -57,7 +58,7 @@
                 resetaIdComprador();
                 // comboDescricaoNaoComprou();
 
-                // $("#telaFornecedor").show();
+                $("#telaFornecedor").show();
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
                 // $("#telaInsereEstoque").hide();
@@ -81,6 +82,8 @@
                 $('#naocomprou').prop('checked', true);
                 $('#naoparcelada').prop('checked', true);
                 $("#despesaCompra").hide();
+                document.getElementById("dataDaCompra").value = "";
+
 
             } else {
                 $("#divComprou").show();
@@ -92,7 +95,7 @@
 
                 alteraIdComprador();
 
-                // $("#telaFornecedor").show();
+                $("#telaFornecedor").show();
                 $("#telaCompraParcelada").show();
                 // $("#telaInsereEstoque").show();
                 $("#telaFuncionario").hide();
@@ -116,6 +119,8 @@
                 $("#telaDataPagamento").hide();
                 $("#telaNF").hide();
                 $("#telaPago").show();
+                document.getElementById("vencimento").value = "";
+
 
             } else {
                 $("#tabelaDespesas").hide();
@@ -162,7 +167,7 @@
             $("#divComprou").show();
             $("#telaCadastrarMateriais").show();
             alteraIdComprador();
-            // $("#telaFornecedor").show();
+            $("#telaFornecedor").show();
             $("#tabelaDespesas").show();
             $("#telaQuantidade").show();
             $("#telaDataCompra").show();
@@ -179,7 +184,7 @@
             $("#divComprou").hide();
             $("#telaCadastrarMateriais").hide();
             resetaIdComprador();
-            // $("#telaFornecedor").hide();
+            $("#telaFornecedor").hide();
             $("#tabelaDespesas").hide();
             $("#telaQuantidade").hide();
             $("#telaDataCompra").hide();
@@ -194,6 +199,7 @@
 
 
         }
+
 
         @if (Request::path() == 'despesas/create' || Request::path() == 'despesas/' . $despesa->id . '/edit')
 
@@ -222,8 +228,26 @@
         return total;
     }
 
+
+    function alertaErros(texto, contadorErros) {
+        if (contadorErros > 0) {
+
+        var span = document.createElement("span");
+        span.innerHTML = texto;
+
+        Swal.fire({
+            icon: 'error',
+            html: span,
+            title: 'Validações Necessárias',
+            footer: 'Restam  ' + contadorErros + ' pendentes.'
+        })
+    }
+        return contadorErros;
+    }
+
     function validaFormulario() {
         contadorErros = 0;
+        contadorDatasDiferentesAnoAtual = 0;
         var ehcompra = document.querySelector('input[name=a]:checked')?.value;
 
         fornecedor = $('.selecionaFornecedor').val();
@@ -232,6 +256,27 @@
         precoReal = $('.precoReal').val();
         despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
         texto = '';
+        textoData = '';
+
+
+
+        /* ------------------------------------------
+
+        VERIFICAÇÃO DE DATA - EM ANDAMENTO - 26/06/2022
+
+        ----------------------------------------------*/
+        vencimento          = document.getElementsByName("vencimento")[0].value;
+        datavale            = document.getElementsByName("datavale")[0].value;
+        dataDaCompra        = document.getElementsByName("dataDaCompra")[0].value;
+        dataDoTrabalho      = document.getElementsByName("dataDoTrabalho")[0].value;
+
+        anovencimento       = new Date(vencimento).getFullYear();
+        anodatavale         = new Date(datavale).getFullYear();
+        anodataDaCompra     = new Date(dataDaCompra).getFullYear();
+        anodataDoTrabalho   = new Date(dataDoTrabalho).getFullYear();
+
+        const dataAtual     = new Date();
+        const anoAtual      = dataAtual.getFullYear();
 
         //Verifica se não o campo compra foi informado
         if ((ehcompra != "N") && (ehcompra != "S")) {
@@ -239,6 +284,61 @@
                 '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é compra ou não</label></br>';
             contadorErros++;
         }
+
+        if (anovencimento < 2000 || anovencimento > 2099) {
+            texto = texto +
+                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
+                anovencimento + ')</label></br>';
+            contadorErros++;
+        } else if (anovencimento > 2000 && anovencimento < 2099 && anovencimento != anoAtual) {
+            textoData = textoData +
+                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data de Vencimento com ano ' +
+                anovencimento + '</label></br>';
+            contadorDatasDiferentesAnoAtual++;
+        }
+        if (anodatavale < 2000 || anodatavale > 2099) {
+            texto = texto +
+                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Vale Inválida (ano ' +
+                anodatavale + ')</label></br>';
+            contadorErros++;
+        } else if (anodatavale > 2000 && anodatavale < 2099 && anodatavale != anoAtual) {
+            textoData = textoData +
+                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Vale com ano ' +
+                anodatavale + '</label></br>';
+            contadorDatasDiferentesAnoAtual++;
+        }
+
+        if (anodataDaCompra < 2000 || anodataDaCompra > 2099) {
+            texto = texto +
+                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data da Compra Inválida  (ano ' +
+                anodataDaCompra + ')</label></br>';
+            contadorErros++;
+        } else if (anodataDaCompra > 2000 && anodataDaCompra < 2099 && anodataDaCompra != anoAtual) {
+            textoData = textoData +
+                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data da Compra com ano ' +
+                anodataDaCompra + '</label></br>';
+            contadorDatasDiferentesAnoAtual++;
+        }
+        
+        if (anodataDoTrabalho < 2000 || anodataDoTrabalho > 2099) {
+            texto = texto +
+                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Trabalho Inválida  (ano ' +
+                anodataDoTrabalho + ')</label></br>';
+            contadorErros++;
+        } else if (anodataDoTrabalho > 2000 && anodataDoTrabalho < 2099 && anodataDoTrabalho != anoAtual) {
+            textoData = textoData +
+                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Trabalho com ano ' +
+                anodataDoTrabalho + '</label></br>';
+            contadorDatasDiferentesAnoAtual++;
+        }
+        resultadoFormulario = validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual);
+
+        return resultadoFormulario;
+    }
+
+
+    function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa,
+        ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual) {
         if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
             texto = texto +
                 '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>';
@@ -276,7 +376,8 @@
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>';
                 contadorErros++;
             }
-            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && compraparcelada != 'S') {
+            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) &&
+                compraparcelada != 'S') {
                 texto = texto +
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
                 contadorErros++;
@@ -286,7 +387,8 @@
                     '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
                 contadorErros++;
             } else if (compraparcelada == 'N') {
-                if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
+                if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal ==
+                        undefined)) {
                     texto = texto +
                         '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
                     contadorErros++;
@@ -301,6 +403,7 @@
                 var table = document.getElementById('tabelalistadespesa');
                 var descricaoTabela = table.getElementsByClassName('descricaoTabela');
                 var valorparcelaTabela = table.getElementsByClassName('valorparcelaTabela');
+                var vencimentoTabela = table.getElementsByClassName('vencimentoTabela');
 
                 for (var i = 0; i < descricaoTabela.length; i++) {
                     data.push(descricaoTabela[i].value);
@@ -314,12 +417,36 @@
 
                 for (var i = 0; i < valorparcelaTabela.length; i++) {
                     data.push(valorparcelaTabela[i].value);
-                    if ((valorparcelaTabela[i].value == '') || (valorparcelaTabela[i].value == ' ') || (valorparcelaTabela[i].value == null) || (valorparcelaTabela[i].value == undefined)) {
-                        
+                    if ((valorparcelaTabela[i].value == '') || (valorparcelaTabela[i].value ==
+                            ' ') || (
+                            valorparcelaTabela[i].value == null) || (valorparcelaTabela[i].value ==
+                            undefined)) {
+
                         texto = texto +
                             '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
                             sum([i, 1]) + '</label></br>';
                         contadorErros++;
+                    }
+                }
+
+                for (var i = 0; i < vencimentoTabela.length; i++) {
+                    data.push(vencimentoTabela[i].value);
+                    vencimento = vencimentoTabela[i].value;
+                    vencimento = parseInt(vencimento.slice(0, 4));
+                
+                    if ((vencimento < 2000) || (vencimento > 2099)) {
+
+                        texto = texto +
+                            '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
+                            vencimento + ') na linha ' +
+                            sum([i, 1]) + '</label></br>';
+                        contadorErros++;
+                    } else if ((vencimento > 2000)  && (vencimento < 2099) && (vencimento != anoAtual)) {
+
+                        textoData = textoData +
+                            '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data de Vencimento com ano ' +
+                            vencimento + ' na linha ' + sum([i, 1]) + '</label></br>';
+                        contadorDatasDiferentesAnoAtual++;
                     }
                 }
 
@@ -330,7 +457,8 @@
 
             var descricaoDespesaCompra = $('.descricaoDespesa').val();
             var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
-            if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
+            if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal ==
+                    undefined)) {
                 texto = texto +
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
                 contadorErros++;
@@ -344,20 +472,32 @@
 
         }
 
-        if (contadorErros > 0) {
-            var span = document.createElement("span");
-            span.innerHTML = texto;
-
+        if (contadorDatasDiferentesAnoAtual > 0) {
+            var areaInformeData = document.createElement("span");
+            areaInformeData.innerHTML = textoData;
             Swal.fire({
-                icon: 'error',
-                html: span,
-                title: 'Validações Necessárias',
-                footer: 'Restam  ' + contadorErros + ' pendentes.'
+                title: 'Data informada diferente do ano atual. Confirmar?',
+                html: areaInformeData,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, confirmo',
+                cancelButtonText: 'Não, irei alterar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                        alertaErros(texto, contadorErros)
+                }
+
             })
+        } else {
+            if (contadorErros > 0) {
+                alertaErros(texto, contadorErros);
+            }
         }
+
         return contadorErros;
     }
-
 
     function pegaIdFornecedor() {
         $('#selecionaFornecedor').val();
