@@ -1,5 +1,5 @@
 <?php
-$intervaloCelulas = 'A1:H1';
+$intervaloCelulas = 'A1:K1';
 $rotaapi = 'api/apidespesas';
 $titulo = 'Despesas';
 $campodata = 'vencimento';
@@ -127,9 +127,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     avoidLinks: true,
                     paperSize: "A4",
                     margin: {
-                        top: "3.5cm",
-                        left: "1cm",
-                        right: "1cm",
+                        top: "2.5cm",
+                        left: "0.1cm",
+                        right: "0.1cm",
                         bottom: "0.5cm"
                     },
 
@@ -141,7 +141,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                     repeatHeaders: false,
                     template: $("#page-template").html(),
-                    scale: 0.8
+                    scale: 0.48
                 },
                 filterable: {
                     extra: false,
@@ -157,7 +157,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 width: 'auto',
                 pageable: {
                     pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                    numeric: false
+                    numeric: false,
+
                 },
 
                 dataSource: {
@@ -237,25 +238,25 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        autowidth: true
+                        width: 170,
                     },
                     {
                         field: "apelidoConta",
                         title: "C/C",
                         filterable: true,
-                        autowidth: true
+                        width: 170,
                     },
                     {
                         field: "despesaCodigoDespesa",
                         title: "Cód.<br>Despesa",
                         filterable: true,
-                        autowidth: true
+                        width: 200,
                     },
                     {
                         field: "idOS",
                         title: "OS",
                         filterable: true,
-                        width: 90
+                        width: 150
                     },
                     {
                         field: "descricaoDespesa",
@@ -267,7 +268,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "razaosocialFornecedor",
                         title: "Fornecedor",
                         filterable: true,
-                        autowidth: true,
+                        width: 200,
                         aggregates: ["count"],
                         footerTemplate: "QTD. Total: #=count#",
                         groupHeaderColumnTemplate: "Qtd.: #=count#"
@@ -276,7 +277,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "vencimento",
                         title: "Venc.",
                         filterable: true,
-                        width: 200,
+                        width: 180,
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -288,7 +289,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "precoReal",
                         title: "Valor",
                         filterable: true,
-                        autowidth: true,
+                        width: 180,
                         decimals: 2,
                         aggregates: ["sum"],
                         groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
@@ -299,23 +300,24 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "notaFiscal",
                         title: "NF",
                         filterable: true,
-                        autowidth: true
+                        width: 180,
                     },
                     {
                         field: "pago",
                         title: "Pago",
                         filterable: true,
-                        width: 90
+                        width: 100
                     },
 
-                    // { field: "vale", title: "Vale", filterable: true, autowidth: true, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                    // { field: "despesareal", title: "Valor<br>Final", filterable: true, autowidth: true, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                    // { field: "datavale", title: "PG<br>Vale", filterable: true, autowidth: true, format: "{0:dd/MM/yyyy}" },
+                    // { field: "vale", title: "Vale", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                    // { field: "despesareal", title: "Valor<br>Final", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                    // { field: "datavale", title: "PG<br>Vale", filterable: true, width: 200, format: "{0:dd/MM/yyyy}" },
 
 
                     {
                         command: [{
-                            name: "Visualizar",
+                            name: "Ver",
+                            iconClass:"k-icon k-i-eye",
                             click: function(e) {
                                 e.preventDefault();
                                 var tr = $(e.target).closest(
@@ -325,12 +327,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                     data.id;
                             }
                         }],
-                        width: 130,
+                        width: 90,
                         exportable: false,
                     },
                     {
                         command: [{
                             name: "Editar",
+                            iconClass:"k-icon k-i-pencil",
                             click: function(e) {
                                 e.preventDefault();
                                 var tr = $(e.target).closest(
@@ -340,7 +343,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                     data.id + '/edit';
                             }
                         }],
-                        autowidth: true,
+                        width: 90,
                         exportable: false,
                     },
                 ],
