@@ -164,7 +164,7 @@ dataSource.fetch().then(function() {
 
             columns: [
                 { field: "vencimento", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "despesa", title: "Descrição", filterable: true, width: 90 },
+                { field: "descricaoDespesa", title: "Descrição", filterable: true, width: 90 },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 90 },
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 70 },
                 { field: "idOS", title: "N° da OS", filterable: true, width: 60 },
