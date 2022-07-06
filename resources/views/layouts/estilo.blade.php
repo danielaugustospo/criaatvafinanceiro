@@ -20,7 +20,13 @@
 /*Início estilo PDF Kendo Grid */
     .k-grid td, .k-input, .k-item {
             font-family: "DejaVu Sans", "Arial", sans-serif;
-            font-size: 7pt;
+            font-size: 8pt;
+        }
+    .k-header {
+            font-size: 8pt;
+        }
+    .k-input{
+            color: red !important;
         }
     .k-datepicker{
         height: 30%;

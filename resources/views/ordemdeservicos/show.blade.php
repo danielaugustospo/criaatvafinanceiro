@@ -387,7 +387,7 @@
         <div class="form-group row mb-0">
             <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
             <div class="col-sm-6">
-                <label class="col-sm-4 form-control">{{ $ordemdeservico->created_at->format('d/m/Y') }}</label>
+                <label class="col-sm-4 form-control">{{ date("d/m/Y", strtotime($ordemdeservico->dataCriacaoOrdemdeServico)) }}</label>
             </div>
 
             <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
