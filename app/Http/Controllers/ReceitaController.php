@@ -36,14 +36,12 @@ class ReceitaController extends Controller
             $this->valorSemCadastro = "0";
             $this->variavelReadOnlyNaView = "";
             $this->variavelDisabledNaView = "";
-        } 
-        elseif ($this->acao == 'edit') {
+        } elseif ($this->acao == 'edit') {
             $this->variavelReadOnlyNaView = "";
             $this->variavelDisabledNaView = "";
             $this->valorInput = null;
             $this->valorSemCadastro = null;
-        } 
-        elseif ($this->acao != 'edit' && $this->acao != 'create') {
+        } elseif ($this->acao != 'edit' && $this->acao != 'create') {
             $this->variavelReadOnlyNaView = "readonly";
             $this->variavelDisabledNaView = 'disabled';
             $this->valorInput = null;
@@ -59,7 +57,7 @@ class ReceitaController extends Controller
     // {
 
     //     $consulta = $this->consultaIndexReceita();
-        
+
     //     if ($request->ajax()) {
 
     //         return Datatables::of($consulta)
@@ -82,7 +80,7 @@ class ReceitaController extends Controller
     //     }
     // }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -96,13 +94,12 @@ class ReceitaController extends Controller
             $this->show($idreceita);
 
             $receita = Receita::where('id', $idreceita)->where('excluidoreceita', 0)->get();
-            if(count($receita) == 1){
+            if (count($receita) == 1) {
                 header("Location: receita/$idreceita");
                 exit();
-            }
-            else{
+            } else {
                 return redirect()->route('receita.index')
-                        ->with('warning', 'Receita '. $idreceita .' é um dado excluído, ou uma receita inexistente, não podendo ser acessado');
+                    ->with('warning', 'Receita ' . $idreceita . ' é um dado excluído, ou uma receita inexistente, não podendo ser acessado');
             }
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
@@ -125,7 +122,7 @@ class ReceitaController extends Controller
         return view($rota, compact('consulta', 'receita', 'valorreceita', 'dtinicio', 'dtfim', 'ordemservico', 'contareceita', 'nfreceita', 'cliente',  'pagoreceita'));
     }
 
-    
+
     public function apireceita(Request $request)
     {
         // TODO: Montar filtro genérico de receita
@@ -152,7 +149,11 @@ class ReceitaController extends Controller
         cc.apelidoConta,
         os.eventoOrdemdeServico,
         fpg.nomeFormaPagamento, 
-        cli.razaosocialCliente
+
+        (CASE 
+        	WHEN (cli.razaosocialCliente IS NULL) THEN "CRIAATVA"
+        	ELSE cli.razaosocialCliente
+        END) AS razaosocialCliente 
         
         
         FROM receita r
@@ -166,7 +167,6 @@ class ReceitaController extends Controller
         WHERE r.excluidoreceita = 0 ' . $descricao);
 
         return $listaReceita;
-
     }
 
     private function montaFiltrosConsulta($request)
@@ -262,68 +262,70 @@ class ReceitaController extends Controller
         return $rotaRetorno;
     }
 
-    public function tabelaReceitas(Request $request){
+    public function tabelaReceitas(Request $request)
+    {
 
         $consulta = $this->consultaIndexReceita();
 
         return Datatables::of($consulta)
-        ->filter(function ($query) use ($request) {
+            ->filter(function ($query) use ($request) {
 
 
-            if (($request->has('id')) && ($request->id != NULL)) {
-                $query->where('receita.id', '=', "{$request->get('id')}");
-            }
-            if (($request->has('valorreceita')) && ($request->valorreceita != NULL)) {
-                $query->where('valorreceita', '=', "{$request->get('valorreceita')}");
-            }
-            if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
-                $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
-            }
+                if (($request->has('id')) && ($request->id != NULL)) {
+                    $query->where('receita.id', '=', "{$request->get('id')}");
+                }
+                if (($request->has('valorreceita')) && ($request->valorreceita != NULL)) {
+                    $query->where('valorreceita', '=', "{$request->get('valorreceita')}");
+                }
+                if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
+                    $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
+                }
 
-            if (($request->has('contareceita')) && ($request->contareceita != NULL)) {
-                $query->where('contareceita', '=', "{$request->get('contareceita')}");
-            }
-            if (($request->has('idosreceita')) && ($request->idosreceita != NULL)) {
-                $query->where('idosreceita', '=', "{$request->get('idosreceita')}");
-            }
-            if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
-                $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
-            }
-        })
-        ->addIndexColumn()
-        ->addColumn('action', function($consulta) {
+                if (($request->has('contareceita')) && ($request->contareceita != NULL)) {
+                    $query->where('contareceita', '=', "{$request->get('contareceita')}");
+                }
+                if (($request->has('idosreceita')) && ($request->idosreceita != NULL)) {
+                    $query->where('idosreceita', '=', "{$request->get('idosreceita')}");
+                }
+                if (($request->has('datapagamentoreceita')) && ($request->datapagamentoreceita != NULL)) {
+                    $query->where('datapagamentoreceita', '=', "{$request->get('datapagamentoreceita')}");
+                }
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function ($consulta) {
 
-        $btnVisualizar = '<div class="row col-sm-12">
+                $btnVisualizar = '<div class="row col-sm-12">
             <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Receita">Visualizar</a>
         </div>';
 
-        return $btnVisualizar;
-        })
-    
-        ->rawColumns(['action'])
-        ->make(true);
+                return $btnVisualizar;
+            })
 
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     public function consultaIndexReceita()
     {
 
         $consulta = DB::table('receita')
-        ->join('conta', 'receita.contareceita', 'conta.id')
-        ->leftJoin('clientes', 'receita.idclientereceita', 'clientes.id')
-        ->leftJoin('formapagamento', 'receita.idformapagamentoreceita', 'formapagamento.id')
+            ->join('conta', 'receita.contareceita', 'conta.id')
+            ->leftJoin('clientes', 'receita.idclientereceita', 'clientes.id')
+            ->leftJoin('formapagamento', 'receita.idformapagamentoreceita', 'formapagamento.id')
 
 
-        ->select(['receita.id', 'receita.idosreceita', 'receita.idclientereceita',  'clientes.id as idDoCliente','clientes.razaosocialCliente', 'receita.idformapagamentoreceita', 'formapagamento.nomeFormaPagamento', 'receita.datapagamentoreceita',
-        'receita.dataemissaoreceita', 'receita.valorreceita', 'receita.pagoreceita', 'conta.id as idDaConta','conta.apelidoConta','receita.contareceita', 'receita.descricaoreceita', 'receita.registroreceita',
-        'receita.nfreceita']);
+            ->select([
+                'receita.id', 'receita.idosreceita', 'receita.idclientereceita',  'clientes.id as idDoCliente', 'clientes.razaosocialCliente', 'receita.idformapagamentoreceita', 'formapagamento.nomeFormaPagamento', 'receita.datapagamentoreceita',
+                'receita.dataemissaoreceita', 'receita.valorreceita', 'receita.pagoreceita', 'conta.id as idDaConta', 'conta.apelidoConta', 'receita.contareceita', 'receita.descricaoreceita', 'receita.registroreceita',
+                'receita.nfreceita'
+            ]);
 
         // $consulta1 = DB::select("SELECT receita.id,  receita.idosreceita ,  receita.idclientereceita ,  clientes.id as idDoCliente,clientes.razaosocialCliente,  receita.idformapagamentoreceita ,  receita.datapagamentoreceita ,
         // receita.dataemissaoreceita ,  receita.valorreceita ,  receita.pagoreceita ,  conta.id as idDaConta ,conta.nomeConta , receita.contareceita ,  receita.descricaoreceita ,  receita.registroreceita ,
         // receita.nfreceita   from receita 
         //  inner join `conta` on `receita`.`contareceita` = `conta`.`id` 
         //  left join `clientes` on `receita`.`idclientereceita` = `clientes`.`id`");
-        
+
         return $consulta;
     }
 
@@ -469,20 +471,20 @@ class ReceitaController extends Controller
         request()->validate([
             'idformapagamentoreceita'   => 'required',
             'datapagamentoreceita'      => 'required',
-         //   'dataemissaoreceita'        => 'required',
+            //   'dataemissaoreceita'        => 'required',
             'valorreceita'              => 'required',
             'pagoreceita'               => 'required',
             'contareceita'              => 'required',
             // 'descricaoreceita'          => 'required',
-          //  'registroreceita'           => 'required',
-           // 'nfreceita'                 => 'required',
+            //  'registroreceita'           => 'required',
+            // 'nfreceita'                 => 'required',
             // 'idosreceita'               => 'required'
         ]);
 
 
         $valorMonetario                  = $request->get('valorreceita');
         $quantia = $this->validaValores($valorMonetario);
-        
+
         $receita->id                            = $request->get('id');
         $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
         $receita->datapagamentoreceita          = $request->get('datapagamentoreceita');
@@ -496,7 +498,8 @@ class ReceitaController extends Controller
         $receita->nfreceita                     = $request->get('nfreceita');
         // $receita->idosreceita                   = $request->get('idosreceita');
 
-        DB::update("UPDATE receita
+        DB::update(
+            "UPDATE receita
         SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
         datapagamentoreceita        = '$receita->datapagamentoreceita',           
         dataemissaoreceita          = '$receita->dataemissaoreceita',             
