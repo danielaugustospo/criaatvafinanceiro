@@ -238,37 +238,37 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        width: 170,
+                        autowidth: true                    
                     },
                     {
                         field: "apelidoConta",
                         title: "C/C",
                         filterable: true,
-                        width: 170,
+                        autowidth: true,
                     },
                     {
                         field: "despesaCodigoDespesa",
                         title: "Cód.<br>Despesa",
                         filterable: true,
-                        width: 200,
+                        autowidth: true,
                     },
                     {
                         field: "idOS",
                         title: "OS",
                         filterable: true,
-                        width: 150
+                        width: 90
                     },
                     {
                         field: "descricaoDespesa",
                         title: "Despesa",
                         filterable: true,
-                        width: 200
+                        width: 150
                     },
                     {
                         field: "razaosocialFornecedor",
                         title: "Fornecedor",
                         filterable: true,
-                        width: 200,
+                        autowidth: true,
                         aggregates: ["count"],
                         footerTemplate: "QTD. Total: #=count#",
                         groupHeaderColumnTemplate: "Qtd.: #=count#"
@@ -277,7 +277,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "vencimento",
                         title: "Venc.",
                         filterable: true,
-                        width: 180,
+                        width: 150,
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -289,7 +289,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "precoReal",
                         title: "Valor",
                         filterable: true,
-                        width: 180,
+                        autowidth: true,
                         decimals: 2,
                         aggregates: ["sum"],
                         groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
@@ -300,13 +300,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "notaFiscal",
                         title: "NF",
                         filterable: true,
-                        width: 180,
+                        autowidth: true,
                     },
                     {
                         field: "pago",
                         title: "Pago",
                         filterable: true,
-                        width: 100
+                        width: 90
                     },
 
                     // { field: "vale", title: "Vale", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
