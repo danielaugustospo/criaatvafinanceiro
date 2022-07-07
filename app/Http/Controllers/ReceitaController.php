@@ -108,13 +108,10 @@ class ReceitaController extends Controller
         $valorreceita   = $validacoesPesquisa[1];
         $dtinicio       = $validacoesPesquisa[2];
         $dtfim          = $validacoesPesquisa[3];
-        // $coddespesa     = $validacoesPesquisa[4];
-        // $fornecedor     = $validacoesPesquisa[4];
         $ordemservico   = $validacoesPesquisa[4];
         $contareceita   = $validacoesPesquisa[5];
         $nfreceita      = $validacoesPesquisa[6];
         $cliente        = $validacoesPesquisa[7];
-        // $fixavariavel   = $validacoesPesquisa[10];
         $pagoreceita    = $validacoesPesquisa[8];
 
         $rota = $this->verificaRelatorio($request);
@@ -149,20 +146,20 @@ class ReceitaController extends Controller
         cc.apelidoConta,
         os.eventoOrdemdeServico,
         fpg.nomeFormaPagamento, 
-
+       
         (CASE 
+        	WHEN (r.idosreceita =  "CRIAATVA") THEN cliSemOS.razaosocialCliente
         	WHEN (cli.razaosocialCliente IS NULL) THEN "CRIAATVA"
         	ELSE cli.razaosocialCliente
         END) AS razaosocialCliente 
-        
-        
+                
         FROM receita r
 
         LEFT JOIN conta             AS cc   ON r.contareceita = cc.id
         LEFT JOIN ordemdeservico    AS os   ON r.idosreceita = os.id
         LEFT JOIN formapagamento    AS fpg  ON r.idformapagamentoreceita = fpg.id
         LEFT JOIN clientes          AS cli  ON os.idClienteOrdemdeServico = cli.id
-     
+        LEFT JOIN clientes          AS cliSemOS  ON r.idclientereceita = cliSemOS.id     
         
         WHERE r.excluidoreceita = 0 ' . $descricao);
 
@@ -180,29 +177,26 @@ class ReceitaController extends Controller
         if ($request->ordemservico) : $descricao .= " AND r.idosreceita = '$request->ordemservico'";
             $verificaInputCampos++;
         endif;
-        if ($request->valorreceita) :        $descricao .= " AND r.valorreceita = '$request->valorreceita'";
+        if ($request->valorreceita) : $descricao .= " AND r.valorreceita = '$request->valorreceita'";
             $verificaInputCampos++;
         endif;
-        if ($request->contareceita) :        $descricao .= " AND cc.apelidoConta = '$request->contareceita'";
-            $verificaInputCampos++;
-        endif;
-
-
-        if ($request->nfreceita) : $descricao  .= " AND r.nfreceita = '$request->nfreceita'";
+        if ($request->contareceita) : $descricao .= " AND cc.apelidoConta = '$request->contareceita'";
             $verificaInputCampos++;
         endif;
 
-
-        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+        if ($request->nfreceita)    : $descricao  .= " AND r.nfreceita = '$request->nfreceita'";
             $verificaInputCampos++;
         endif;
 
-        if ($request->pagoreceita) :        $descricao .= " AND r.pagoreceita = '$request->pagoreceita'";
+        if ($request->cliente)      : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
             $verificaInputCampos++;
         endif;
 
+        if ($request->pagoreceita)  : $descricao .= " AND r.pagoreceita = '$request->pagoreceita'";
+            $verificaInputCampos++;
+        endif;
 
-        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        if ($request->dtfim)        : $datafim    = $request->dtfim;
         elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
         endif;
 
