@@ -18,9 +18,9 @@
     }
 
 /*Início estilo PDF Kendo Grid */
-    .k-grid td, .k-input, .k-item {
+    .k-grid td, .k-input, .k-item, .k-grid-Ver, .k-grid-Editar {
             font-family: "DejaVu Sans", "Arial", sans-serif;
-            font-size: 8pt;
+            font-size: 7pt;
         }
     .k-header {
             font-size: 8pt;
@@ -33,7 +33,7 @@
         width: 120px;
     }
 
-     /* Page Template for the exported PDF */
+    /* Page Template for the exported PDF */
      .page-template {
           font-family: "DejaVu Sans", "Arial", sans-serif;
           position: absolute;
