@@ -1,5 +1,19 @@
 <div id="informacoes" class="d-flex justify-content-center">
-    <label class="pr-2" style="color: red;">Filtros:</label>
+   
+    @if (($receita == '')
+    && ($valorreceita == '')
+    && ($dtinicio == '')
+    && ($dtfim == '')
+    && ($ordemservico == '')
+    && ($contareceita == '')
+    && ($nfreceita == '')
+    && ($cliente == '')
+    && ($pagoreceita == ''))
+        <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
+    @else
+        <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
+    @endif  
+   
     @if ($receita != '')
         <label><b>Receita:</b> {{ $receita }} &nbsp; </label>
     @endif
