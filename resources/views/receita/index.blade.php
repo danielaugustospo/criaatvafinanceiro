@@ -197,7 +197,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     field: "descricaoreceita",
                     title: "Descrição",
                     filterable: true,
-                    width: 80
+                    width: 130
                 },
                 {
                     field: "nomeFormaPagamento",
@@ -227,7 +227,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     field: "datapagamentoreceita",
                     title: "Data",
                     filterable: true,
-                    width: 80,
+                    width: 100,
                     format: "{0:dd/MM/yyyy}",
                     filterable: {
                         cell: {
@@ -243,7 +243,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 },
                 {
                         command: [{
-                            name: "Visualizar",
+                            name: "Ver",
+                            iconClass:"k-icon k-i-eye",
                             click: function(e) {
                                 e.preventDefault();
                                 var tr = $(e.target).closest(
@@ -259,6 +260,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     {
                         command: [{
                             name: "Editar",
+                            iconClass:"k-icon k-i-pencil",
                             click: function(e) {
                                 e.preventDefault();
                                 var tr = $(e.target).closest(
