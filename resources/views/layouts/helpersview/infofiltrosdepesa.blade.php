@@ -1,5 +1,11 @@
 <div id="informacoes" class="d-flex justify-content-center">
-    <label class="pr-2" style="color: red;">Filtros:</label>
+
+    @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == '')
+        <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
+    @else
+        <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
+    @endif
+
     @if ($despesas != '')
         <label><b>Despesa:</b> {{ $despesas }} &nbsp; </label>
     @endif
@@ -36,5 +42,8 @@
     @if ($pago != '')
         <label><b>Pago:</b> {{ $pago }} &nbsp; </label>
     @endif
+
+
+
 
 </div>
