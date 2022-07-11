@@ -149,6 +149,8 @@ class ReceitaController extends Controller
        
         (CASE 
         	WHEN (r.idosreceita =  "CRIAATVA") THEN cliSemOS.razaosocialCliente
+        	WHEN (r.idosreceita IS NULL) THEN cliSemOS.razaosocialCliente
+        	WHEN (r.idosreceita = "") THEN cliSemOS.razaosocialCliente
         	WHEN (cli.razaosocialCliente IS NULL) THEN "CRIAATVA"
         	ELSE cli.razaosocialCliente
         END) AS razaosocialCliente 
