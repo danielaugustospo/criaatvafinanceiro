@@ -76,6 +76,7 @@ Route::get('/tabelaExtratoConta', 'ContaController@tabelaExtratoConta')->name('t
 Route::get('/tabelaRelatorioFornecedores', 'FornecedorController@tabelaRelatorioFornecedores')->name('tabelaRelatorioFornecedores');
 Route::get('/tabelaDespesas', 'DespesaController@tabelaDespesas')->name('tabelaDespesas');
 Route::get('/displaydespesas', 'DespesaController@index')->name('displaydespesas');
+Route::get('/displaydespesascompleto', 'DespesaController@despesascompleto')->name('displaydespesascompleto');
 Route::get('/displayreceita', 'ReceitaController@index')->name('displayreceita');
 Route::get('/displayentrada', 'EntradasController@displayentrada')->name('displayentrada');
 Route::get('/displaysaida', 'SaidasController@displaysaidas')->name('displaysaidas');
