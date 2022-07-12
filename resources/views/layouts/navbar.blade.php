@@ -51,10 +51,12 @@ use App\Providers\AppServiceProvider;
                                 Despesas <span class="caret"></span>
                             </a>
                         @endcan
+
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('despesa-list')
                                 {{-- <a class="dropdown-item" href="{{ route('despesas.index') }}">Listar todas</a> --}}
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modaldepesas" style="cursor:pointer;">Pesquisar por despesa</a>
+                                <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');" class="dropdown-item" href="#" style="cursor:pointer;">Pesquisar Despesas (completo)</a>
 
                             @endcan
                             @can('despesa-create')
