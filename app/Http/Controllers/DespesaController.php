@@ -261,7 +261,11 @@ class DespesaController extends Controller
     {
 
         $rotaRetorno = 'despesas.index';
-        if ($request->get('tpRel') ==  'fornecedor') :
+
+        if ($request->get('tpRel') ==  'pesquisadespesascompleto') :
+            $rotaRetorno = 'despesas.completo';
+
+        elseif ($request->get('tpRel') ==  'fornecedor') :
             $rotaRetorno = 'relatorio.fornecedor.index';
 
         elseif ($request->get('tpRel') ==  'pclienteanalitico') :

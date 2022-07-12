@@ -190,7 +190,7 @@ class ReceitaController extends Controller
             $verificaInputCampos++;
         endif;
 
-        if ($request->cliente)      : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+        if ($request->cliente)      : $descricao     .= " AND r.idclientereceita = '$request->cliente'";
             $verificaInputCampos++;
         endif;
 
