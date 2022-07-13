@@ -5,22 +5,20 @@
 
 <br>
 <hr>
-<div class="form-group row">
+
+<div class="form-group row" style="box-shadow: 25px 2px 25px 1px; padding-top: 20px; padding-bottom: 20px;">
     <h5 for="descricaoDespesa" style="color: red;" class="col-sm-2 "><b>É Compra?</b></h5>
 
-    <div class="col-sm-3 mt-2">
+    <div class="col-sm-2 mt-2">
         @if (Request::path() == 'despesas/create')
             <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" />
                 SIM</label> <br />
             <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" /> NÃO</label>
         @endif
-            @isset($despesa)
-                
-                    <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 1) checked @endif /> SIM</label> <br />
-                    <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 0) checked @endif /> NÃO</label>
-                
-            @endisset
-        
+        @isset($despesa)
+            <label for="comprou" class="mr-2"><input type="radio" value="S" name="a" id="comprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 1) checked @endif /> SIM</label> <br />
+            <label for="naocomprou"><input type="radio" value="N" name="a" id="naocomprou" {{ $variavelDisabledNaView }} @if ($despesa->ehcompra == 0) checked @endif /> NÃO</label>
+        @endisset
     </div>
 
     <div class="form-group row" id="telaCompraParcelada">
@@ -32,19 +30,25 @@
                 @if(isset($despesa)) disabled checked @endif id="naoparcelada" /> NÃO</label>
         </div>
     </div>
-    {{-- @if (Request::path() == 'despesas/create')
 
     <div class="form-group row" id="telaInsereEstoque">
         <h5 style="color: red;" class="col-sm-5 mr-5"><b>Inserir compra no estoque?</b></h5>
         <div class="col-sm-3 mt-2">
-            <label class="mr-2 ml-2">   <input type="radio" value="S" name="inserirestoque" id="inserirestoque" /> SIM</label> <br />
-            <label class="ml-2">        <input type="radio" value="N" name="inserirestoque" id="naoinserirestoque" checked /> NÃO</label>
+            @if (Request::path() == 'despesas/create')
+            <label class="ml-2">        <input type="radio" value="0" name="inserirestoque" id="naoinserirestoque"  /> NÃO</label>
+            <label class="mr-2 ml-2">   <input type="radio" value="1" name="inserirestoque" id="inserirestoque"  /> SIM</label> <br />
+            @endif
+            @isset($despesa)
+            <label class="ml-2">        <input type="radio" value="0" name="inserirestoque" id="naoinserirestoque" disabled @if ($despesa->insereestoque == 0) checked @endif  /> NÃO</label>
+            <label class="mr-2 ml-2">   <input type="radio" value="1" name="inserirestoque" id="inserirestoque" disabled @if (($despesa->insereestoque == 1 ) || ($despesa->insereestoque == null )) checked @endif /> SIM</label> <br />
+            @endif
         </div>
     </div>
-    @endif --}}
 
     
 </div>
+
+<div class="pl-2 pr-2" id="telaGeral">
 
 <div class="form-group row">
     <label for="despesaCodigoDespesas" class="col-sm-2 col-form-label">Código da Despesa</label>
@@ -124,10 +128,18 @@
             </select>
 
         </div>
+        <div id="despesaCompraSemEstoque">
+            <input class="form-control descricaoDespesaSemEstoque"  id="descricaoDespesa" @php
+                if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
+                    echo 'value="' . $despesa->descricaoDespesa . '" disabled';
+                endif;
+            @endphp
+                name="descricaoDespesaSemEstoque">
+        </div>
         <div id="despesaNaoCompra">
             <input class="form-control descricaoDespesa" list="datalistDescricao" id="descricaoDespesa" @php
                 if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
-                    echo 'value="' . $despesa->descricaoDespesa . '"';
+                    echo 'value="' . $despesa->descricaoDespesa . '"  disabled';
                 endif;
             @endphp
                 name="descricaoDespesaNaoCompra" placeholder="Digite ou selecione...">
@@ -457,3 +469,5 @@
 {!! Form::hidden('idDespesaPai', $valorSemCadastro, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '2']) !!}
 {!! Form::hidden('ativoDespesa', '1', ['placeholder' => 'Ativo ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'ativoDespesa']) !!}
 {!! Form::hidden('excluidoDespesa', $valorSemCadastro, ['placeholder' => 'Excluído ', 'class' => 'form-control', 'maxlength' => '1', 'id' => 'excluidoDespesa']) !!}
+
+</div>

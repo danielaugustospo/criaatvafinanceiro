@@ -20,11 +20,11 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0d8253363903f0ac7b0978dcde4e28a0' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/helpers.php',
         '88c455bd77c2a9bcba69e590d5f387bb' => __DIR__ . '/..' . '/freshbitsweb/laratables/src/helpers.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
@@ -340,8 +340,8 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -538,6 +538,7 @@ class ComposerStaticInitea3fea1346de25544635537f1aa79c83
         'App\\Http\\Controllers\\FuncionarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/FuncionarioController.php',
         'App\\Http\\Controllers\\GrupoDespesaController' => __DIR__ . '/../..' . '/app/Http/Controllers/GrupoDespesaController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\MigracaoController' => __DIR__ . '/../..' . '/app/Http/Controllers/MigracaoController.php',
         'App\\Http\\Controllers\\NotasRecibosController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotasRecibosController.php',
         'App\\Http\\Controllers\\OrdemdeServicoController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrdemdeServicoController.php',
         'App\\Http\\Controllers\\OrgaosRGController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrgaosRGController.php',
