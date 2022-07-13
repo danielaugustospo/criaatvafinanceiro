@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
 Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
+Route::post('/apicreatedespesas', 'DespesaController@apistore')->name('apicreatedespesas');
 Route::get('/apireceita', 'ReceitaController@apireceita')->name('apireceita');
 Route::get('/apiestoque', 'EstoqueController@apiestoque')->name('apiestoque');
 Route::get('/apientrada', 'EntradasController@apientrada')->name('apientrada');
