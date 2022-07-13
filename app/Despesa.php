@@ -51,14 +51,9 @@ class Despesa extends Model
     'idFuncionario',
     'idAlteracaoUsuario',
     'idAutor',
+    'insereestoque'
 
 
     ];
-
-    public static function laratablesCustomAction($despesaModel)
-    {
-        return view('despesas.action', compact('despesaModel'))->render();
-    }
-
 
 }
