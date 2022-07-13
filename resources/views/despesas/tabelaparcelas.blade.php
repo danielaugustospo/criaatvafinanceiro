@@ -1,4 +1,4 @@
-<table class="rwd-table" id="tabelalistadespesa">
+<table class="rwd-table" id="tabelalistadespesa" style="font-size: 12px;max-width: max-content;width: 120%;">
     <tbody>
         <div class="row">
             <th>ORDEM SERVIÇO</th>
@@ -44,8 +44,8 @@
                 {!! Form::text('notaFiscalTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
             </td>
-            <td data-th="DESCRIÇÃO">
-                <div class="form-group row">
+            <td class="col-sm-2" data-th="DESCRIÇÃO">
+                <div class="form-group row mt-3" id="telaDescricaoTabelaComEstoque">
                     <button type="button" onclick="recarregaDescricaoDespesa()" class="btn btn-dark"><i
                         class="fas fa-sync"></i></i></button>
                     <button type="button"  data-toggle="modal" data-target=".materiais" class="btn btn-primary"><i
@@ -60,6 +60,14 @@
                         @endforeach
                         required
                     </select>
+                </div>
+                <div class="form-group row mt-3" id="telaDescricaoTabelaSemEstoque">
+                    <input class="form-control descricaoTabelaSemEstoque"     style="font-size: .7rem;"  id="descricaoDespesa" @php
+                    if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
+                        echo 'value="' . $despesa->descricaoDespesa . '"';
+                    endif; @endphp name="descricaoTabelaSemEstoque[]" maxlength="50">
+
+                    {{-- {!! Form::text('descricaoTabelaSemEstoque[]', $valorInput, ['class' =>'form-control descricaoTabelaSemEstoque', 'id' => 'telaDescricaoTabelaSemEstoque', 'maxlength' => 50]) !!} --}}
                 </div>
             </td>
             <td data-th="QUANTIDADE">

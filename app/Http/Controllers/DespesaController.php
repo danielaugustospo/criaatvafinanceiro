@@ -114,7 +114,7 @@ class DespesaController extends Controller
         c.despesaCodigoDespesa,
         g.grupoDespesa,
         CASE
-            WHEN d.ehcompra = 1 THEN b.nomeBensPatrimoniais
+            WHEN d.ehcompra = 1 and (insereestoque IS NULL or insereestoque = 1) THEN b.nomeBensPatrimoniais
             ELSE d.descricaoDespesa
         END AS descricaoDespesa,
         CASE 
@@ -306,51 +306,6 @@ class DespesaController extends Controller
         return $rotaRetorno;
     }
 
-    public function tabelaDespesas(Request $request)
-    {
-
-        $consulta = $this->consultaIndexDespesa();
-
-        return Datatables::of($consulta)
-            ->filter(function ($query) use ($request) {
-
-
-                if (($request->has('idOS')) && ($request->idOS != NULL)) {
-                    $query->where('idOS', '=', "{$request->get('idOS')}");
-                }
-                if (($request->has('descricaoDespesa')) && ($request->descricaoDespesa != NULL)) {
-                    $query->where('descricaoDespesa', '=', "{$request->get('descricaoDespesa')}");
-                }
-                if (($request->has('precoReal')) && ($request->precoReal != NULL)) {
-                    $query->where('precoReal', '=', "{$request->get('precoReal')}");
-                }
-                if (($request->has('notaFiscal')) && ($request->notaFiscal != NULL)) {
-                    $query->where('notaFiscal', 'like', "{$request->get('notaFiscal')}%");
-                }
-                if (($request->has('idFornecedor')) && ($request->idFornecedor != NULL)) {
-                    $query->where('idFornecedor', '=', "{$request->get('idFornecedor')}");
-                }
-                if (($request->has('vencimento')) && ($request->vencimento != NULL)) {
-                    $query->where('vencimento', '=', "{$request->get('vencimento')}");
-                }
-                if (($request->buscaDataInicio != null) && ($request->buscaDataFim != null)) {
-                    $query->whereDate('vencimento', ">=", "{$request->buscaDataInicio}")
-                        ->whereDate('vencimento', "<=", "{$request->buscaDataFim}");
-                }
-            })
-            ->addIndexColumn()
-            ->addColumn('action', function ($consulta) {
-
-                $btnVisualizar = '<div class="row col-sm-12">
-            <a href="despesas/' .  $consulta->id . '" class="edit btn btn-primary btn-lg" title="Visualizar Despesa">Visualizar</a>
-        </div>';
-
-                return $btnVisualizar;
-            })
-
-            ->rawColumns(['action'])
-            ->make(true);
-    }
 
     public function consultaIndexDespesa()
     {
@@ -424,6 +379,7 @@ class DespesaController extends Controller
 
         $despesa->idFuncionario         =  $request->get('idFuncionario');
         $despesa->idFornecedor          =  $request->get('idFornecedor');
+
         $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
         $despesa->conta                 =  $request->get('conta');
         $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
@@ -444,6 +400,8 @@ class DespesaController extends Controller
         $despesa->ativoDespesa          =  $request->get('ativoDespesa');
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
+        $despesa->insereestoque         =  (int)$request->get('inserirestoque');
+
 
 
         if ($compraparcelada == 'S') {
@@ -452,15 +410,10 @@ class DespesaController extends Controller
             $quantidade = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
 
-            // var_dump($request->get('descricaoTabela')[0]);
-            // exit;
-
             for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
                 $despesa = new Despesa();
 
-                // $request->validate(
-                //     [$request->get('descricaoTabela')[$i] => 'required'], ['descricaoTabela.required' => 'Informe os itens comprados']
-                // );
+
                 $despesa->ehcompra              =  1;
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
                 $despesa->vencimento            =  $request->get('vencimentoTabela')[$i];
@@ -471,9 +424,17 @@ class DespesaController extends Controller
 
                 $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
                 $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
-                $despesa->descricaoDespesa      =  $request->get('descricaoTabela')[$i];
+                
+                if($despesa->insereestoque == 0){
+                    $despesa->descricaoDespesa      =  $request->get('descricaoTabelaSemEstoque')[$i];
+                    $despesa->insereestoque         = 0;
 
-                $despesa->idFornecedor          =  $request->get('selecionaFornecedor');
+                }else if($despesa->insereestoque == 1){
+                    $despesa->descricaoDespesa      =  $request->get('descricaoTabela')[$i];
+                    $despesa->insereestoque         = 1;
+                }
+                
+                $despesa->idFornecedor          =  $request->get('idFornecedor');
                 $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
                 $despesa->conta                 =  $request->get('conta');
                 $despesa->dataDaCompra          =  $request->get('dataDaCompra');
@@ -494,7 +455,7 @@ class DespesaController extends Controller
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
                 $despesa->save();
-                // if($request->inserirestoque == 'S'){
+                // if($request->inserirestoque == '1'){
                 //     $salvaEstoque  = Estoque::create([
                 //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
                 //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
@@ -506,15 +467,18 @@ class DespesaController extends Controller
             }
         } elseif ($compraparcelada == 'N') {
 
-            //Não é uma compra parcelada
-            if ($despesa->ehcompra == 1) :
+          
+            //É compra, mas não é parcelada
+            if (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1)) :
+               
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
-                $despesa->ehcompra              =  1;
 
                 $request->validate(
                     ['descricaoDespesaCompra' => 'required'],
                     ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
                 );
+            elseif (($despesa->ehcompra == 1) && ($despesa->insereestoque == 0)): 
+                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque'); //Input com o datalist aberto
             endif;
 
             $despesa->idOS                  =  $request->get('idOS');
@@ -526,7 +490,7 @@ class DespesaController extends Controller
             $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
 
             $despesa->save();
-            // if($request->inserirestoque == 'S'){
+            // if($request->inserirestoque == '1'){
             //     $salvaEstoque  = Estoque::create([
             //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
             //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
@@ -539,8 +503,13 @@ class DespesaController extends Controller
             return redirect()->route('despesas.index')
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
+        /* 
+        *   -------------------
+        *    Se não for compra
+        *   ------------------- 
+        */
         if ($despesa->ehcompra == 0) {
-            // Não é uma compra
+           
             $despesa->ehcompra              =  0;
             $despesa->idOS                  =  $request->get('idOS');
             $despesa->vencimento            =  $request->get('vencimento');
@@ -549,7 +518,7 @@ class DespesaController extends Controller
 
             $despesa->save();
 
-            // if($request->inserirestoque == 'S'){
+            // if($request->inserirestoque == '1'){
                 
             //     $salvaEstoque  = Estoque::create([
             //         'codbarras'             => 'CRIA-D'.$despesa->id,
@@ -659,6 +628,7 @@ class DespesaController extends Controller
     {
         $despesa = new Despesa();
 
+
         $request->validate([
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
@@ -701,16 +671,20 @@ class DespesaController extends Controller
         $despesa->ativoDespesa          =  $request->get('ativoDespesa');
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
+        $despesa->insereestoque         =  (int)$request->get('inserirestoque');
 
 
             //É compra, mas não é parcelada
-            if ($despesa->ehcompra == 1) :
+            if (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1)) :
+               
                 $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
 
                 $request->validate(
                     ['descricaoDespesaCompra' => 'required'],
                     ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
                 );
+            elseif (($despesa->ehcompra == 1) && ($despesa->insereestoque == 0)): 
+                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque'); //Input com o datalist aberto
             endif;
 
             $despesa->idOS                  =  $request->get('idOS');

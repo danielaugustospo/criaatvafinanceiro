@@ -1,54 +1,41 @@
 <script>
     $(function() {
+        @if (Request::path() == 'despesas/create')
+        $("#telaGeral").hide();
+        @endif
         $("#comprou").click(function() {
+            @if (Request::path() == 'despesas/create')
+            $("#telaGeral").hide();
+            @endif
             if ($(this).is(":checked")) {
-
                 $("#divComprou").show();
                 $("#despesaCompra").show();
+                $("#despesaCompraSemEstoque").show();
                 $("#telaCadastrarMateriais").show();
                 alteraIdComprador();
                 $("#telaQuantidade").show();
                 $("#telaDataCompra").show();
                 $("#telaCompraParcelada").show();
-                // $("#telaInsereEstoque").show();
+                $("#telaInsereEstoque").show();
                 // pegaIdFornecedor();
                 document.getElementById("dataDoTrabalho").value = "";
-
-
 
                 $("#telaFuncionario").hide();
                 $("#despesaNaoCompra").hide();
                 $("#telaDataTrabalho").hide();
                 $("#telaPrestador").hide();
-
-
-            } else {
-                $("#divComprou").hide();
-
-                $("#despesaCompra").hide();
-                $("#despesaNaoCompra").show();
-
-                $("#telaCadastrarMateriais").hide();
-                resetaIdComprador();
-                // comboDescricaoNaoComprou();
-
-                $("#telaFuncionario").hide();
-                // pegaIdFuncionario();
-                $("#telaQuantidade").hide();
-                $("#telaCompraParcelada").hide();
-                // $("#telaInsereEstoque").hide();
-
-
-                $("#telaDataCompra").hide();
-                $("#telaDataTrabalho").show();
-                $("#telaPrestador").show();
-
             }
         });
         $("#naocomprou").click(function() {
             if ($(this).is(":checked")) {
+
+                $("#telaGeral").show();
+                $("#inserirestoque").prop("checked", false);
+                $("#naoinserirestoque").prop("checked", false);
+
                 $("#divComprou").hide();
 
+                $("#despesaCompraSemEstoque").hide();
                 $("#despesaNaoCompra").show();
 
                 $("#telaCadastrarMateriais").hide();
@@ -58,7 +45,7 @@
 
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
-                // $("#telaInsereEstoque").hide();
+                $("#telaInsereEstoque").hide();
 
                 // pegaIdFuncionario();
 
@@ -80,33 +67,11 @@
                 $('#naoparcelada').prop('checked', true);
                 $("#despesaCompra").hide();
                 document.getElementById("dataDaCompra").value = "";
-
-
-            } else {
-                $("#divComprou").show();
-
-                $("#despesaCompra").show();
-                $("#despesaNaoCompra").hide();
-
-                $("#telaCadastrarMateriais").show();
-
-                alteraIdComprador();
-
-                $("#telaCompraParcelada").show();
-                // $("#telaInsereEstoque").show();
-                $("#telaFuncionario").hide();
-                $("#telaQuantidade").hide();
-                pegaIdFornecedor();
-
-                $("#telaDataTrabalho").hide();
-                $("#telaDataCompra").show();
-                $("#telaPrestador").hide();
-
-                $("#tabelaDespesas").show();
             }
         });
         $("#parcelada").click(function() {
             if ($(this).is(":checked")) {
+
                 $("#tabelaDespesas").show();
                 $("#telaOS").hide();
                 $("#telaDescricao").hide();
@@ -115,19 +80,8 @@
                 $("#telaDataPagamento").hide();
                 $("#telaNF").hide();
                 $("#telaPago").show();
-                document.getElementById("vencimento").value = "";
-
-
-            } else {
-                $("#tabelaDespesas").hide();
-                $("#telaOS").show();
-                $("#telaDescricao").show();
-                $("#telaValor").show();
-                $("#telaQuantidade").show();
-                $("#telaDataPagamento").show();
-                $("#telaNF").show();
                 $("#telaPago").show();
-                $("#tabelaDespesas").hide();
+                document.getElementById("vencimento").value = "";
 
             }
         });
@@ -142,25 +96,43 @@
                 $("#telaNF").show();
                 $("#telaPago").show();
 
-            } else {
-                $("#tabelaDespesas").show();
-                $("#telaOS").hide();
-                $("#telaDescricao").hide();
-                $("#telaValor").hide();
-                $("#telaQuantidade").hide();
-                $("#telaDataPagamento").hide();
-                $("#telaNF").hide();
-                $("#telaPago").show();
-
             }
         });
 
+        $("#inserirestoque").click(function() {
+            $("#telaGeral").show();
+
+            $("#despesaCompraSemEstoque").hide();
+            $("#despesaCompra").show();
+            $("#telaCadastrarMateriais").show();
+            $("#telaDescricaoTabelaComEstoque").show();
+            $("#telaDescricaoTabelaSemEstoque").hide();
+
+
+        })
+
+        $("#naoinserirestoque").click(function() {
+            $("#telaGeral").show();
+
+            $("#despesaCompraSemEstoque").show();
+            $("#despesaCompra").hide();
+            $("#telaCadastrarMateriais").hide();
+            $("#telaDescricaoTabelaSemEstoque").show();
+            $("#telaDescricaoTabelaComEstoque").hide();
+
+        })
+
+
         checaCompra = document.getElementById('comprou');
         checaNaoCompra = document.getElementById('naocomprou');
+        checaInsereEstoque = document.getElementById('inserirestoque');
+        checaNaoInsereEstoque = document.getElementById('naoinserirestoque');
+
         if (checaCompra.checked) {
             $("#despesaCompra").show();
             $("#telaQuantidade").show();
             $("#divComprou").show();
+            $("#despesaCompraSemEstoque").show();
             $("#telaCadastrarMateriais").show();
             alteraIdComprador();
             $("#tabelaDespesas").show();
@@ -174,9 +146,14 @@
             $("#telaPrestador").hide();
 
         } else if (checaNaoCompra.checked) {
+
+            $("#inserirestoque").prop("checked", false);
+            $("#naoinserirestoque").prop("checked", false);
+
             $("#despesaCompra").hide();
             $("#telaQuantidade").hide();
             $("#divComprou").hide();
+            $("#despesaCompraSemEstoque").hide();
             $("#telaCadastrarMateriais").hide();
             resetaIdComprador();
             $("#tabelaDespesas").hide();
@@ -190,10 +167,20 @@
             $("#telaDataTrabalho").show();
             $("#telaPrestador").show();
 
+        }
+        if (checaInsereEstoque.checked) {
 
+            $("#despesaCompraSemEstoque").hide();
+            $("#despesaCompra").show();
+            $("#telaCadastrarMateriais").show();
+
+        } else if (checaNaoInsereEstoque.checked) {
+
+            $("#despesaCompraSemEstoque").show();
+            $("#despesaCompra").hide();
+            $("#telaCadastrarMateriais").hide();
 
         }
-
 
         @if (Request::path() == 'despesas/create' || Request::path() == 'despesas/' . $despesa->id . '/edit')
 
@@ -252,8 +239,6 @@
         texto = '';
         textoData = '';
 
-
-
         /* ------------------------------------------
 
         VERIFICAÇÃO DE DATA - EM ANDAMENTO - 26/06/2022
@@ -284,7 +269,7 @@
                 '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
                 anovencimento + ')</label></br>';
             contadorErros++;
-        } else if (anovencimento > 2000 && anovencimento < 2099 && anovencimento != anoAtual) {
+        } else if ((anovencimento > 2000) && (anovencimento < 2099) && (anovencimento != anoAtual)) {
             textoData = textoData +
                 '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data de Vencimento com ano ' +
                 anovencimento + '</label></br>';
@@ -295,7 +280,7 @@
                 '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Vale Inválida (ano ' +
                 anodatavale + ')</label></br>';
             contadorErros++;
-        } else if (anodatavale > 2000 && anodatavale < 2099 && anodatavale != anoAtual) {
+        } else if ((anodatavale > 2000) && (anodatavale < 2099) && (anodatavale != anoAtual)) {
             textoData = textoData +
                 '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Vale com ano ' +
                 anodatavale + '</label></br>';
@@ -307,7 +292,7 @@
                 '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data da Compra Inválida  (ano ' +
                 anodataDaCompra + ')</label></br>';
             contadorErros++;
-        } else if (anodataDaCompra > 2000 && anodataDaCompra < 2099 && anodataDaCompra != anoAtual) {
+        } else if ((anodataDaCompra > 2000) && (anodataDaCompra < 2099) && (anodataDaCompra != anoAtual)) {
             textoData = textoData +
                 '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data da Compra com ano ' +
                 anodataDaCompra + '</label></br>';
@@ -319,7 +304,7 @@
                 '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Trabalho Inválida  (ano ' +
                 anodataDoTrabalho + ')</label></br>';
             contadorErros++;
-        } else if (anodataDoTrabalho > 2000 && anodataDoTrabalho < 2099 && anodataDoTrabalho != anoAtual) {
+        } else if ((anodataDoTrabalho > 2000) && (anodataDoTrabalho < 2099) && (anodataDoTrabalho != anoAtual)) {
             textoData = textoData +
                 '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Trabalho com ano ' +
                 anodataDoTrabalho + '</label></br>';
@@ -367,15 +352,35 @@
             //--------------------------------------------------------------
             // Validações se for compra
             //--------------------------------------------------------------
-            var descricaoDespesaCompra = $('.descricaoDespesaCompra').val();
             var compraparcelada = document.querySelector('input[name=compraparcelada]:checked')?.value;
+            inserirestoque = document.querySelector('input[name=inserirestoque]:checked')?.value;
 
-            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) &&
-                compraparcelada != 'S') {
+            if ((inserirestoque == '') || (inserirestoque == ' ') || (inserirestoque == null) || (inserirestoque ==
+                    undefined)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                    '<span class="badge badge-danger">Marcar</span><label class="fontenormal pl-2">Se a compra será inserida no estoque</label></br>';
                 contadorErros++;
+            } else if ((inserirestoque == 1) && (compraparcelada == 'N')) {
+                var descricaoDespesaCompra = $('.descricaoDespesaCompra').val();
+                if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && compraparcelada != 'S') {
+                    texto = texto +
+                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                    contadorErros++;
+                }
+            } else if ((inserirestoque == 0) && (compraparcelada == 'N')) {
+                var descricaoDespesaCompra = $('.descricaoDespesaSemEstoque').val();
+                if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
+                    texto = texto +
+                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                    contadorErros++;
+                }
             }
+            // if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) &&
+            //     compraparcelada != 'S') {
+            //     texto = texto +
+            //         '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+            //     contadorErros++;
+            // }
             if ((compraparcelada != 'S') && (compraparcelada != 'N')) {
                 texto = texto +
                     '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
@@ -398,6 +403,13 @@
                 var descricaoTabela = table.getElementsByClassName('descricaoTabela');
                 var valorparcelaTabela = table.getElementsByClassName('valorparcelaTabela');
                 var vencimentoTabela = table.getElementsByClassName('vencimentoTabela');
+
+
+                if (inserirestoque == 1) {
+                    var descricaoTabela = table.getElementsByClassName('descricaoTabela');
+                } else if (inserirestoque == 0) {
+                    var descricaoTabela = table.getElementsByClassName('descricaoTabelaSemEstoque');
+                }
 
                 for (var i = 0; i < descricaoTabela.length; i++) {
                     data.push(descricaoTabela[i].value);
@@ -429,7 +441,6 @@
                     vencimento = parseInt(vencimento.slice(0, 4));
 
                     if ((vencimento < 2000) || (vencimento > 2099)) {
-
                         texto = texto +
                             '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
                             vencimento + ') na linha ' +
@@ -482,7 +493,6 @@
                 if (result.isConfirmed) {
                     alertaErros(texto, contadorErros)
                 }
-
             })
         } else {
             if (contadorErros > 0) {
@@ -579,8 +589,7 @@
         });
         newrow.find("#quantidadeTabela").each(function(index) {
             $(this).val(
-                ''
-            ); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
+            ''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
             $(this).trigger('change'); // Notify any JS components that the value changed
         });
 
@@ -607,10 +616,6 @@
         }
     });
 
-
-    function idSemValor() {
-        $('input.idReceita').val('000000');
-    }
 
     function recarregaCodigoDespesa() {
         $('#despesaCodigoDespesas').select2('destroy');
