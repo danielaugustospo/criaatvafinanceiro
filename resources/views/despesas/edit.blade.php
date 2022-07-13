@@ -9,13 +9,13 @@
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
             <h2>Edição - Despesa ID {{ $despesa->id }} - 
-                @if ($despesa->ehcompra == 0)  {{$despesa->descricaoDespesa }} 
-                    @elseif ($despesa->ehcompra == 1)  
-                    @foreach ($listaBensPatrimoniais as $bempatrimonial)
-                        @if($bempatrimonial->id  == $despesa->descricaoDespesa) 
-                            {{$bempatrimonial->nomeBensPatrimoniais}} 
-                        @endif
-                    @endforeach
+                @if ($despesa->ehcompra == 0 || $despesa->insereestoque == 0)  {{$despesa->descricaoDespesa }} 
+                    @elseif (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1) && ($despesa->insereestoque == null))  
+                        @foreach ($listaBensPatrimoniais as $bempatrimonial)
+                            @if($bempatrimonial->id  == $despesa->descricaoDespesa) 
+                                {{$bempatrimonial->nomeBensPatrimoniais}} 
+                            @endif
+                        @endforeach
                 @endif 
             </h2>
 
