@@ -57,10 +57,15 @@ class Conta extends Model
             inner join conta on `receita`.`contareceita` = `conta`.`id`
             inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
             union all (select concat('D-',`despesas`.`id`) as id, `despesas`.`vencimento` as dtoperacao, 
+   
+            
+            
             CASE
-            WHEN despesas.ehcompra = 1 THEN b.nomeBensPatrimoniais
+            WHEN despesas.ehcompra = 1 and (despesas.insereestoque IS NULL or despesas.insereestoque = 1) THEN b.nomeBensPatrimoniais
             ELSE despesas.descricaoDespesa
-            END AS historico,
+        END AS historico,
+            
+            
             `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
              `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
             

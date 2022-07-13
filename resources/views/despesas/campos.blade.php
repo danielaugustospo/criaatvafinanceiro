@@ -131,7 +131,7 @@
         <div id="despesaCompraSemEstoque">
             <input class="form-control descricaoDespesaSemEstoque"  id="descricaoDespesa" @php
                 if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
-                    echo 'value="' . $despesa->descricaoDespesa . '" disabled';
+                    echo 'value="' . $despesa->descricaoDespesa . '"'. $variavelDisabledNaView;
                 endif;
             @endphp
                 name="descricaoDespesaSemEstoque">
@@ -139,7 +139,7 @@
         <div id="despesaNaoCompra">
             <input class="form-control descricaoDespesa" list="datalistDescricao" id="descricaoDespesa" @php
                 if (isset($despesa->descricaoDespesa) && $despesa->descricaoDespesa != null):
-                    echo 'value="' . $despesa->descricaoDespesa . '"  disabled';
+                    echo 'value="' . $despesa->descricaoDespesa . '"'. $variavelDisabledNaView;
                 endif;
             @endphp
                 name="descricaoDespesaNaoCompra" placeholder="Digite ou selecione...">
