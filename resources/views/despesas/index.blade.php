@@ -37,12 +37,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     </div>
     @include('layouts/helpersview/mensagemRetorno')
 
-    {{-- @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif --}}
-
     <hr>
 
     <div id="filter-menu"></div>
@@ -56,8 +50,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
             image: "",
             progress: true
         });
-
-        var dataSource = new kendo.data.DataSource({
+        dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     @if (isset($despesas))
@@ -67,7 +60,81 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     @endif
                     dataType: "json"
                 },
+
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {
+                            models: kendo.stringify(options.models)
+                        };
+                    }
+                }
             },
+            batch: true,
+            schema: {
+
+                model: {
+                    fields: {
+                        precoReal: {
+                            type: "number"
+                        },
+                        vale: {
+                            type: "number"
+                        },
+                        despesareal: {
+                            type: "number"
+                        },
+                        razaosocialFornecedor: {
+                            type: "string"
+                        },
+                        vencimento: {
+                            type: "date"
+                        },
+                        datavale: {
+                            type: "date"
+                        },
+                    }
+                },
+            },
+
+            group: {
+                field: "razaosocialFornecedor",
+                aggregates: [{
+                        field: "razaosocialFornecedor",
+                        aggregate: "count"
+                    },
+                    {
+                        field: "precoReal",
+                        aggregate: "sum"
+                    },
+                    {
+                        field: "vale",
+                        aggregate: "sum"
+                    },
+                    {
+                        field: "despesareal",
+                        aggregate: "sum"
+                    }
+
+                ]
+            },
+            aggregate: [{
+                    field: "razaosocialFornecedor",
+                    aggregate: "count"
+                },
+                {
+                    field: "precoReal",
+                    aggregate: "sum"
+                },
+                {
+                    field: "vale",
+                    aggregate: "sum"
+                },
+                {
+                    field: "despesareal",
+                    aggregate: "sum"
+                }
+            ],
+
         });
 
 
@@ -89,18 +156,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 excelExport: function(e) {
 
                     var sheet = e.workbook.sheets[0];
-                    @if (isset($contacorrente))
-                        for (var rowIndex = 1; rowIndex < sheet.rows.length; rowIndex++) {
-                            if (rowIndex < (sheet.rows.length - 1)) {
-                                var row = sheet.rows[rowIndex];
-                                for (var cellIndex = 4; cellIndex < row.cells.length; cellIndex++) {
-                                    row.cells[cellIndex].format =
-                                        "[Blue]#,##0.00_);[Red]-#,##0.00_);0.0;"
-                                    {{-- console.log(cellIndex); --}}
-                                }
-                            }
-                        }
-                    @endif
 
                     sheet.frozenRows = 1;
                     sheet.mergedCells = ["A1:F1"];
@@ -160,85 +215,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     numeric: false,
 
                 },
-
-                dataSource: {
-                    data: data,
-                    pageSize: 20,
-                    // serverPaging: true,
-                    // serverFiltering: true,
-                    // serverSorting: true,
-                    schema: {
-
-                        model: {
-                            fields: {
-                                precoReal: {
-                                    type: "number"
-                                },
-                                vale: {
-                                    type: "number"
-                                },
-                                despesareal: {
-                                    type: "number"
-                                },
-                                razaosocialFornecedor: {
-                                    type: "string"
-                                },
-                                vencimento: {
-                                    type: "date"
-                                },
-                                datavale: {
-                                    type: "date"
-                                },
-                            }
-                        },
-                    },
-
-                    group: {
-                        field: "razaosocialFornecedor",
-                        aggregates: [{
-                                field: "razaosocialFornecedor",
-                                aggregate: "count"
-                            },
-                            {
-                                field: "precoReal",
-                                aggregate: "sum"
-                            },
-                            {
-                                field: "vale",
-                                aggregate: "sum"
-                            },
-                            {
-                                field: "despesareal",
-                                aggregate: "sum"
-                            }
-
-                        ]
-                    },
-                    aggregate: [{
-                            field: "razaosocialFornecedor",
-                            aggregate: "count"
-                        },
-                        {
-                            field: "precoReal",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "vale",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "despesareal",
-                            aggregate: "sum"
-                        }
-                    ],
-
-                },
-
-                columns: [{
+                dataSource: dataSource,
+                columns: [
+                    {
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        autowidth: true                    
+                        autowidth: true
                     },
                     {
                         field: "apelidoConta",
@@ -317,7 +300,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     {
                         command: [{
                             name: "Ver",
-                            iconClass:"k-icon k-i-eye",
+                            iconClass: "k-icon k-i-eye",
                             click: function(e) {
                                 e.preventDefault();
                                 var tr = $(e.target).closest(
@@ -333,11 +316,10 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     {
                         command: [{
                             name: "Editar",
-                            iconClass:"k-icon k-i-pencil",
+                            iconClass: "k-icon k-i-pencil",
                             click: function(e) {
                                 e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
+                                var tr = $(e.target).closest("tr"); // get the current table row (tr)
                                 var data = this.dataItem(tr);
                                 window.location.href = "@php echo env('APP_URL'); @endphp" + "/despesas/" +
                                     data.id + '/edit';
