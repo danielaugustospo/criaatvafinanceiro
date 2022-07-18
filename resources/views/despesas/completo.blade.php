@@ -1,7 +1,8 @@
 <?php
 $intervaloCelulas = 'A1:K1';
 $rotaapi = 'api/apidespesas';
-$titulo = 'Despesas';
+$rotaapiupdate = 'api/apicreatedespesas';
+$titulo = 'Despesas (Geral)';
 $campodata = 'vencimento';
 if (isset($despesas)) {
     $despesas = $despesas;
@@ -10,6 +11,41 @@ if (isset($despesas)) {
 }
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
+
+<?php
+$chamadaCadastroModal = 'atualizadepesa';
+$tituloCadastroModal = 'Atualização de Despesa';
+// $rotaCadastroModal          = 'despesas/';
+$idFrame = 'frameatualizadepesa';
+?>
+
+<!-- Modal -->
+<div class="modal fade @isset($chamadaCadastroModal) {{ $chamadaCadastroModal }} @endisset"
+    id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                        @isset($tituloCadastroModal)
+                            {{ $tituloCadastroModal }}
+                        @endisset
+                    </b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <iframe class="modal-body" src="modaledicaodespesas/1" id="{{ $idFrame }}" frameborder="0"
+                style="height: 60vh;">
+            </iframe>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                    data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <head>
     <meta charset="utf-8">
@@ -22,15 +58,16 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2 class="text-center">Consulta de {{ $titulo }}</h2>
+                <h2 class="text-center" style="color: red">Consulta de {{ $titulo }}</h2>
                 <div class="form-row d-flex justify-content-center">
 
                     @can('despesa-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar
                             Despesas</a>
                     @endcan
-                    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modaldepesas"
-                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
+                    <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');"
+                        class="btn btn-primary d-flex justify-content-center" href="#" style="cursor:pointer;"><i
+                            class="fas fa-sync"></i>Nova Consulta</a>
                 </div>
             </div>
         </div>
@@ -51,184 +88,70 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
             image: "",
             progress: true
         });
+        $(document).ready(function() {
 
-        var urlRequisicao = "https://demos.telerik.com/kendo-ui/service",
-        var dataSource = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    @if (isset($despesas))
-                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
-                    @else
-                        url: "{{ $rotaapi }}",
-                    @endif
-                    dataType: "json"
-                },
-                update: {
-                    url: urlRequisicao + "/Products/Update",
-                    dataType: "jsonp"
-                },
-                destroy: {
-                    url: urlRequisicao + "/Products/Destroy",
-                    dataType: "jsonp"
-                },
-                create: {
-                    url: urlRequisicao + "/Products/Create",
-                    dataType: "jsonp"
-                },
-                parameterMap: function(options, operation) {
-                    if (operation !== "read" && options.models) {
-                        return {
-                            models: kendo.stringify(options.models)
-                        };
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        @if (isset($despesas))
+                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
+                        @else
+                            url: "{{ $rotaapi }}",
+                        @endif
+                        dataType: "json"
+                    },
+
+                    parameterMap: function(options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return {
+                                models: kendo.stringify(options.models)
+                            };
+                        }
                     }
-                }
-            },
-        });
-
-
-        //Se não houver essa declaração, ele retorna erro dizendo que não encontrou o metodo e não exporta o pdf
-        var detailColsVisibility = {};
-
-        dataSource.fetch().then(function() {
-            var data = dataSource.data();
-
-            // initialize a Kendo Grid with the returned data from the server.
-            $("#grid").kendoGrid({
-                toolbar: ["excel", "pdf"],
-                excel: {
-                    fileName: "Relatório de " + document.title + ".xlsx",
-                    allPages: true
-                    // proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
-                    // filterable: true
                 },
-                excelExport: function(e) {
+                pageSize: 30,
+                schema: {
 
-                    var sheet = e.workbook.sheets[0];
-
-                    sheet.frozenRows = 1;
-                    sheet.mergedCells = ["A1:F1"];
-                    sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
-
-                    var myHeaders = [{
-                        value: "Relatório de " + document.title,
-                        textAlign: "center",
-                        background: "black",
-                        color: "#ffffff"
-                    }];
-
-                    sheet.rows.splice(0, 0, {
-                        cells: myHeaders,
-                        type: "header",
-                        height: 20
-                    });
-                },
-
-                pdf: {
-                    fileName: "Relatório de " + document.title + ".pdf",
-
-                    allPages: true,
-                    avoidLinks: true,
-                    paperSize: "A4",
-                    margin: {
-                        top: "2.5cm",
-                        left: "0.1cm",
-                        right: "0.1cm",
-                        bottom: "0.5cm"
-                    },
-
-                    @if (isset($orientacao))
-                        landscape: true,
-                    @else
-                        landscape: true,
-                    @endif
-
-                    repeatHeaders: false,
-                    template: $("#page-template").html(),
-                    scale: 0.48
-                },
-                filterable: {
-                    extra: false,
-                    mode: "row"
-                },
-                sortable: true,
-                resizable: true,
-                scrollable: true,
-                groupable: true,
-                columnMenu: true,
-                responsible: true,
-                reorderable: true,
-                width: 'auto',
-                pageable: {
-                    pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-                    numeric: false,
-
-                },
-
-                dataSource: {
-                    data: data,
-                    pageSize: 20,
-                    // serverPaging: true,
-                    // serverFiltering: true,
-                    // serverSorting: true,
-                    schema: {
-
-                        model: {
-                            fields: {
-                                precoReal: {
-                                    type: "number"
-                                },
-                                valorUnitario: {
-                                    type: "number"
-                                },
-                                vale: {
-                                    type: "number"
-                                },
-                                despesareal: {
-                                    type: "number"
-                                },
-                                razaosocialFornecedor: {
-                                    type: "string"
-                                },
-                                vencimento: {
-                                    type: "date"
-                                },
-                                datavale: {
-                                    type: "date"
-                                },
-                                dataDaCompra: {
-                                    type: "date"
-                                },
-                                dataDoTrabalho: {
-                                    type: "date"
-                                },
-                            }
-                        },
-                    },
-
-                    group: {
-                        field: "razaosocialFornecedor",
-                        aggregates: [{
-                                field: "razaosocialFornecedor",
-                                aggregate: "count"
+                    model: {
+                        id: "id",
+                        fields: {
+                            valorUnitario: {
+                                type: "number"
                             },
-                            {
-                                field: "precoReal",
-                                aggregate: "sum"
+                            precoReal: {
+                                type: "number"
                             },
-                            {
-                                field: "vale",
-                                aggregate: "sum"
+                            vale: {
+                                type: "number"
                             },
-                            {
-                                field: "despesareal",
-                                aggregate: "sum"
-                            }
-
-                        ]
+                            despesareal: {
+                                type: "number"
+                            },
+                            vencimento: {
+                                type: "date"
+                            },
+                            datavale: {
+                                type: "date"
+                            },
+                            dataDaCompra: {
+                                type: "date"
+                            },
+                            dataDoTrabalho: {
+                                type: "date"
+                            },
+                        }
                     },
-                    aggregate: [{
+                },
+
+                group: {
+                    field: "razaosocialFornecedor",
+                    aggregates: [{
                             field: "razaosocialFornecedor",
                             aggregate: "count"
+                        },
+                        {
+                            field: "valorUnitario",
+                            aggregate: "sum"
                         },
                         {
                             field: "precoReal",
@@ -242,22 +165,137 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             field: "despesareal",
                             aggregate: "sum"
                         }
-                    ],
 
+                    ]
                 },
+                aggregate: [{
+                        field: "razaosocialFornecedor",
+                        aggregate: "count"
+                    },
+                    {
+                        field: "valorUnitario",
+                        aggregate: "sum"
+                    },
+                    {
+                        field: "precoReal",
+                        aggregate: "sum"
+                    },
+                    {
+                        field: "vale",
+                        aggregate: "sum"
+                    },
+                    {
+                        field: "despesareal",
+                        aggregate: "sum"
+                    }
+                ],
+            });
 
-                columns: [
-                        // { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" },    
-                        {
-                            command: ["edit"],
-                            title: "&nbsp;",
-                            width: "150px"
+
+            //Se não houver essa declaração, ele retorna erro dizendo que não encontrou o metodo e não exporta o pdf
+            var detailColsVisibility = {};
+
+            dataSource.fetch().then(function() {
+                var data = dataSource.data();
+
+                // initialize a Kendo Grid with the returned data from the server.
+                $("#grid").kendoGrid({
+                    toolbar: ["excel", "pdf"],
+                    excel: {
+                        fileName: "Relatório de " + document.title + ".xlsx",
+                        allPages: true
+                        // proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
+                        // filterable: true
+                    },
+                    excelExport: function(e) {
+
+                        var sheet = e.workbook.sheets[0];
+
+                        sheet.frozenRows = 1;
+                        sheet.mergedCells = ["A1:F1"];
+                        sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
+
+                        var myHeaders = [{
+                            value: "Relatório de " + document.title,
+                            textAlign: "center",
+                            background: "black",
+                            color: "#ffffff"
+                        }];
+
+                        sheet.rows.splice(0, 0, {
+                            cells: myHeaders,
+                            type: "header",
+                            height: 20
+                        });
+                    },
+
+                    pdf: {
+                        fileName: "Relatório de " + document.title + ".pdf",
+
+                        allPages: true,
+                        avoidLinks: true,
+                        paperSize: "A4",
+                        margin: {
+                            top: "2.5cm",
+                            left: "0.1cm",
+                            right: "0.1cm",
+                            bottom: "0.5cm"
+                        },
+
+                        @if (isset($orientacao))
+                            landscape: true,
+                        @else
+                            landscape: true,
+                        @endif
+
+                        repeatHeaders: false,
+                        template: $("#page-template").html(),
+                        scale: 0.48
+                    },
+                    filterable: {
+                        extra: false,
+                        mode: "row"
+                    },
+                    sortable: true,
+                    resizable: true,
+                    scrollable: true,
+                    groupable: true,
+                    columnMenu: true,
+                    responsible: true,
+                    reorderable: true,
+                    width: 'auto',
+                    pageable: {
+                        pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                        numeric: false,
+
+                    },
+                    dataSource: dataSource,
+
+
+                    columns: [{
+                            command: [{
+                                name: "Editar",
+                                iconClass: "k-icon k-i-pencil",
+                                click: function(e) {
+                                    e.preventDefault();
+                                    var tr = $(e.target).closest(
+                                        "tr"); // get the current table row (tr)
+                                    var data = this.dataItem(tr);
+                                    rota = 'modaledicaodespesas/' + data.id + '';
+                                    $('#frameatualizadepesa').attr('src', rota);
+                                    $('#tituloModal').text("Despesa id " + data.id +
+                                        " - " + data.descricaoDespesa);
+                                    $('.atualizadepesa').modal('toggle');
+                                }
+                            }],
+                            width: 90,
+                            exportable: false,
                         },
                         {
                             field: "id",
                             title: "ID",
                             filterable: true,
-                            autowidth: true
+                            width: 100,
                         },
                         {
                             field: "apelidoConta",
@@ -323,8 +361,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                             decimals: 2,
                             aggregates: ["sum"],
-                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                            footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
                             format: '{0:0.00}'
                         },
                         {
@@ -334,8 +372,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                             decimals: 2,
                             aggregates: ["sum"],
-                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                            footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
                             format: '{0:0.00}'
                         },
                         {
@@ -345,8 +383,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                             decimals: 2,
                             aggregates: ["sum"],
-                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                            footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
                             format: '{0:0.00}'
                         },
                         {
@@ -356,8 +394,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                             decimals: 2,
                             aggregates: ["sum"],
-                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                            footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
                             format: '{0:0.00}'
                         },
                         {
@@ -365,21 +403,36 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             title: "PG<br>Vale",
                             filterable: true,
                             width: 200,
-                            format: "{0:dd/MM/yyyy}"
+                            format: "{0:dd/MM/yyyy}",
+                            filterable: {
+                                cell: {
+                                    template: betweenFilter
+                                }
+                            }
                         },
                         {
                             field: "dataDaCompra",
                             title: "Data da Compra",
                             filterable: true,
                             width: 200,
-                            format: "{0:dd/MM/yyyy}"
+                            format: "{0:dd/MM/yyyy}",
+                            filterable: {
+                                cell: {
+                                    template: betweenFilter
+                                }
+                            }
                         },
                         {
                             field: "dataDoTrabalho",
                             title: "Data do Trabalho",
                             filterable: true,
                             width: 200,
-                            format: "{0:dd/MM/yyyy}"
+                            format: "{0:dd/MM/yyyy}",
+                            filterable: {
+                                cell: {
+                                    template: betweenFilter
+                                }
+                            }
                         },
                         {
                             field: "notaFiscal",
@@ -394,7 +447,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                         },
                         {
-                            field: "idbanco",
+                            field: "nomeBanco",
                             title: "Banco",
                             filterable: true,
                             width: 200,
@@ -418,7 +471,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             width: 200,
                         },
                         {
-                            field: "idFuncionario",
+                            field: "nomeFuncionario",
                             title: "Funcionário",
                             filterable: true,
                             width: 200,
@@ -429,105 +482,69 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             filterable: true,
                             width: 90
                         }
-                    ]
+                    ],
+                    editable: "popup",
 
-
-                    //     {
-                    //         command: [{
-                    //             name: "Ver",
-                    //             iconClass: "k-icon k-i-eye",
-                    //             click: function(e) {
-                    //                 e.preventDefault();
-                    //                 var tr = $(e.target).closest(
-                    //                     "tr"); // get the current table row (tr)
-                    //                 var data = this.dataItem(tr);
-                    //                 window.location.href = "@php echo env('APP_URL'); @endphp" + "/despesas/" +
-                    //                     data.id;
-                    //             }
-                    //         }],
-                    //         width: 90,
-                    //         exportable: false,
-                    //     },
-                    //     {
-                    //         command: [{
-                    //             name: "Editar",
-                    //             iconClass: "k-icon k-i-pencil",
-                    //             click: function(e) {
-                    //                 e.preventDefault();
-                    //                 var tr = $(e.target).closest(
-                    //                     "tr"); // get the current table row (tr)
-                    //                 var data = this.dataItem(tr);
-                    //                 window.location.href = "@php echo env('APP_URL'); @endphp" + "/despesas/" +
-                    //                     data.id + '/edit';
-                    //             }
-                    //         }],
-                    //         width: 90,
-                    //         exportable: false,
-                    //     },
-                    // ],
-                    ,
-                editable: "popup",
-
-                groupExpand: function(e) {
-                    for (let i = 0; i < e.group.items.length; i++) {
-                        var expanded = e.group.items[i].value
-                        e.sender.expandGroup(".k-grouping-row:contains(" + expanded + ")");
-                    }
-                },
-                columnMenu: true,
-                dataBound: function(e) {
-                    var grid = this;
-                    var columns = grid.columns;
-                    // populate initial columns list if the detailColsVisibility object is empty
-                    if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
-                        for (var i = 0; i < columns.length; i++) {
-                            detailColsVisibility[columns[i].field] = !columns[i].hidden;
+                    groupExpand: function(e) {
+                        for (let i = 0; i < e.group.items.length; i++) {
+                            var expanded = e.group.items[i].value
+                            e.sender.expandGroup(".k-grouping-row:contains(" + expanded + ")");
                         }
-                    } else {
-                        // restore columns visibility state using the stored values
-                        for (var i = 0; i < columns.length; i++) {
-                            var column = columns[i];
-                            if (detailColsVisibility[column.field]) {
-                                grid.showColumn(column);
-                            } else {
-                                grid.hideColumn(column);
+                    },
+                    columnMenu: true,
+                    dataBound: function(e) {
+                        var grid = this;
+                        var columns = grid.columns;
+                        // populate initial columns list if the detailColsVisibility object is empty
+                        if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
+                            for (var i = 0; i < columns.length; i++) {
+                                detailColsVisibility[columns[i].field] = !columns[i].hidden;
+                            }
+                        } else {
+                            // restore columns visibility state using the stored values
+                            for (var i = 0; i < columns.length; i++) {
+                                var column = columns[i];
+                                if (detailColsVisibility[column.field]) {
+                                    grid.showColumn(column);
+                                } else {
+                                    grid.hideColumn(column);
+                                }
                             }
                         }
+                    },
+                    columnHide: function(e) {
+                        // hide column in all other detail Grids
+                        showHideAll(false, e.column.field, e.sender.element);
+                        // store new visibility state of column
+                        detailColsVisibility[e.column.field] = false;
+                    },
+                    columnShow: function(e) {
+                        // show column in all other detail Grids
+                        showHideAll(true, e.column.field, e.sender.element);
+                        // store new visibility state of column
+                        detailColsVisibility[e.column.field] = true;
                     }
-                },
-                columnHide: function(e) {
-                    // hide column in all other detail Grids
-                    showHideAll(false, e.column.field, e.sender.element);
-                    // store new visibility state of column
-                    detailColsVisibility[e.column.field] = false;
-                },
-                columnShow: function(e) {
-                    // show column in all other detail Grids
-                    showHideAll(true, e.column.field, e.sender.element);
-                    // store new visibility state of column
-                    detailColsVisibility[e.column.field] = true;
+                });
+
+
+                function showHideAll(show, field, element) {
+                    // find the master Grid element
+                    var parentGridElement = element.parents(".k-grid");
+                    // find all Grid widgets inside the mater Grid element
+                    var detailGrids = parentGridElement.find(".k-grid");
+                    //traverse detail Grids and show/hide the column with the given field name
+                    for (var i = 0; i < detailGrids.length; i++) {
+                        var grid = $(detailGrids[i]).data("kendoGrid");
+                        if (show) {
+                            grid.showColumn(field);
+                        } else {
+                            grid.hideColumn(field);
+                        }
+                    }
                 }
+
             });
-
-
-            function showHideAll(show, field, element) {
-                // find the master Grid element
-                var parentGridElement = element.parents(".k-grid");
-                // find all Grid widgets inside the mater Grid element
-                var detailGrids = parentGridElement.find(".k-grid");
-                //traverse detail Grids and show/hide the column with the given field name
-                for (var i = 0; i < detailGrids.length; i++) {
-                    var grid = $(detailGrids[i]).data("kendoGrid");
-                    if (show) {
-                        grid.showColumn(field);
-                    } else {
-                        grid.hideColumn(field);
-                    }
-                }
-            }
-
         });
-
         $(window).on('load', function() {
 
                     var $myDiv = $('#grid');
@@ -554,6 +571,34 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         }
 
                     });
+
+                function recarrega() {
+                    $('#grid').data('kendoGrid').dataSource.read();
+                    $('#grid').data('kendoGrid').refresh();
+
+                    let timerInterval
+                    Swal.fire({
+                        title: 'Atualizando tabela!',
+                        html: 'Fechando mensagem em <b></b> millisegundos.',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('Mensagem fechada pelo temporizador')
+                        }
+                    })
+                }
 
                 @include('layouts/filtradata')
     </script>
