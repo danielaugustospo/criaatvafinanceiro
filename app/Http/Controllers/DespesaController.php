@@ -1017,7 +1017,7 @@ class DespesaController extends Controller
                     ->with( 'paginaModal', $paginaModal  )
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
             }
-            else{
+            elseif((int)$request->get('paginaModal') == 0){
                 return redirect()->route('despesas.show', ['id' => $despesa->id])
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
             }
