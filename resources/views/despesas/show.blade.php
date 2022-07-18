@@ -2,6 +2,13 @@
 @section('content')
 
 
+@php  
+    if($message = Session::get('success')){
+        $paginaModal = true;
+    }
+@endphp
+        
+
 @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>

@@ -56,7 +56,7 @@ use App\Providers\AppServiceProvider;
                             @can('despesa-list')
                                 {{-- <a class="dropdown-item" href="{{ route('despesas.index') }}">Listar todas</a> --}}
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modaldepesas" style="cursor:pointer;">Pesquisar por despesa</a>
-                                <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');" class="dropdown-item" href="#" style="cursor:pointer;">Pesquisar Despesas (completo)</a>
+                                <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');" class="dropdown-item" href="#" style="cursor:pointer; color:red;">Pesquisar Despesas (completo)</a>
 
                             @endcan
                             @can('despesa-create')

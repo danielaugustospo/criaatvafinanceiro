@@ -19,6 +19,3 @@
       </div>
     </div>
 </div>
-<script>
-  document.getElementById(<?php echo $idFrame; ?>).contentWindow.location.reload();
-</script>
