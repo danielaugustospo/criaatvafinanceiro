@@ -26,6 +26,10 @@ Route::get('/modaltipomateriais', function () { return view('products.camposmoda
 Route::get('/modalcodigodespesa', function () { return view('codigodespesas.camposmodal'); });
 Route::get('/modalfornecedor', function () { return view('fornecedores.camposmodal'); });
 
+Route::get('/modaledicaodespesas/{id}', 'DespesaController@editamodal')->name('modaledicaodespesas');
+
+
+
 //Rotas de relatório
 // Route::get('/relatorio', function () { return view('relatorio.index'); })->name('relatorio');
 Route::get('/fatporcliente', function () { return view('relatorio.fatporcliente.index'); });
@@ -90,8 +94,6 @@ Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name(
 
 Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
 Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
-
-// Route::get('/apiteste', 'BensPatrimoniaisController@apiteste')->name('apiteste');
 
 
 Route::post('/salvarmodalgrupodespesa', 'GrupoDespesaController@salvarmodalgrupodespesa')->name('salvarmodalgrupodespesa');

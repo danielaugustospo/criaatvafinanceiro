@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 @include('layouts/helpersview/mensagemRetorno')
+@isset($paginaModal)
+@else  
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -25,22 +26,9 @@
         </div>
     </div>
 </div>
+@endisset
 
 
-
-
-{!! Form::model($despesa, ['method' => 'PATCH','route' => ['despesas.update', $despesa->id]]) !!}
-  
-@include('despesas/campos')
-
- 
-<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-    <button type="submit" class="btn btn-primary">Salvar</button>
-</div>
-{!! Form::hidden('id', $despesa->id, ['class' => 'form-control', 'maxlength' => '500']) !!}
-{!! Form::hidden('idAlteracaoUsuario', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
-
-{!! Form::close() !!}
-
+@include('despesas/updateform')
 
 @endsection
