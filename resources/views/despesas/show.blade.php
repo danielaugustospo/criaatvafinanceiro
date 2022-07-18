@@ -3,7 +3,7 @@
 
 
 @php  
-    if($message = Session::get('success')){
+    if($message = Session::get('paginaModal')){
         $paginaModal = true;
     }
 @endphp
