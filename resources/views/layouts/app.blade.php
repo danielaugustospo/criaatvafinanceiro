@@ -12,26 +12,28 @@
     @include('layouts/include')
     @include('layouts/scripts')
     @include('layouts/estilo')
-    
+
 </head>
 
 <body style="background-image: url('{{ config('app.url') }}/img/BACKGROUND-TOP.jpg');">
     <div id="app">
         @isset($paginaModal)
-        @else  
-        @include('layouts/navbar')
+        @else
+            @include('layouts/navbar')
         @endisset
         <main class="py-4" style="margin-bottom: 50px;">
-            <div class="m-2 justify-content-center" >
+            <div class="m-2 justify-content-center">
                 @yield('content')
             </div>
         </main>
     </div>
     @isset($paginaModal)
     @else
-    <div class="footer fixed-bottom" style="background-color: black;">
-        <p class="text-center text-primary"><small>Desenvolvido por DanielTECH</small></p>
-    </div>
+        <div class="footer fixed-bottom" style="background-color: black;">
+            <p class="text-center text-primary"><small>Desenvolvido por DanielTECH -
+                @php function getVersion(){ return exec('git tag'); } echo getVersion(); @endphp
+            </small></p>
+        </div>
     @endisset
 </body>
 
