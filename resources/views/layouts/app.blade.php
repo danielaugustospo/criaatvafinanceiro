@@ -31,7 +31,7 @@
     @else
         <div class="footer fixed-bottom" style="background-color: black;">
             <p class="text-center text-primary"><small>Desenvolvido por DanielTECH -
-                @php function getVersion(){ return exec('git tag'); } echo getVersion(); @endphp
+                @php function getVersion(){  $hash = exec("git rev-list --tags --max-count=1"); return exec("git describe --tags $hash"); } echo getVersion(); @endphp
             </small></p>
         </div>
     @endisset
