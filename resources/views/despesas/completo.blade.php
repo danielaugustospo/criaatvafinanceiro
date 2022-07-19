@@ -301,19 +301,13 @@ $idFrame = 'frameatualizadepesa';
                             field: "apelidoConta",
                             title: "C/C",
                             filterable: true,
-                            width: 200,
-                        },
-                        {
-                            field: "nomeFormaPagamento",
-                            title: "Forma Pagamento",
-                            filterable: true,
-                            width: 200,
+                            width: 120,
                         },
                         {
                             field: "despesaCodigoDespesa",
                             title: "Cód.<br>Despesa",
                             filterable: true,
-                            width: 200,
+                            width: 120,
                         },
                         {
                             field: "idOS",
@@ -331,7 +325,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "razaosocialFornecedor",
                             title: "Fornecedor",
                             filterable: true,
-                            width: 200,
+                            width: 120,
                             aggregates: ["count"],
                             footerTemplate: "QTD. Total: #=count#",
                             groupHeaderColumnTemplate: "Qtd.: #=count#"
@@ -349,16 +343,10 @@ $idFrame = 'frameatualizadepesa';
                             }
                         },
                         {
-                            field: "quantidade",
-                            title: "Quantidade",
+                            field: "precoReal",
+                            title: "Valor",
                             filterable: true,
-                            width: 200,
-                        },
-                        {
-                            field: "valorUnitario",
-                            title: "Valor Unitário",
-                            filterable: true,
-                            width: 200,
+                            width: 120,
                             decimals: 2,
                             aggregates: ["sum"],
                             groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
@@ -366,10 +354,34 @@ $idFrame = 'frameatualizadepesa';
                             format: '{0:0.00}'
                         },
                         {
-                            field: "precoReal",
-                            title: "Valor",
+                            field: "notaFiscal",
+                            title: "NF",
                             filterable: true,
-                            width: 200,
+                            width: 100,
+                        },
+                        {
+                            field: "pago",
+                            title: "Pago",
+                            filterable: true,
+                            width: 90
+                        },
+                        {
+                            field: "nomeFormaPagamento",
+                            title: "Forma Pagamento",
+                            filterable: true,
+                            width: 150,
+                        },
+                        {
+                            field: "quantidade",
+                            title: "Quantidade",
+                            filterable: true,
+                            width: 150,
+                        },
+                        {
+                            field: "valorUnitario",
+                            title: "Valor Unitário",
+                            filterable: true,
+                            width: 150,
                             decimals: 2,
                             aggregates: ["sum"],
                             groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
@@ -380,7 +392,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "vale",
                             title: "Vale",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                             decimals: 2,
                             aggregates: ["sum"],
                             groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
@@ -391,7 +403,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "despesareal",
                             title: "Valor<br>Final",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                             decimals: 2,
                             aggregates: ["sum"],
                             groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
@@ -402,7 +414,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "datavale",
                             title: "PG<br>Vale",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                             format: "{0:dd/MM/yyyy}",
                             filterable: {
                                 cell: {
@@ -414,7 +426,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "dataDaCompra",
                             title: "Data da Compra",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                             format: "{0:dd/MM/yyyy}",
                             filterable: {
                                 cell: {
@@ -426,7 +438,7 @@ $idFrame = 'frameatualizadepesa';
                             field: "dataDoTrabalho",
                             title: "Data do Trabalho",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                             format: "{0:dd/MM/yyyy}",
                             filterable: {
                                 cell: {
@@ -435,52 +447,40 @@ $idFrame = 'frameatualizadepesa';
                             }
                         },
                         {
-                            field: "notaFiscal",
-                            title: "NF",
-                            filterable: true,
-                            width: 200,
-                        },
-                        {
                             field: "quemcomprou",
                             title: "Quem Comprou",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                         },
                         {
                             field: "nomeBanco",
                             title: "Banco",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                         },
                         {
                             field: "cheque",
                             title: "Cheque",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                         },
                         {
                             field: "reembolsado",
                             title: "Reembolsado",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                         },
                         {
                             field: "despesaFixa",
                             title: "Despesa Fixa",
                             filterable: true,
-                            width: 200,
+                            width: 150,
                         },
                         {
                             field: "nomeFuncionario",
                             title: "Funcionário",
                             filterable: true,
-                            width: 200,
-                        },
-                        {
-                            field: "pago",
-                            title: "Pago",
-                            filterable: true,
-                            width: 90
+                            width: 150,
                         }
                     ],
                     editable: "popup",
