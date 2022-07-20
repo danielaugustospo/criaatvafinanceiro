@@ -10,6 +10,7 @@
     $saldoInicial   = $saldoInicial;
     $saldoFinal     = $saldoFinal;
     $contacorrente     = 1;
+    $relatorioKendoGrid = true;
 
     $urlContaCorrente = route('apiextratocontarelatorio');
 
