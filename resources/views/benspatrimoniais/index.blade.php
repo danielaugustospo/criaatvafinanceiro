@@ -1,3 +1,4 @@
+@php $relatorioKendoGrid = true; @endphp
 <head>
   <meta charset="utf-8"> 
   <title>Bens Patrimoniais</title>

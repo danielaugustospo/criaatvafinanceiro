@@ -4,6 +4,7 @@
     $titulo     = "'OS' Recebidas Por Cliente";
     $campodata  = 'dataCriacaoOrdemdeServico';
     $campodata2 = 'datapagamentoreceita';
+    $relatorioKendoGrid = true;
 
 ?>
 <head>

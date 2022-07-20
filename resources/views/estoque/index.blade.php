@@ -3,6 +3,8 @@ $intervaloCelulas = 'A1:H1';
 $rotaapi = 'api/apiestoque';
 $titulo = 'Estoque';
 
+$relatorioKendoGrid = true;
+
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 

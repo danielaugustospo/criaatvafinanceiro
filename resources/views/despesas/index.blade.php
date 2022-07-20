@@ -3,6 +3,7 @@ $intervaloCelulas = 'A1:K1';
 $rotaapi = 'api/apidespesas';
 $titulo = 'Despesas';
 $campodata = 'vencimento';
+$relatorioKendoGrid = true;
 if (isset($despesas)) {
     $despesas = $despesas;
 } else {
@@ -69,6 +70,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     }
                 }
             },
+            pageSize: 30,
             batch: true,
             schema: {
 

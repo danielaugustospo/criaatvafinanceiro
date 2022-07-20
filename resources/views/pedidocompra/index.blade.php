@@ -1,5 +1,6 @@
 <?php 
     $campodata = 'ped_data';
+    $relatorioKendoGrid = true;
 ?>
 <head>
     <meta charset="utf-8">

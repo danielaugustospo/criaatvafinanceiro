@@ -3,6 +3,8 @@ $intervaloCelulas = "A1:F1";
 $rotaapi = "api/apidespesas";
 $titulo  = "Reembolso";
 $campodata = 'vencimento';
+$relatorioKendoGrid = true;
+
 if (isset($despesas)) {
     $despesas = $despesas;
 } else {

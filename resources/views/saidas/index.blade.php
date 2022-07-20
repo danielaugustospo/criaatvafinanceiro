@@ -5,6 +5,9 @@ $titulo = 'Estoque - Saídas (Baixa de Material)';
 $campodata  = 'dataretirada';
 $campodata2 = 'datapararetorno';
 
+$relatorioKendoGrid = true;
+
+
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 
