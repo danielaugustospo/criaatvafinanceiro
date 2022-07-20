@@ -3,6 +3,7 @@
     $rotaapi = "apiconsultaos";
     $titulo  = "OS Cadastradas";
     $campodata = 'dataCriacaoOrdemdeServico';
+    $relatorioKendoGrid = true;
 
 ?>
 <head>

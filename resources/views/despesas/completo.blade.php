@@ -4,6 +4,7 @@ $rotaapi = 'api/apidespesas';
 $rotaapiupdate = 'api/apicreatedespesas';
 $titulo = 'Despesas (Geral)';
 $campodata = 'vencimento';
+$relatorioKendoGrid = true;
 if (isset($despesas)) {
     $despesas = $despesas;
 } else {
