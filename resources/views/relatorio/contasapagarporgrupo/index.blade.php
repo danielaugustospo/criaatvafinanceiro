@@ -3,6 +3,8 @@
     $rotaapi = "api/apidespesas";
     $titulo  = "Despesas A Pagar";
     $campodata = 'vencimento';
+    $relatorioKendoGrid = true;
+    
     if (isset($despesas)) {
         $despesas = $despesas;
     } else {
