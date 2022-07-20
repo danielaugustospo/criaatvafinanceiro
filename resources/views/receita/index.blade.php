@@ -3,6 +3,8 @@ $intervaloCelulas = 'A1:F1';
 $rotaapi = 'api/apireceita';
 $titulo = 'Consulta de Receitas';
 $campodata = 'datapagamentoreceita';
+$relatorioKendoGrid = true;
+
 if (isset($receita)) {
     $receita = $receita;
 } else {

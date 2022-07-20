@@ -4,6 +4,7 @@
     $titulo     = "Notas Emitidas - FORNECEDOR";
     $campodata  = 'dataemissaoreceita';
     $campodata2 = 'datapagamentoreceita';
+    $relatorioKendoGrid = true;
 
 ?>
 <head>

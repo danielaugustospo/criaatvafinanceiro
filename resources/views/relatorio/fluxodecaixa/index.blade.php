@@ -6,10 +6,12 @@
     $contaSelecionada = $contaSelecionada; 
     $datainicial      = $datainicial;
     $datafinal        = '0';
+    $relatorioKendoGrid = true;
     // $conta            = $conta;
     // $saldoInicial     = $saldoInicial;
     // $saldoFinal       = $saldoFinal;
     // $contacorrente    = 1;
+
 
     $urlContaCorrente = route('apifluxodecaixa');
 

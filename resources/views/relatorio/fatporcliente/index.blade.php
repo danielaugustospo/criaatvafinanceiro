@@ -1,5 +1,7 @@
 <?php
     $titulo  = "Faturamento por Cliente";
+    $relatorioKendoGrid = true;
+
 ?>
 
 <head>

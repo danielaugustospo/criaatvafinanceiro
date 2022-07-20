@@ -3,6 +3,7 @@
     $rotaapi = "apidadosreceitaos";
     $titulo  = "Notas Fiscais Emitidas - CRIAATVA";
     $campodata = 'dataemissaoreceita';
+    $relatorioKendoGrid = true;
 
 ?>
 <head>

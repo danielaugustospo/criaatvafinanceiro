@@ -1,5 +1,5 @@
+@php $relatorioKendoGrid = true; @endphp
 @extends('layouts.app')
-
 
 @section('content')
     <div class="row">

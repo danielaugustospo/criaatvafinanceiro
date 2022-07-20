@@ -3,6 +3,7 @@
     $rotaapi = "apicontasareceber";
     $titulo  = "Contas a Receber";
     $campodata = 'datapagamentoreceita';
+    $relatorioKendoGrid = true;
 
 ?>
 <head>

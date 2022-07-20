@@ -5,6 +5,8 @@
     
     $titulo  = "Entrada Por Conta Bancária";
     $campodata = 'datapagamentoreceita';
+    $relatorioKendoGrid = true;
+
 
 ?>
 <head>

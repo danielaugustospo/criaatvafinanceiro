@@ -10,15 +10,19 @@
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
+{{-- TODO: Alterar a forma que o kendo grid é carregado --}}
+
 @isset($paginaModal)
 @else
-<script src="{{ asset('js/kendogrid/kendo.all.min.js') }}"></script>
-<script src="{{ asset('js/kendogrid/messages.pt-BR.min.js') }}"></script>
-
-    <!-- Carrega Pako ZLIB library para habilitar a compressão PDF -->
-    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/pako_deflate.min.js"></script>
-    <script src="{{ asset('js/kendogrid/kendo.culture.pt-BR.min.js') }}"></script>
+    @isset($relatorioKendoGrid)
+        <script src="{{ asset('js/kendogrid/kendo.all.min.js') }}"></script>
+        <script src="{{ asset('js/kendogrid/messages.pt-BR.min.js') }}"></script>
+        <!-- Carrega Pako ZLIB library para habilitar a compressão PDF -->
+        <script src="https://kendo.cdn.telerik.com/2021.2.616/js/pako_deflate.min.js"></script>
+        <script src="{{ asset('js/kendogrid/kendo.culture.pt-BR.min.js') }}"></script>
+    @endisset
 @endisset
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
 
 @if (isset($legadoDatatables))
