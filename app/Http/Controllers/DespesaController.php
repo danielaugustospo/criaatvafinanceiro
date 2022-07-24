@@ -19,6 +19,7 @@ use App\Classes\Logger;
 use Auth;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 use App\Estoque;
+use stdClass;
 
 class DespesaController extends Controller
 {
@@ -38,11 +39,12 @@ class DespesaController extends Controller
         $this->middleware('permission:despesa-delete', ['only' => ['destroy']]);
 
         //Importação do Logger
-        $this->Logger = new Logger();
+        $this->Logger           = new Logger();
 
-        $this->acao =  request()->segment(count(request()->segments()));
-        $this->valorInput = null;
+        $this->acao             =  request()->segment(count(request()->segments()));
+        $this->valorInput       = null;
         $this->valorSemCadastro = null;
+        $this->infoSelectVazio  = '<option value="">NÃO INFORMADO</option>';
 
 
         if ($this->acao == 'create') {
@@ -105,6 +107,7 @@ class DespesaController extends Controller
 
     public function apidespesas(Request $request)
     {
+        
         // TODO: Montar filtro genérico de despesas
 
         $descricao = $this->montaFiltrosConsulta($request);
@@ -397,56 +400,64 @@ class DespesaController extends Controller
         echo json_encode($arrayRetorno);
     }
 
+
     private function montaFiltrosConsulta($request)
     {
         $descricao = "";
         $verificaInputCampos = 0;
-        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
+        if (isset($request->idSalvo)) {
+            //Verificação após retorno de lançamento de mais de uma despesa
+            $idSalvos = implode(",", $request->idSalvo);
+            $descricao .= "AND d.id in ($idSalvos)";
+            $verificaInputCampos++;
+        }
+
+        if (isset($request->despesas)) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
             $verificaInputCampos++;
         endif;
 
-        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
+        if (isset($request->coddespesa)) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
             $verificaInputCampos++;
         endif;
-        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
+        if (isset($request->fornecedor)) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
             $verificaInputCampos++;
         endif;
-        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
+        if (isset($request->ordemservico)) : $descricao .= " AND d.idOS = '$request->ordemservico'";
             $verificaInputCampos++;
         endif;
-        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
+        if (isset($request->valor)) :        $descricao .= " AND d.precoReal = '$request->valor'";
             $verificaInputCampos++;
         endif;
-        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
+        if (isset($request->conta)) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
             $verificaInputCampos++;
         endif;
-        if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
+        if (isset($request->prolabore)) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
             $verificaInputCampos++;
         endif;
-        if ($request->reembolso) : $descricao .= " AND d.reembolsado != '0'";
-            $verificaInputCampos++;
-        endif;
-
-
-        if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->fixavariavel) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
+        if (isset($request->reembolso)) : $descricao .= " AND d.reembolsado != '0'";
             $verificaInputCampos++;
         endif;
 
 
-        if ($request->dtfim) :        $datafim    = $request->dtfim;
+        if (isset($request->notafiscal)) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
+            $verificaInputCampos++;
+        endif;
+        if (isset($request->cliente)) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
+            $verificaInputCampos++;
+        endif;
+        if (isset($request->fixavariavel)) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
+            $verificaInputCampos++;
+        endif;
+        if (isset($request->pago)) :        $descricao .= " AND d.pago = '$request->pago'";
+            $verificaInputCampos++;
+        endif;
+
+
+        if (isset($request->dtfim)) :        $datafim    = $request->dtfim;
         elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
         endif;
 
-        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
+        if (isset($request->dtinicio)) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
         elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
             $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
         endif;
@@ -499,6 +510,10 @@ class DespesaController extends Controller
     private function verificaRelatorio($request)
     {
 
+        if ($request == null) {
+            $rotaRetorno = 'despesas.index';
+            return $rotaRetorno;
+        }
         $rotaRetorno = 'despesas.index';
 
         if ($request->get('tpRel') ==  'pesquisadespesascompleto') :
@@ -562,8 +577,10 @@ class DespesaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+
+
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
         where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
@@ -574,11 +591,16 @@ class DespesaController extends Controller
         $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
         $precoReal = " ";
         $vale = " ";
-        $valorInput = $this->valorInput;
-        $valorSemCadastro = $this->valorSemCadastro;
+        $valorInput             = $this->valorInput;
+        $valorSemCadastro       = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
-        return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        $infoSelectVazio        = $this->infoSelectVazio;
+        if (isset($request->paginaModal)) :   
+            $paginaModal = true;
+            return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
+        endif;
+        return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
 
@@ -593,28 +615,119 @@ class DespesaController extends Controller
         $despesa = new Despesa();
 
         $request->validate([
-
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
             'despesaFixa'               => 'required',
         ]);
 
-        $verificaCompra =  $request->get('a');
+        $this->processaRequisicaoDeNaoCompraECompra($despesa, $request);
 
-        if ($verificaCompra == 'S') : $despesa->ehcompra = 1;
-        else :
+        $compraparcelada =  $request->get('compraparcelada');
+        $verificaCompra =  $request->get('a');
+        $idSalvo = [];
+        if ($verificaCompra == 'S') {
+            $despesa->ehcompra = 1;
+
+            $this->processaCompra($despesa, $request, $compraparcelada, $idSalvo);
+            $tamanhoArraySalvos = count($idSalvo);
+
+            if ($tamanhoArraySalvos == 1) {
+                if ($request->get('tpRetorno') == 'visualiza') {
+                    $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
+
+
+                    if ((int)$request->get('paginaModal') == 1) {
+                        $paginaModal = true;
+                        return redirect()->route('despesas.show', ['id' => $despesa->id])
+                        ->with('paginaModal', $paginaModal)
+                        ->with('success', $mensagemExito);
+                            
+                    } elseif ((int)$request->get('paginaModal') == 0) {
+                        return redirect()->route('despesas.show', ['id' => $despesa->id])
+                        ->with('success', $mensagemExito);
+                    }
+
+                }
+            } elseif ($tamanhoArraySalvos > 1) {
+
+                $dados = new Request();
+
+                $dados->idSalvo = [];
+                $dados->idSalvo = $idSalvo;
+                $this->apidespesas($dados);
+                $rota = $this->verificaRelatorio($acesso = null);
+
+                $consulta       = '';
+                $despesas       = '';
+                $valor          = '';
+                $dtinicio       = '';
+                $dtfim          = '';
+                $coddespesa     = '';
+                $fornecedor     = '';
+                $ordemservico   = '';
+                $conta          = '';
+                $notafiscal     = '';
+                $cliente        = '';
+                $fixavariavel   = '';
+                $pago           = '';
+
+
+                $idSalvos = implode(",", $dados->idSalvo);
+
+                $mensagemExito = 'Despesas id ' . $idSalvos . ' cadastradas com êxito.';
+
+
+
+                if ((int)$request->get('paginaModal') == 1) {
+                    $paginaModal = true;
+
+                    return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'paginaModal'));
+                    
+                } elseif ((int)$request->get('paginaModal') == 0) {
+
+                    return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito'));
+                }
+
+
+            }
+        } else {
             $request->validate(
                 ['descricaoDespesaNaoCompra' => 'required'],
                 ['descricaoDespesaNaoCompra.required' => 'Informe a descrição da despesa']
             );
             $despesa->ehcompra = 0;
-
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
+            $this->processaNaoCompra($despesa, $request);
+        }
 
-        endif;
+        $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
 
-        $compraparcelada =  $request->get('compraparcelada');
+        if ($request->get('tpRetorno') == 'visualiza') {
 
+
+            if ((int)$request->get('paginaModal') == 1) {
+                $paginaModal = true;
+
+                return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito)
+                ->with('paginaModal', $paginaModal);
+                
+                    
+            } elseif ((int)$request->get('paginaModal') == 0) {
+                return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito);
+            }
+        }
+
+
+        elseif ($request->get('tpRetorno') == 'novo'){  $rotaRetorno = 'despesas.create';
+        }else { 
+            $rotaRetorno = 'despesas.index';
+        }
+        return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
+
+    }
+
+    public function processaRequisicaoDeNaoCompraECompra(&$despesa, &$request)
+    {
         $despesa->idFuncionario         =  $request->get('idFuncionario');
         $despesa->idFornecedor          =  $request->get('idFornecedor');
 
@@ -639,18 +752,17 @@ class DespesaController extends Controller
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
         $despesa->insereestoque         =  (int)$request->get('inserirestoque');
+    }
 
-
-
+    public function processaCompra(&$despesa, &$request, &$compraparcelada, &$idSalvo)
+    {
         if ($compraparcelada == 'S') {
 
-
-            $quantidade = $request->get('quantidadeTabela');
+            $quantidade             = $request->get('quantidadeTabela');
             $tamanhoArrayQuantidade = count($quantidade);
 
             for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
                 $despesa = new Despesa();
-
 
                 $despesa->ehcompra              =  1;
                 $despesa->idOS                  =  $request->get('idOSTabela')[$i];
@@ -662,6 +774,8 @@ class DespesaController extends Controller
 
                 $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
                 $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabela')[$i]);
+
+                $despesa->insereestoque         =  (int)$request->get('inserirestoque');
 
                 if ($despesa->insereestoque == 0) {
                     $despesa->descricaoDespesa      =  $request->get('descricaoTabelaSemEstoque')[$i];
@@ -692,6 +806,8 @@ class DespesaController extends Controller
                 $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
                 $despesa->save();
+                $idSalvo[$i] = $despesa->id;
+
                 // if($request->inserirestoque == '1'){
                 //     $salvaEstoque  = Estoque::create([
                 //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
@@ -704,47 +820,108 @@ class DespesaController extends Controller
             }
         } elseif ($compraparcelada == 'N') {
 
+            if ($request->get('unicadespesa') == '0') {
+                $quantidade = $request->get('quantidadeTabelaMultiplo');
+                $tamanhoArrayQuantidade = count($quantidade);
 
-            //É compra, mas não é parcelada
-            if (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1)) :
+                for ($i = 0; $i < $tamanhoArrayQuantidade; $i++) {
+                    $despesa = new Despesa();
+                    $despesa->ehcompra              =  1;
+                    $despesa->idOS                  =  $request->get('idOSTabelaMultiplo')[$i];
+                    $despesa->vencimento            =  $request->get('vencimentoTabelaMultiplo')[$i];
+                    $despesa->notaFiscal            =  $request->get('notaFiscalTabelaMultiplo')[$i];
+                    $despesa->pago                  =  $request->get('pagoTabelaMultiplo')[$i];
+                    $despesa->quantidade            =  $request->get('quantidadeTabelaMultiplo')[$i];
+                    $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioTabelaMultiplo')[$i]);
 
-                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
+                    $despesa->valorparcela          =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabelaMultiplo')[$i]);
+                    $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorparcelaTabelaMultiplo')[$i]);
+                    $despesa->insereestoque         =  (int)$request->get('inserirestoque');
 
-                $request->validate(
-                    ['descricaoDespesaCompra' => 'required'],
-                    ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
-                );
-            elseif (($despesa->ehcompra == 1) && ($despesa->insereestoque == 0)) :
-                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque'); //Input com o datalist aberto
-            endif;
+                    if ($despesa->insereestoque == 0) {
+                        $despesa->descricaoDespesa      =  $request->get('descricaoTabelaSemEstoqueMultiplo')[$i];
+                        $despesa->insereestoque         = 0;
+                    } else if ($despesa->insereestoque == 1) {
+                        $despesa->descricaoDespesa      =  $request->get('descricaoTabelaMultiplo')[$i];
+                        $despesa->insereestoque         = 1;
+                    }
 
-            $despesa->idOS                  =  $request->get('idOS');
-            $despesa->vencimento            =  $request->get('vencimento');
-            $despesa->notaFiscal            =  $request->get('notaFiscal');
-            $despesa->pago                  =  $request->get('pago')[0];
-            $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
-            $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
-            $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
+                    $despesa->idFornecedor          =  $request->get('idFornecedor');
+                    $despesa->idFormaPagamento      =  $request->get('idFormaPagamento');
+                    $despesa->conta                 =  $request->get('conta');
+                    $despesa->dataDaCompra          =  $request->get('dataDaCompra');
+                    $despesa->dataDoTrabalho        =  $request->get('dataDoTrabalho');
+                    $despesa->quemcomprou           =  $request->get('quemcomprou');
+                    $despesa->idBanco               =  $request->get('idBanco');
+                    $despesa->cheque                =  $request->get('cheque');
+                    $despesa->reembolsado           =  $request->get('reembolsado');
+                    $despesa->despesaFixa           =  $request->get('despesaFixa');
+                    $despesa->nRegistro             =  $request->get('nRegistro');
+                    $despesa->despesaCodigoDespesas =  $request->get('despesaCodigoDespesas');
+                    $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+                    $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
+                    $despesa->vale                  =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('vale'));
+                    $despesa->datavale              =  $request->get('datavale');
+                    $despesa->idDespesaPai          =  $request->get('idDespesaPai');
+                    $despesa->ativoDespesa          =  $request->get('ativoDespesa');
+                    $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
 
-            $despesa->save();
-            // if($request->inserirestoque == '1'){
-            //     $salvaEstoque  = Estoque::create([
-            //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
-            //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
-            //         'ativadoestoque'        => 1,
-            //         'excluidoestoque'       => 0,
-            //     ]);
-            // }
-            $this->logCadastraDespesas($despesa);
+                    $despesa->save();
+                    $idSalvo[$i] = $despesa->id;
+                    // if($request->inserirestoque == '1'){
+                    //     $salvaEstoque  = Estoque::create([
+                    //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
+                    //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                    //         'ativadoestoque'        => 1,
+                    //         'excluidoestoque'       => 0,
+                    //     ]);
+                    // }
+                    $this->logCadastraDespesas($despesa);
+                }
+            } elseif ($request->get('unicadespesa') == '1') {
+                $despesa->ehcompra              =  1;
+                $idSalvo                        = [];
+
+                $despesa->idOS                  =  $request->get('idOS');
+                $despesa->vencimento            =  $request->get('vencimento');
+                $despesa->notaFiscal            =  $request->get('notaFiscal');
+                $despesa->pago                  =  $request->get('pago')[0];
+                $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
+                $despesa->quantidade            =  $request->get('quantidade');
+                $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitario'));
+                $despesa->insereestoque         =  (int)$request->get('inserirestoque');
+
+                if ($despesa->insereestoque == 0) {
+                    $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque');
+                    $despesa->insereestoque         = 0;
+                } else if ($despesa->insereestoque == 1) {
+                    $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
+                    $despesa->insereestoque         = 1;
+                }
+
+                $despesa->save();
+                
+                $idSalvo[0] = $despesa->id;
+
+                // if($request->inserirestoque == '1'){
+                //     $salvaEstoque  = Estoque::create([
+                //         'codbarras'             => 'CRIAATVAD00'.$despesa->id,
+                //         'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                //         'ativadoestoque'        => 1,
+                //         'excluidoestoque'       => 0,
+                //     ]);
+                // }
+                $this->logCadastraDespesas($despesa);
+            }
         } elseif (($compraparcelada != 'N') && ($compraparcelada != 'S') && ($despesa->ehcompra != 0)) {
             return redirect()->route('despesas.index')
                 ->with('error', 'Ocorreu um erro ao salvar.');
         }
-        /* 
-        *   -------------------
-        *    Se não for compra
-        *   ------------------- 
-        */
+    }
+
+    public function processaNaoCompra(&$despesa, &$request)
+    {
+
         if ($despesa->ehcompra == 0) {
 
             $despesa->ehcompra              =  0;
@@ -765,19 +942,10 @@ class DespesaController extends Controller
             //     ]);
             // }
             $this->logCadastraDespesas($despesa);
+            return true;
         }
-        $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
-
-        if ($request->get('tpRetorno') == 'visualiza') :
-
-            return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito);
-
-        elseif ($request->get('tpRetorno') == 'novo') :  $rotaRetorno = 'despesas.create';
-        else : $rotaRetorno = 'despesas.index';
-        endif;
-
-        return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
     }
+
 
 
     /**
@@ -794,11 +962,26 @@ class DespesaController extends Controller
             return view('home', compact('mensagemErro'));
         }
 
-        $despesa = null; $listaContas = null; $codigoDespesa = null; $listaForncedores = null; $formapagamento = null; $todasOSAtivas = null; $todosOSBancos = null; $valorDespesa = null; $valorVale = null; $precoReal = null; $vale = null; $valorInput = null; $valorSemCadastro = null; $variavelReadOnlyNaView = null; $variavelDisabledNaView = null;
+        $despesa = null;
+        $listaContas = null;
+        $codigoDespesa = null;
+        $listaForncedores = null;
+        $formapagamento = null;
+        $todasOSAtivas = null;
+        $todosOSBancos = null;
+        $valorDespesa = null;
+        $valorVale = null;
+        $precoReal = null;
+        $vale = null;
+        $valorInput = null;
+        $valorSemCadastro = null;
+        $variavelReadOnlyNaView = null;
+        $variavelDisabledNaView = null;
+        $infoSelectVazio = null;
 
-        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView);
+        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView, $infoSelectVazio);
 
-        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
 
@@ -809,12 +992,27 @@ class DespesaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
-        $despesa = null; $listaContas = null; $codigoDespesa = null; $listaForncedores = null; $formapagamento = null; $todasOSAtivas = null; $todosOSBancos = null; $valorDespesa = null; $valorVale = null; $precoReal = null; $vale = null; $valorInput = null; $valorSemCadastro = null; $variavelReadOnlyNaView = null; $variavelDisabledNaView = null;
+    {
+        $despesa = null;
+        $listaContas = null;
+        $codigoDespesa = null;
+        $listaForncedores = null;
+        $formapagamento = null;
+        $todasOSAtivas = null;
+        $todosOSBancos = null;
+        $valorDespesa = null;
+        $valorVale = null;
+        $precoReal = null;
+        $vale = null;
+        $valorInput = null;
+        $valorSemCadastro = null;
+        $variavelReadOnlyNaView = null;
+        $variavelDisabledNaView = null;
+        $infoSelectVazio = null;
 
-        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView);
+        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView, $infoSelectVazio);
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -823,20 +1021,36 @@ class DespesaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function editamodal($id)
-    {   
-        $despesa = null; $listaContas = null; $codigoDespesa = null; $listaForncedores = null; $formapagamento = null; $todasOSAtivas = null; $todosOSBancos = null; $valorDespesa = null; $valorVale = null; $precoReal = null; $vale = null; $valorInput = null; $valorSemCadastro = null; $variavelReadOnlyNaView = null; $variavelDisabledNaView = null;
+    {
+        $despesa = null;
+        $listaContas = null;
+        $codigoDespesa = null;
+        $listaForncedores = null;
+        $formapagamento = null;
+        $todasOSAtivas = null;
+        $todosOSBancos = null;
+        $valorDespesa = null;
+        $valorVale = null;
+        $precoReal = null;
+        $vale = null;
+        $valorInput = null;
+        $valorSemCadastro = null;
+        $variavelReadOnlyNaView = null;
+        $variavelDisabledNaView = null;
+        $infoSelectVazio = null;
 
-        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView);
+        $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView, $infoSelectVazio);
 
         $paginaModal = true;
         $variavelReadOnlyNaView = "";
         $variavelDisabledNaView = "";
+        $infoSelectVazio        = $this->infoSelectVazio;
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView' , 'paginaModal'));
+        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
     }
 
 
-    public function dadosDespesaEdicaoVisualizacao($id, &$despesa, &$listaContas, &$codigoDespesa, &$listaForncedores, &$formapagamento, &$todasOSAtivas, &$todosOSBancos, &$valorDespesa, &$valorVale, &$precoReal, &$vale, &$valorInput, &$valorSemCadastro, &$variavelReadOnlyNaView, &$variavelDisabledNaView)
+    public function dadosDespesaEdicaoVisualizacao($id, &$despesa, &$listaContas, &$codigoDespesa, &$listaForncedores, &$formapagamento, &$todasOSAtivas, &$todosOSBancos, &$valorDespesa, &$valorVale, &$precoReal, &$vale, &$valorInput, &$valorSemCadastro, &$variavelReadOnlyNaView, &$variavelDisabledNaView, &$infoSelectVazio)
     {
         $despesa        = Despesa::find($id);
         $listaContas    = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
@@ -856,6 +1070,7 @@ class DespesaController extends Controller
         $valorSemCadastro       = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $infoSelectVazio        = $this->infoSelectVazio;
     }
 
     /**
@@ -869,7 +1084,7 @@ class DespesaController extends Controller
     {
 
         $despesa = new Despesa();
-        
+
 
         $request->validate([
             'idFormaPagamento'          => 'required',
@@ -914,8 +1129,8 @@ class DespesaController extends Controller
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
         $despesa->insereestoque         =  (int)$request->get('inserirestoque');
-        
-        
+
+
         //É compra, mas não é parcelada
         if (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1)) :
 
@@ -935,7 +1150,7 @@ class DespesaController extends Controller
         $despesa->pago                  =  $request->get('pago')[0];
         $despesa->precoReal             =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('precoReal'));
         $despesa->quantidade            =  $request->get('quantidadeTabelaSemParcelamento');
-        $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitarioSemParcelamento'));
+        $despesa->valorUnitario         =  FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorUnitario'));
 
 
         if ($despesa->ehcompra == 0) {
@@ -1011,17 +1226,16 @@ class DespesaController extends Controller
             $alteracoes = $despesa->getChanges();
             $this->logAtualizaDespesas($despesa, $alteracoes, $original);
 
-            if((int)$request->get('paginaModal') == 1){
+            if ((int)$request->get('paginaModal') == 1) {
                 $paginaModal = true;
                 return redirect()->route('despesas.show', ['id' => $despesa->id])
-                    ->with( 'paginaModal', $paginaModal  )
+                    ->with('paginaModal', $paginaModal)
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
-            }
-            elseif((int)$request->get('paginaModal') == 0){
+
+            } elseif ((int)$request->get('paginaModal') == 0) {
                 return redirect()->route('despesas.show', ['id' => $despesa->id])
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
             }
-
         } catch (\Throwable $th) {
             return redirect()->route('despesas.show', ['id' => $despesa->id])
                 ->with('error', 'Ocorreu um erro ao atualizar.');

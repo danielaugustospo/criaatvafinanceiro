@@ -1,6 +1,4 @@
-<?php
-use App\Providers\AppServiceProvider;
-?>
+<?php //use App\Providers\AppServiceProvider; ?>
 
 <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
     @yield('nav')
@@ -100,7 +98,7 @@ use App\Providers\AppServiceProvider;
                         </div>
                     </li>
 
-                    @can('pedidocompra-list')
+                    {{-- @can('pedidocompra-list')
                         <li class="nav-item dropdown">
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -163,7 +161,7 @@ use App\Providers\AppServiceProvider;
                                 @endcan
                             </div>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                     <li class="nav-item dropdown">
                         @can('fornecedor-list')
@@ -382,7 +380,7 @@ use App\Providers\AppServiceProvider;
 
 @include('layouts/modal/modalpesquisadespesas')
 @include('layouts/modal/modalpesquisareceita')
-@include('layouts/modal/modalpesquisaentrada')
+{{-- @include('layouts/modal/modalpesquisaentrada') --}}
 
 
 <script>

@@ -1,3 +1,8 @@
+@isset ($mensagemExito)
+<div class="alert alert-success  pr-2">
+    <p><i class="fa fa-check" aria-hidden="true"></i>{{ $mensagemExito }}</p>
+</div>
+@endisset
 @if ($message = Session::get('success'))
 <div class="alert alert-success  pr-2">
     <p><i class="fa fa-check" aria-hidden="true"></i>{{ $message }}</p>
