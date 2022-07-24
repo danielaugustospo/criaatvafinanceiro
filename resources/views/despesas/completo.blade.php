@@ -14,12 +14,43 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 
 <?php
-$chamadaCadastroModal = 'atualizadepesa';
-$tituloCadastroModal = 'Atualização de Despesa';
-// $rotaCadastroModal          = 'despesas/';
-$idFrame = 'frameatualizadepesa';
+$chamadaCadastroModal   = 'atualizadespesa';
+$tituloCadastroModal    = 'Atualização de Despesa';
+$idFrame                = 'frameatualizadespesa';
+
+$chamadaCadastroModal1   = 'lancadespesa';
+$tituloCadastroModal1    = 'Lançamento de Despesa';
+$idFrame1                = 'framecriadepesa';
 ?>
 
+<!-- Modal -->
+<div class="modal fade @isset($chamadaCadastroModal1) {{ $chamadaCadastroModal1 }} @endisset"
+    id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                        @isset($tituloCadastroModal1)
+                            {{ $tituloCadastroModal1 }}
+                        @endisset
+                    </b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        {{-- @include('despesas/create') --}}
+        <iframe class="modal-body" src="{{ route('despesas.create') }}?paginaModal=true" id="{{ $idFrame1 }}" frameborder="0"
+        style="height: 60vh;">
+    </iframe>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                    data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade @isset($chamadaCadastroModal) {{ $chamadaCadastroModal }} @endisset"
     id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -65,6 +96,8 @@ $idFrame = 'frameatualizadepesa';
                     @can('despesa-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar
                             Despesas</a>
+                            <button type="button" class="btn btn-secondary" onclick="abreModalCadastro();"
+                            data-dismiss="modal">Cadastrar via modal</button>
                     @endcan
                     <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');"
                         class="btn btn-primary d-flex justify-content-center" href="#" style="cursor:pointer;"><i
@@ -283,10 +316,10 @@ $idFrame = 'frameatualizadepesa';
                                         "tr"); // get the current table row (tr)
                                     var data = this.dataItem(tr);
                                     rota = 'modaledicaodespesas/' + data.id + '';
-                                    $('#frameatualizadepesa').attr('src', rota);
+                                    $('#frameatualizadespesa').attr('src', rota);
                                     $('#tituloModal').text("Despesa id " + data.id +
                                         " - " + data.descricaoDespesa);
-                                    $('.atualizadepesa').modal('toggle');
+                                    $('.atualizadespesa').modal('toggle');
                                 }
                             }],
                             width: 90,
@@ -599,6 +632,13 @@ $idFrame = 'frameatualizadepesa';
                             console.log('Mensagem fechada pelo temporizador')
                         }
                     })
+                    //Atualiza iframe
+                    $('iframe').attr('src', $('iframe').attr('src'));
+                }
+
+                function abreModalCadastro() {
+                    $('.lancadespesa').modal('toggle');
+
                 }
 
                 @include('layouts/filtradata')

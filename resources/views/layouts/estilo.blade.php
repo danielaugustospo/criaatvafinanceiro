@@ -1,10 +1,13 @@
     <!-- CSS -->
+    @isset($paginaModal)
+    @else
+        @isset($relatorioKendoGrid)
+            <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
+        @endisset
+    @endisset
 
-    <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" /> --}}
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
@@ -26,9 +29,12 @@
         td,
         strong,
         textarea {
-            text-transform: uppercase;
+            text-transform: uppercase !important;
         }
 
+        .select2{
+            min-width: 300px !important;
+        }
         .fontenormal {
             text-transform: initial;
             font-size: 12pt;
@@ -164,8 +170,6 @@
                 font-size: 13px;
             }
         }
-        }
-
 
         /*
     Use the DejaVu Sans font for displaying and embedding in the PDF file.
@@ -178,6 +182,12 @@
             font-size: 10px !important;
         }
 
+
+        .sombreamento{
+            box-shadow: 25px 2px 25px 1px; 
+            padding-top: 20px; 
+            padding-bottom: 20px;
+        }
 
         /*
   The example loads the DejaVu Sans from the Kendo UI CDN.
@@ -209,3 +219,5 @@
             src: url("https://kendo.cdn.telerik.com/2017.2.621/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf") format("truetype");
         }
     </style>
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">

@@ -3,6 +3,7 @@
         @if (Request::path() == 'despesas/create')
         $("#telaGeral").hide();
         @endif
+        
         $("#comprou").click(function() {
             @if (Request::path() == 'despesas/create')
             $("#telaGeral").hide();
@@ -33,6 +34,9 @@
                 $("#inserirestoque").prop("checked", false);
                 $("#naoinserirestoque").prop("checked", false);
 
+                $("#unicadespesa").prop("checked", false);
+                $("#naounicadespesa").prop("checked", false);
+
                 $("#divComprou").hide();
 
                 $("#despesaCompraSemEstoque").hide();
@@ -46,6 +50,7 @@
                 $("#telaFuncionario").hide();
                 $("#telaCompraParcelada").hide();
                 $("#telaInsereEstoque").hide();
+                $("#telaUnicaDespesa").hide();
 
                 // pegaIdFuncionario();
 
@@ -55,7 +60,7 @@
 
                 $("#tabelaDespesas").hide();
 
-                $("#tabelaDespesas").hide();
+                $("#tabelaMultiplasDespesas").hide();
                 $("#telaOS").show();
                 $("#telaDescricao").show();
                 $("#telaValor").show();
@@ -64,27 +69,37 @@
                 $("#telaNF").show();
                 $("#telaPago").show();
                 $('#naocomprou').prop('checked', true);
-                $('#naoparcelada').prop('checked', true);
+
+                $('#parcelada').prop('checked', false);
+                $('#naoparcelada').prop('checked', false);
+                
                 $("#despesaCompra").hide();
                 document.getElementById("dataDaCompra").value = "";
             }
         });
+
         $("#parcelada").click(function() {
             if ($(this).is(":checked")) {
 
+                $("#unicadespesa").prop("checked", false);
+                $("#naounicadespesa").prop("checked", false);
                 $("#tabelaDespesas").show();
+                $("#tabelaMultiplasDespesas").hide();
                 $("#telaOS").hide();
                 $("#telaDescricao").hide();
                 $("#telaValor").hide();
                 $("#telaQuantidade").hide();
                 $("#telaDataPagamento").hide();
                 $("#telaNF").hide();
-                $("#telaPago").show();
-                $("#telaPago").show();
+                $("#telaPago").hide();
                 document.getElementById("vencimento").value = "";
+                $("#telaUnicaDespesa").hide();
 
+                
+                
             }
         });
+
         $("#naoparcelada").click(function() {
             if ($(this).is(":checked")) {
                 $("#tabelaDespesas").hide();
@@ -95,6 +110,7 @@
                 $("#telaDataPagamento").show();
                 $("#telaNF").show();
                 $("#telaPago").show();
+                $("#telaUnicaDespesa").show();
 
             }
         });
@@ -108,6 +124,9 @@
             $("#telaDescricaoTabelaComEstoque").show();
             $("#telaDescricaoTabelaSemEstoque").hide();
 
+            $("#telaDescricaoTabelaComEstoqueMultiplo").show();
+            $("#telaDescricaoTabelaSemEstoqueMultiplo").hide();
+
 
         })
 
@@ -119,14 +138,48 @@
             $("#telaCadastrarMateriais").hide();
             $("#telaDescricaoTabelaSemEstoque").show();
             $("#telaDescricaoTabelaComEstoque").hide();
+            
+            $("#telaDescricaoTabelaSemEstoqueMultiplo").show();
+            $("#telaDescricaoTabelaComEstoqueMultiplo").hide();
+
+        })
+        $("#unicadespesa").click(function() {
+            $("#telaGeral").show();
+            $("#tabelaMultiplasDespesas").hide();
+            
+            $("#telaOS").show();
+            $("#telaDescricao").show();
+            $("#telaValor").show();
+            $("#telaQuantidade").show();
+            $("#telaDataPagamento").show();
+            $("#telaNF").show();
+            $("#telaPago").show();
+        })
+        
+        $("#naounicadespesa").click(function() {
+            $("#telaGeral").show();
+            $("#tabelaMultiplasDespesas").show();
+            
+            $("#telaOS").hide();
+            $("#telaDescricao").hide();
+            $("#telaValor").hide();
+            $("#telaQuantidade").hide();
+            $("#telaDataPagamento").hide();
+            $("#telaNF").hide();
+            $("#telaPago").hide();
+            document.getElementById("vencimento").value = "";
+            
 
         })
 
 
-        checaCompra = document.getElementById('comprou');
-        checaNaoCompra = document.getElementById('naocomprou');
-        checaInsereEstoque = document.getElementById('inserirestoque');
-        checaNaoInsereEstoque = document.getElementById('naoinserirestoque');
+        checaCompra             = document.getElementById('comprou');
+        checaNaoCompra          = document.getElementById('naocomprou');
+        checaInsereEstoque      = document.getElementById('inserirestoque');
+        checaNaoInsereEstoque   = document.getElementById('naoinserirestoque');
+        
+        checaunicadespesa       = document.getElementById('unicadespesa');
+        checaNaounicadespesa    = document.getElementById('naounicadespesa');
 
         if (checaCompra.checked) {
             $("#despesaCompra").show();
@@ -161,6 +214,8 @@
             $("#telaDataCompra").hide();
             $("#telaCompraParcelada").hide();
             $("#tabelalistadespesa").hide();
+            $("#telaUnicaDespesa").hide();
+
 
             $("#telaFuncionario").show();
             $("#despesaNaoCompra").show();
@@ -181,12 +236,33 @@
             $("#telaCadastrarMateriais").hide();
 
         }
+        if (checaNaounicadespesa.checked) {
+            $("#tabelaMultiplasDespesas").show();
+
+            $("#telaOS").hide();
+            $("#telaDescricao").hide();
+            $("#telaValor").hide();
+            $("#telaQuantidade").hide();
+            $("#telaDataPagamento").hide();
+            $("#telaNF").hide();
+            $("#telaPago").hide();
+            document.getElementById("vencimento").value = "";
+        } else if (checaunicadespesa.checked) {
+            $("#tabelaMultiplasDespesas").hide();
+
+            $("#telaOS").show();
+            $("#telaDescricao").show();
+            $("#telaValor").show();
+            $("#telaQuantidade").show();
+            $("#telaDataPagamento").show();
+            $("#telaNF").show();
+            $("#telaPago").show();
+        }
 
         @if (Request::path() == 'despesas/create' || Request::path() == 'despesas/' . $despesa->id . '/edit')
 
             window.addEventListener("beforeunload", function(event) {
                 event.preventDefault();
-
                 event.returnValue = "Confirme que deseja ser redirecionado";
                 return "Confirme que deseja ser redirecionado";
             });
@@ -194,564 +270,6 @@
 
     });
 
-    function sum(input) {
-
-        if (toString.call(input) !== "[object Array]")
-            return false;
-
-        var total = 0;
-        for (var i = 0; i < input.length; i++) {
-            if (isNaN(input[i])) {
-                continue;
-            }
-            total += Number(input[i]);
-        }
-        return total;
-    }
-
-
-    function alertaErros(texto, contadorErros) {
-        if (contadorErros > 0) {
-
-            var span = document.createElement("span");
-            span.innerHTML = texto;
-
-            Swal.fire({
-                icon: 'error',
-                html: span,
-                title: 'Validações Necessárias',
-                footer: 'Restam  ' + contadorErros + ' pendentes.'
-            })
-        }
-        return contadorErros;
-    }
-
-    function validaFormulario() {
-        contadorErros = 0;
-        contadorDatasDiferentesAnoAtual = 0;
-        var ehcompra = document.querySelector('input[name=a]:checked')?.value;
-
-        fornecedor = $('.selecionaFornecedor').val();
-        formapagamento = $('.idFormaPagamento').val();
-        conta = $('.conta').val();
-        precoReal = $('.precoReal').val();
-        despesaCodigoDespesas = $('#despesaCodigoDespesas').val();
-        texto = '';
-        textoData = '';
-
-        /* ------------------------------------------
-
-        VERIFICAÇÃO DE DATA - EM ANDAMENTO - 26/06/2022
-
-        ----------------------------------------------*/
-        vencimento = document.getElementsByName("vencimento")[0].value;
-        datavale = document.getElementsByName("datavale")[0].value;
-        dataDaCompra = document.getElementsByName("dataDaCompra")[0].value;
-        dataDoTrabalho = document.getElementsByName("dataDoTrabalho")[0].value;
-
-        anovencimento = new Date(vencimento).getFullYear();
-        anodatavale = new Date(datavale).getFullYear();
-        anodataDaCompra = new Date(dataDaCompra).getFullYear();
-        anodataDoTrabalho = new Date(dataDoTrabalho).getFullYear();
-
-        const dataAtual = new Date();
-        const anoAtual = dataAtual.getFullYear();
-
-        //Verifica se não o campo compra foi informado
-        if ((ehcompra != "N") && (ehcompra != "S")) {
-            texto =
-                '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é compra ou não</label></br>';
-            contadorErros++;
-        }
-
-        if (anovencimento < 2000 || anovencimento > 2099) {
-            texto = texto +
-                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
-                anovencimento + ')</label></br>';
-            contadorErros++;
-        } else if ((anovencimento > 2000) && (anovencimento < 2099) && (anovencimento != anoAtual)) {
-            textoData = textoData +
-                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data de Vencimento com ano ' +
-                anovencimento + '</label></br>';
-            contadorDatasDiferentesAnoAtual++;
-        }
-        if (anodatavale < 2000 || anodatavale > 2099) {
-            texto = texto +
-                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Vale Inválida (ano ' +
-                anodatavale + ')</label></br>';
-            contadorErros++;
-        } else if ((anodatavale > 2000) && (anodatavale < 2099) && (anodatavale != anoAtual)) {
-            textoData = textoData +
-                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Vale com ano ' +
-                anodatavale + '</label></br>';
-            contadorDatasDiferentesAnoAtual++;
-        }
-
-        if (anodataDaCompra < 2000 || anodataDaCompra > 2099) {
-            texto = texto +
-                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data da Compra Inválida  (ano ' +
-                anodataDaCompra + ')</label></br>';
-            contadorErros++;
-        } else if ((anodataDaCompra > 2000) && (anodataDaCompra < 2099) && (anodataDaCompra != anoAtual)) {
-            textoData = textoData +
-                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data da Compra com ano ' +
-                anodataDaCompra + '</label></br>';
-            contadorDatasDiferentesAnoAtual++;
-        }
-
-        if (anodataDoTrabalho < 2000 || anodataDoTrabalho > 2099) {
-            texto = texto +
-                '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data do Trabalho Inválida  (ano ' +
-                anodataDoTrabalho + ')</label></br>';
-            contadorErros++;
-        } else if ((anodataDoTrabalho > 2000) && (anodataDoTrabalho < 2099) && (anodataDoTrabalho != anoAtual)) {
-            textoData = textoData +
-                '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data do Trabalho com ano ' +
-                anodataDoTrabalho + '</label></br>';
-            contadorDatasDiferentesAnoAtual++;
-        }
-        resultadoFormulario = validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta,
-            despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual);
-
-        return resultadoFormulario;
-    }
-
-
-    function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa,
-        ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual) {
-        if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
-            texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>';
-            contadorErros++;
-        }
-        if ((formapagamento == 0) || (formapagamento == '') || (formapagamento == null)) {
-            texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>';
-            contadorErros++;
-        }
-
-        if ((conta == '') || (conta == null)) {
-            texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Conta</label></br>';
-            contadorErros++;
-        }
-        if ((despesaFixa == '') || (despesaFixa == null)) {
-            texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>';
-            contadorErros++;
-        }
-        if ((fornecedor == 0) || (fornecedor == '') || (fornecedor == null)) {
-            texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>';
-            contadorErros++;
-        }
-
-        //Verifica se é compra
-        else if ((ehcompra == 1) || (ehcompra == 'S')) {
-
-            //--------------------------------------------------------------
-            // Validações se for compra
-            //--------------------------------------------------------------
-            var compraparcelada = document.querySelector('input[name=compraparcelada]:checked')?.value;
-            inserirestoque = document.querySelector('input[name=inserirestoque]:checked')?.value;
-
-            if ((inserirestoque == '') || (inserirestoque == ' ') || (inserirestoque == null) || (inserirestoque ==
-                    undefined)) {
-                texto = texto +
-                    '<span class="badge badge-danger">Marcar</span><label class="fontenormal pl-2">Se a compra será inserida no estoque</label></br>';
-                contadorErros++;
-            } else if ((inserirestoque == 1) && (compraparcelada == 'N')) {
-                var descricaoDespesaCompra = $('.descricaoDespesaCompra').val();
-                if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && compraparcelada != 'S') {
-                    texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
-                    contadorErros++;
-                }
-            } else if ((inserirestoque == 0) && (compraparcelada == 'N')) {
-                var descricaoDespesaCompra = $('.descricaoDespesaSemEstoque').val();
-                if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
-                    texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
-                    contadorErros++;
-                }
-            }
-            // if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) &&
-            //     compraparcelada != 'S') {
-            //     texto = texto +
-            //         '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
-            //     contadorErros++;
-            // }
-            if ((compraparcelada != 'S') && (compraparcelada != 'N')) {
-                texto = texto +
-                    '<span class="badge badge-warning">Marcar</span><label class="fontenormal pl-2">Se é uma compra parcelada</label></br>';
-                contadorErros++;
-            } else if (compraparcelada == 'N') {
-                if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal ==
-                        undefined)) {
-                    texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
-                    contadorErros++;
-                }
-            } else if (compraparcelada == 'S') {
-                //TODO: FAZER AJUSTE PARA PEGAR AS OBRIGATORIEDADES NAS TABELAS
-
-                var tabela = document.getElementById("tabelalistadespesa");
-
-
-                var data = [];
-                var table = document.getElementById('tabelalistadespesa');
-                var descricaoTabela = table.getElementsByClassName('descricaoTabela');
-                var valorparcelaTabela = table.getElementsByClassName('valorparcelaTabela');
-                var vencimentoTabela = table.getElementsByClassName('vencimentoTabela');
-
-
-                if (inserirestoque == 1) {
-                    var descricaoTabela = table.getElementsByClassName('descricaoTabela');
-                } else if (inserirestoque == 0) {
-                    var descricaoTabela = table.getElementsByClassName('descricaoTabelaSemEstoque');
-                }
-
-                for (var i = 0; i < descricaoTabela.length; i++) {
-                    data.push(descricaoTabela[i].value);
-                    if ((data[i] == '') || ((data[i] == null))) {
-                        texto = texto +
-                            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
-                            sum([i, 1]) + '</label></br>';
-                        contadorErros++;
-                    }
-                }
-
-                for (var i = 0; i < valorparcelaTabela.length; i++) {
-                    data.push(valorparcelaTabela[i].value);
-                    if ((valorparcelaTabela[i].value == '') || (valorparcelaTabela[i].value ==
-                            ' ') || (
-                            valorparcelaTabela[i].value == null) || (valorparcelaTabela[i].value ==
-                            undefined)) {
-
-                        texto = texto +
-                            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
-                            sum([i, 1]) + '</label></br>';
-                        contadorErros++;
-                    }
-                }
-
-                for (var i = 0; i < vencimentoTabela.length; i++) {
-                    data.push(vencimentoTabela[i].value);
-                    vencimento = vencimentoTabela[i].value;
-                    vencimento = parseInt(vencimento.slice(0, 4));
-
-                    if ((vencimento < 2000) || (vencimento > 2099)) {
-                        texto = texto +
-                            '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
-                            vencimento + ') na linha ' +
-                            sum([i, 1]) + '</label></br>';
-                        contadorErros++;
-                    } else if ((vencimento > 2000) && (vencimento < 2099) && (vencimento != anoAtual)) {
-
-                        textoData = textoData +
-                            '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Data de Vencimento com ano ' +
-                            vencimento + ' na linha ' + sum([i, 1]) + '</label></br>';
-                        contadorDatasDiferentesAnoAtual++;
-                    }
-                }
-
-            }
-        }
-        //Verifica se não é compra
-        else if ((ehcompra == 0) || (ehcompra == 'N')) {
-
-            var descricaoDespesaCompra = $('.descricaoDespesa').val();
-            var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
-            if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal ==
-                    undefined)) {
-                texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
-                contadorErros++;
-            }
-
-            if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
-                texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
-                contadorErros++;
-            }
-
-        }
-
-        if (contadorDatasDiferentesAnoAtual > 0) {
-            var areaInformeData = document.createElement("span");
-            areaInformeData.innerHTML = textoData;
-            Swal.fire({
-                title: 'Data informada diferente do ano atual. Confirmar?',
-                html: areaInformeData,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, confirmo',
-                cancelButtonText: 'Não, irei alterar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    alertaErros(texto, contadorErros)
-                }
-            })
-        } else {
-            if (contadorErros > 0) {
-                alertaErros(texto, contadorErros);
-            }
-        }
-
-        return contadorErros;
-    }
-
-    function pegaIdFornecedor() {
-        $('#selecionaFornecedor').val();
-    }
-
-    function alteraIdComprador() {
-        var idComprador = $('#selecionaComprador').val();
-        document.getElementById("quemcomprou").value = idComprador;
-    }
-
-    function resetaIdComprador() {
-        document.getElementById("quemcomprou").value = "";
-    }
-
-    function alteraRetornoCadastroDespesa(retorno) {
-
-        validador = validaFormulario();
-        if (validador == 0) {
-            document.getElementById("tpRetorno").value = retorno;
-            $('#btnSalvareVisualizar').attr('disabled', 'disabled');
-            $('#btnSalvareNovo').attr('disabled', 'disabled');
-            $("#criaDespesas").submit();
-        }
-
-    }
-
-    $('body').on('click', '.recarregaMateriais', function() {
-        var row = $(this).closest('tr');
-        row.find("#descricaoDespesa").each(function(index) {
-            $(this).select2('destroy');
-        });
-
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE A DESCRIÇÃO...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaMateriais') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(
-                    dadosjson.nomeBensPatrimoniais));
-            })
-        });
-        $('#descricaoDespesa').select2();
-    });
-
-    $('body').on('click', '.duplicar', function() {
-        // var row = $("#tabelalistadespesa tr:first");
-        var row = $(this).closest('tr');
-        row.find(".selecionaComInput").each(function(index) {
-            var coluna = $(this).closest('td');
-            coluna.find("#idOSTabela").each(function(index) {
-                valorIdOS = $(this).select2().val();
-            });
-
-            // var colunaDescricao = $(this).closest('td');
-            coluna.find("#descricaoDespesaTabela").each(function(index) {
-                valorDescricao = $(this).select2().val();
-            });
-            // var colunapg = $(this).closest('td');
-            coluna.find("#pago").each(function(index) {
-                valorpg = $(this).select2().val();
-            });
-            $(this).select2('destroy');
-        });
-        row.find(".campo-moeda").each(function(index) {
-            $(this).maskMoney('destroy');
-        });
-
-        var newrow = row.clone();
-        $("#tabelalistadespesa").append(newrow);
-
-        newrow.find("#idOSTabela").each(function(index) {
-            $(this).val(valorIdOS);
-            $(this).trigger('change'); // Notify any JS components that the value changed
-        });
-        newrow.find("#descricaoDespesaTabela").each(function(index) {
-            $(this).val(valorDescricao);
-            $(this).trigger('change'); // Notify any JS components that the value changed
-        });
-        newrow.find("#pago").each(function(index) {
-            $(this).val(valorpg);
-            $(this).trigger('change'); // Notify any JS components that the value changed
-        });
-        newrow.find("#quantidadeTabela").each(function(index) {
-            $(this).val(
-            ''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
-            $(this).trigger('change'); // Notify any JS components that the value changed
-        });
-
-        $("select.selecionaComInput").select2();
-
-        // $("input.campo-moeda").maskMoney();
-        $('input.campo-moeda')
-            .maskMoney({
-                prefix: 'R$ ',
-                allowNegative: false,
-                thousands: '.',
-                decimal: ',',
-                affixesStay: false
-            });
-    });
-
-
-    $('body').on('click', '.delete', function() {
-        var $tr = $(this).closest('tr');
-        if ($tr.attr('class') == 'linhaTabela1') {
-            $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
-        } else {
-            $tr.remove();
-        }
-    });
-
-
-    function recarregaCodigoDespesa() {
-        $('#despesaCodigoDespesas').select2('destroy');
-
-        let dropdown = $('#despesaCodigoDespesas');
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE UM CÓDIGO DE DESPESA...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaCodigoDespesa') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .despesaCodigoDespesa + ' | ' + dadosjson.grupoDespesa));
-            })
-        });
-        $('#despesaCodigoDespesas').select2();
-    }
-
-    function recarregaDescricaoDespesa() {
-
-        $('#descricaoDespesa').select2('destroy');
-        let dropdown = $('#descricaoDespesa');
-
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE A DESCRIÇÃO...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaMateriais') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .nomeBensPatrimoniais));
-            })
-        });
-        $('#descricaoDespesa').select2();
-        recarregaDescricaoDespesaTabela();
-    }
-
-    function recarregaDescricaoDespesaTabela() {
-
-        $('#descricaoDespesaTabela').select2('destroy');
-        let dropdown = $('#descricaoDespesaTabela');
-
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE A DESCRIÇÃO...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaMateriais') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .nomeBensPatrimoniais));
-            })
-        });
-        $('#descricaoDespesaTabela').select2();
-    }
-
-    function recarregaFornecedorDespesa() {
-        $('#selecionaFornecedor').select2('destroy');
-
-        let dropdown = $('#selecionaFornecedor');
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE O FORNECEDOR...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaFornecedores') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .razaosocialFornecedor));
-            })
-        });
-        $('#selecionaFornecedor').select2();
-        recarregaReembolsadoDespesa();
-        recarregaQuemComprouDespesa();
-    }
-
-    function recarregaPrestadorServicoDespesa() {
-        $('#selecionaPrestadorServico').select2('destroy');
-
-        let dropdown = $('#selecionaPrestadorServico');
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE O PRESTADOR DE SERVIÇO...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaFornecedores') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .razaosocialFornecedor));
-            })
-        });
-        $('#selecionaPrestadorServico').select2();
-    }
-
-    function recarregaQuemComprouDespesa() {
-        $('#selecionaComprador').select2('destroy');
-
-        let dropdown = $('#selecionaComprador');
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE QUEM COMPROU...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaFornecedores') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .razaosocialFornecedor));
-            })
-        });
-        $('#selecionaComprador').select2();
-    }
-
-    function recarregaReembolsadoDespesa() {
-        $('#reembolsado').select2('destroy');
-
-        let dropdown = $('#reembolsado');
-        dropdown.empty();
-        dropdown.append('<option selected="true" disabled>SELECIONE O REEMBOLSADO...</option>');
-        dropdown.prop('selectedIndex', 0);
-
-        const url = "{{ route('listaFornecedores') }}";
-
-        $.getJSON(url, function(data) {
-            $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .razaosocialFornecedor));
-            })
-        });
-        $('#reembolsado').select2();
-    }
+    @include('despesas/formulario/validador')
+    @include('despesas/formulario/manipulacoescorpo')
 </script>
