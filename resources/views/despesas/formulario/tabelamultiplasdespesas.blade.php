@@ -98,19 +98,19 @@
             </td>
             <td data-th="VALOR UNITÁRIO">
                 {!! Form::text('valorUnitarioTabelaMultiplo[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
-                'form-control campo-moeda valoresoperacao', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                'form-control campo-moeda valoresoperacao valunitariomultiplo', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
 
             <td data-th="VALOR TOTAL">
                 {!! Form::text('valorparcelaTabelaMultiplo[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class'
-                => 'form-control campo-moeda valoresoperacao valorparcelaTabela', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
+                => 'form-control campo-moeda valoresoperacao valorparcelaTabela valtotalmultiplo', 'maxlength' => '100', $variavelReadOnlyNaView]) !!}
             </td>
             <td data-th="VENCIMENTO">
                 {!! Form::date('vencimentoTabelaMultiplo[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control vencimentoTabela', 'min' => '2000-01-01', 'max' => '2099-12-31', $variavelReadOnlyNaView]) !!}
             </td>
             <td>
-                <select name="pagoTabelaMultiplo[]" id="pago" style="padding:4px;" class="selecionaComInput form-control"
+                <select name="pagoTabelaMultiplo[]" id="pago" style="padding:4px;" class="selecionaComInput form-control" style=" min-width: 100px !important;"
                     {{$variavelDisabledNaView}}>
                     @if (Request::path() == 'despesas/create')
                     <option value="N">Não</option>

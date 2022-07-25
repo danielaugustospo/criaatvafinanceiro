@@ -110,8 +110,15 @@ function duplicarLinha(row, idTabela) {
         $(this).trigger('change'); // Notify any JS components that the value changed
     });
     newrow.find("#quantidadeTabela").each(function(index) {
-        $(this).val(
-        ''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
+        $(this).val(''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
+        $(this).trigger('change'); // Notify any JS components that the value changed
+    });
+    newrow.find(".valunitariomultiplo").each(function(index) {
+        $(this).val(''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
+        $(this).trigger('change'); // Notify any JS components that the value changed
+    });
+    newrow.find(".valtotalmultiplo").each(function(index) {
+        $(this).val(''); //Zero o valor porque se for uma compra e para lançar no estoque, lanço uma só vez
         $(this).trigger('change'); // Notify any JS components that the value changed
     });
 
