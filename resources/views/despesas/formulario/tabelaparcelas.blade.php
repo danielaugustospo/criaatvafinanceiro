@@ -7,7 +7,7 @@
                 <nobr>NOTA FISCAL</nobr>
             </th>
             <th>DESCRIÇÃO</th>
-            <th>UNIDADE</th>
+            <th>QUANTIDADE</th>
             <th>
                 <nobr>VALOR UNITÁRIO</nobr>
             </th>
