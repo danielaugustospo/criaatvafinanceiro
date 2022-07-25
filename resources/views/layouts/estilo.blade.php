@@ -33,7 +33,10 @@
         }
 
         .select2{
-            min-width: 300px !important;
+            min-width: 150px !important;
+        }
+        .campo-moeda{
+            min-width: 150px !important;
         }
         .fontenormal {
             text-transform: initial;
