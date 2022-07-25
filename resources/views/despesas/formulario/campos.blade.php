@@ -450,8 +450,8 @@
         @endif
 
         {{-- Tela Prestador de Serviços --}}
-        <div class="form-group row" id="telaPrestador">
-            <label for="" class="col-sm-3 col-form-label">Código Funcionário</label>
+        <div class="ml-5 pl-5 form-group row" id="telaPrestador">
+            <label for="" class="col-sm-3 col-form-label ">Código Funcionário</label>
             <div class="col-sm-6">
                 <select name="idFuncionario" id="idFuncionario" class="selecionaComInput form-control col-sm-12"
                     {{ $variavelDisabledNaView }}>
