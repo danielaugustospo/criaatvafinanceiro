@@ -1,7 +1,15 @@
+## SISTEMA DE GERENCIAMENTO FINANCEIRO COM LARAVEL 5.8 - Sistema atualmente com php 7.4
+
+![image](https://user-images.githubusercontent.com/15149508/160742903-459d2041-d061-4933-8e6d-d995de00ca1d.png)
+![image](https://user-images.githubusercontent.com/15149508/160743188-5b39aebc-3968-468a-bb90-c8fd2e4265b8.png)
+![image](https://user-images.githubusercontent.com/15149508/160743520-829cbdc8-f78b-4372-8997-1c101a7fb788.png)
+
+Criei esse projeto inicial no docker em outro repositório, caso queira acompanhar, clique [aqui](https://github.com/danielaugustospo/docker_criaatva)
+
 ## Tutorial de configuração
-Sistema atualmente com php 7.4
-Comandos
 ----------------------------------------------------------------------------------------------------------------------------
+Comandos:
+
 php artisan make:migration create_users_table --create=users
 
 php artisan make:migration add_votes_to_users_table --table=users
@@ -165,7 +173,6 @@ $this->validate($request, [
 ```
 
 ----------------------------------------------------------------------------------------------------------------------------
-
 ## Exemplo de uso em um controller
 
 Método de validação de exemplo em um controller com todas as possibilidades de validação
