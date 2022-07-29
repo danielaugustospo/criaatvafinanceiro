@@ -178,7 +178,7 @@ class OrdemdeServicoController extends Controller
     {
         $ordemdeservico = new OrdemdeServico();
         $temReceita = $request->get('idformapagamentoreceita');
-        $fatorR = $request->get('comFatorR');
+        $fatorR = $request->get('fatorR');
 
 
         $tamanhoArrayReceita = count($temReceita);
@@ -271,7 +271,7 @@ class OrdemdeServicoController extends Controller
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 and id = :idFormaPagamento', ['idFormaPagamento' => $ordemdeservico->nomeFormaPagamento]);
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
-        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  ativoreceita = 1 and excluidoreceita = 0 and  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $cliente = DB::select('select distinct id, nomeCliente, razaosocialCliente from clientes  where  ativoCliente = 1 and id = :clienteOrdemServico', ['clienteOrdemServico' => $ordemdeservico->idClienteOrdemdeServico]);
         $despesaPorOS = DB::select('select distinct * from despesas  where  ativoDespesa = 1 and idOS = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
@@ -403,7 +403,7 @@ class OrdemdeServicoController extends Controller
 
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
-        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where ativoreceita = 1 and excluidoreceita = 0 and idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $valorOS = $ordemdeservico->valorOrdemdeServico;
         if (isset($valorOS)) {
@@ -478,8 +478,6 @@ class OrdemdeServicoController extends Controller
 
                 ]);
 
-
-
                 $valorMonetarioReceita[$i]                  = $request->get('valorreceita')[$i];
                 $valorReceita[$i] = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetarioReceita[$i]);
 
@@ -546,8 +544,21 @@ class OrdemdeServicoController extends Controller
                     );
                 
                 }
+
             }
         }
+
+        //Marca como excluído uma despesa removida na tabela
+        $receitas = $request->get('idReceita');
+        $atualiza = $receita
+        ->whereNotIn('id', $receitas)
+        ->where('idosreceita', $ordemdeservico->id )
+        ->update([
+            'ativoreceita'      => '0', 
+            'excluidoreceita'   => '1'
+        ]);
+
+        
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->update($request->all());
 

@@ -1,10 +1,9 @@
     <!-- CSS -->
-    @isset($paginaModal)
-    @else
-        @isset($relatorioKendoGrid)
+    @if(!isset($paginaModal) || isset($relatorioKendoGrid))
+
             <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
-        @endisset
-    @endisset
+        @endif
+
 
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" /> --}}
     {{-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> --}}
@@ -24,6 +23,7 @@
         input,
         select,
         option,
+        datalist,
         a,
         span,
         td,

@@ -3,7 +3,7 @@
     $rotaapi = "apidadosfechamentofinal";
     $titulo  = "Fechamento Final";
     $campodata = 'dataCriacaoOrdemdeServico';
-
+    $relatorioKendoGrid = true;
 ?>
 <head>
     <meta charset="utf-8">

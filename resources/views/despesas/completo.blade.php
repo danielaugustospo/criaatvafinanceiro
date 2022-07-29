@@ -10,83 +10,43 @@ if (isset($despesas)) {
 } else {
     $despesas = '';
 }
+if (isset($idSalvo)) {
+    //Verificação após retorno de lançamento de mais de uma despesa
+    $tamanhoIdSalvo = count($idSalvo);
+    if ($tamanhoIdSalvo > 1) {
+        $idSalvo = implode(',', $idSalvo);
+    }
+} else {
+    $idSalvo = null;
+}
+
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 
 <?php
-$chamadaCadastroModal   = 'atualizadespesa';
-$tituloCadastroModal    = 'Atualização de Despesa';
-$idFrame                = 'frameatualizadespesa';
+$chamadaCadastroModal = 'atualizadespesa';
+$tituloCadastroModal = 'Atualização de Despesa';
+$idFrame = 'frameatualizadespesa';
 
-$chamadaCadastroModal1   = 'lancadespesa';
-$tituloCadastroModal1    = 'Lançamento de Despesa';
-$idFrame1                = 'framecriadepesa';
+$chamadaCadastroModal1 = 'lancadespesa';
+$tituloCadastroModal1 = 'Lançamento de Despesa';
+$idFrame1 = 'framecriadepesa';
 ?>
 
-<!-- Modal -->
-<div class="modal fade @isset($chamadaCadastroModal1) {{ $chamadaCadastroModal1 }} @endisset"
-    id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
-                        @isset($tituloCadastroModal1)
-                            {{ $tituloCadastroModal1 }}
-                        @endisset
-                    </b></h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-        {{-- @include('despesas/create') --}}
-        <iframe class="modal-body" src="{{ route('despesas.create') }}?paginaModal=true" id="{{ $idFrame1 }}" frameborder="0"
-        style="height: 60vh;">
-    </iframe>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="recarrega();"
-                    data-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-<div class="modal fade @isset($chamadaCadastroModal) {{ $chamadaCadastroModal }} @endisset"
-    id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
-                        @isset($tituloCadastroModal)
-                            {{ $tituloCadastroModal }}
-                        @endisset
-                    </b></h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <iframe class="modal-body" src="modaledicaodespesas/1" id="{{ $idFrame }}" frameborder="0"
-                style="height: 60vh;">
-            </iframe>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="recarrega();"
-                    data-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <head>
     <meta charset="utf-8">
     <title>{{ $titulo }}</title>
+
 </head>
 
 @extends('layouts.app')
 
 @section('content')
+    @if($paginaModal)
+
+    @else
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
@@ -96,7 +56,7 @@ $idFrame1                = 'framecriadepesa';
                     @can('despesa-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar
                             Despesas</a>
-                            <button type="button" class="btn btn-secondary" onclick="abreModalCadastro();"
+                        <button type="button" class="btn btn-secondary" onclick="abreModalCadastro();"
                             data-dismiss="modal">Cadastrar via modal</button>
                     @endcan
                     <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');"
@@ -106,6 +66,7 @@ $idFrame1                = 'framecriadepesa';
             </div>
         </div>
     </div>
+    @endif
     @include('layouts/helpersview/mensagemRetorno')
 
 
@@ -118,17 +79,20 @@ $idFrame1                = 'framecriadepesa';
         @include('layouts/helpersview/infofiltrosdepesa')
     </div>
     <script>
+    @if($paginaModal)
+    @else
         $.LoadingOverlay("show", {
             image: "",
             progress: true
         });
+    @endif
         $(document).ready(function() {
 
             var dataSource = new kendo.data.DataSource({
                 transport: {
                     read: {
                         @if (isset($despesas))
-                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
+                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}",
                         @else
                             url: "{{ $rotaapi }}",
                         @endif
@@ -579,6 +543,8 @@ $idFrame1                = 'framecriadepesa';
 
             });
         });
+        @if($paginaModal)
+        @else
         $(window).on('load', function() {
 
                     var $myDiv = $('#grid');
@@ -605,6 +571,7 @@ $idFrame1                = 'framecriadepesa';
                         }
 
                     });
+            @endif
 
                 function recarrega() {
                     $('#grid').data('kendoGrid').dataSource.read();
@@ -643,4 +610,64 @@ $idFrame1                = 'framecriadepesa';
 
                 @include('layouts/filtradata')
     </script>
+
+
+
+
+
+    {{-- Modal --}}      
+
+<div class="modal fade @isset($chamadaCadastroModal1) {{ $chamadaCadastroModal1 }} @endisset" id="exampleModalCenter"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                        @isset($tituloCadastroModal1)
+                            {{ $tituloCadastroModal1 }}
+                        @endisset
+                    </b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            {{-- @include('despesas/create') --}}
+            <iframe class="modal-body" src="{{ route('despesas.create') }}?paginaModal=true" id="{{ $idFrame1 }}"
+                frameborder="0" style="height: 60vh;">
+            </iframe>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                    data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade @isset($chamadaCadastroModal) {{ $chamadaCadastroModal }} @endisset"
+    id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                        @isset($tituloCadastroModal)
+                            {{ $tituloCadastroModal }}
+                        @endisset
+                    </b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <iframe class="modal-body" src="modaledicaodespesas/1" id="{{ $idFrame }}" frameborder="0"
+                style="height: 60vh;">
+            </iframe>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                    data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

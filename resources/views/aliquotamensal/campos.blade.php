@@ -68,45 +68,48 @@
         }
     </style>
     
-    
-    
     <div class="table-wrapper">
-        <table class="fl-table">
-            <thead>
-            <tr>
-                <th class="text-center">Conta</th>
-                <th class="text-center">Mês/Ano</th>
-                <th class="text-center">DAS Sem Fator</th>
-                <th class="text-center">ISS Sem Fator</th>
-                <th class="text-center">Recibo Sem Fator</th>
-                <th class="text-center">DAS Com Fator</th>
-                <th class="text-center">ISS Com Fator</th>
-                <th class="text-center">Recibo Com Fator</th>
-                <th width="100px" class="noExport">Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <select name="idconta" id="idconta">
-                            <?php if(isset($selectContaSetada)): 
-                            foreach ($selectContaSetada as $key => $conta) { ?>
-                                <option value="<?php echo $conta->id; ?>"><?php echo $conta->apelidoConta; ?></option>
-                            <?php  }   
-                            else : 
-                            foreach ($listaContas as $key => $contaProvider) { ?>
-                                <option value="<?php echo $contaProvider->id; ?>"><?php echo $contaProvider->apelidoConta; ?></option>
-                            <?php }  endif; ?>
-                        </select>
-                    <td><input type="month" name="mes"              id="mes"                                     required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->mes; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="dasSemFatorR"      id="dasSemFatorR"     class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->dasSemFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="issSemFatorR"      id="issSemFatorR"     class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->issSemFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="reciboSemFatorR"   id="reciboSemFatorR"  class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->reciboSemFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="dasComFatorR"      id="dasComFatorR"     class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->dasComFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="issComFatorR"      id="issComFatorR"     class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->issComFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td><input type="text" name="reciboComFatorR"   id="reciboComFatorR"  class="campo-aliquota" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->reciboComFatorR; else: echo ''; endif ?>" <?php echo $readonlyOuNao; ?>></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">Conta</h5>
+        <select class="col-sm-3 form-control" name="idconta" id="idconta">
+            <?php if(isset($selectContaSetada)): 
+            foreach ($selectContaSetada as $key => $conta) { ?>
+                <option value="<?php echo $conta->id; ?>"><?php echo $conta->apelidoConta; ?></option>
+            <?php  }   
+            else : 
+            foreach ($listaContas as $key => $contaProvider) { ?>
+                <option value="<?php echo $contaProvider->id; ?>"><?php echo $contaProvider->apelidoConta; ?></option>
+            <?php }  endif; ?>
+        </select>
     </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">Mês/Ano</h5>
+        <input type="month" class="form-control col-sm-3 campo-aliquota" name="mes" id="mes" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->mes; else: echo ''; endif ?>" {{$readonlyOuNao}}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">DAS Sem Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="dasSemFatorR" id="dasSemFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->dasSemFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">ISS Sem Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="issSemFatorR" id="issSemFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->issSemFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">Recibo Sem Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="reciboSemFatorR" id="reciboSemFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->reciboSemFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">DAS Com Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="dasComFatorR" id="dasComFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->dasComFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">ISS Com Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="issComFatorR" id="issComFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->issComFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <h5 class="col-sm-3" for="">Recibo Com Fator</h5>
+        <input type="text" class="form-control col-sm-3 campo-aliquota" name="reciboComFatorR" id="reciboComFatorR" required value="@if(isset($dadosaliquotamensal)){{ $dadosaliquotamensal->reciboComFatorR }} @else {{!! '0,0000' !!}} @endif" {{ $readonlyOuNao }}>
+    </div>
+    </div>
+ 
