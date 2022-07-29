@@ -259,14 +259,6 @@
             $("#telaPago").show();
         }
 
-        @if (Request::path() == 'despesas/create' || Request::path() == 'despesas/' . $despesa->id . '/edit')
-
-            window.addEventListener("beforeunload", function(event) {
-                event.preventDefault();
-                event.returnValue = "Confirme que deseja ser redirecionado";
-                return "Confirme que deseja ser redirecionado";
-            });
-        @endif
 
     });
 

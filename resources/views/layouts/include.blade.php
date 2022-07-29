@@ -12,16 +12,13 @@
 
 {{-- TODO: Alterar a forma que o kendo grid é carregado --}}
 
-@isset($paginaModal)
-@else
-    @isset($relatorioKendoGrid)
+@if(!isset($paginaModal) || isset($relatorioKendoGrid))
         <script src="{{ asset('js/kendogrid/kendo.all.min.js') }}"></script>
         <script src="{{ asset('js/kendogrid/messages.pt-BR.min.js') }}"></script>
         <!-- Carrega Pako ZLIB library para habilitar a compressão PDF -->
         <script src="https://kendo.cdn.telerik.com/2021.2.616/js/pako_deflate.min.js"></script>
         <script src="{{ asset('js/kendogrid/kendo.culture.pt-BR.min.js') }}"></script>
-    @endisset
-@endisset
+@endif
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
 

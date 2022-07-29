@@ -98,10 +98,11 @@ class DespesaController extends Controller
         $cliente        = $validacoesPesquisa[9];
         $fixavariavel   = $validacoesPesquisa[10];
         $pago           = $validacoesPesquisa[11];
+        $idSalvo        = $validacoesPesquisa[12];
 
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago'));
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo'));
     }
 
 
@@ -110,14 +111,28 @@ class DespesaController extends Controller
         
         // TODO: Montar filtro genérico de despesas
 
-        $descricao = $this->montaFiltrosConsulta($request);
+        if (isset($request->idSalvo)) {
+            //Verificação após retorno de lançamento de mais de uma despesa
 
-        $listaDespesas = DB::select('SELECT distinct d.id, 
+            if(is_array($request->idSalvo) &&(count($request->idSalvo) > 1)){
+                //Ref. is_array: 
+                //https://stackoverflow.com/questions/49506003/sizeof-parameter-must-be-an-array-or-an-object-that-implements-countable
+                $idSalvos = implode(',', $request->idSalvo);
+                $descricao = " AND d.id in ( $idSalvos)";
+            }else{
+                $descricao = " AND d.id in ($request->idSalvo)";
+            }
+        }else{
+            $descricao = $this->montaFiltrosConsulta($request);
+        }
+        
+
+        $listaDespesas = DB::SELECT('SELECT distinct d.id, 
         c.despesaCodigoDespesa,
         g.grupoDespesa,
         CASE
-            WHEN d.ehcompra = 1 and (insereestoque IS NULL or insereestoque = 1) THEN bp.nomeBensPatrimoniais
-            ELSE d.descricaoDespesa
+            WHEN d.ehcompra = 1 and (insereestoque IS NULL or insereestoque = 1) THEN UPPER(bp.nomeBensPatrimoniais)
+            ELSE UPPER(d.descricaoDespesa)
         END AS descricaoDespesa,
         CASE 
             WHEN d.despesaFixa = 1  THEN "FIXA" 
@@ -405,12 +420,6 @@ class DespesaController extends Controller
     {
         $descricao = "";
         $verificaInputCampos = 0;
-        if (isset($request->idSalvo)) {
-            //Verificação após retorno de lançamento de mais de uma despesa
-            $idSalvos = implode(",", $request->idSalvo);
-            $descricao .= "AND d.id in ($idSalvos)";
-            $verificaInputCampos++;
-        }
 
         if (isset($request->despesas)) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
             $verificaInputCampos++;
@@ -466,6 +475,8 @@ class DespesaController extends Controller
 
     private function validaPesquisa($request)
     {
+
+
         if ($request->get('despesas')) :     $despesas = $request->get('despesas');
         else : $despesas = '';
         endif;
@@ -502,8 +513,13 @@ class DespesaController extends Controller
         if ($request->get('pago')) :        $pago = $request->get('pago');
         else : $pago = '';
         endif;
+        if (isset($request->idSalvo)) {
+            $idSalvos = $request->idSalvo;
+        }else{
+            $idSalvos = null;
+        }
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago);
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos );
         return $solicitacaoArray;
     }
 
@@ -681,11 +697,11 @@ class DespesaController extends Controller
                 if ((int)$request->get('paginaModal') == 1) {
                     $paginaModal = true;
 
-                    return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'paginaModal'));
+                    return view('despesas.completo', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'paginaModal', 'idSalvo'));
                     
                 } elseif ((int)$request->get('paginaModal') == 0) {
 
-                    return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito'));
+                    return view('despesas.completo', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'idSalvo'));
                 }
 
 
