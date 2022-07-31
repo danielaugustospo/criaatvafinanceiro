@@ -12,6 +12,8 @@
     }
 ?>
 
+@can('visualiza-relatoriogeral')
+
 <head>
     <meta charset="utf-8">
     <title>{{ $titulo }}</title>
@@ -183,4 +185,7 @@
 </script>
 
 
+@else  
+@include('layouts/helpersview/finalnaoautorizado')
 @endsection
+@endcan

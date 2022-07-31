@@ -15,6 +15,8 @@
     $urlContaCorrente = route('apifluxodecaixa');
 
 @endphp
+@can('visualiza-relatoriogeral')
+
 <head>
     <meta charset="utf-8">
     <title>{{$titulo}}</title>
@@ -130,4 +132,7 @@
 </div>
 @endcan
 
-@endsection  
+@else  
+@include('layouts/helpersview/finalnaoautorizado')
+@endsection
+@endcan  

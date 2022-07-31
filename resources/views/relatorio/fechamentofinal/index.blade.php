@@ -5,6 +5,8 @@
     $campodata = 'dataCriacaoOrdemdeServico';
     $relatorioKendoGrid = true;
 ?>
+@can('visualiza-relatoriogeral')
+
 <head>
     <meta charset="utf-8">
     <title>{{$titulo}}</title>
@@ -23,16 +25,11 @@
     </div>
 </div>
 
-
-
 @if ($message = Session::get('success'))
 <div class="alert alert-success">
     <p>{{ $message }}</p>
 </div>
 @endif
-
-{{-- @include('despesas/filtroindex') --}}
-
 
 <div id="filter-menu"></div>
 <br /><br />
@@ -83,13 +80,6 @@
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
 
-                // function calculaPorcentagem(){
-                //     var valTotalProjeto = $("#grid").data("kendoGrid").dataSource._aggregateResult.valorOrdemdeServico;
-                //     var valTotalLucro   = $("#grid").data("kendoGrid").dataSource._aggregateResult.lucro;
-
-                //     var valPorcentagem = (valTotalLucro * 100) / valTotalProjeto;
-                //     return valPorcentagem
-                // }
 
                 function calculaPorcentagem(data){
                     var tabela = $('#grid').data('kendoGrid');
@@ -101,4 +91,7 @@
                 }
 </script>   
 
+@else  
+@include('layouts/helpersview/finalnaoautorizado')
 @endsection
+@endcan

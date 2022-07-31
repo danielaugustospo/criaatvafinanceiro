@@ -1,4 +1,5 @@
-<?php //use App\Providers\AppServiceProvider; ?>
+<?php //use App\Providers\AppServiceProvider;
+?>
 
 <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
     @yield('nav')
@@ -48,14 +49,18 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Despesas <span class="caret"></span>
                             </a>
+                        @elsecan('despesa-create')
+                            {{-- <a class="dropdown-item" href="{{ route('ordemdeservicos.index') }}">Consultar</a> --}}
+                            <a class="nav-link" href="{{ route('despesas.create') }}">Cadastrar Despesas</a>
                         @endcan
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('despesa-list')
                                 {{-- <a class="dropdown-item" href="{{ route('despesas.index') }}">Listar todas</a> --}}
-                                <a class="dropdown-item" data-toggle="modal" data-target=".modaldepesas" style="cursor:pointer;">Pesquisar por despesa</a>
-                                <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');" class="dropdown-item" href="#" style="cursor:pointer; color:red;">Pesquisar Despesas (completo)</a>
-
+                                <a class="dropdown-item" data-toggle="modal" data-target=".modaldepesas"
+                                    style="cursor:pointer;">Pesquisar por despesa</a>
+                                <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');" class="dropdown-item"
+                                    href="#" style="cursor:pointer; color:red;">Pesquisar Despesas (completo)</a>
                             @endcan
                             @can('despesa-create')
                                 <a class="dropdown-item" href="{{ route('despesas.create') }}">Cadastrar</a>
@@ -77,7 +82,8 @@
                         @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('receita-list')
-                            <a class="dropdown-item" data-toggle="modal" data-target=".modalreceita" style="cursor:pointer;">Pesquisar por receita</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target=".modalreceita"
+                                    style="cursor:pointer;">Pesquisar por receita</a>
 
                                 {{-- <a class="dropdown-item" href="{{ route('receita.index') }}">Consultar</a> --}}
                             @endcan
@@ -88,9 +94,11 @@
                     </li>
 
                     <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
-                            Relatórios <span class="caret"></span>
-                        </a>
+                        @can('visualiza-relatoriogeral')
+                            <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
+                                Relatórios <span class="caret"></span>
+                            </a>
+                        @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('entradas-list')
                                 <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
@@ -239,12 +247,12 @@
 
 
                     <li class="nav-item dropdown">
-
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Conf. <span class="caret"></span>
-                        </a>
-
+                        @can('usuario-list')
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Conf. <span class="caret"></span>
+                            </a>
+                        @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('usuario-list')
                                 <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
@@ -288,7 +296,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('benspatrimoniais-list')
-                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Catálogo de Materiais</a>
+                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Catálogo de
+                                        Materiais</a>
                                 @endcan
 
                                 @can('entradas-list')
@@ -316,13 +325,15 @@
                             <a class="dropdown-item" href="users/{{ Auth::user()->id }}/edit">Editar Perfil <i
                                     class="far fa-id-card ml-1"></i></a>
 
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                 Sair
                                 <i class="fas fa-power-off"></i>
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                style="display: none;">
                                 @csrf
                             </form>
                         </div>
@@ -339,11 +350,13 @@
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="" id="formFiltraPeriodoMonetario" onsubmit="return chamaPrevencaodeClique(event)" method="get">
+            <form action="" id="formFiltraPeriodoMonetario" onsubmit="return chamaPrevencaodeClique(event)"
+                method="get">
                 @csrf
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">Selecione o período e conta</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">Selecione o período e
+                        conta</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -351,21 +364,24 @@
                 <div class="modal-body col-sm-12">
                     <div class="row ml-2">
                         <label>Conta</label>
-                        <select name="conta" id="conta" class="selecionaComInput col-sm-12" style="width:440px;" required>
-                        <option disabled selected>Selecione...</option>
-                        @foreach ($listaContas as $contas)
-                            <option value="{{ $contas->id }}">{{ $contas->apelidoConta }} -
-                                {{ $contas->nomeConta }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <label class="ml-2 mt-2">Período</label>
-                <div class="row">
+                        <select name="conta" id="conta" class="selecionaComInput col-sm-12"
+                            style="width:440px;" required>
+                            <option disabled selected>Selecione...</option>
+                            @foreach ($listaContas as $contas)
+                                <option value="{{ $contas->id }}">{{ $contas->apelidoConta }} -
+                                    {{ $contas->nomeConta }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <label class="ml-2 mt-2">Período</label>
+                    <div class="row">
 
-                    <input type="date" required class="form-control col-sm-5 ml-4 mr-1" name="datainicial" id="datainicial">
-                    <input type="date" required class="form-control col-sm-5 " name="datafinal" id="datafinal">
-                    <input type="hidden" value="" name="modorelatorio" id="modorelatorio">
-                </div>
+                        <input type="date" required class="form-control col-sm-5 ml-4 mr-1" name="datainicial"
+                            id="datainicial">
+                        <input type="date" required class="form-control col-sm-5 " name="datafinal"
+                            id="datafinal">
+                        <input type="hidden" value="" name="modorelatorio" id="modorelatorio">
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -384,15 +400,15 @@
 
 
 <script>
-    function alteraRotaFormularioCC(){
+    function alteraRotaFormularioCC() {
         document.getElementById("formFiltraPeriodoMonetario").setAttribute("action", "{{ route('extratoConta') }}");
     }
 
-    function alteraRotaFormularioFluxo(relatorio){
-        if(relatorio === 'sintetico'){
+    function alteraRotaFormularioFluxo(relatorio) {
+        if (relatorio === 'sintetico') {
             document.getElementById("modorelatorio").value = "sintetico";
         }
-        if(relatorio === 'analitico'){
+        if (relatorio === 'analitico') {
             document.getElementById("modorelatorio").value = 'analitico';
 
         }
@@ -407,39 +423,39 @@
 <datalist id="datalistIdReceita">
     @foreach ($listaReceitas as $receitas)
         <option value="{{ $receitas->id }}">{{ $receitas->id }}
-          </option>
-      @endforeach
-  </datalist>
-  
-  <datalist id="datalistDescricaoReceita">
-      @foreach ($listaReceitas as $receitas)
-          <option value="{{ $receitas->descricaoreceita }}">{{ $receitas->descricaoreceita }}
-          </option>
-      @endforeach
-  </datalist>
+        </option>
+    @endforeach
+</datalist>
 
-  {{-- <datalist id="datalistOrdemServicoReceita">
+<datalist id="datalistDescricaoReceita">
+    @foreach ($listaReceitas as $receitas)
+        <option value="{{ $receitas->descricaoreceita }}">{{ $receitas->descricaoreceita }}
+        </option>
+    @endforeach
+</datalist>
+
+{{-- <datalist id="datalistOrdemServicoReceita">
       @foreach ($pegaidOS as $ordemdeservico)
           <option value="{{ $ordemdeservico->id }}">{{ $ordemdeservico->id }}
           </option>
       @endforeach
   </datalist> --}}
 
-  {{-- <datalist id="datalistContasReceita">
+{{-- <datalist id="datalistContasReceita">
       @foreach ($listaContas as $contareceita)
           <option value="{{ $contareceita->apelidoConta }}">{{ $contareceita->nomeConta }} - {{ $contareceita->apelidoConta }}
           </option>
       @endforeach
   </datalist> --}}
 
-  {{-- <datalist id="datalistClienteReceita">
+{{-- <datalist id="datalistClienteReceita">
       @foreach ($nomeclientes as $cliente)
           <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>
       @endforeach
   </datalist> --}}
 
 
-  <datalist id="datalistIdDespesa">
+<datalist id="datalistIdDespesa">
     @foreach ($listaDespesas as $despesas)
         <option value="{{ $despesas->id }}">{{ $despesas->id }}
         </option>
