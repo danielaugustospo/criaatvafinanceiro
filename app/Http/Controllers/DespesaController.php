@@ -119,7 +119,6 @@ class DespesaController extends Controller
         $permissaoTotal = 0;
         if (isset($request->idUser)) {
             $idUser = Crypt::decrypt($request->idUser);
-            // dd($idUser);
             if (User::find($idUser)->can('despesa-list')){
                 $permissaoTotal = 1;
             }
@@ -133,6 +132,9 @@ class DespesaController extends Controller
             }else{
                 $idUser = Auth()->user()->id;
             }
+        }
+        else {
+            abort(401); 
         }
         $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = $idUser ";
 
