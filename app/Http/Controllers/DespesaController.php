@@ -122,6 +122,9 @@ class DespesaController extends Controller
             if (User::find($idUser)->can('despesa-list')){
                 $permissaoTotal = 1;
             }
+            else {
+                abort(401); 
+            }
             // elseif (User::find($idUser)->can('despesa-create')){
 
             // }
