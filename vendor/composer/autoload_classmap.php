@@ -2002,6 +2002,7 @@ return array(
     'League\\MimeTypeDetection\\GeneratedExtensionToMimeTypeMap' => $vendorDir . '/league/mime-type-detection/src/GeneratedExtensionToMimeTypeMap.php',
     'League\\MimeTypeDetection\\MimeTypeDetector' => $vendorDir . '/league/mime-type-detection/src/MimeTypeDetector.php',
     'League\\MimeTypeDetection\\OverridingExtensionToMimeTypeMap' => $vendorDir . '/league/mime-type-detection/src/OverridingExtensionToMimeTypeMap.php',
+    'Lucascudo\\LaravelPtBRLocalization\\LaravelPtBRLocalizationServiceProvider' => $vendorDir . '/lucascudo/laravel-pt-br-localization/src/LaravelPtBRLocalizationServiceProvider.php',
     'Matrix\\Builder' => $vendorDir . '/markbaker/matrix/classes/src/Builder.php',
     'Matrix\\Decomposition\\Decomposition' => $vendorDir . '/markbaker/matrix/classes/src/Decomposition/Decomposition.php',
     'Matrix\\Decomposition\\LU' => $vendorDir . '/markbaker/matrix/classes/src/Decomposition/LU.php',

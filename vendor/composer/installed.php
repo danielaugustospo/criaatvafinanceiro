@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6e42f0e928e17e0ce40341daca3cb16ef78486ba',
+        'reference' => 'fa11748a3ad05b3c4f365f25f053231a2adf4d92',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -358,7 +358,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6e42f0e928e17e0ce40341daca3cb16ef78486ba',
+            'reference' => 'fa11748a3ad05b3c4f365f25f053231a2adf4d92',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
@@ -396,6 +396,15 @@
             'aliases' => array(),
             'reference' => 'aa70e813a6ad3d1558fc927863d47309b4c23e69',
             'dev_requirement' => false,
+        ),
+        'lucascudo/laravel-pt-br-localization' => array(
+            'pretty_version' => 'v1.2.3',
+            'version' => '1.2.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../lucascudo/laravel-pt-br-localization',
+            'aliases' => array(),
+            'reference' => '7470427992f6fe6b2dbe616263ff8da40d1d1599',
+            'dev_requirement' => true,
         ),
         'maennchen/zipstream-php' => array(
             'pretty_version' => '2.1.0',
