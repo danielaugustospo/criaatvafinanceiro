@@ -27,7 +27,7 @@
                         </div>
                     @endif
 
-                    Bem Vindo, {{Auth::user()->name}}!
+                    <label for=""> Bem Vindo, {{Auth::user()->name}}!</label>
 
                 </div>
 
