@@ -16,6 +16,8 @@
 
 </head>
 
+
+
 <body style="background-image: url('{{ config('app.url') }}/img/BACKGROUND-TOP.jpg');">
     <div id="app">
         @isset($paginaModal)

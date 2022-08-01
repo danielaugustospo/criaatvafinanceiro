@@ -1,4 +1,3 @@
-@can('visualiza-relatoriogeral')
 <?php 
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apicontasareceber";
@@ -37,8 +36,9 @@
 <div id="grid"></div>
 
 <script>
-
-@include('layouts/helpersview/iniciotabela')
+    
+    @include('layouts/helpersview/iniciotabela')
+    @can('visualiza-relatoriogeral')
 
             dataSource: {
                 data: data,
@@ -81,5 +81,5 @@
 
 @else  
 @include('layouts/helpersview/finalnaoautorizado')
-@endsection
 @endcan
+@endsection

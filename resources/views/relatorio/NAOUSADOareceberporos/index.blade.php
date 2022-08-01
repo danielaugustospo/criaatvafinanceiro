@@ -4,7 +4,6 @@
     $titulo  = "A Receber Por OS";
     $campodata = 'dataCriacaoOrdemdeServico';
 ?>
-@can('visualiza-relatoriogeral')
 
 <head>
     <meta charset="utf-8">
@@ -38,7 +37,9 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
+@can('visualiza-relatoriogeral')
 
+    
             dataSource: {
                 data: data,
                 pageSize: 15,
@@ -78,5 +79,5 @@
 
 @else  
 @include('layouts/helpersview/finalnaoautorizado')
-@endsection
 @endcan
+@endsection

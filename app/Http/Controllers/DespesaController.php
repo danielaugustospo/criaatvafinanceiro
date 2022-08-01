@@ -139,7 +139,7 @@ class DespesaController extends Controller
         else {
             abort(401); 
         }
-        $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = $idUser ";
+        $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = '$idUser' ";
 
         // TODO: Montar filtro genérico de despesas
 
