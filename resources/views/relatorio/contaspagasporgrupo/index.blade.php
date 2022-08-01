@@ -10,9 +10,9 @@
     } else {
         $despesas = '';
     }
+$idUser = Crypt::encrypt(auth()->user()->id);
 ?>
 
-@can('visualiza-relatoriogeral')
 
 <head>
 <meta charset="utf-8">
@@ -46,17 +46,18 @@
         @include('layouts/helpersview/infofiltrosdepesa')
     </div>
 
-<script>
-    $.LoadingOverlay("show", {
-        image: "",
-        progress: true
-    });
-
+    <script>
+        $.LoadingOverlay("show", {
+            image: "",
+            progress: true
+        });
+        
+        
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 @if (isset($despesas))
-                url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}&notafiscal={{$notafiscal}}&cliente={{$cliente}}&fixavariavel={{$fixavariavel}}&pago=S",
+                url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}&notafiscal={{$notafiscal}}&cliente={{$cliente}}&fixavariavel={{$fixavariavel}}&pago=S&idUser={{$idUser}}",
 
                 @else
                     url: "{{ $rotaapi }}",
@@ -182,5 +183,5 @@
 </script>
 @else  
 @include('layouts/helpersview/finalnaoautorizado')
-@endsection
 @endcan
+@endsection

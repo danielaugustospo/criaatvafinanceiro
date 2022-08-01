@@ -1,6 +1,5 @@
 @can('visualiza-relatoriogeral')
 
-
 <head>
     <meta charset="utf-8">
     <title>Relatórios</title>
@@ -102,7 +101,7 @@
     <a href="fechamentofinal"><label class="text-center fontenormal row" for="">Relatório Fechamento Final  &nbsp; </label></a>
     </div>
 </div>
-@endsection
+
 
 
 <style>
@@ -117,5 +116,5 @@
 </style>
 @else  
 @include('layouts/helpersview/finalnaoautorizado')
-@endsection
 @endcan
+@endsection

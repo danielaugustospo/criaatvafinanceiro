@@ -46,27 +46,27 @@ class MigracaoController extends Controller
         date_default_timezone_set('America/Sao_Paulo');
         $horarioInicio = date('d-m-Y H:i:s');
 
-        $this->criaJsonClientes();
+        // $this->criaJsonClientes();
         // $this->criaJsonContas();
-        $this->criaJsonFormaPagamento();
+        // $this->criaJsonFormaPagamento();
         $this->criaJsonFornecedores();
-        $this->criaJsonFuncionarios();
-        $this->criaJsonGrupoDespesas();
-        $this->criaJsonCodigoDespesas();
-        $this->criaJsonVendas();
-        $this->criaJsonVencimentos();
+        // $this->criaJsonFuncionarios();
+        // $this->criaJsonGrupoDespesas();
+        // $this->criaJsonCodigoDespesas();
+        // $this->criaJsonVendas();
+        // $this->criaJsonVencimentos();
 
-        $this->limpaTabelas();
+        // $this->limpaTabelas();
 
         // $this->pegaJsonContas();
-        $this->pegaJsonCliente();
-        $this->pegaJsonOS();
+        // $this->pegaJsonCliente();
+        // $this->pegaJsonOS();
         $this->pegaJsonFornecedor();
-        $this->pegaJsonFormaPagamento();
-        $this->pegaJsonFuncionarios();
-        $this->pegaJsonGrupoDespesas();
-        $this->pegaJsonCodigoDespesas();
-        $this->pegaJsonMovimentacoes();
+        // $this->pegaJsonFormaPagamento();
+        // $this->pegaJsonFuncionarios();
+        // $this->pegaJsonGrupoDespesas();
+        // $this->pegaJsonCodigoDespesas();
+        // $this->pegaJsonMovimentacoes();
 
         $horarioFinal = date('d-m-Y H:i:s');
         print("Iniciado em: " . $horarioInicio . "\n Finalizado: " . $horarioFinal);
@@ -331,7 +331,10 @@ class MigracaoController extends Controller
             endif;
 
             $data[$i]["Razão Social"]   = $fornecedores[$i_data];
+            // $data[$i]["CPF"]            = $fornecedores[$i_data];
+            var_dump($data[$i]["CPF"]);
         }
+        exit;
         try {
             $criaArquivo = fopen($this->diretorio . $nomeArquivo . '.json', 'w');
             fwrite($criaArquivo, json_encode($data, JSON_UNESCAPED_UNICODE));
