@@ -14,7 +14,7 @@ class AddColunaDadosBancariosLegadoFornecedor extends Migration
     public function up()
     {
         Schema::table('fornecedores', function ($table) {
-            $table->integer('dadoslegado')->after('razaosocialFornecedor')->nullable();
+            $table->string('dadoslegado')->after('razaosocialFornecedor')->nullable();
         });
     }
 

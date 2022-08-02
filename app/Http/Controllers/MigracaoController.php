@@ -310,7 +310,15 @@ class MigracaoController extends Controller
             for ($col = 1; $col <= $dadosJsonInicio[2]; $col++) {
                 $riga[] = $dadosJsonInicio[0]->getCellByColumnAndRow($col, $row)->getValue();
 
-                $fornecedores[$row] = $dadosJsonInicio[0]->getCellByColumnAndRow(1, $row)->getFormattedValue();
+                $rzSocial[$row]     = $dadosJsonInicio[0]->getCellByColumnAndRow(1, $row)->getFormattedValue();
+                $contato[$row]      = $dadosJsonInicio[0]->getCellByColumnAndRow(2, $row)->getFormattedValue();
+                $telefone[$row]     = $dadosJsonInicio[0]->getCellByColumnAndRow(8, $row)->getFormattedValue();
+                $cnpj[$row]         = $dadosJsonInicio[0]->getCellByColumnAndRow(11, $row)->getFormattedValue();
+                $cpf[$row]          = $dadosJsonInicio[0]->getCellByColumnAndRow(13, $row)->getFormattedValue();
+
+                $banco[$row]        = $dadosJsonInicio[0]->getCellByColumnAndRow(17, $row)->getFormattedValue();
+                $agencia[$row]      = $dadosJsonInicio[0]->getCellByColumnAndRow(18, $row)->getFormattedValue();
+                $conta[$row]        = $dadosJsonInicio[0]->getCellByColumnAndRow(19, $row)->getFormattedValue();
             }
             if (1 === $row) {
                 // Header row. Save it in "$keys".
@@ -330,11 +338,42 @@ class MigracaoController extends Controller
             if ($i_data < $dadosJsonInicio[1]) : $i_data++;
             endif;
 
-            $data[$i]["Razão Social"]   = $fornecedores[$i_data];
-            // $data[$i]["CPF"]            = $fornecedores[$i_data];
-            var_dump($data[$i]["CPF"]);
+            $data[$i]["Razão Social"]   = $rzSocial[$i_data];
+            //CPF
+            if (isset($data[$i]["CPF"]) && $data[$i]["CPF"] != null) : $data[$i]["CPF"] = $cpf[$i_data];
+            else : $data[$i]["CPF"] = null;
+            endif;
+            //CNPJ
+            if (isset($data[$i]["CGC"]) && $data[$i]["CGC"] != null) :  $data[$i]["CGC"] = $this->limpaCPF_CNPJ($cnpj[$i_data]);
+            else : $data[$i]["CGC"] = null;
+            endif;
+            //NúmTel
+            if (isset($data[$i]["NúmTel"]) && $data[$i]["NúmTel"] != null) : $data[$i]["NúmTel"] = $telefone[$i_data];
+            else : $data[$i]["NúmTel"] = null;
+            endif;
+            //Contato
+            if (isset($data[$i]["Contato"]) && $data[$i]["Contato"] != null) : $data[$i]["Contato"] = $contato[$i_data];
+            else : $data[$i]["Contato"] = null;
+            endif;
+
+            //Banco + Agência + Conta
+            if (isset($data[$i]["Banco"]) && $data[$i]["Banco"] != null) : $data[$i]["Banco"] = $banco[$i_data];
+            else : $data[$i]["Banco"] = null;
+            endif;
+            if (isset($data[$i]["Agência"]) && $data[$i]["Agência"] != null) : $data[$i]["Agência"] = $agencia[$i_data];
+            else : $data[$i]["Agência"] = null;
+            endif;
+            if (isset($data[$i]["Conta"]) && $data[$i]["Conta"] != null) : $data[$i]["Conta"] = $conta[$i_data];
+            else : $data[$i]["Conta"] = null;
+            endif;
+
+            if ($data[$i]["Banco"] != null || $data[$i]["Agência"] || $data[$i]["Conta"] != null) {
+                $data[$i]["DadosGerais"] =  "Banco: " . $data[$i]["Banco"] . " Agência: " . $data[$i]["Agência"] . " Conta: " . $data[$i]["Conta"];
+            } else {
+                $data[$i]["DadosGerais"] = null;
+            }
         }
-        exit;
+
         try {
             $criaArquivo = fopen($this->diretorio . $nomeArquivo . '.json', 'w');
             fwrite($criaArquivo, json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -344,6 +383,17 @@ class MigracaoController extends Controller
             print("Ocorreu um erro na tabela de fornecedores. Tente novamente \n");
         }
     }
+
+    public function limpaCPF_CNPJ($valor)
+    {
+        $valor = trim($valor);
+        $valor = str_replace(".", "", $valor);
+        $valor = str_replace(",", "", $valor);
+        $valor = str_replace("-", "", $valor);
+        $valor = str_replace("/", "", $valor);
+        return $valor;
+    }
+
     public function criaJsonFuncionarios()
     {
 
@@ -668,10 +718,25 @@ class MigracaoController extends Controller
             $fornecedor = new Fornecedores();
 
             $fornecedor->id = null;
-            $fornecedor->razaosocialFornecedor = $jsonfornecedor[$contadorFornecedores]['Razão Social'];
+            $fornecedor->razaosocialFornecedor  = $jsonfornecedor[$contadorFornecedores]['Razão Social'];
+            $fornecedor->cpfFornecedor          = $jsonfornecedor[$contadorFornecedores]['CPF'];
+            $fornecedor->cnpjFornecedor         = $jsonfornecedor[$contadorFornecedores]['CGC'];
+            $fornecedor->telefone1Fornecedor    = $jsonfornecedor[$contadorFornecedores]['NúmTel'];
+            $fornecedor->contatoFornecedor      = $jsonfornecedor[$contadorFornecedores]['Contato'];
+            $fornecedor->dadoslegado            = $jsonfornecedor[$contadorFornecedores]['DadosGerais'];
 
-            $salvaFornecedor = $fornecedor->save();
-            print_r("Fornecedor " . $fornecedor->razaosocialFornecedor  . " cadastrado com sucesso \n");
+            Fornecedores::where('razaosocialFornecedor', $fornecedor->razaosocialFornecedor)
+                ->update([
+                    'razaosocialFornecedor'     => $fornecedor->razaosocialFornecedor,
+                    'cpfFornecedor'             => $fornecedor->cpfFornecedor,
+                    'cnpjFornecedor'            => $fornecedor->cnpjFornecedor,
+                    'telefone1Fornecedor'       => $fornecedor->telefone1Fornecedor,
+                    'contatoFornecedor'         => $fornecedor->contatoFornecedor,
+                    'dadoslegado'               => $fornecedor->dadoslegado,
+                ]);
+
+            // $salvaFornecedor = $fornecedor->save();
+            print_r("Fornecedor " . $fornecedor->razaosocialFornecedor  . " atualizado com sucesso \n");
         }
     }
 
@@ -836,8 +901,7 @@ class MigracaoController extends Controller
 
                             if (($jsonvencimentos[$movimentacoes]['Codfunci'] == $funcionario->nomeFuncionario) && ($jsonvencimentos[$movimentacoes]['Codfunci'] != null || $jsonvencimentos[$movimentacoes]['Codfunci'] != '')) {
                                 $jsonvencimentos[$movimentacoes]['Codfunci'] = $funcionario->id;
-                            }
-                            elseif($jsonvencimentos[$movimentacoes]['Codfunci'] == null || $jsonvencimentos[$movimentacoes]['Codfunci'] == ''){
+                            } elseif ($jsonvencimentos[$movimentacoes]['Codfunci'] == null || $jsonvencimentos[$movimentacoes]['Codfunci'] == '') {
                                 $jsonvencimentos[$movimentacoes]['Codfunci'] = '';
                             }
                         }

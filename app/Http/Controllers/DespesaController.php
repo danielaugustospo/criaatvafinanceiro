@@ -123,7 +123,7 @@ class DespesaController extends Controller
                 $permissaoTotal = 1;
             }
             else {
-                abort(401); 
+                abort(401, 'Não Autorizado'); 
             }
             // elseif (User::find($idUser)->can('despesa-create')){
 
@@ -137,7 +137,7 @@ class DespesaController extends Controller
             }
         }
         else {
-            abort(401); 
+            abort(401, 'Não Autorizado'); 
         }
         $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = '$idUser' ";
 
@@ -794,7 +794,7 @@ class DespesaController extends Controller
             return view('home', compact('mensagemErro'));
         }
         if ($request->user()->cannot('despesa-list') &&  $despesa->idAutor !=  auth()->user()->id) {
-            abort(401);
+            abort(401, 'Não Autorizado');
         }   
 
         $despesa = null;
@@ -891,7 +891,7 @@ class DespesaController extends Controller
         $despesa        = Despesa::find($id);
 
         if (User::find(auth()->user()->id)->cannot('despesa-list') &&  $despesa->idAutor !=  auth()->user()->id) {
-            abort(401);
+            abort(401, 'Não Autorizado');
         }   
 
         $listaContas    = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);

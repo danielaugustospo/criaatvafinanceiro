@@ -51,7 +51,7 @@ $idUser = Crypt::encrypt(auth()->user()->id);
             image: "",
             progress: true
         });
-        
+        @can('visualiza-relatoriogeral')    
         
     var dataSource = new kendo.data.DataSource({
         transport: {

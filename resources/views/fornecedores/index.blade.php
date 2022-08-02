@@ -130,7 +130,7 @@
 
                 dataSource: {
                     data: data,
-                    pageSize: 15,
+                    pageSize: 50,
 
                     // group: [{
                     //     field: "razaosocialFornecedor"
@@ -184,6 +184,12 @@
                         width: 90
                     },
                     {
+                        field: "dadoslegado",
+                        title: "Dados Bancários Importados",
+                        filterable: true,
+                        width: 90
+                    },
+                    {
                         field: "chavePixFornecedor1",
                         title: "1° PIX",
                         filterable: true,
@@ -195,7 +201,36 @@
                         filterable: true,
                         width: 90
                     },
-
+                    {
+                            command: [{
+                                name: "Ver",
+                                iconClass: "k-icon k-i-eye",
+                                click: function(e) {
+                                    e.preventDefault();
+                                    var tr = $(e.target).closest(
+                                        "tr"); // get the current table row (tr)
+                                    var data = this.dataItem(tr);
+                                    window.location.href = "@php echo env('APP_URL'); @endphp" + "/fornecedores/" + data.id;
+                                }
+                            }],
+                            width: 70,
+                            exportable: false,
+                        },
+                    // {
+                    //         command: [{
+                    //             name: "Editar",
+                    //             iconClass: "k-icon k-i-eye",
+                    //             click: function(e) {
+                    //                 e.preventDefault();
+                    //                 var tr = $(e.target).closest(
+                    //                     "tr"); // get the current table row (tr)
+                    //                 var data = this.dataItem(tr);
+                    //                 window.location.href = "@php echo env('APP_URL'); @endphp" + "/fornecedores/" + data.id;
+                    //             }
+                    //         }],
+                    //         width: 70,
+                    //         exportable: false,
+                    //     },
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {
