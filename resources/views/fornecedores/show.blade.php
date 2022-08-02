@@ -13,7 +13,8 @@
             <br>
             <form action="{{ route('fornecedores.destroy',$fornecedor->id) }}" method="POST">
                     @can('fornecedor-edit')
-                        <a class="btn btn-primary" href="{{ route('fornecedores.edit',$fornecedor->id) }}">Editar</a>
+                        {{-- <a class="btn btn-primary" href="{{ route('fornecedores.edit',$fornecedor->id) }}">Editar</a> --}}
+                        <a class="btn btn-primary" onclick="alert('Em breve')">Editar</a>
                     @endcan
 
                     @csrf
