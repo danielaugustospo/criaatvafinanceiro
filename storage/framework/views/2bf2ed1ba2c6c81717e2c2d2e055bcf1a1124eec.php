@@ -1,0 +1,689 @@
+<?php
+$intervaloCelulas = 'A1:K1';
+$rotaapi = 'api/apidespesas';
+$rotaapiupdate = 'api/apicreatedespesas';
+$titulo = 'Despesas (Geral)';
+$campodata = 'vencimento';
+$relatorioKendoGrid = true;
+$idUser = Crypt::encrypt(auth()->user()->id);
+if (isset($despesas)) {
+    $despesas = $despesas;
+} else {
+    $despesas = '';
+}
+if (isset($idSalvo)) {
+    //Verificação após retorno de lançamento de mais de uma despesa
+    $tamanhoIdSalvo = count($idSalvo);
+    if ($tamanhoIdSalvo > 1) {
+        $idSalvo = implode(',', $idSalvo);
+    }
+} else {
+    $idSalvo = null;
+}
+
+$numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
+?>
+
+<?php
+$chamadaCadastroModal = 'atualizadespesa';
+$tituloCadastroModal = 'Atualização de Despesa';
+$idFrame = 'frameatualizadespesa';
+
+$chamadaCadastroModal1 = 'lancadespesa';
+$tituloCadastroModal1 = 'Lançamento de Despesa';
+$idFrame1 = 'framecriadepesa';
+?>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <title><?php echo e($titulo); ?></title>
+
+</head>
+
+
+
+<?php $__env->startSection('content'); ?>
+    <?php if(isset($paginaModal)): ?>
+    <?php else: ?>
+        <div class="row">
+            <div class="col-lg-12 margin-tb">
+                <div class="pull-left">
+                    <h2 class="text-center" style="color: red">Consulta de <?php echo e($titulo); ?></h2>
+                    <div class="form-row d-flex justify-content-center">
+
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('despesa-create')): ?>
+                            <a class="btn btn-dark d-flex justify-content-center" href="<?php echo e(route('despesas.create')); ?>">Cadastrar
+                                Despesas</a>
+                            <button type="button" class="btn btn-secondary" onclick="abreModalCadastro();"
+                                data-dismiss="modal">Cadastrar via modal</button>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('despesa-list')): ?>
+                            <a onclick="abreModalDespesas(param = 'pesquisadespesascompleto');"
+                                class="btn btn-primary d-flex justify-content-center" href="#" style="cursor:pointer;"><i
+                                    class="fas fa-sync"></i>Nova Consulta
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php echo $__env->make('layouts/helpersview/mensagemRetorno', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+
+    <hr>
+    <?php if(!isset($permiteVisualizacaoDespesaCriada)): ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('despesa-list')): ?>
+            <?php $permiteVisualizacaoDespesaCriada = 1; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if(isset($permiteVisualizacaoDespesaCriada)): ?>
+        <div id="filter-menu"></div>
+        <br /><br />
+        
+        <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
+            <?php echo $__env->make('layouts/helpersview/infofiltrosdepesa', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        </div>
+
+        <script>
+            <?php if(isset($paginaModal)): ?>
+            <?php else: ?>
+                $.LoadingOverlay("show", {
+                    image: "",
+                    progress: true
+                });
+            <?php endif; ?>
+            $(document).ready(function() {
+
+                var dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            <?php if(isset($despesas)): ?>
+                                url: "<?php echo e($rotaapi); ?>?despesas=<?php echo e($despesas); ?>&valor=<?php echo e($valor); ?>&dtinicio=<?php echo e($dtinicio); ?>&dtfim=<?php echo e($dtfim); ?>&coddespesa=<?php echo e($coddespesa); ?>&fornecedor=<?php echo e($fornecedor); ?>&ordemservico=<?php echo e($ordemservico); ?>&conta=<?php echo e($conta); ?>&notafiscal=<?php echo e($notafiscal); ?>&cliente=<?php echo e($cliente); ?>&fixavariavel=<?php echo e($fixavariavel); ?>&pago=<?php echo e($pago); ?>&idSalvo=<?php echo e($idSalvo); ?>&idUser=<?php echo e($idUser); ?>",
+                            <?php else: ?>
+                                url: "<?php echo e($rotaapi); ?>",
+                            <?php endif; ?>
+                            dataType: "json"
+                        },
+
+                        parameterMap: function(options, operation) {
+                            if (operation !== "read" && options.models) {
+                                return {
+                                    models: kendo.stringify(options.models)
+                                };
+                            }
+                        }
+                    },
+                    pageSize: 30,
+                    schema: {
+
+                        model: {
+                            id: "id",
+                            fields: {
+                                valorUnitario: {
+                                    type: "number"
+                                },
+                                precoReal: {
+                                    type: "number"
+                                },
+                                vale: {
+                                    type: "number"
+                                },
+                                despesareal: {
+                                    type: "number"
+                                },
+                                vencimento: {
+                                    type: "date"
+                                },
+                                datavale: {
+                                    type: "date"
+                                },
+                                dataDaCompra: {
+                                    type: "date"
+                                },
+                                dataDoTrabalho: {
+                                    type: "date"
+                                },
+                            }
+                        },
+                    },
+
+                    group: {
+                        field: "razaosocialFornecedor",
+                        aggregates: [{
+                                field: "razaosocialFornecedor",
+                                aggregate: "count"
+                            },
+                            {
+                                field: "valorUnitario",
+                                aggregate: "sum"
+                            },
+                            {
+                                field: "precoReal",
+                                aggregate: "sum"
+                            },
+                            {
+                                field: "vale",
+                                aggregate: "sum"
+                            },
+                            {
+                                field: "despesareal",
+                                aggregate: "sum"
+                            }
+
+                        ]
+                    },
+                    aggregate: [{
+                            field: "razaosocialFornecedor",
+                            aggregate: "count"
+                        },
+                        {
+                            field: "valorUnitario",
+                            aggregate: "sum"
+                        },
+                        {
+                            field: "precoReal",
+                            aggregate: "sum"
+                        },
+                        {
+                            field: "vale",
+                            aggregate: "sum"
+                        },
+                        {
+                            field: "despesareal",
+                            aggregate: "sum"
+                        }
+                    ],
+                });
+
+
+                //Se não houver essa declaração, ele retorna erro dizendo que não encontrou o metodo e não exporta o pdf
+                var detailColsVisibility = {};
+
+                dataSource.fetch().then(function() {
+                    var data = dataSource.data();
+
+                    // initialize a Kendo Grid with the returned data from the server.
+                    $("#grid").kendoGrid({
+                        toolbar: ["excel", "pdf"],
+                        excel: {
+                            fileName: "Relatório de " + document.title + ".xlsx",
+                            allPages: true
+                            // proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
+                            // filterable: true
+                        },
+                        excelExport: function(e) {
+
+                            var sheet = e.workbook.sheets[0];
+
+                            sheet.frozenRows = 1;
+                            sheet.mergedCells = ["A1:F1"];
+                            sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
+
+                            var myHeaders = [{
+                                value: "Relatório de " + document.title,
+                                textAlign: "center",
+                                background: "black",
+                                color: "#ffffff"
+                            }];
+
+                            sheet.rows.splice(0, 0, {
+                                cells: myHeaders,
+                                type: "header",
+                                height: 20
+                            });
+                        },
+
+                        pdf: {
+                            fileName: "Relatório de " + document.title + ".pdf",
+
+                            allPages: true,
+                            avoidLinks: true,
+                            paperSize: "A4",
+                            margin: {
+                                top: "2.5cm",
+                                left: "0.1cm",
+                                right: "0.1cm",
+                                bottom: "0.5cm"
+                            },
+
+                            <?php if(isset($orientacao)): ?>
+                                landscape: true,
+                            <?php else: ?>
+                                landscape: true,
+                            <?php endif; ?>
+
+                            repeatHeaders: false,
+                            template: $("#page-template").html(),
+                            scale: 0.48
+                        },
+                        filterable: {
+                            extra: false,
+                            mode: "row"
+                        },
+                        sortable: true,
+                        resizable: true,
+                        scrollable: true,
+                        groupable: true,
+                        columnMenu: true,
+                        responsible: true,
+                        reorderable: true,
+                        width: 'auto',
+                        pageable: {
+                            pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                            numeric: false,
+
+                        },
+                        dataSource: dataSource,
+
+
+                        columns: [{
+                                command: [{
+                                    name: "Editar",
+                                    iconClass: "k-icon k-i-pencil",
+                                    click: function(e) {
+                                        e.preventDefault();
+                                        var tr = $(e.target).closest(
+                                            "tr"); // get the current table row (tr)
+                                        var data = this.dataItem(tr);
+                                        rota = 'modaledicaodespesas/' + data.id + '';
+                                        $('#frameatualizadespesa').attr('src', rota);
+                                        $('#tituloModal').text("Despesa id " + data.id +
+                                            " - " + data.descricaoDespesa);
+                                        $('.atualizadespesa').modal('toggle');
+                                    }
+                                }],
+                                width: 90,
+                                exportable: false,
+                            },
+                            {
+                                field: "id",
+                                title: "ID",
+                                filterable: true,
+                                width: 100,
+                            },
+                            {
+                                field: "apelidoConta",
+                                title: "C/C",
+                                filterable: true,
+                                width: 120,
+                            },
+                            {
+                                field: "despesaCodigoDespesa",
+                                title: "Cód.<br>Despesa",
+                                filterable: true,
+                                width: 120,
+                            },
+                            {
+                                field: "idOS",
+                                title: "OS",
+                                filterable: true,
+                                width: 90
+                            },
+                            {
+                                field: "descricaoDespesa",
+                                title: "Despesa",
+                                filterable: true,
+                                width: 150
+                            },
+                            {
+                                field: "razaosocialFornecedor",
+                                title: "Fornecedor",
+                                filterable: true,
+                                width: 120,
+                                aggregates: ["count"],
+                                footerTemplate: "QTD. Total: #=count#",
+                                groupHeaderColumnTemplate: "Qtd.: #=count#"
+                            },
+                            {
+                                field: "vencimento",
+                                title: "Venc.",
+                                filterable: true,
+                                width: 150,
+                                format: "{0:dd/MM/yyyy}",
+                                filterable: {
+                                    cell: {
+                                        template: betweenFilter
+                                    }
+                                }
+                            },
+                            {
+                                field: "precoReal",
+                                title: "Valor",
+                                filterable: true,
+                                width: 120,
+                                decimals: 2,
+                                aggregates: ["sum"],
+                                groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                format: '{0:0.00}'
+                            },
+                            {
+                                field: "notaFiscal",
+                                title: "NF",
+                                filterable: true,
+                                width: 100,
+                            },
+                            {
+                                field: "pago",
+                                title: "Pago",
+                                filterable: true,
+                                width: 90
+                            },
+                            {
+                                field: "nomeFormaPagamento",
+                                title: "Forma Pagamento",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "quantidade",
+                                title: "Quantidade",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "valorUnitario",
+                                title: "Valor Unitário",
+                                filterable: true,
+                                width: 150,
+                                decimals: 2,
+                                aggregates: ["sum"],
+                                groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                format: '{0:0.00}'
+                            },
+                            {
+                                field: "vale",
+                                title: "Vale",
+                                filterable: true,
+                                width: 150,
+                                decimals: 2,
+                                aggregates: ["sum"],
+                                groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                format: '{0:0.00}'
+                            },
+                            {
+                                field: "despesareal",
+                                title: "Valor<br>Final",
+                                filterable: true,
+                                width: 150,
+                                decimals: 2,
+                                aggregates: ["sum"],
+                                groupHeaderColumnTemplate: "Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                footerTemplate: "Val. Total: #:kendo.toString(sum, 'c', 'pt-BR')#",
+                                format: '{0:0.00}'
+                            },
+                            {
+                                field: "datavale",
+                                title: "PG<br>Vale",
+                                filterable: true,
+                                width: 150,
+                                format: "{0:dd/MM/yyyy}",
+                                filterable: {
+                                    cell: {
+                                        template: betweenFilter
+                                    }
+                                }
+                            },
+                            {
+                                field: "dataDaCompra",
+                                title: "Data da Compra",
+                                filterable: true,
+                                width: 150,
+                                format: "{0:dd/MM/yyyy}",
+                                filterable: {
+                                    cell: {
+                                        template: betweenFilter
+                                    }
+                                }
+                            },
+                            {
+                                field: "dataDoTrabalho",
+                                title: "Data do Trabalho",
+                                filterable: true,
+                                width: 150,
+                                format: "{0:dd/MM/yyyy}",
+                                filterable: {
+                                    cell: {
+                                        template: betweenFilter
+                                    }
+                                }
+                            },
+                            {
+                                field: "quemcomprou",
+                                title: "Quem Comprou",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "nomeBanco",
+                                title: "Banco",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "cheque",
+                                title: "Cheque",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "reembolsado",
+                                title: "Reembolsado",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "despesaFixa",
+                                title: "Despesa Fixa",
+                                filterable: true,
+                                width: 150,
+                            },
+                            {
+                                field: "nomeFuncionario",
+                                title: "Funcionário",
+                                filterable: true,
+                                width: 150,
+                            }
+                        ],
+                        editable: "popup",
+
+                        groupExpand: function(e) {
+                            for (let i = 0; i < e.group.items.length; i++) {
+                                var expanded = e.group.items[i].value
+                                e.sender.expandGroup(".k-grouping-row:contains(" + expanded + ")");
+                            }
+                        },
+                        columnMenu: true,
+                        dataBound: function(e) {
+                            var grid = this;
+                            var columns = grid.columns;
+                            // populate initial columns list if the detailColsVisibility object is empty
+                            if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
+                                for (var i = 0; i < columns.length; i++) {
+                                    detailColsVisibility[columns[i].field] = !columns[i].hidden;
+                                }
+                            } else {
+                                // restore columns visibility state using the stored values
+                                for (var i = 0; i < columns.length; i++) {
+                                    var column = columns[i];
+                                    if (detailColsVisibility[column.field]) {
+                                        grid.showColumn(column);
+                                    } else {
+                                        grid.hideColumn(column);
+                                    }
+                                }
+                            }
+                        },
+                        columnHide: function(e) {
+                            // hide column in all other detail Grids
+                            showHideAll(false, e.column.field, e.sender.element);
+                            // store new visibility state of column
+                            detailColsVisibility[e.column.field] = false;
+                        },
+                        columnShow: function(e) {
+                            // show column in all other detail Grids
+                            showHideAll(true, e.column.field, e.sender.element);
+                            // store new visibility state of column
+                            detailColsVisibility[e.column.field] = true;
+                        }
+                    });
+
+
+                    function showHideAll(show, field, element) {
+                        // find the master Grid element
+                        var parentGridElement = element.parents(".k-grid");
+                        // find all Grid widgets inside the mater Grid element
+                        var detailGrids = parentGridElement.find(".k-grid");
+                        //traverse detail Grids and show/hide the column with the given field name
+                        for (var i = 0; i < detailGrids.length; i++) {
+                            var grid = $(detailGrids[i]).data("kendoGrid");
+                            if (show) {
+                                grid.showColumn(field);
+                            } else {
+                                grid.hideColumn(field);
+                            }
+                        }
+                    }
+
+                });
+            });
+            <?php if(isset($paginaModal)): ?>
+            <?php else: ?>
+                $(window).on('load', function() {
+
+                        var $myDiv = $('#grid');
+
+                        if ($myDiv.length === 1) {
+
+                            var count = 0;
+                            var interval = setInterval(function() {
+                                    <?php if(isset($despesas)): ?>
+                                        if (count >= 100) {
+                                        <?php else: ?>
+                                            if (count >= 800) {
+                                            <?php endif; ?>
+                                            clearInterval(interval);
+                                            $('.k-link')[0].click();
+                                            console.log('Ordenação Por Grupo Clicado Inicialmente');
+                                            $.LoadingOverlay("hide");
+                                            return;
+                                        }
+                                        count += 10;
+                                        $.LoadingOverlay("progress", count);
+                                    }, 300);
+
+                            }
+
+                        });
+                <?php endif; ?>
+
+                function recarrega() {
+                    $('#grid').data('kendoGrid').dataSource.read();
+                    $('#grid').data('kendoGrid').refresh();
+
+                    let timerInterval
+                    Swal.fire({
+                        title: 'Atualizando tabela!',
+                        html: 'Fechando mensagem em <b></b> millisegundos.',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('Mensagem fechada pelo temporizador')
+                        }
+                    })
+                    //Atualiza iframe
+                    $('iframe').attr('src', $('iframe').attr('src'));
+                }
+
+                function abreModalCadastro() {
+                    $('.lancadespesa').modal('toggle');
+
+                }
+
+                <?php echo $__env->make('layouts/filtradata', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        </script>
+    <?php else: ?>
+        <h3 class="text-center">Visualização não permitida</h3>
+    <?php endif; ?>
+
+
+
+
+
+    
+
+    <div class="modal fade <?php if(isset($chamadaCadastroModal1)): ?> <?php echo e($chamadaCadastroModal1); ?> <?php endif; ?>"
+        id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                            <?php if(isset($tituloCadastroModal1)): ?>
+                                <?php echo e($tituloCadastroModal1); ?>
+
+                            <?php endif; ?>
+                        </b></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                
+                <iframe class="modal-body" src="<?php echo e(route('despesas.create')); ?>?paginaModal=true" id="<?php echo e($idFrame1); ?>"
+                    frameborder="0" style="height: 60vh;">
+                </iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                        data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade <?php if(isset($chamadaCadastroModal)): ?> <?php echo e($chamadaCadastroModal); ?> <?php endif; ?>"
+        id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: none; max-heigth: none;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="tituloModal" style="color: red;"><b>
+                            <?php if(isset($tituloCadastroModal)): ?>
+                                <?php echo e($tituloCadastroModal); ?>
+
+                            <?php endif; ?>
+                        </b></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <iframe class="modal-body" src="modaledicaodespesas/1" id="<?php echo e($idFrame); ?>" frameborder="0"
+                    style="height: 60vh;">
+                </iframe>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="recarrega();"
+                        data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/clients/client2/web4/web/resources/views/despesas/completo.blade.php ENDPATH**/ ?>

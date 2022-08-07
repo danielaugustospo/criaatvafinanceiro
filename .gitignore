@@ -1,4 +1,3 @@
-vendor/
 de_modules/
 npm-debug.log
 yarn-error.log
@@ -32,3 +31,5 @@ stats/
 
 # 
 public/migracao/
+node_modules/
+vendor/
