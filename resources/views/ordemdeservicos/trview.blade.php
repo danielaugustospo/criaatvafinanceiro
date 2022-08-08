@@ -1,6 +1,7 @@
 <tr class="linhaTabela">
     <td>
         {!! Form::hidden('idReceita[]', $dadosreceita->idReceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'idReceita']) !!}
+        {!! Form::hidden('excluidoreceita[]', $dadosreceita->excluidoreceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'excluido']) !!}
         <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput form-control" {{ $disabledOrNo }}>
             @foreach ($listaFormaPG as $formaPG)
                 @if ($formaPG->id == $dadosreceita->idformapagamentoreceita)            
@@ -15,7 +16,7 @@
         </select>
     </td>
     <td>
-        {!! Form::text('valorreceita[]', $dadosreceita->valorreceita, ['placeholder' => 'Preencha o valor', 'class' => 'col campo-moeda form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda','required', $readonlyOrNo]) !!}
+        {!! Form::text('valorreceita[]', $dadosreceita->valorreceita, ['placeholder' => 'Preencha o valor', 'class' => 'col campo-moeda valorreceita form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda', $readonlyOrNo]) !!}
     </td>
     <td>
         <select name="pagoreceita[]" id="pagoreceita" style="padding:0px; width:150%;" class="form-control" {{ $disabledOrNo }}>

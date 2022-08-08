@@ -449,11 +449,22 @@
     }
 
     $('body').on('click', '.deletar', function() {
-        var $tr = $(this).closest('tr');
-        if ($tr.attr('class') == 'linhaTabela1') {
-            $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
-        } else {
-            $tr.remove();
-        }
+        alert('Coloque este valor zerado. Remoção de receitas por OS retornará em breve.');
+//         var $tr = $(this).closest('tr');
+//         if ($tr.attr('class') == 'linhaTabela1') {
+//             $tr.nextUntil('tr[class=linhaTabela1]').andSelf().hide();
+
+//             $tr.find(".valorreceita").each(function(index) {
+//             $(this).val('0.00');
+//         });
+// .
+
+//         } else {
+//             $tr.hide();
+
+//             $tr.find(".valorreceita").each(function(index) {
+//             $(this).val('0.00');
+//         });
+//         }
     });
 </script>

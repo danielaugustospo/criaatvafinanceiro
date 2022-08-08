@@ -403,7 +403,7 @@ class OrdemdeServicoController extends Controller
 
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
-        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where ativoreceita = 1 and excluidoreceita = 0 and idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita,excluidoreceita from receita  where ativoreceita = 1 and excluidoreceita = 0 and idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $valorOS = $ordemdeservico->valorOrdemdeServico;
         if (isset($valorOS)) {
@@ -441,6 +441,7 @@ class OrdemdeServicoController extends Controller
     {
 
         $temReceita = $request->get('idformapagamentoreceita');
+
         $tamanhoArrayReceita = count($temReceita);
 
         $request->validate([
@@ -448,7 +449,7 @@ class OrdemdeServicoController extends Controller
             'idClienteOrdemdeServico'         => 'required',
             // 'dataVendaOrdemdeServico'        => 'required|min:3',
             // 'valorProjetoOrdemdeServico'     => 'required|min:3',
-            'valorOrdemdeServico'            => 'required|min:3',
+            // 'valorOrdemdeServico'            => 'required|min:3',
 //            'dataOrdemdeServico'             => 'required|min:3',
             // 'clienteOrdemdeServico'          => 'required|min:3',
             'eventoOrdemdeServico'           => 'required|min:3',
@@ -468,7 +469,7 @@ class OrdemdeServicoController extends Controller
                     'idformapagamentoreceita'       => 'required',
                     'datapagamentoreceita'          => 'required',
                     // 'dataemissaoreceita'            => 'required',
-                    'valorreceita'                  => 'required',
+                    // 'valorreceita'                  => 'required',
                     'pagoreceita'                   => 'required',
                     'contareceita'                  => 'required',
                     // 'registroreceita'            => 'required',
@@ -530,33 +531,68 @@ class OrdemdeServicoController extends Controller
                         ]
                     );
                 } else {
-                DB::update("UPDATE receita
-                SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-                datapagamentoreceita        = '$receita->datapagamentoreceita',           
-                dataemissaoreceita          = '$receita->dataemissaoreceita',             
-                valorreceita                = '$receita->valorreceita',                   
-                pagoreceita                 = '$receita->pagoreceita',                    
-                contareceita                = '$receita->contareceita',                   
-                registroreceita             = '$receita->registroreceita',                
-                nfreceita                   = '$receita->nfreceita',                      
-                idosreceita                 = '$receita->idosreceita'                  
-                WHERE id                    = '$receita->idReceita'"
-                    );
+                    // var_dump($request->get('excluidoreceita'));
+                    // exit;
+                    // if ($request->get('excluidoreceita') == null){ $request->get('excluidoreceita') = 0; }
+                DB::statement("UPDATE receita
+                SET idformapagamentoreceita = $request->get('idformapagamentoreceita'), 
+                datapagamentoreceita        = $request->get('datapagamentoreceita'),           
+                dataemissaoreceita          = $request->get('dataemissaoreceita'),             
+                valorreceita                = $request->get('valorreceita'),                   
+                pagoreceita                 = $request->get('pagoreceita'),                    
+                contareceita                = $request->get('contareceita'),                   
+                registroreceita             = $request->get('registroreceita'),                
+                nfreceita                   = $request->get('nfreceita'),                      
+                idosreceita                 = $request->get('idosreceita'),                  
+                excluidoreceita             = $request->get('excluidoreceita')                 
+                WHERE id                    = $request->get('idReceita')");
                 
                 }
 
             }
         }
 
+
+        // $receita = Receita::select('id')->where('idosreceita', $ordemdeservico->id)->get();
+        // var_dump($receita);
+        // exit;
+        
+        
+        // //aqui eu tenho os dados enviados
+        // var_dump($temReceita);
+        // exit;
+
+
+
         //Marca como excluído uma despesa removida na tabela
-        $receitas = $request->get('idReceita');
-        $atualiza = $receita
-        ->whereNotIn('id', $receitas)
-        ->where('idosreceita', $ordemdeservico->id )
-        ->update([
-            'ativoreceita'      => '0', 
-            'excluidoreceita'   => '1'
-        ]);
+        // $receitas = $request->get('idReceita');
+
+
+// $receitas = implode(',', $receitas);
+
+
+// Altera dados da exclusão
+// $stringRemovedora   = array(",novo,","novo");
+// $stringAlterada     = str_replace($stringRemovedora, "", $receitas);
+
+// dd($stringAlterada);
+
+
+            // DB::update("UPDATE receita
+            //     SET 
+            //     ativoreceita                = '0', 
+            //     excluidoreceita             = '1'
+            //     WHERE  id not in ($stringAlterada)
+            //     AND    idosreceita                    = '$ordemdeservico->id'");
+
+
+        // $atualiza = $receita
+        // ->whereNotIn('id', $receitas)
+        // ->where('idosreceita', $ordemdeservico->id )
+        // ->update([
+        //     'ativoreceita'      => '0', 
+        //     'excluidoreceita'   => '1'
+        // ]);
 
         
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));

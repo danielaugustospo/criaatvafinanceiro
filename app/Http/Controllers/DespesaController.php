@@ -269,8 +269,9 @@ class DespesaController extends Controller
         endif;
 
 
+
         if (isset($request->dtfim)) :        $datafim    = $request->dtfim;
-        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
+        else : $datafim = date('Y-m-t');
         endif;
 
         if (isset($request->dtinicio)) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
