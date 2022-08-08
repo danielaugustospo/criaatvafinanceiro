@@ -1,7 +1,7 @@
 <tr class="linhaTabela">
     <td>
         {!! Form::hidden('idReceita[]', $dadosreceita->idReceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'idReceita']) !!}
-        {!! Form::hidden('excluidoreceita[]', $dadosreceita->excluidoreceita, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'excluido']) !!}
+        {!! Form::hidden('excluidoreceita[]', 0, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'excluidoreceita']) !!}
         <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput form-control" {{ $disabledOrNo }}>
             @foreach ($listaFormaPG as $formaPG)
                 @if ($formaPG->id == $dadosreceita->idformapagamentoreceita)            
@@ -45,13 +45,13 @@
     </td>
     <td>
         <a href="#tabelaPagamento" class="duplicar pb-2">
-            <span class="badge badge-primary">
+            <span class="btn btn-primary">
                 <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
                 Duplicar
             </span>
         </a>
         <a href="#tabelaPagamento" class="deletar" style="padding: 0%;">
-            <span class="badge badge-danger">
+            <span class="btn btn-danger">
                 <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
                 Excluir
             </span>

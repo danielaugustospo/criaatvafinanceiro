@@ -158,13 +158,13 @@ dataSource.fetch().then(function() {
                     model: {
                         fields: {
                             vencimento: { type: "date" },
-                            razaosocialFornecedor: { type: "string" },
+                            reembolsado: { type: "string" },
                             precoReal: { type: "number" }
                         }
                     },
                 },
 
-                group: { field: "razaosocialFornecedor" },
+                group: { field: "reembolsado" },
                 aggregate: [{ field: "precoReal", aggregate: "sum" }],
             },
 
@@ -175,7 +175,7 @@ dataSource.fetch().then(function() {
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 70 },
                 { field: "idOS", title: "N° da OS", filterable: true, width: 60 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Grupo: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "razaosocialFornecedor", title: "Para Quem", filterable: true, width: 60 }            
+                { field: "reembolsado", title: "Para Quem", filterable: true, width: 60 }            
                 ],
         
         @include('layouts/helpersview/finaltabela')

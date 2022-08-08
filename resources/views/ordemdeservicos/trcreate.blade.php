@@ -1,5 +1,6 @@
 <tr class="linhaTabela" id="linhaTabela">
     <td data-label="Forma Pagamento">
+        {!! Form::hidden('excluidoreceita[]', 0, ['placeholder' => 'Preencha este campo', 'maxlength' => '100', 'class' => 'excluidoreceita']) !!}
         <select name="idformapagamentoreceita[]" id="idFormaPagamentoReceita" class="selecionaComInput ">
             <option value="0" selected="selected">Sem Receita</option>
             @foreach ($formapagamento as $formaPG)
@@ -9,7 +10,7 @@
 
     </td>
     <td data-label="Valor Parcela">
-        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'idReceita campo-moeda form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda','required']) !!}
+        {!! Form::text('valorreceita[]', $valorInput, ['placeholder' => 'Preencha o valor', 'class' => 'campo-moeda form-control', 'maxlength' => '100', 'step'=>'any', 'id'=>'campo-moeda','required']) !!}
 
     </td>
     <td data-label="Pago">
@@ -36,13 +37,13 @@
     </td>
     <td>
         <a href="#tabelaPagamento" class="duplicar pb-2">
-            <span class="badge badge-primary">
+            <span class="btn btn-primary">
                 <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
                 Duplicar
             </span>
         </a>
         <a href="#tabelaPagamento" class="deletar" style="padding: 0%;">
-            <span class="badge badge-danger">
+            <span class="btn btn-danger">
                 <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
                 Excluir
             </span>

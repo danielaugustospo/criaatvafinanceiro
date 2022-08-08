@@ -496,10 +496,16 @@ class OrdemdeServicoController extends Controller
                 $receita->idosreceita                   = $request->get('idosreceita');
                 $receita->descricaoreceita              = $request->get('eventoOrdemdeServico');
                 $receita->idclientereceita              = $request->get('idClienteOrdemdeServico');
+                $receita->excluidoreceita               = $request->get('excluidoreceita')[$i];
 
+                if($receita->excluidoreceita == '1' || $receita->excluidoreceita == 1){
+                    $receita->ativoreceita = 0;
+                }
+                else{
+                    $receita->ativoreceita = 1;
+                }
 
                 $receita['idosreceita'] = $ordemdeservico->id;
-
 
                 if ($receita->idReceita == 'novo') {
                     DB::insert(
@@ -513,8 +519,8 @@ class OrdemdeServicoController extends Controller
                     registroreceita,
                     nfreceita,
                     idosreceita,
-                    descricaoreceita,
-                    idclientereceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    excluidoreceita,
+                    ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         [
                             $receita->idformapagamentoreceita,
                             $receita->datapagamentoreceita,
@@ -525,30 +531,26 @@ class OrdemdeServicoController extends Controller
                             $receita->registroreceita,
                             $receita->nfreceita,
                             $receita->idosreceita,
-                            $receita->descricaoreceita,
-                            $receita->idclientereceita ,
+                            $receita->excluidoreceita,
+                            $receita->ativoreceita                  
             
                         ]
                     );
                 } else {
-                    // var_dump($request->get('excluidoreceita'));
-                    // exit;
-                    // if ($request->get('excluidoreceita') == null){ $request->get('excluidoreceita') = 0; }
-                DB::statement("UPDATE receita
-                SET idformapagamentoreceita = $request->get('idformapagamentoreceita'), 
-                datapagamentoreceita        = $request->get('datapagamentoreceita'),           
-                dataemissaoreceita          = $request->get('dataemissaoreceita'),             
-                valorreceita                = $request->get('valorreceita'),                   
-                pagoreceita                 = $request->get('pagoreceita'),                    
-                contareceita                = $request->get('contareceita'),                   
-                registroreceita             = $request->get('registroreceita'),                
-                nfreceita                   = $request->get('nfreceita'),                      
-                idosreceita                 = $request->get('idosreceita'),                  
-                excluidoreceita             = $request->get('excluidoreceita')                 
-                WHERE id                    = $request->get('idReceita')");
-                
+                    DB::update("UPDATE receita
+                SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
+                datapagamentoreceita        = '$receita->datapagamentoreceita',           
+                dataemissaoreceita          = '$receita->dataemissaoreceita',             
+                valorreceita                = '$receita->valorreceita',                   
+                pagoreceita                 = '$receita->pagoreceita',                    
+                contareceita                = '$receita->contareceita',                   
+                registroreceita             = '$receita->registroreceita',                
+                nfreceita                   = '$receita->nfreceita',                      
+                idosreceita                 = '$receita->idosreceita',                  
+                excluidoreceita             = '$receita->excluidoreceita',
+                ativoreceita                = '$receita->ativoreceita'                  
+                WHERE id                    = '$receita->idReceita'");
                 }
-
             }
         }
 

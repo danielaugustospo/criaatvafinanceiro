@@ -259,14 +259,16 @@
     </div>
 </div>
 
-<div class="form-group row ml-2">
+<div class="form-group row">
+    {{-- <label for="">Serviço com fator R?</label> --}}
+    <label for="fatorR" class="col-sm-2 col-form-label">Serviço com fator R?</label>
 
     <input type="radio" class="mt-3" name="fatorR" id="fatorR" value="0"
         @if (isset($ordemdeservico->fatorR) && $ordemdeservico->fatorR == '0') checked @endif>
-    <label for="obsOrdemdeServico" class="col-sm-1  mt-3 pl-0 col-form-label">Não</label>
+    <label for="fatorR" class="col-sm-1  mt-3 pl-0 col-form-label">Não</label>
     <input type="radio" class="mt-3" name="fatorR" id="fatorR" value="1"
         @if (isset($ordemdeservico->fatorR) && $ordemdeservico->fatorR == '1') checked @endif>
-    <label for="obsOrdemdeServico" class="col-sm-1 mt-3 pl-0 col-form-label">Sim</label>
+    <label for="fatorR" class="col-sm-1 mt-3 pl-0 col-form-label">Sim</label>
 
 </div>
 
@@ -449,22 +451,26 @@
     }
 
     $('body').on('click', '.deletar', function() {
-        alert('Coloque este valor zerado. Remoção de receitas por OS retornará em breve.');
-//         var $tr = $(this).closest('tr');
-//         if ($tr.attr('class') == 'linhaTabela1') {
-//             $tr.nextUntil('tr[class=linhaTabela1]').andSelf().hide();
-
-//             $tr.find(".valorreceita").each(function(index) {
-//             $(this).val('0.00');
-//         });
-// .
-
-//         } else {
-//             $tr.hide();
-
-//             $tr.find(".valorreceita").each(function(index) {
-//             $(this).val('0.00');
-//         });
-//         }
+        // alert('Coloque este valor zerado. Remoção de receitas por OS retornará em breve.');
+        var $tr = $(this).closest('tr');
+        if ($tr.attr('class') == 'linhaTabela1') {
+            @if (Request::path() == 'ordemdeservicos/create')
+                $tr.nextUntil('tr[class=linhaTabela1]').andSelf().remove();
+            @else
+                $tr.find(".excluidoreceita").each(function(index) {
+                    $(this).val('1');
+                });
+                $tr.nextUntil('tr[class=linhaTabela1]').andSelf().hide();
+            @endif
+        } else {
+            @if (Request::path() == 'ordemdeservicos/create')
+                $tr.remove();
+            @else
+                $tr.find(".excluidoreceita").each(function(index) {
+                    $(this).val('1');
+                });
+                $tr.hide();
+            @endif
+        }
     });
 </script>
