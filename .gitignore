@@ -33,3 +33,6 @@ stats/
 public/migracao/
 node_modules/
 vendor/
+stats/awsindex.html
+storage/
+storage/logs/acoes.log
