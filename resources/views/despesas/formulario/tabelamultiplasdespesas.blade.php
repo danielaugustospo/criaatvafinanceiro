@@ -125,13 +125,13 @@
             <td>Despesa Fixa</td> --}}
             <td>
                 <a href="#tabelaPagamento" class="duplicarNaoParceladoMultiplo" id="duplicarNaoParceladoMultiplo">
-                    <span class="badge badge-primary">
+                    <span class="btn btn-primary">
                         <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
                         Duplicar
                     </span>
                 </a>
                 <a href="#tabelaPagamento" class="deleteNaoParceladoMultiplo" id="deleteNaoParceladoMultiplo">
-                    <span class="badge badge-danger">
+                    <span class="btn btn-danger">
                         <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
                         Excluir
                     </span>

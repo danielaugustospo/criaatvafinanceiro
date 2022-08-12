@@ -15,32 +15,32 @@
     @endif  
    
     @if ($receita != '')
-        <label><b>Receita:</b> {{ $receita }} &nbsp; </label>
+        <label class="fontenormal"><b>Receita:</b> {{ $receita }} &nbsp; </label>
     @endif
     @if ($valorreceita != '')
-        <label><b>Valor:</b> {{ $numberFormatter->format($valorreceita) }} &nbsp; </label>
+        <label class="fontenormal"><b>Valor:</b> {{ $numberFormatter->format($valorreceita) }} &nbsp; </label>
     @endif
     @if ($dtinicio != '')
-        <label><b>Data Inicial:</b> {{ date('d/m/Y', strtotime($dtinicio)) }} &nbsp; </label>
+        <label class="fontenormal"><b>Data Inicial:</b> {{ date('d/m/Y', strtotime($dtinicio)) }} &nbsp; </label>
     @endif
     @if ($dtfim != '')
-        <label><b>Data Final:</b> {{ date('d/m/Y', strtotime($dtfim)) }} &nbsp; </label>
+        <label class="fontenormal"><b>Data Final:</b> {{ date('d/m/Y', strtotime($dtfim)) }} &nbsp; </label>
     @endif
 
     @if ($ordemservico != '')
-        <label><b>Ordem de Serviço:</b> {{ $ordemservico }} &nbsp; </label>
+        <label class="fontenormal"><b>Ordem de Serviço:</b> {{ $ordemservico }} &nbsp; </label>
     @endif
     @if ($contareceita != '')
-        <label><b>Conta:</b> {{ $contareceita }} &nbsp; </label>
+        <label class="fontenormal"><b>Conta:</b> {{ $contareceita }} &nbsp; </label>
     @endif
     @if ($nfreceita != '')
-        <label><b>Nota Fiscal:</b> {{ $nfreceita }} &nbsp; </label>
+        <label class="fontenormal"><b>Nota Fiscal:</b> {{ $nfreceita }} &nbsp; </label>
     @endif
     @if ($cliente != '')
-        <label><b>Cliente:</b> {{ $cliente }} &nbsp; </label>
+        <label class="fontenormal"><b>Cliente:</b> {{ $cliente }} &nbsp; </label>
     @endif
     @if ($pagoreceita != '')
-        <label><b>Pago:</b> {{ $pagoreceita }} &nbsp; </label>
+        <label class="fontenormal"><b>Pago:</b> {{ $pagoreceita }} &nbsp; </label>
     @endif
 
 </div>

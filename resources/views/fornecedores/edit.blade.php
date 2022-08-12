@@ -18,6 +18,7 @@
 
 
 {!! Form::model($fornecedor, ['method' => 'PATCH','route' => ['fornecedores.update', $fornecedor->id]]) !!}
+<button class="btn btn-success btn-sm" type="submit">Salvar</button>
 
 @include('fornecedores/campos')
 
@@ -25,7 +26,7 @@
 {!! Form::hidden('ativoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 {!! Form::hidden('excluidoFornecedor', null, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '10']) !!}
 
-<button class="btn btn-success btn-sm" type="submit">Atualizar</button>
+<button class="btn btn-success btn-sm" type="submit">Salvar</button>
 
 {!! Form::close() !!}
 

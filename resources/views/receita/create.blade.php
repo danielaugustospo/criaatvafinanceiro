@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <label  class="col-sm-12 text-center col-form-label" style="color:red;">Aviso: Todos os campos são de preenchimento obrigatório!</label>
 
@@ -15,18 +14,15 @@
     </div>
 </div>
 
-
 @include('layouts/helpersview/mensagemRetorno')
 
-
-
-
-{!! Form::open(array('route' => 'receita.store','method'=>'POST')) !!}
-
+{!! Form::open(array('route' => 'receita.store','method'=>'POST', 'id' => 'manipulaReceitas')) !!}
 
 @include('receita/campos')
 <input type="hidden" name="idosreceita" value="CRIAATVA">
-{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
+
+{{-- {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!} --}}
+<input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'novo');" />
 {!! Form::close() !!}
 
 

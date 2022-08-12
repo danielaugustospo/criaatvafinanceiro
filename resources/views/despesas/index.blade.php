@@ -73,7 +73,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         @endif
                         dataType: "json"
                     },
-
+ 
                     parameterMap: function(options, operation) {
                         if (operation !== "read" && options.models) {
                             return {

@@ -106,14 +106,14 @@ function validaFormulario() {
     }
 
     resultadoFormulario = validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta,
-        despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual);
+        despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento);
 
     return resultadoFormulario;
 }
 
 
 function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa,
-    ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual) {
+    ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento) {
     if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
         texto = texto +
             '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>'; contadorErros++;
@@ -157,6 +157,11 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
                 contadorErros++;
             }
+            if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
+                contadorErros++;
+            }
         } else if ((inserirestoque == 0) && (compraparcelada == 'N') && (unicadespesa == '1')) {
             // Opção de não inserção no estoque como compra não parcelada e única despesa
 
@@ -165,6 +170,11 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
                 texto = texto +
                     '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>'; contadorErros++;
+            }
+            if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
+                texto = texto +
+                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
+                contadorErros++;
             }
         }
         if ((compraparcelada == 'N') && ((unicadespesa == '') || (unicadespesa == ' ') || (unicadespesa == null) || (unicadespesa == undefined))){
@@ -316,6 +326,11 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
         if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
             texto = texto +
                 '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+            contadorErros++;
+        }
+        if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
+            texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
             contadorErros++;
         }
 

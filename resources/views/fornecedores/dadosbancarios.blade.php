@@ -19,27 +19,34 @@
 
         <select name="contacorrenteFornecedor1" class="selecionaComInput  form-control js-example-basic-multiple"
             {{ $variavelDisabledNaView }}>
-            @if (Request::path() == 'fornecedores/create')
-                <option value="cc">Conta Corrente</option>
-                <option value="cp">Conta Poupança</option>
-            @else
-                <option value="cc" {{ $fornecedor->contacorrenteFornecedor1 == 'cc' ? ' selected' : '' }}>Conta Corrente
-                </option>
-                <option value="cp" {{ $fornecedor->contacorrenteFornecedor1 == 'cp' ? ' selected' : '' }}>Conta Poupança
-                </option>
-            @endif
+
+            {!! $infoSelectVazio !!}
+            <option value="cc" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor1 == 'cc') selected @endif>Conta Corrente</option>
+            <option value="cp" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor1 == 'cp') selected @endif>Conta Poupança</option>
 
         </select>
+
+
 
     </div>
     <label for="valor2" class="col-sm-1 col-form-label">Banco</label>
     <div class="col-sm-7">
         <select class="selecionaComInput form-control" name="bancoFornecedor1" {{ $variavelDisabledNaView }}>
+            
+            <option value="0">0000 | NÃO INFORMADO</option>
             @foreach ($todososbancos1 as $bancos)
-                <option value="{{ $bancos->codigoBanco }}">
-                    {{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
-                </option>
+            <option value="{{ $bancos->id }}" @if (isset($fornecedor) && $fornecedor->bancoFornecedor1 == $bancos->id) selected @endif>
+                {{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
+            </option>
             @endforeach
+            @if (!isset($fornecedor->bancoFornecedor1) ||
+                $fornecedor->bancoFornecedor1 == null ||
+                $fornecedor->bancoFornecedor1 == '' ||
+                $fornecedor->bancoFornecedor1 == 0)
+                {{-- {!! $infoSelectVazio !!} --}}
+                <option value="0" selected>0000 | NÃO INFORMADO</option>
+            @endif
+
         </select>
     </div>
 
@@ -86,15 +93,10 @@
 
         <select name="contacorrenteFornecedor2" class="selecionaComInput  form-control js-example-basic-multiple"
             {{ $variavelDisabledNaView }}>
-            @if (Request::path() == 'fornecedores/create')
-                <option value="cc">Conta Corrente</option>
-                <option value="cp">Conta Poupança</option>
-            @else
-                <option value="cc" {{ $fornecedor->contacorrenteFornecedor2 == 'cc' ? ' selected' : '' }}>Conta Corrente
-                </option>
-                <option value="cp" {{ $fornecedor->contacorrenteFornecedor2 == 'cp' ? ' selected' : '' }}>Conta Poupança
-                </option>
-            @endif
+
+            {!! $infoSelectVazio !!}
+            <option value="cc" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor2 == 'cc') selected @endif>Conta Corrente</option>
+            <option value="cp" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor2 == 'cp') selected @endif>Conta Poupança</option>
 
         </select>
 
@@ -102,10 +104,22 @@
     <label for="valor2" class="col-sm-1 col-form-label">Banco</label>
     <div class="col-sm-7">
         <select class="selecionaComInput form-control" name="bancoFornecedor2" {{ $variavelDisabledNaView }}>
-            @foreach ($todososbancos2 as $bancos)
-                <option value="{{ $bancos->codigoBanco }}"> {{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
-                </option>
+
+            {{-- TUDO --}}
+            <option value="0">0000 | NÃO INFORMADO</option>
+            @foreach ($todososbancos1 as $bancos)
+            <option value="{{ $bancos->id }}" @if (isset($fornecedor) && $fornecedor->bancoFornecedor2 == $bancos->id) selected @endif>
+                {{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
+            </option>
             @endforeach
+            @if (!isset($fornecedor->bancoFornecedor2) ||
+                $fornecedor->bancoFornecedor2 == null ||
+                $fornecedor->bancoFornecedor2 == '' ||
+                $fornecedor->bancoFornecedor2 == 0)
+                {{-- {!! $infoSelectVazio !!} --}}
+                <option value="0" selected>0000 | NÃO INFORMADO</option>
+            @endif
+
         </select>
     </div>
 
@@ -151,15 +165,10 @@
 
         <select name="contacorrenteFornecedor3" class="selecionaComInput  form-control js-example-basic-multiple"
             {{ $variavelDisabledNaView }}>
-            @if (Request::path() == 'fornecedores/create')
-                <option value="cc">Conta Corrente</option>
-                <option value="cp">Conta Poupança</option>
-            @else
-                <option value="cc" {{ $fornecedor->contacorrenteFornecedor3 == 'cc' ? ' selected' : '' }}>Conta
-                    Corrente</option>
-                <option value="cp" {{ $fornecedor->contacorrenteFornecedor3 == 'cp' ? ' selected' : '' }}>Conta
-                    Poupança</option>
-            @endif
+
+            {!! $infoSelectVazio !!}
+            <option value="cc" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor3 == 'cc') selected @endif>Conta Corrente</option>
+            <option value="cp" @if (isset($fornecedor) && $fornecedor->contacorrenteFornecedor3 == 'cp') selected @endif>Conta Poupança</option>
 
         </select>
 
@@ -167,10 +176,20 @@
     <label for="valor2" class="col-sm-1 col-form-label">Banco</label>
     <div class="col-sm-7">
         <select class="selecionaComInput form-control" name="bancoFornecedor3" {{ $variavelDisabledNaView }}>
-            @foreach ($todososbancos3 as $bancos)
-                <option value="{{ $bancos->codigoBanco }}">{{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
-                </option>
+            {{-- TUDO --}}
+            <option value="0">0000 | NÃO INFORMADO</option>
+            @foreach ($todososbancos1 as $bancos)
+            <option value="{{ $bancos->id }}" @if (isset($fornecedor) && $fornecedor->bancoFornecedor3 == $bancos->id) selected @endif>
+                {{ $bancos->codigoBanco }} | {{ $bancos->nomeBanco }}
+            </option>
             @endforeach
+            @if (!isset($fornecedor->bancoFornecedor3) ||
+                $fornecedor->bancoFornecedor3 == null ||
+                $fornecedor->bancoFornecedor3 == '' ||
+                $fornecedor->bancoFornecedor3 == 0)
+                {{-- {!! $infoSelectVazio !!} --}}
+                <option value="0" selected>0000 | NÃO INFORMADO</option>
+            @endif
         </select>
     </div>
 

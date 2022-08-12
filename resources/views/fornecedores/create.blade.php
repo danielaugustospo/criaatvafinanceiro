@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -16,9 +15,8 @@
 
 @include('layouts/helpersview/mensagemRetorno')
 
-
-
 {!! Form::open(array('route' => 'fornecedores.store','method'=>'POST')) !!}
+{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 
 @include('fornecedores/campos')
 
@@ -29,10 +27,7 @@
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 
-
-
 @endsection
-
 
 <style>
     .valido {

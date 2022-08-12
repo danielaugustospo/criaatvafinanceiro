@@ -19,11 +19,12 @@
 @include('layouts/helpersview/mensagemRetorno')
 
 
-{!! Form::model($receita, ['method' => 'PATCH','route' => ['receita.update', $receita->id]]) !!}
+{!! Form::model($receita, ['method' => 'PATCH','route' => ['receita.update', $receita->id], 'id' => 'manipulaReceitas']) !!}
 
 @include('receita/campos')
 
-{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
+{{-- {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!} --}}
+<input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'edicao');" />
 
 {!! Form::close() !!}
 
