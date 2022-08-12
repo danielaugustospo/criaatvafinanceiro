@@ -25,10 +25,10 @@
         </select>
     </td>
     <td>
-        {!! Form::date('dataemissaoreceita[]', $dadosreceita->dataemissaoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100',  $readonlyOrNo]) !!}
+        {!! Form::date('dataemissaoreceita[]', $dadosreceita->dataemissaoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control dataemissaoreceita', 'maxlength' => '100',  $readonlyOrNo]) !!}
     </td>
     <td>
-        {!! Form::date('datapagamentoreceita[]', $dadosreceita->datapagamentoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control', 'maxlength' => '100',  $readonlyOrNo ]) !!}
+        {!! Form::date('datapagamentoreceita[]', $dadosreceita->datapagamentoreceita, ['placeholder' => 'Preencha este campo', 'class' => 'col form-control datapagamentoreceita', 'maxlength' => '100',  $readonlyOrNo ]) !!}
     </td>
     <td>
         <select name="contareceita[]" id="contaReceita" class="col-lg-12 selecionaComInput form-control" {{ $disabledOrNo }}>
@@ -43,6 +43,7 @@
     <td>
         {!! Form::text('nfreceita[]', $dadosreceita->nfreceita, ['placeholder' => 'N° Nota', 'class' => 'form-control', 'maxlength' => '100', 'required', $readonlyOrNo]) !!}
     </td>
+    @if (Request::path() == "ordemdeservicos/$ordemdeservico->id/edit")
     <td>
         <a href="#tabelaPagamento" class="duplicar pb-2">
             <span class="btn btn-primary">
@@ -56,6 +57,7 @@
                 Excluir
             </span>
         </a>
-    </td>    
+    </td> 
+    @endif   
 </tr>
 

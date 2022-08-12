@@ -2,7 +2,7 @@
 
 
 @section('content')
-{!! Form::model($ordemdeservico, ['method' => 'PATCH','route' => ['ordemdeservicos.update', $ordemdeservico->id]]) !!}
+{!! Form::model($ordemdeservico, ['method' => 'PATCH','route' => ['ordemdeservicos.update', $ordemdeservico->id], 'id' => 'manipulaOS']) !!}
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -12,7 +12,8 @@
         <div class="pull-right">
             <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
             <a class="btn btn-success" href="{{ route('ordemdeservicos.show',$ordemdeservico->id) }}">Financeiro</a>
-            <button type="submit" class="btn btn-primary">Salvar</button>
+            {{-- <button type="submit" class="btn btn-primary">Salvar</button> --}}
+            <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'edicao');" />
         </div>
     </div>
 </div>
@@ -39,7 +40,8 @@
 
 
 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    {{-- <button type="submit" class="btn btn-primary">Salvar</button> --}}
+    <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'edicao');" />
 </div>
 
 {!! Form::close() !!}

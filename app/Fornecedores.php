@@ -63,6 +63,10 @@ class Fornecedores extends Model
         'excluidoFornecedor',
         // 'created_at'
 
+        'contacorrenteFornecedor1',
+        'contacorrenteFornecedor2',
+        'contacorrenteFornecedor3',
+
     ];
 
     public static function laratablesCustomAction($tabelaFornecedoresModel)

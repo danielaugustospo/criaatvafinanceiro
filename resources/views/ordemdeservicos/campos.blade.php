@@ -1,203 +1,4 @@
-<style>
-    @import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
-
-    * {
-        font-family: 'Open Sans', sans-serif;
-    }
-
-    .rwd-table {
-        margin: auto;
-        min-width: 300px;
-        max-width: 100%;
-        border-collapse: collapse;
-    }
-
-    .rwd-table tr:first-child {
-        border-top: none;
-        /* background: #428bca; */
-        color: #fff;
-    }
-
-    .rwd-table tr {
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        background-color: #f5f9fc;
-    }
-
-    .rwd-table tr:nth-child(odd):not(:first-child) {
-        background-color: #ebf3f9;
-    }
-
-    .rwd-table th {
-        display: none;
-    }
-
-    .rwd-table td {
-        display: block;
-    }
-
-    .rwd-table td:first-child {
-        margin-top: .5em;
-    }
-
-    .rwd-table td:last-child {
-        margin-bottom: .5em;
-    }
-
-    .rwd-table td:before {
-        content: attr(data-th) ": ";
-        font-weight: bold;
-        width: 120px;
-        display: inline-block;
-        color: #000;
-    }
-
-    .rwd-table th,
-    .rwd-table td {
-        text-align: left;
-    }
-
-    .rwd-table {
-        color: #333;
-        border-radius: .4em;
-        overflow: hidden;
-    }
-
-    .rwd-table tr {
-        border-color: #bfbfbf;
-    }
-
-    .rwd-table th,
-    .rwd-table td {
-        padding: .5em 1em;
-    }
-
-    @media screen and (max-width: 601px) {
-        .rwd-table tr:nth-child(2) {
-            border-top: none;
-        }
-    }
-
-    @media screen and (min-width: 600px) {
-        .rwd-table tr:hover:not(:first-child) {
-            background-color: #d8e7f3;
-        }
-
-        .rwd-table td:before {
-            display: none;
-        }
-
-        .rwd-table th,
-        .rwd-table td {
-            display: table-cell;
-            padding: .25em .5em;
-        }
-
-        .rwd-table th:first-child,
-        .rwd-table td:first-child {
-            padding-left: 0;
-        }
-
-        .rwd-table th:last-child,
-        .rwd-table td:last-child {
-            padding-right: 0;
-        }
-
-        .rwd-table th,
-        .rwd-table td {
-            padding: 1em !important;
-        }
-    }
-
-
-    /* THE END OF THE IMPORTANT STUFF */
-
-    /* Basic Styling */
-    body {
-        background: #4B79A1;
-        background: -webkit-linear-gradient(to left, #4B79A1, #283E51);
-        background: linear-gradient(to left, #4B79A1, #283E51);
-    }
-
-    h1 {
-        text-align: center;
-        font-size: 2.4em;
-        color: #f2f2f2;
-    }
-
-    .container {
-        display: block;
-        text-align: center;
-    }
-
-    h3 {
-        display: inline-block;
-        position: relative;
-        text-align: center;
-        font-size: 1.5em;
-        color: #cecece;
-    }
-
-    h3:before {
-        content: "\25C0";
-        position: absolute;
-        left: -50px;
-        -webkit-animation: leftRight 2s linear infinite;
-        animation: leftRight 2s linear infinite;
-    }
-
-    h3:after {
-        content: "\25b6";
-        position: absolute;
-        right: -50px;
-        -webkit-animation: leftRight 2s linear infinite reverse;
-        animation: leftRight 2s linear infinite reverse;
-    }
-
-    @-webkit-keyframes leftRight {
-        0% {
-            -webkit-transform: translateX(0)
-        }
-
-        25% {
-            -webkit-transform: translateX(-10px)
-        }
-
-        75% {
-            -webkit-transform: translateX(10px)
-        }
-
-        100% {
-            -webkit-transform: translateX(0)
-        }
-    }
-
-    @keyframes leftRight {
-        0% {
-            transform: translateX(0)
-        }
-
-        25% {
-            transform: translateX(-10px)
-        }
-
-        75% {
-            transform: translateX(10px)
-        }
-
-        100% {
-            transform: translateX(0)
-        }
-    }
-
-
-    .delete {
-        color: red;
-        background-color: white;
-        border-radius: 7%;
-        padding: 3%;
-    }
-</style>
+@extends('ordemdeservicos.estilo')
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Início</label>
     <div class="col-sm-6">
@@ -208,7 +9,6 @@
         ]) !!}
     </div>
 </div>
-@extends('ordemdeservicos.estilo')
 
 <div class="form-group row">
 
@@ -385,13 +185,6 @@
     'id' => 'excluidoOrdemdeServico',
 ]) !!}
 
-<style>
-    input,
-    select,
-    textarea {
-        text-transform: uppercase;
-    }
-</style>
 
 <script>
     function pegaIdFornecedor() {
@@ -452,6 +245,9 @@
 
     $('body').on('click', '.deletar', function() {
         // alert('Coloque este valor zerado. Remoção de receitas por OS retornará em breve.');
+        // contadorLinhasTabela = document.getElementById("tabelaPagamento").rows.length;
+        // console.log(contadorLinhasTabela);
+        // if (contadorLinhasTabela > 2) {
         var $tr = $(this).closest('tr');
         if ($tr.attr('class') == 'linhaTabela1') {
             @if (Request::path() == 'ordemdeservicos/create')
@@ -472,5 +268,129 @@
                 $tr.hide();
             @endif
         }
+        // } 
+        // else {
+        //     alert("Não é possível excluir a única linha da tabela");
+        // }
+
     });
+
+    function alteraRetornoCadastroDespesa(retorno) {
+
+        validador = validaFormulario();
+        if (validador == 0) {
+            // document.getElementById("tpRetorno").value = retorno;
+            // $('#btnSalvareVisualizar').attr('disabled', 'disabled');
+            $('#btnSalvar').attr('disabled', 'disabled');
+            $("#manipulaOS").submit();
+        }
+    }
+
+    function sum(input) {
+
+        if (toString.call(input) !== "[object Array]")
+            return false;
+
+        var total = 0;
+        for (var i = 0; i < input.length; i++) {
+            if (isNaN(input[i])) {
+                continue;
+            }
+            total += Number(input[i]);
+        }
+        return total;
+    }
+
+    function alertaErros(texto, contadorErros) {
+        if (contadorErros > 0) {
+
+            var span = document.createElement("span");
+            span.innerHTML = texto;
+
+            Swal.fire({
+                icon: 'error',
+                html: span,
+                title: 'Validações Necessárias',
+                footer: 'Restam  ' + contadorErros + ' pendentes.'
+            })
+        }
+        return contadorErros;
+    }
+
+    function validaFormulario() {
+        contadorErros = 0;
+        contadorDatasDiferentesAnoAtual = 0;
+
+        texto = '';
+        textoData = '';
+
+        /* ---------------------------------------------------
+                    VERIFICAÇÃO DE DATA - RECEITA
+        ----------------------------------------------------*/
+        const dataAtual = new Date();
+        const anoAtual = dataAtual.getFullYear();
+
+        data = [];
+        tabela = document.getElementById('tabelaPagamento');
+        vencimentoTabela = tabela.getElementsByClassName('datapagamentoreceita');
+
+        for (var i = 0; i < vencimentoTabela.length; i++) {
+            data.push(vencimentoTabela[i].value);
+            vencimento = vencimentoTabela[i].value;
+            
+            if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
+                texto = texto +
+                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento não informado na linha: '+
+                    sum([i, 1])  +'</label></br>';
+                contadorErros++;
+            }else{
+                vencimento = parseInt(vencimento.slice(0, 4));
+            }
+
+            if ((vencimento < 2000) || (vencimento > 2099)) {
+                texto = texto +
+                    '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Vencimento Inválido (ano ' + 
+                    vencimento + ') na linha ' +
+                    sum([i, 1]) + '</label></br>';
+                contadorErros++;
+            } else if ((vencimento > 2000) && (vencimento < 2099) && (vencimento != anoAtual)) {
+
+                textoData = textoData +
+                    '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Vencimento com ano ' +
+                    vencimento + ' na linha ' + sum([i, 1]) + '</label></br>';
+                contadorDatasDiferentesAnoAtual++;
+            }
+        }
+        if (contadorErros > 0) {
+                alertaErros(texto, contadorErros);
+            }
+        else if (contadorDatasDiferentesAnoAtual > 0) {
+            var areaInformeData = document.createElement("span");
+            areaInformeData.innerHTML = textoData;
+            Swal.fire({
+                title: 'Data informada diferente do ano atual. Confirmar?',
+                html: areaInformeData,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, confirmo',
+                cancelButtonText: 'Não, irei alterar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#btnSalvar').attr('disabled', 'disabled');
+                    $("#manipulaOS").submit();
+                }
+                if (result.isDenied) {
+                    swal.close();
+                }
+            })
+        }
+        console.log('erros: ' + contadorErros);
+        console.log('dt dif: ' + contadorDatasDiferentesAnoAtual);
+        if (contadorDatasDiferentesAnoAtual == 0 && contadorErros == 0) {
+            // return contadorErros;
+        }
+
+    }
 </script>

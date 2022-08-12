@@ -30,6 +30,8 @@ class FornecedorController extends Controller
          $this->acao =  request()->segment(count(request()->segments()));
          $this->valorInput = null;
          $this->valorSemCadastro = null;
+         $this->infoSelectVazio  = '<option value="">NÃO INFORMADO</option>';
+
  
          if ($this->acao == 'create'){
              $this->valorInput = "";
@@ -58,7 +60,6 @@ class FornecedorController extends Controller
     }
 
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -66,16 +67,18 @@ class FornecedorController extends Controller
      */
     public function create()
     {
-        $precoReal = " ";
-        $valorInput = $this->valorInput;
-        $valorSemCadastro = $this->valorSemCadastro;
+        $precoReal              = " ";
+        $valorInput             = $this->valorInput;
+        $valorSemCadastro       = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
-        $todososbancos1 = DB::select('select * from banco');
-        $todososbancos2 = $todososbancos1;
-        $todososbancos3 = $todososbancos1;
+        $todososbancos1         = DB::select('select * from banco');
+        $todososbancos2         = $todososbancos1;
+        $todososbancos3         = $todososbancos1;
+        $infoSelectVazio        = $this->infoSelectVazio;
 
-        return view('fornecedores.create', compact('precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView','todososbancos1','todososbancos2','todososbancos3'));
+
+        return view('fornecedores.create', compact('precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView','todososbancos1','todososbancos2','todososbancos3','infoSelectVazio'));
     }
 
 
@@ -127,18 +130,19 @@ class FornecedorController extends Controller
     public function show($id)
     {
         $fornecedor = Fornecedores::find($id);
-        $todososbancos1 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor1]);
-        $todososbancos2 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor2]);
-        $todososbancos3 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor3]);
+        $todososbancos1 = DB::select('select * from banco');
+        $todososbancos2 = DB::select('select * from banco');
+        $todososbancos3 = DB::select('select * from banco');
 
         $precoReal = " ";
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $infoSelectVazio = '<option value="">NÃO INFORMADO</option>';
 
 
-        return view('fornecedores.show',compact('fornecedor','todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('fornecedores.show',compact('fornecedor','todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView','infoSelectVazio'));
     }
 
 
@@ -152,15 +156,17 @@ class FornecedorController extends Controller
     {
         $fornecedor = Fornecedores::find($id);
        
-        $todososbancos1 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor1]);
-        $todososbancos2 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor2]);
-        $todososbancos3 = DB::select('select * from banco order by codigobanco = :codigoBancoFornecedor desc', ['codigoBancoFornecedor' => $fornecedor->bancoFornecedor3]);
+        $todososbancos1 = DB::select('select * from banco');
+        $todososbancos2 = DB::select('select * from banco');
+        $todososbancos3 = DB::select('select * from banco');
 
         $precoReal = " ";
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $infoSelectVazio = '<option value="">NÃO INFORMADO</option>';
+
         $todososbancos = DB::select('select * from banco');
 
 
@@ -168,7 +174,7 @@ class FornecedorController extends Controller
         // $roles = Fornecedores::pluck('nomeFornecedor','nomeFornecedor')->all();
         // $fornecedorRole = $fornecedor->roles->pluck('nomeFornecedor','nomeFornecedor')->all();
 
-        return view('fornecedores.edit',compact('fornecedor', 'todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView'));
+        return view('fornecedores.edit',compact('fornecedor', 'todososbancos1','todososbancos2','todososbancos3','precoReal','valorInput','valorSemCadastro','variavelReadOnlyNaView','variavelDisabledNaView','infoSelectVazio'));
 
         // return view('fornecedores.edit',compact('fornecedor'));
     }
@@ -211,16 +217,19 @@ class FornecedorController extends Controller
         $fornecedor->dataContratoFornecedor               =  $request->input('dataContratoFornecedor');
         
         $fornecedor->bancoFornecedor1                     =  $request->input('bancoFornecedor1');
+        $fornecedor->contacorrenteFornecedor1             =  $request->input('contacorrenteFornecedor1');
         $fornecedor->nrcontaFornecedor1                   =  $request->input('nrcontaFornecedor1');
         $fornecedor->agenciaFornecedor1                   =  $request->input('agenciaFornecedor1');
         $fornecedor->chavePixFornecedor1                  =  $request->input('chavePixFornecedor1');
-
+        
         $fornecedor->bancoFornecedor2                     =  $request->input('bancoFornecedor2');
+        $fornecedor->contacorrenteFornecedor2             =  $request->input('contacorrenteFornecedor2');
         $fornecedor->nrcontaFornecedor2                   =  $request->input('nrcontaFornecedor2');
         $fornecedor->agenciaFornecedor2                   =  $request->input('agenciaFornecedor2');
         $fornecedor->chavePixFornecedor2                  =  $request->input('chavePixFornecedor2');
-
+        
         $fornecedor->bancoFornecedor3                     =  $request->input('bancoFornecedor3');
+        $fornecedor->contacorrenteFornecedor3             =  $request->input('contacorrenteFornecedor3');
         $fornecedor->nrcontaFornecedor3                   =  $request->input('nrcontaFornecedor3');
         $fornecedor->agenciaFornecedor3                   =  $request->input('agenciaFornecedor3');
         $fornecedor->chavePixFornecedor3                  =  $request->input('chavePixFornecedor3');

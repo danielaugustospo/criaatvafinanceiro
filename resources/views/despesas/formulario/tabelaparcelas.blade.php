@@ -117,13 +117,13 @@
             </td>
             <td>
                 <a href="#tabelaPagamento" class="duplicarParcelado" id="duplicarParcelado">
-                    <span class="badge badge-primary">
+                    <span class="btn btn-primary">
                         <i class="fa fa-clone" style="color: white;" aria-hidden="true"></i>
                         Duplicar
                     </span>
                 </a>
                 <a href="#tabelaPagamento" class="deleteParcelado" id="deleteParcelado">
-                    <span class="badge badge-danger">
+                    <span class="btn btn-danger">
                         <i class="fa fa-trash" style="color: white;" aria-hidden="true"></i>
                         Excluir
                     </span>

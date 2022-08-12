@@ -50,14 +50,15 @@
 
 
 <script type="x/kendo-template" id="page-template"><div class="page-template">
-      <div class="header">
+      <div class="header row">
         <div style="float: right">Página #: pageNum # de #: totalPages #</div>
         <img src="{{ env('ASSET_URL') }}img/logoPRETO-criaatvaPRETOWHITE.png" width="80" alt="" srcset="">
 
-        Relatório de #: document.title # 
+        <h3 class="text-center">Relatório de #: document.title # </h3> 
       </div>
       <div class="watermark">CRIAATVA</div>
       {{-- <div class="footer">
         Página #: pageNum # de #: totalPages #
       </div> --}}
-    </div></script>
+    </div>
+</script>

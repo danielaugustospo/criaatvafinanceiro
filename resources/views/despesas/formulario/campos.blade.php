@@ -149,7 +149,7 @@
 
     {{-- Tela Fornecedor --}}
     <div class="form-group row" id="telaFornecedor">
-        <label for="" class="col-sm-2 col-form-label">Fornecedor/Prestador de Serviço</label>
+        <label for="" class="col-sm-2 col-form-label">Fornecedor / Prestador de Serviço</label>
         <div class="col-sm-4">
             <select name="idFornecedor" id="selecionaFornecedor"
                 class="selecionaComInput selecionaFornecedor form-control col-sm-12" {{ $variavelDisabledNaView }}>

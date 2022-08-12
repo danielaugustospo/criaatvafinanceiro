@@ -5,6 +5,9 @@
         font-family: 'Open Sans', sans-serif;
     }
 
+    .col-form-label {
+        font-size: 15;
+    }
     .swal2-html-container {
         text-align: left !important;
     }
