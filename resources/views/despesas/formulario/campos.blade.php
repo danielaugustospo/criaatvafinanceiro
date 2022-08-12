@@ -95,9 +95,13 @@
 
             <div id="despesaCompra">
                 <select class="selecionaComInput form-control descricaoDespesaCompra" id="descricaoDespesa"
-                    name="descricaoDespesaCompra">
-                    @if (!isset($despesa))
-                        <option disabled selected>Selecione...</option>
+                    name="descricaoDespesaCompra" {{$variavelDisabledNaView}}>
+
+                    @if (!isset($despesa->descricaoDespesa) ||
+                    $despesa->descricaoDespesa == null ||
+                    $despesa->descricaoDespesa == '' ||
+                    $despesa->descricaoDespesa == 0)
+                    {!! $infoSelectVazio !!}
                     @endif
                     @foreach ($listaBensPatrimoniais as $bempatrimonial)
                         <option value="{{ $bempatrimonial->id }}" @php
@@ -468,7 +472,6 @@
                             {{ $funcionario->nomeFuncionario }}
                         </option>
                     @endforeach
-
 
                 </select>
             </div>

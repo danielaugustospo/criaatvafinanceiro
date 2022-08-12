@@ -506,17 +506,12 @@ class DespesaController extends Controller
                 $mensagemExito = 'Despesas id ' . $idSalvos . ' cadastradas com êxito.';
                 $permiteVisualizacaoDespesaCriada = 1;
 
-
                 if ((int)$request->get('paginaModal') == 1) {
                     $paginaModal = true;
-
                     return view('despesas.completo', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'paginaModal', 'idSalvo', 'permiteVisualizacaoDespesaCriada'));
-                    
                 } else {
                     return view('despesas.completo', compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'mensagemExito', 'idSalvo', 'permiteVisualizacaoDespesaCriada'));
                 }
-
-
             }
         } else {
             $request->validate(
@@ -925,9 +920,9 @@ class DespesaController extends Controller
     public function update(Request $request, Despesa $despesa)
     {
 
-        $despesa = new Despesa();
-
-
+        $despesa            = new Despesa();
+        
+        
         $request->validate([
             'idFormaPagamento'          => 'required',
             'conta'                     => 'required',
@@ -944,9 +939,9 @@ class DespesaController extends Controller
             $despesa->ehcompra = 0;
             $despesa->descricaoDespesa =  $request->get('descricaoDespesaNaoCompra');
         endif;
-
+        
         // $compraparcelada                =  $request->get('compraparcelada');
-
+        
         $despesa->id                    =  $request->get('id');
         $despesa->idFuncionario         =  $request->get('idFuncionario');
         $despesa->idFornecedor          =  $request->get('idFornecedor');
@@ -970,21 +965,22 @@ class DespesaController extends Controller
         $despesa->ativoDespesa          =  $request->get('ativoDespesa');
         $despesa->excluidoDespesa       =  $request->get('excluidoDespesa');
         $despesa->idAutor               =  auth()->user()->id;
-        $despesa->insereestoque         =  (int)$request->get('inserirestoque');
-
-
+        
+        $despesaOriginal    =  Despesa::find($despesa->id);
+               
         //É compra, mas não é parcelada
-        if (($despesa->ehcompra == 1) && ($despesa->insereestoque == 1)) :
-
+        if (($despesa->ehcompra == 1 || $despesa->ehcompra == '1') && ($despesaOriginal->insereestoque == 1 || $despesaOriginal->insereestoque == '1')) :
+            
             $despesa->descricaoDespesa      =  $request->get('descricaoDespesaCompra');
-
+            
             $request->validate(
                 ['descricaoDespesaCompra' => 'required'],
                 ['descricaoDespesaCompra.required' => 'Informe o que foi comprado']
             );
-        elseif (($despesa->ehcompra == 1) && ($despesa->insereestoque == 0)) :
-            $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque'); //Input com o datalist aberto
-        endif;
+            elseif (($despesa->ehcompra == 1  || $despesa->ehcompra == '1') && ($despesaOriginal->insereestoque == 0 || $despesaOriginal->insereestoque == '0')) :
+                $despesa->descricaoDespesa      =  $request->get('descricaoDespesaSemEstoque'); //Input com o datalist aberto
+            endif;
+            
 
         $despesa->idOS                  =  $request->get('idOS');
         $despesa->vencimento            =  $request->get('vencimento');
@@ -1055,7 +1051,6 @@ class DespesaController extends Controller
                     'reembolsado'             =>  $despesa->reembolsado,
                     'despesaFixa'             =>  $despesa->despesaFixa,
                     'nRegistro'               =>  $despesa->nRegistro,
-                    'despesaCodigoDespesas'   =>  $despesa->despesaCodigoDespesas,
                     'ativoDespesa'            =>  $despesa->ativoDespesa,
                     'excluidoDespesa'         =>  $despesa->excluidoDespesa,
                     'vale'                    =>  $despesa->vale,
@@ -1083,6 +1078,19 @@ class DespesaController extends Controller
                 ->with('error', 'Ocorreu um erro ao atualizar.');
         }
     }
+
+
+    // public function verificaCompraUpdate($despesa){
+    //     //Preciso saber se é compra
+    //         //Preciso saber se é estoque
+    //         //Preciso saber se é não estoque    
+    //     //Preciso saber se não é compra
+
+
+    //     if ($despesa->ehcompra == '1'){
+
+    //         }
+    // }
 
     /**
      * Remove the specified resource from storage.
