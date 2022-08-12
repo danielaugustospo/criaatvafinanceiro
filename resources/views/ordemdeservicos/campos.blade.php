@@ -389,7 +389,7 @@
         console.log('erros: ' + contadorErros);
         console.log('dt dif: ' + contadorDatasDiferentesAnoAtual);
         if (contadorDatasDiferentesAnoAtual == 0 && contadorErros == 0) {
-            // return contadorErros;
+            return contadorErros;
         }
 
     }
