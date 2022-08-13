@@ -10,7 +10,7 @@
                 <option value="">Selecione...</option>
                 @foreach ($listaInventario as $itensestoque)
                     <option value="{{ $itensestoque->codbarras }}">
-                        {{ $itensestoque->codbarras }} &nbsp; - &nbsp; {{ $itensestoque->nomematerial }}
+                        {{ $itensestoque->codbarras }} &nbsp; | &nbsp; {{ $itensestoque->nomeBensPatrimoniais }}
                     </option>
                 @endforeach
             </select>
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div class="form-group row">
+{{-- <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label" style="color: red;">Material</label>
     <div class="col-sm-7">
         <select name="idbenspatrimoniais" id="descricaoMaterial" class="selecionaComInput form-control"
@@ -53,7 +53,7 @@
                     class="fas fa-industry pr-1"></i>Cadastrar Materiais</button>
         </div>
     @endif
-</div>
+</div> --}}
 
 <div class="form-group row">
     <label for="portadorsaida" class="col-sm-2 col-form-label">Portador Saída</label>

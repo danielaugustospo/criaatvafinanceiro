@@ -1,7 +1,7 @@
 <?php
 $intervaloCelulas = 'A1:H1';
 $rotaapi = 'api/apientrada';
-$titulo = 'Estoque - Entradas';
+$titulo = 'Estoque - Consulta Entradas';
 $relatorioKendoGrid = true;
 
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);

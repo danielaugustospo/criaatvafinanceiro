@@ -35,4 +35,6 @@ node_modules/
 vendor/
 stats/awsindex.html
 storage/
+storage/*
 storage/logs/acoes.log
+storage/framework/cache/

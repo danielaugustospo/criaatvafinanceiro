@@ -80,13 +80,16 @@ class AppServiceProvider extends ServiceProvider
                                         where e.excluidoentrada = 0');
         view()->share('listaEntradas', $listaEntradas);
 
-        $listaSaidas = DB::select('SELECT s.*, b.nomeBensPatrimoniais 
-                                    FROM  saidas s 
-                                    LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
-                                    WHERE s.excluidosaida = 0');
+        $listaSaidas = DB::select("SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.excluidosaida = 0");
         view()->share('listaSaidas', $listaSaidas);
 
-        $listaInventario = DB::select('SELECT * FROM estoque where ativadoestoque = 1  and excluidoestoque = 0');
+        $listaInventario = DB::select('SELECT e.*,b.nomeBensPatrimoniais FROM estoque e LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id where ativadoestoque = 1  and  excluidoestoque = 0');
         view()->share('listaInventario', $listaInventario);
 
         $listaInventarioaDevolver = DB::select('SELECT * FROM estoque where ativadoestoque = 0 and excluidoestoque = 0');

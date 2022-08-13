@@ -14,13 +14,15 @@
             <br>
             <form action="{{ route('estoque.destroy',$estoque->id) }}" method="POST">
                 @can('estoque-edit')
-                <a class="btn btn-primary" href="{{ route('estoque.edit',$estoque->id) }}">Editar</a>
+                {{-- <a class="btn btn-primary" href="{{ route('estoque.edit',$estoque->id) }}">Editar</a> --}}
+                <a class="btn btn-primary" href="#" onclick="alert('Em breve');">Editar</a>
                 @endcan
 
                 @csrf
                 @method('DELETE')
                 @can('estoque-delete')
-                <button type="submit" class="btn btn-danger">Excluir</button>
+                {{-- <button type="submit" class="btn btn-danger">Excluir</button> --}}
+                <button class="btn btn-danger" onclick="alert('Em breve');">Excluir</button>
                 @endcan
             </form>
 

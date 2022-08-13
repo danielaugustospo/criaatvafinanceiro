@@ -42,9 +42,11 @@ class EstoqueController extends Controller
 
     public function apiestoque()
     {
-        $estoque = Estoque::where('excluidoestoque', 0)
+        $estoque = Estoque::select('estoque.*','b.nomeBensPatrimoniais')->leftJoin('benspatrimoniais as b', 'estoque.idbenspatrimoniais', '=', 'b.id')
                             ->where('ativadoestoque', 1)
+                            ->where('excluidoestoque', 0)
                             ->get();
+
         return $estoque;
     }
 

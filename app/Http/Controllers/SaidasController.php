@@ -81,7 +81,8 @@ class SaidasController extends Controller
         DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
          b.nomeBensPatrimoniais 
             FROM  saidas s 
-            LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
             WHERE s.excluidosaida = 0' . $descricao);
 
         return $listaDespesas;
@@ -234,7 +235,7 @@ class SaidasController extends Controller
             $salvaSaidas = Saidas::create([
                 'codbarras'             => $request->codbarras,
                 'descricaosaida'        => $request->descricaosaida,
-                'idbenspatrimoniais'    => $request->idbenspatrimoniais,
+                // 'idbenspatrimoniais'    => $request->idbenspatrimoniais,
                 'excluidosaida'         => $request->excluidosaida,
                 'portador'              => $request->portadorsaida,
                 'ordemdeservico'        => $request->ordemdeservico,
@@ -272,7 +273,7 @@ class SaidasController extends Controller
      
             if($visualiza == 1){
                 $saidas = Saidas::find($id);
-                $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
+                $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id desc');
         
                 return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
             }
@@ -295,9 +296,16 @@ class SaidasController extends Controller
     public function show($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
+        $listaSaidas = DB::select("SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.id = $id and s.excluidosaida = 0");
+
+        return view('saidas.show', compact('saidas', 'listaSaidas'));
     }
 
 
@@ -311,9 +319,16 @@ class SaidasController extends Controller
     public function edit($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.edit', compact('saidas', 'bensPatrimoniais'));
+        $listaSaidas = DB::select("SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.id = $id and s.excluidosaida = 0");
+
+        return view('saidas.edit', compact('saidas', 'listaSaidas'));
     }
 
 

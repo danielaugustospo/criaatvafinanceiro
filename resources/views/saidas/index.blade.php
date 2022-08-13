@@ -1,7 +1,7 @@
 <?php
 $intervaloCelulas = 'A1:H1';
 $rotaapi = 'api/apisaida';
-$titulo = 'Estoque - Saídas (Baixa de Material)';
+$titulo = 'Estoque - Consulta Saídas (Baixa de Material)';
 $campodata  = 'dataretirada';
 $campodata2 = 'datapararetorno';
 
