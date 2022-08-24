@@ -161,7 +161,7 @@ class DespesaController extends Controller
         }
         
 
-        $listaDespesas = DB::SELECT('SELECT distinct d.id, 
+        $listaDespesas = DB::select('SELECT distinct d.id, 
         c.despesaCodigoDespesa,
         g.grupoDespesa,
         CASE
@@ -189,8 +189,6 @@ class DespesaController extends Controller
         os.eventoOrdemdeServico,
         fpg.nomeFormaPagamento,
 
-
-        -- consulta geral
         d.quantidade,
         d.valorUnitario,
         d.dataDaCompra,
@@ -201,7 +199,6 @@ class DespesaController extends Controller
         fre.razaosocialFornecedor as reembolsado, 
         d.created_at 
 
-        -- fim dados exclusivos despesa completo
 
         FROM despesas d  
 
@@ -275,18 +272,18 @@ class DespesaController extends Controller
         endif;
 
         if (isset($request->dtinicio)) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
+        $verificaInputCampos++;
+        elseif (($verificaInputCampos == 0) && (!isset($request->dtiniciolancamento)) ) :   $datainicio = date('Y-m') . '-01';
             $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
-            $verificaInputCampos++;
         endif;
 
         if (isset($request->dtfimlancamento)) :        $datafimlancamento    = $request->dtfimlancamento;
         else : $datafimlancamento = date('Y-m-t');
         endif;
 
-        if (isset($request->dtiniciolancamento)) :     $descricao .= " AND d.created_at BETWEEN  '$request->dtiniciolancamento' and '$datafimlancamento'";
+        if (isset($request->dtiniciolancamento)) :     $descricao .= " AND d.created_at BETWEEN  '$request->dtiniciolancamento 00:00:00' and '$datafimlancamento 23:59:59'";
         elseif ($verificaInputCampos == 0) :   $datainiciolancamento = date('Y-m') . '-01';
-            $descricao .= " AND d.created_at BETWEEN  '$datainiciolancamento' and '$datafimlancamento'";
+            $descricao .= " AND d.created_at BETWEEN  '$datainiciolancamento 00:00:00' and '$datafimlancamento 23:59:59'";
         endif;
         return $descricao;
     }
