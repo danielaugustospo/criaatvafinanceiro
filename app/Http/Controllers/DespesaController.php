@@ -197,7 +197,8 @@ class DespesaController extends Controller
         b.nomeBanco,
         d.cheque,
         fre.razaosocialFornecedor as reembolsado, 
-        d.created_at 
+        d.created_at,
+        u.name  as nomeusuario
 
 
         FROM despesas d  
@@ -215,6 +216,7 @@ class DespesaController extends Controller
         LEFT JOIN fornecedores      AS fqc     ON d.quemcomprou = fqc.id
         LEFT JOIN banco             AS b       ON d.idBanco = b.id
         LEFT JOIN fornecedores      AS fre     ON d.reembolsado = fre.id
+        LEFT JOIN users             AS u ON d.idAutor = u.id
      
         
         WHERE d.excluidoDespesa = 0 ' . $visaoLimitada . $descricao);

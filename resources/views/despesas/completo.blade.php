@@ -499,6 +499,12 @@ $idFrame1 = 'framecriadepesa';
                                 title: "Funcionário",
                                 filterable: true,
                                 width: 150,
+                            },
+                            {
+                                field: "nomeusuario",
+                                title: "Usuário Lançador",
+                                filterable: true,
+                                width: 150,
                             }
                         ],
                         editable: "popup",
