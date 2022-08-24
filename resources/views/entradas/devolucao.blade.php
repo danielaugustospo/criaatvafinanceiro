@@ -46,11 +46,13 @@
 </div>
 
 <div class="form-group row">
-    <label for="ocorrenciadevolucao" class="col-sm-2 col-form-label">Ocorrências</label>
-    <div class="col-sm-12">
-        {{-- {!! Form::textarea('ocorrenciadevolucao', '', ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrenciadevolucao']) !!} --}}
-        <textarea placeholder="Ocorrências" class="form-control col-sm-12" maxlength="100" id="ocorrenciadevolucao" name="ocorrenciadevolucao" cols="50" rows="10" @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->ocorrenciadevolucao }}" readonly @endif></textarea>
-    </div>
+    <label for="tipoEntrada" class="col-sm-2 col-form-label">Primeira Entrada ou Devolução</label>
+    <select name="tipoEntrada" id="tipoEntrada">
+        <option value="">Selecione</option>
+        <option value="P">Primeira Entrada</option>
+        <option value="D">Primeira Entrada</option>
+    </select>
 </div>
+
 {!! Form::hidden('valorunitarioentrada', '0', ['placeholder' => 'Valor Unitário', 'class' => 'form-control', 'maxlength' => '2']) !!}
 {!! Form::hidden('qtdeEntrada', '1', ['placeholder' => 'Quantidade', 'class' => 'form-control', 'maxlength' => '2']) !!}

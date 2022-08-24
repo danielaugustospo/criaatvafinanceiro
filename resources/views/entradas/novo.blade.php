@@ -2,7 +2,10 @@
     <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
     <div class="col-sm-7">
         <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
-        @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}" readonly @endif>
+        @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}"        
+        @else
+        value="{{ "CRIA00". $novaEntrada }}"
+        @endif readonly>
     </div>
 </div>
 <div class="form-group row">

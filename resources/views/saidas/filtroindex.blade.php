@@ -71,11 +71,11 @@
             </div>
             <div class="row mt-3">
                 {{-- <label for="" class="col-sm-1">Ocorrência</label>
-                <select class="selecionaComInput form-control col-sm-8 js-example-basic-multiple buscaocorrenciasaida"
-                    name="ocorrenciasaida" id="ocorrenciasaida">
+                <select class="selecionaComInput form-control col-sm-8 js-example-basic-multiple buscaocorrencia"
+                    name="ocorrencia" id="ocorrencia">
                     <option value="">Listar todos</option>
                     @foreach ($listaSaidas as $saidas)
-                        <option value="{{ $saidas->ocorrenciasaida }}">{{ $saidas->ocorrenciasaida }}</option>
+                        <option value="{{ $saidas->ocorrencia }}">{{ $saidas->ocorrencia }}</option>
                     @endforeach
                 </select> --}}
                 <input class="btn btn-primary ml-2" type="button" name="pesquisar" id="pesquisar" value="Pesquisar">

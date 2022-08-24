@@ -79,7 +79,7 @@
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Ocorrências</label>
     <div class="col-sm-12">
-        {!! Form::textarea('ocorrenciasaida', null, ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrenciasaida']) !!}
+        {!! Form::textarea('ocorrencia', null, ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrencia']) !!}
     </div>
 </div>
 

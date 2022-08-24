@@ -51,24 +51,18 @@ class EntradasController extends Controller
                     ->with('warning', 'Entradas ' . $identrada . ' é um dado excluído, ou uma entrada inexistente, não podendo ser acessada');
             }
         }
-        $validacoesPesquisa = $this->validaPesquisa($request);
+        $validacoesPesquisa     = $this->validaPesquisa($request);
 
-        $despesas       = $validacoesPesquisa[0];
-        $valor          = $validacoesPesquisa[1];
-        $dtinicio       = $validacoesPesquisa[2];
-        $dtfim          = $validacoesPesquisa[3];
-        $coddespesa     = $validacoesPesquisa[4];
-        $fornecedor     = $validacoesPesquisa[5];
-        $ordemservico   = $validacoesPesquisa[6];
-        $conta          = $validacoesPesquisa[7];
-        $notafiscal     = $validacoesPesquisa[8];
-        $cliente        = $validacoesPesquisa[9];
-        $fixavariavel   = $validacoesPesquisa[10];
-        $pago           = $validacoesPesquisa[11];
+        $codbarras              = $validacoesPesquisa[0];
+        $nomeBensPatrimoniais   = $validacoesPesquisa[1];
+        $descricaoentrada       = $validacoesPesquisa[2];
+        $dtinicio               = $validacoesPesquisa[3];
+        $dtfim                  = $validacoesPesquisa[4];
+        $tipoEntrada            = $validacoesPesquisa[5];
 
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago'));
+        return view($rota, compact('codbarras', 'nomeBensPatrimoniais', 'descricaoentrada', 'dtinicio', 'dtfim', 'tipoEntrada'));
     }
 
 
@@ -76,9 +70,13 @@ class EntradasController extends Controller
     {
         // TODO: Montar filtro genérico de despesas
 
-        // $descricao = $this->montaFiltrosConsulta($request);
-        $descricao = '';
-        $listaDespesas = DB::select('SELECT e.*, b.nomeBensPatrimoniais 
+        $descricao = $this->montaFiltrosConsulta($request);
+        // $descricao = '';
+        $listaDespesas = DB::select('SELECT e.*, b.nomeBensPatrimoniais, 
+        CASE
+        WHEN e.dtdevolucao IS NULL THEN "NOVO"
+        ELSE "DEVOLUÇÃO"
+        END as tipo
             FROM  entradas e 
             LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
             WHERE e.excluidoentrada = 0' . $descricao);
@@ -90,65 +88,48 @@ class EntradasController extends Controller
     {
         $descricao = "";
         $verificaInputCampos = 0;
-        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
-            $verificaInputCampos++;
-        endif;
 
-        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
+        if ($request->codbarras) :              $descricao .= " AND e.codbarras like  '%$request->codbarras%'";
             $verificaInputCampos++;
         endif;
-        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
+        if ($request->nomeBensPatrimoniais) :   $descricao .= " AND b.nomeBensPatrimoniais like  '%$request->nomeBensPatrimoniais%'";
             $verificaInputCampos++;
         endif;
-        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
+        if ($request->descricaoentrada) :       $descricao .= " AND e.descricaoentrada like  '%$request->descricaoentrada%'";
             $verificaInputCampos++;
         endif;
-        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
-            $verificaInputCampos++;
+        if ($request->tipoEntrada) :       
+            if($request->tipoEntrada == 'NOVO'):
+                $descricao .= " AND e.dtdevolucao IS NULL ";
+                $verificaInputCampos++;
+            elseif($request->tipoEntrada == 'DEVOLUÇÃO'):
+                $descricao .= " AND e.dtdevolucao IS NOT NULL ";
+                $verificaInputCampos++;
+            else:
+                $descricao .= " ";
+            endif;
         endif;
-        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
-            $verificaInputCampos++;
-        endif;
-        if ($request->reembolso) : $descricao .= " AND d.reembolsado != '0'";
-            $verificaInputCampos++;
-        endif;
-
-
-        if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->fixavariavel) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
-            $verificaInputCampos++;
-        endif;
-
-
         if ($request->dtfim) :        $datafim    = $request->dtfim;
         elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
         endif;
-
-        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
+        if ($request->dtinicio) :     $descricao .= " AND e.created_at BETWEEN  '$request->dtinicio' and '$datafim'";
         elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
-            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+            $descricao .= " AND e.created_at BETWEEN  '$datainicio' and '$datafim'";
         endif;
         return $descricao;
     }
 
     private function validaPesquisa($request)
     {
-        if ($request->get('despesas')) :     $despesas = $request->get('despesas');
-        else : $despesas = '';
+        
+        if ($request->get('codbarras')) :     $codbarras = $request->get('codbarras');
+        else : $codbarras = '';
         endif;
-        if ($request->get('valor')) :        $valor = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valor'));
-        else : $valor = '';
+        if ($request->get('nomeBensPatrimoniais')) :     $nomeBensPatrimoniais = $request->get('nomeBensPatrimoniais');
+        else : $nomeBensPatrimoniais = '';
+        endif;
+        if ($request->get('descricaoentrada')) :     $descricaoentrada = $request->get('descricaoentrada');
+        else : $descricaoentrada = '';
         endif;
         if ($request->get('dtinicio')) :     $dtinicio = $request->get('dtinicio');
         else : $dtinicio = '';
@@ -156,32 +137,11 @@ class EntradasController extends Controller
         if ($request->get('dtfim')) :        $dtfim = $request->get('dtfim');
         else : $dtfim = '';
         endif;
-        if ($request->get('coddespesa')) :   $coddespesa = $request->get('coddespesa');
-        else : $coddespesa = '';
-        endif;
-        if ($request->get('fornecedor')) :   $fornecedor = $request->get('fornecedor');
-        else : $fornecedor = '';
-        endif;
-        if ($request->get('ordemservico')) : $ordemservico = $request->get('ordemservico');
-        else : $ordemservico = '';
-        endif;
-        if ($request->get('conta')) :        $conta = $request->get('conta');
-        else : $conta = '';
-        endif;
-        if ($request->get('notafiscal')) :    $notafiscal = $request->get('notafiscal');
-        else : $notafiscal = '';
-        endif;
-        if ($request->get('cliente')) :       $cliente = $request->get('cliente');
-        else : $cliente = '';
-        endif;
-        if ($request->get('fixavariavel')) :  $fixavariavel = $request->get('fixavariavel');
-        else : $fixavariavel = '';
-        endif;
-        if ($request->get('pago')) :        $pago = $request->get('pago');
-        else : $pago = '';
+        if ($request->get('tipoEntrada')) :        $tipoEntrada = $request->get('tipoEntrada');
+        else : $tipoEntrada = '';
         endif;
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago);
+        $solicitacaoArray = array($codbarras, $nomeBensPatrimoniais, $descricaoentrada, $dtinicio, $dtfim, $tipoEntrada);
         return $solicitacaoArray;
     }
 
@@ -215,9 +175,16 @@ class EntradasController extends Controller
     public function create(Request $request)
     {
         // $banco =  DB::select('select * from banco');
-        $tipoEntrada = $request->metodo;
+        $tipoEntrada    = $request->metodo;
+        $ultimaEntrada  =  Entradas::select('id')->orderBy('id', 'desc')->first();
+        if($ultimaEntrada->id == null || $ultimaEntrada->id == ''){
+            $novaEntrada = 1;
+        }
+        else {
+            $novaEntrada = $ultimaEntrada->id++;
+        }
 
-        return view('entradas.create', compact('tipoEntrada'));
+        return view('entradas.create', compact('tipoEntrada','novaEntrada'));
     }
 
 
@@ -343,7 +310,7 @@ class EntradasController extends Controller
             $tipoEntrada = 'novo';
         }
         
-        $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $propriedadesEntradas->idbenspatrimoniais . ' desc');
+        $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id' );
 
         return view('entradas.show', compact('propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
     }

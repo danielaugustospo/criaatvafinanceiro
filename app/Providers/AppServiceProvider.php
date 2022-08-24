@@ -74,7 +74,12 @@ class AppServiceProvider extends ServiceProvider
         $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
         view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
 
-        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais 
+        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais,
+                                        CASE
+                                        WHEN e.dtdevolucao IS NULL THEN "NOVO"
+                                        ELSE "DEVOLUÇÃO"
+                                        END as tipo 
+                                        
                                         FROM  entradas e 
                                         LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
                                         where e.excluidoentrada = 0');
@@ -82,6 +87,12 @@ class AppServiceProvider extends ServiceProvider
 
         $listaSaidas = DB::select("SELECT s.*, 
         DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        CASE
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
+    	ELSE 'Sem contagem disponível'
+		END as qtddiaspararetorno,
         b.nomeBensPatrimoniais 
             FROM  saidas s 
             LEFT JOIN estoque e on s.codbarras = e.codbarras

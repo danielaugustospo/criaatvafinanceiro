@@ -92,25 +92,27 @@ class DespesaController extends Controller
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
 
-        $despesas       = $validacoesPesquisa[0];
-        $valor          = $validacoesPesquisa[1];
-        $dtinicio       = $validacoesPesquisa[2];
-        $dtfim          = $validacoesPesquisa[3];
-        $coddespesa     = $validacoesPesquisa[4];
-        $fornecedor     = $validacoesPesquisa[5];
-        $ordemservico   = $validacoesPesquisa[6];
-        $conta          = $validacoesPesquisa[7];
-        $notafiscal     = $validacoesPesquisa[8];
-        $cliente        = $validacoesPesquisa[9];
-        $fixavariavel   = $validacoesPesquisa[10];
-        $pago           = $validacoesPesquisa[11];
-        $idSalvo        = $validacoesPesquisa[12];
-        $idUser         = $validacoesPesquisa[13];
+        $despesas               = $validacoesPesquisa[0];
+        $valor                  = $validacoesPesquisa[1];
+        $dtinicio               = $validacoesPesquisa[2];
+        $dtfim                  = $validacoesPesquisa[3];
+        $coddespesa             = $validacoesPesquisa[4];
+        $fornecedor             = $validacoesPesquisa[5];
+        $ordemservico           = $validacoesPesquisa[6];
+        $conta                  = $validacoesPesquisa[7];
+        $notafiscal             = $validacoesPesquisa[8];
+        $cliente                = $validacoesPesquisa[9];
+        $fixavariavel           = $validacoesPesquisa[10];
+        $pago                   = $validacoesPesquisa[11];
+        $idSalvo                = $validacoesPesquisa[12];
+        $idUser                 = $validacoesPesquisa[13];
+        $dtiniciolancamento     = $validacoesPesquisa[14];
+        $dtfimlancamento        = $validacoesPesquisa[15];
         
         
         $rota = $this->verificaRelatorio($request);
  
-        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo'));
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento'));
     }
 
 
@@ -196,7 +198,8 @@ class DespesaController extends Controller
         fqc.razaosocialFornecedor as quemcomprou,
         b.nomeBanco,
         d.cheque,
-        fre.razaosocialFornecedor as reembolsado 
+        fre.razaosocialFornecedor as reembolsado, 
+        d.created_at 
 
         -- fim dados exclusivos despesa completo
 
@@ -254,7 +257,6 @@ class DespesaController extends Controller
             $verificaInputCampos++;
         endif;
 
-
         if (isset($request->notafiscal)) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
             $verificaInputCampos++;
         endif;
@@ -268,8 +270,6 @@ class DespesaController extends Controller
             $verificaInputCampos++;
         endif;
 
-
-
         if (isset($request->dtfim)) :        $datafim    = $request->dtfim;
         else : $datafim = date('Y-m-t');
         endif;
@@ -277,6 +277,16 @@ class DespesaController extends Controller
         if (isset($request->dtinicio)) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
         elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
             $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+            $verificaInputCampos++;
+        endif;
+
+        if (isset($request->dtfimlancamento)) :        $datafimlancamento    = $request->dtfimlancamento;
+        else : $datafimlancamento = date('Y-m-t');
+        endif;
+
+        if (isset($request->dtiniciolancamento)) :     $descricao .= " AND d.created_at BETWEEN  '$request->dtiniciolancamento' and '$datafimlancamento'";
+        elseif ($verificaInputCampos == 0) :   $datainiciolancamento = date('Y-m') . '-01';
+            $descricao .= " AND d.created_at BETWEEN  '$datainiciolancamento' and '$datafimlancamento'";
         endif;
         return $descricao;
     }
@@ -321,6 +331,12 @@ class DespesaController extends Controller
         if ($request->get('pago')) :        $pago = $request->get('pago');
         else : $pago = '';
         endif;
+        if ($request->get('dtiniciolancamento')) :     $dtiniciolancamento = $request->get('dtiniciolancamento');
+        else : $dtiniciolancamento = '';
+        endif;
+        if ($request->get('dtfimlancamento')) :        $dtfimlancamento = $request->get('dtfimlancamento');
+        else : $dtfimlancamento = '';
+        endif;
         if (isset($request->idSalvo)) {
             $idSalvos = $request->idSalvo;
         }else{
@@ -332,7 +348,7 @@ class DespesaController extends Controller
             $idUser = null;
         }
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser );
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser, $dtiniciolancamento, $dtfimlancamento );
         return $solicitacaoArray;
     }
 

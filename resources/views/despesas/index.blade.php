@@ -67,7 +67,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 transport: {
                     read: {
                         @if (isset($despesas))
-                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}",
+                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}",
                         @else
                             url: "{{ $rotaapi }}",
                         @endif
@@ -106,6 +106,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             datavale: {
                                 type: "date"
                             },
+                            created_at: {
+                                    type: "date"
+                                },
                         }
                     },
                 },
@@ -301,6 +304,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         {
                             field: "pago",
                             title: "Pago",
+                            filterable: true,
+                            width: 90
+                        },
+                        {
+                            field: "created_at",
+                            title: "Criado Em",
+                            format: "{0:dd/MM/yyyy}",
                             filterable: true,
                             width: 90
                         },

@@ -102,10 +102,9 @@
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Ocorrências</label>
     <div class="col-sm-12">
-        <textarea placeholder="Ocorrências" class="form-control col-sm-12" maxlength="100" id="ocorrenciasaida"
-            name="ocorrenciasaida" cols="50" rows="10"
-            @if (isset($saidas)) value="{{ $saidas->ocorrenciasaida }}" readonly @endif></textarea>
+        <textarea placeholder="Ocorrências" class="form-control col-sm-12" maxlength="100" id="ocorrencia"
+            name="ocorrencia" cols="50" rows="10" @if (isset($saidas)) readonly @endif>@if (isset($saidas)) {{ $saidas->ocorrencia }}  @endif</textarea>
 
-        {{-- {!! Form::textarea('ocorrenciasaida', '', ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrenciasaida']) !!} --}}
+        {{-- {!! Form::textarea('ocorrencia', '', ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrencia']) !!} --}}
     </div>
 </div>

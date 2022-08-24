@@ -28,9 +28,10 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     @can('saidas-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('saidas.create') }}">Nova Baixa
                         </a>
-                    @endcan    
-                    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modalsaida"
-                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
+                    @endcan
+  
+                    <a href="#" class="btn btn-primary d-flex justify-content-center"  onclick="$('.modalsaidasestoque').modal('show');"
+                        style="color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
                     
                 </div>
             </div>
@@ -43,6 +44,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div id="filter-menu"></div>
     <br /><br />
     <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
+        @include('layouts/helpersview/infofiltrosestoquesaida')
     </div>
     <script>
         $.LoadingOverlay("show", {
@@ -53,11 +55,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    @if (isset($despesas))
-                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
-                    @else
-                        url: "{{ $rotaapi }}",
-                    @endif
+                    url: "{{ $rotaapi }}?codbarras={{ $codbarras }}&descricaosaida={{ $descricaosaida }}&nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&portador={{ $portador }}&ordemdeservico={{ $ordemdeservico }}&dataretiradainicial={{ $dataretiradainicial }}&dataretiradafinal={{ $dataretiradafinal }}&datapararetornoinicial={{ $datapararetornoinicial }}&datapararetornofinal={{ $datapararetornofinal }}",                   
                     dataType: "json"
                 },
             },
@@ -181,31 +179,43 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        width: 90
+                        width: "5%"
                     },
                     {
                         field: "codbarras",
                         title: "Cod Barras",
                         filterable: true,
-                        width: 100
+                        width: "10%"
                     },
                     {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
-                        width: 100
+                        width: "10%"
+                    },
+                    {
+                        field: "portador",
+                        title: "Quem Pegou",
+                        filterable: true,
+                        width: "10%"
                     },
                     {
                         field: "descricaosaida",
                         title: "Descrição",
                         filterable: true,
-                        width: 100
+                        width: "10%"
+                    },
+                    {
+                        field: "ordemdeservico",
+                        title: "OS",
+                        filterable: true,
+                        width: "10%"
                     },
                     {
                         field: "dataretirada",
                         title: "Data Retirada",
                         filterable: true,
-                        width: 100,
+                        width: "10%",
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -217,13 +227,19 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "qtddiasemprestado",
                         title: "Dias Emprestados",
                         filterable: true,
-                        width: 100,
+                        width: "5%",
+                    },
+                    {
+                        field: "qtddiaspararetorno",
+                        title: "Dias Restantes",
+                        filterable: true,
+                        width: "10%",
                     },
                     {
                         field: "datapararetorno",
                         title: "Data Retorno",
                         filterable: true,
-                        width: 100,
+                        width: "10%",
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -244,7 +260,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                     data.id;
                             }
                         }],
-                        width: 130,
+                        width: "10%",
                         exportable: false,
                     },
                     // {
@@ -350,4 +366,5 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                 @include('layouts/filtradata')
     </script>
+    @include('layouts/modal/estoque/modalsaidaestoque')
 @endsection

@@ -102,7 +102,7 @@ $idFrame1 = 'framecriadepesa';
                     transport: {
                         read: {
                             @if (isset($despesas))
-                                url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}",
+                                url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}",
                             @else
                                 url: "{{ $rotaapi }}",
                             @endif
@@ -145,6 +145,9 @@ $idFrame1 = 'framecriadepesa';
                                     type: "date"
                                 },
                                 dataDoTrabalho: {
+                                    type: "date"
+                                },
+                                created_at: {
                                     type: "date"
                                 },
                             }
@@ -370,6 +373,13 @@ $idFrame1 = 'framecriadepesa';
                             {
                                 field: "pago",
                                 title: "Pago",
+                                filterable: true,
+                                width: 90
+                            },
+                            {
+                                field: "created_at",
+                                format: "{0:dd/MM/yyyy}",
+                                title: "Criado em",
                                 filterable: true,
                                 width: 90
                             },
