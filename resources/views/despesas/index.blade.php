@@ -10,6 +10,16 @@ if (isset($despesas)) {
 } else {
     $despesas = '';
 }
+if (isset($dtiniciolancamento)) {
+    $dtiniciolancamento = $dtiniciolancamento;
+} else {
+    $dtiniciolancamento = '';
+}
+if (isset($dtfimlancamento)) {
+    $dtfimlancamento = $dtfimlancamento;
+} else {
+    $dtfimlancamento = '';
+}
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 

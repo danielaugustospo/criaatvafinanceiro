@@ -11,6 +11,16 @@ if (isset($despesas)) {
 } else {
     $despesas = '';
 }
+if (isset($dtiniciolancamento)) {
+    $dtiniciolancamento = $dtiniciolancamento;
+} else {
+    $dtiniciolancamento = '';
+}
+if (isset($dtfimlancamento)) {
+    $dtfimlancamento = $dtfimlancamento;
+} else {
+    $dtfimlancamento = '';
+}
 if (isset($idSalvo)) {
     //Verificação após retorno de lançamento de mais de uma despesa
     $tamanhoIdSalvo = count($idSalvo);
