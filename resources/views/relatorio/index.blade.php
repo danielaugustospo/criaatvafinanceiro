@@ -73,8 +73,8 @@
         <a onclick="abreModalDespesas(param = 'despesasporosplanilha');"
         href="#"> <label class="text-center fontenormal row" for="">Por OS - Planilha           &nbsp; </label></a>
         
-        <a onclick="abreModalDespesas(param = 'prolabore');"
-        href="#"> <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a>
+        {{-- <a onclick="abreModalDespesas(param = 'prolabore');"
+        href="#"> <label class="text-center fontenormal row" for="">Pró-Labore                  &nbsp; </label></a> --}}
         
         <a onclick="abreModalDespesas(param = 'reembolso');"
         href="#"> <label class="text-center fontenormal row" for="">Reembolso                   &nbsp; </label></a>

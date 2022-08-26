@@ -303,8 +303,8 @@ class OrdemdeServicoController extends Controller
             $getArrayTotalDespesasPagas = $totaldespesasPagas[0]->totaldespesa;
         }
 
-        $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totalreceitasAPagar = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and r.pagoreceita = "N" and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where excluidoreceita = 0 and ativoreceita = 1 and r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totalreceitasAPagar = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where excluidoreceita = 0 and ativoreceita = 1 and   r.idosreceita = o.id and r.pagoreceita = "N" and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
 
         $tamanhoArrayReceita = count($totalreceitas);
         if ($tamanhoArrayReceita == 0) {

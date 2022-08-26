@@ -20,8 +20,8 @@
     </td>
     <td>
         <select name="pagoreceita[]" id="pagoreceita" style="padding:0px; width:150%;" class="form-control" {{ $disabledOrNo }}>
-            <option value="S" {{$dadosreceita->pagoreceita == 'S'?' selected':''}} style="background-color:green;">Sim</option>
             <option value="N" {{$dadosreceita->pagoreceita == 'N'?' selected':''}} style="background-color: #e3342f;">Não</option>
+            <option value="S" {{$dadosreceita->pagoreceita == 'S'?' selected':''}} style="background-color:green;">Sim</option>
         </select>
     </td>
     <td>

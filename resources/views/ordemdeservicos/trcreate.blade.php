@@ -15,8 +15,8 @@
     </td>
     <td data-label="Pago">
         <select name="pagoreceita[]" id="pagoreceita" style="padding:0px;" onclick="pegaIdFornecedor()" class="form-control">
-            <option value="S" style="background-color:green;">Sim</option>
             <option value="N" style="background-color: #e3342f;">Não</option>
+            <option value="S" style="background-color:green;">Sim</option>
         </select>
     </td>
     <td data-label="Data Emissão">
