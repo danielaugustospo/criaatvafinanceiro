@@ -31,6 +31,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     @endcan
                     <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modaldepesas"
                         style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a> --}}
+{{-- 
+                        <a class="btn btn-secondary d-flex justify-content-center" data-toggle="modal" data-target=".pesquisaHibridaEstoque"
+                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a> --}}
                 </div>
             </div>
         </div>
@@ -169,22 +172,16 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         },
                     },
 
-
-                    aggregate: [{
-                            field: "razaosocialFornecedor",
+                    group: {
+                    field: "nomeBensPatrimoniais",
+                    aggregates: [{
+                            field: "nomeBensPatrimoniais",
                             aggregate: "count"
-                        },
-                        {
-                            field: "precoReal",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "vale",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "despesareal",
-                            aggregate: "sum"
+                        }]
+                },
+                    aggregate: [{
+                            field: "nomeBensPatrimoniais",
+                            aggregate: "count"
                         }
                     ],
 
@@ -205,6 +202,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
+                        aggregates: ["count"],
+                        footerTemplate: "ITENS BUSCADOS: #=count#",
+                        groupHeaderColumnTemplate: "QUANTIDADE: #=count#",
                         filterable: true,
                         autowidth: true
                     },
@@ -337,4 +337,5 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
         @include('layouts/filtradata')
     </script>
+ 
 @endsection

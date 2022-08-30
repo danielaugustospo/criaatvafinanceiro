@@ -1,3 +1,7 @@
+@php 
+    $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); 
+    setlocale(LC_MONETARY, 'pt_BR');
+@endphp
 <div id="informacoes" class="d-flex justify-content-center">
 
     @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == ''&& $dtiniciolancamento == '' && $dtfimlancamento == '')

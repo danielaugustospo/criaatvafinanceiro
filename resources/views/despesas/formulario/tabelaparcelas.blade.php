@@ -41,7 +41,7 @@
                     @endforeach
                 </select>
             </td>
-            <td data-th="NF">
+            <td class="col-sm-1"  data-th="NF">
                 {!! Form::text('notaFiscalTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
             </td>

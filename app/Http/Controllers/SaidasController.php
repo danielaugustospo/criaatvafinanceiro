@@ -86,7 +86,7 @@ class SaidasController extends Controller
             FROM  saidas s 
             LEFT JOIN estoque e on s.codbarras = e.codbarras
             LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-            WHERE s.excluidosaida = 0" . $descricao);
+            WHERE s.excluidosaida = 0 AND e.excluidoestoque = 0 AND e.ativadoestoque = 0" . $descricao . " GROUP BY e.id");
 
         return $listaDespesas;
     }
