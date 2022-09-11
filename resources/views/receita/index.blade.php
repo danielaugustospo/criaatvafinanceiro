@@ -196,12 +196,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     width: 80
                 },
                 {
-                    field: "idclientereceita",
-                    title: "idclientereceita",
-                    filterable: true,
-                    width: 80
-                },
-                {
                     field: "descricaoreceita",
                     title: "Descrição",
                     filterable: true,
