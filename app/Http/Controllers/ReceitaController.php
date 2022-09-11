@@ -48,37 +48,7 @@ class ReceitaController extends Controller
             $this->valorSemCadastro = null;
         }
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index(Request $request)
-    // {
 
-    //     $consulta = $this->consultaIndexReceita();
-
-    //     if ($request->ajax()) {
-
-    //         return Datatables::of($consulta)
-    //             ->addIndexColumn()
-    //             ->addColumn('action', function($consulta) {
-
-    //             $btnVisualizar = '<div class="row col-sm-12">
-    //                 <a href="receita/' .  $consulta->id . '" class="edit btn btn-primary btn-lg"  title="Visualizar Receita">Visualizar</a>
-    //             </div>';
-
-    //             return $btnVisualizar;
-    //             })
-
-    //             ->rawColumns(['action'])
-    //             ->make(true);
-    //     }        else {
-    //         $data = Receita::orderBy('id', 'DESC')->paginate(5);
-    //         return view('receita.index', compact('data'))
-    //             ->with('i', ($request->input('page', 1) - 1) * 5);
-    //     }
-    // }
 
     /**
      * Display a listing of the resource.
@@ -316,12 +286,6 @@ class ReceitaController extends Controller
                 'receita.nfreceita'
             ]);
 
-        // $consulta1 = DB::select("SELECT receita.id,  receita.idosreceita ,  receita.idclientereceita ,  clientes.id as idDoCliente,clientes.razaosocialCliente,  receita.idformapagamentoreceita ,  receita.datapagamentoreceita ,
-        // receita.dataemissaoreceita ,  receita.valorreceita ,  receita.pagoreceita ,  conta.id as idDaConta ,conta.nomeConta , receita.contareceita ,  receita.descricaoreceita ,  receita.registroreceita ,
-        // receita.nfreceita   from receita 
-        //  inner join `conta` on `receita`.`contareceita` = `conta`.`id` 
-        //  left join `clientes` on `receita`.`idclientereceita` = `clientes`.`id`");
-
         return $consulta;
     }
 
@@ -477,13 +441,13 @@ class ReceitaController extends Controller
             // 'idosreceita'               => 'required'
         ]);
 
-
         $valorMonetario                  = $request->get('valorreceita');
         $quantia = $this->validaValores($valorMonetario);
 
         $receita->id                            = $request->get('id');
         $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita');
         $receita->datapagamentoreceita          = $request->get('datapagamentoreceita');
+        $receita->idclientereceita              = $request->get('idclientereceita');
         $receita->dataemissaoreceita            = $request->get('dataemissaoreceita');
         $receita->valorreceita                  = $quantia;
         $receita->pagoreceita                   = $request->get('pagoreceita');
@@ -495,22 +459,21 @@ class ReceitaController extends Controller
         // $receita->idosreceita                   = $request->get('idosreceita');
 
         DB::update(
-            "UPDATE receita
-        SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-        datapagamentoreceita        = '$receita->datapagamentoreceita',           
-        dataemissaoreceita          = '$receita->dataemissaoreceita',             
-        valorreceita                = '$receita->valorreceita',                   
-        pagoreceita                 = '$receita->pagoreceita',                    
-        contareceita                = '$receita->contareceita',                   
-        descricaoreceita             = '$receita->descricaoreceita',                
-        registroreceita             = '$receita->registroreceita',                
-        nfreceita                   = '$receita->nfreceita'                      
-        -- idosreceita                 = '$receita->idosreceita'                  
-        WHERE id                    = '$receita->id'"
+        "UPDATE receita
+            SET 
+            idformapagamentoreceita     = '$receita->idformapagamentoreceita', 
+            datapagamentoreceita        = '$receita->datapagamentoreceita',           
+            idclientereceita            = '$receita->idclientereceita',             
+            dataemissaoreceita          = '$receita->dataemissaoreceita',             
+            valorreceita                = '$receita->valorreceita',                   
+            pagoreceita                 = '$receita->pagoreceita',                    
+            contareceita                = '$receita->contareceita',                   
+            descricaoreceita            = '$receita->descricaoreceita',                
+            registroreceita             = '$receita->registroreceita',                
+            nfreceita                   = '$receita->nfreceita'                      
+            -- idosreceita                 = '$receita->idosreceita'                  
+            WHERE id                    = '$receita->id'"
         );
-
-        // $receita->update();
-
 
         return redirect()->route('receita.index')
             ->with('success', 'Receita atualizada com êxito');
