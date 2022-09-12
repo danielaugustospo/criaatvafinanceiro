@@ -1,6 +1,6 @@
 @include('receita/validador')
-@if ($receita->idosreceita)
-    @if ($receita->idosreceita != 'CRIAATVA')
+@isset($receita->idosreceita)
+    @if ($receita->idosreceita != 'CRIAATVA' && $receita->idosreceita != '')
         <script>
             $(function() {
                 $( "#idclientereceita" ).prop( "disabled", true );
@@ -8,7 +8,7 @@
         </script>
         <h5 class="text-danger" for="">Cliente é da OS {{ $receita->idosreceita }}, não podendo ser alterado por aqui</h5>        
     @endif    
-@endif
+@endisset
 <div class="form-group row">
     <label for="idclientereceita" class="col-sm-2 col-form-label">Cliente/Receita</label>
     <div class="col-sm-10 mb-3">
