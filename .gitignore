@@ -38,3 +38,4 @@ storage/
 storage/*
 storage/logs/acoes.log
 storage/framework/cache/
+storage/framework/cache/data/*
