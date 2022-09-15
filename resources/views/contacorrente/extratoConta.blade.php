@@ -1,15 +1,18 @@
 @php 
     $intervaloCelulas = "A1:G1"; 
     // $rotaapi = "apiextratocontarelatorio";
-    $titulo  = "Conta Corrente";
-    $campodata = 'dtoperacao';
-    $contaSelecionada = $contaSelecionada; 
-    $datainicial = $datainicial;
-    $datafinal = $datafinal;
-    $conta          = $conta;
-    $saldoInicial   = $saldoInicial;
-    $saldoFinal     = $saldoFinal;
-    $contacorrente     = 1;
+    $titulo             = "Conta Corrente";
+    $campodata          = 'dtoperacao';
+    $contaSelecionada   = $contaSelecionada; 
+    $datainicial        = $datainicial;
+    $datafinal          = $datafinal;
+    $conta              = $conta;
+    $saldoInicial       = $saldoInicial;
+    $saldoFinal         = $saldoFinal;
+    $dtiniciolancamento = $dtiniciolancamento; 
+    $dtfimlancamento    = $dtfimlancamento; 
+
+    $contacorrente      = 1;
     $relatorioKendoGrid = true;
 
     $urlContaCorrente = route('apiextratocontarelatorio');
@@ -57,6 +60,7 @@
             setlocale(LC_MONETARY, 'pt_BR');
             echo ' - Saldo Inicial:  <b style="color: red;">' . $numberFormatter->format($saldoInicial) .'</b>';
             echo ' - Saldo Final:    <b style="color: red;">' . $numberFormatter->format($saldoFinal)  .'</b>';
+            echo ' LANÇ. <b style="color: red;">'. date("d/m/Y", strtotime($dtiniciolancamento)) .' </b>' . " até " . '<b style="color: red;">' . date("d/m/Y", strtotime($dtfimlancamento)) . ' </b>'; 
             @endphp 
         </label>
     </div>
@@ -73,6 +77,7 @@
                     model: {
                         fields: {
                             dtoperacao: { type: "date" },
+                            created_at: { type: "date" },
                             valorreceita: { type: "number" },
                             saldo: { type: "number" },
                             conta: { type: "string" },
@@ -108,6 +113,7 @@
                 
                 // Retirada solicitada pelo Nelio dia 30/04/2022
                 { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                { field: "created_at", title: "Lançamento",  format: "{0:dd/MM/yyyy}", width: 60  , filterable: false},
                 
                 // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],

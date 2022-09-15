@@ -47,10 +47,10 @@ class Conta extends Model
         FROM (
     
         SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
-        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo
+        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo, created_at
     
             from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
-             `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
+             `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento, receita.created_at
             
             from receita 
             
@@ -67,7 +67,7 @@ class Conta extends Model
             
             
             `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
-             `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
+             `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento, despesas.created_at
             
             from despesas
             

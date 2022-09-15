@@ -624,14 +624,16 @@ class ContaController extends Controller
     }
     public function extratoConta(Request $request)
     {
-        // $consulta = $this->consultaExtratoConta();
         $contaSelecionada = $request->get('conta');
         $datainicial = $request->get('datainicial');
         $datafinal = $request->get('datafinal');
 
+        $dtiniciolancamento = $request->get('dtiniciolancamento');
+        $dtfimlancamento    = $request->get('dtfimlancamento');
+
         $modelConta = new Conta();
 
-        $complemento = "WHERE idconta ='".$contaSelecionada."' and dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."'";
+        $complemento = "WHERE idconta ='".$contaSelecionada."' and (dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."') AND (created_at BETWEEN '".$dtiniciolancamento."' AND '".$dtfimlancamento."')";
         $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
         $extrato = DB::select($stringQueryExtratoConta);
 
@@ -642,8 +644,9 @@ class ContaController extends Controller
             $conta   = $extrato[0]->conta;
                        
             $saldoFinal     = $extrato[$tamExtrato]->saldo;
-            $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
-
+            // $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
+            bcscale(2);
+            $saldoInicial = bcsub($extrato[0]->saldo, $extrato[0]->valorreceita);
         }
         else{
             $conta   = 'Indefinido';
@@ -651,7 +654,7 @@ class ContaController extends Controller
             $saldoFinal     = 0;
         }
 
-        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal','conta','saldoInicial','saldoFinal'));
+        return view('contacorrente.extratoConta', compact('contaSelecionada','datainicial','datafinal','conta','saldoInicial','saldoFinal','dtiniciolancamento','dtfimlancamento'));
     }
 
     public function tabelaExtratoConta(Request $request)
