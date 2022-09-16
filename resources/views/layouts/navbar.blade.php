@@ -383,15 +383,6 @@
                         <input type="hidden" value="" name="modorelatorio" id="modorelatorio">
                     </div>
 
-                    <label class="ml-2 mt-2">Lançamento</label>
-                    <div class="row">
-                        <input class="form-control col-sm-5 ml-4 mr-1" type="date" value="2000-01-01" name="dtiniciolancamento"
-                            id="dtiniciolancamento" required>
-                        <input class="form-control col-sm-5 " type="date" value="3000-12-31" name="dtfimlancamento"
-                            id="dtfimlancamento" required>
-
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
