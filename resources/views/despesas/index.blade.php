@@ -282,6 +282,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             footerTemplate: "QTD. Total: #=count#",
                             groupHeaderColumnTemplate: "Qtd.: #=count#"
                         },
+
                         {
                             field: "vencimento",
                             title: "Venc.",

@@ -18,6 +18,7 @@
 
 
 {!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id] ]) !!}
+{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 
 @include('clientes/campos')
 

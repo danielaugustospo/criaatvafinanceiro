@@ -124,7 +124,8 @@ class ClientesController extends Controller
             })
             ->addColumn('action', function ($row) {
 
-                $btnVisualizar = '<a href="clientes/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                $btnVisualizar = '<a href="clientes/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>
+                                <a href="clientes/' . $row['id'] . '/edit" class="edit btn btn-secondary btn-sm">Editar</a>';
                 return $btnVisualizar;
             })
             ->rawColumns(['action'])
