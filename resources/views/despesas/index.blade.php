@@ -237,6 +237,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     responsible: true,
                     reorderable: true,
                     width: 'auto',
+                    height: 550,
+
                     pageable: {
                         pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                         numeric: false,
@@ -318,6 +320,12 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             filterable: true,
                             width: 90
                         },
+                            {
+                                field: "nomeFuncionario",
+                                title: "Funcionário",
+                                filterable: true,
+                                width: 150,
+                            },
                         {
                             field: "created_at",
                             title: "Criado Em",
@@ -433,9 +441,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             var count = 0;
                             var interval = setInterval(function() {
                                     @if (isset($despesas))
-                                        if (count >= 100) {
+                                        if (count >= 150) {
                                         @else
-                                            if (count >= 800) {
+                                            if (count >= 900) {
                                             @endif
                                             clearInterval(interval);
                                             $('.k-link')[0].click();
@@ -445,7 +453,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                         }
                                         count += 10;
                                         $.LoadingOverlay("progress", count);
-                                    }, 300);
+                                    }, 500);
 
                             }
 

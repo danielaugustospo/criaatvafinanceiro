@@ -72,8 +72,7 @@ class RelatorioController extends Controller
         //     }
         //     $extrato[$i]->saldo = $saldo;
         // }
-        // var_dump($extrato);
-        // exit;
+
         return $extrato;
     }
 

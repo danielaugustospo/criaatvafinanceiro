@@ -49,7 +49,11 @@ class Conta extends Model
         SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
         SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo, created_at
     
-            from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
+            from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, 
+                        
+            `receita`.`descricaoreceita` as historico, 
+            
+            `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
              `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento, receita.created_at
             
             from receita 
@@ -84,9 +88,6 @@ class Conta extends Model
             order by dtoperacao
             ) as selecionageral
             $complemento " ;
-
-// var_dump($stringQueryExtrato);
-// exit;
 
         return $stringQueryExtrato;
     }

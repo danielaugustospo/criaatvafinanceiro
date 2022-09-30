@@ -465,6 +465,8 @@
                         $despesa->idFuncionario == '' ||
                         $despesa->idFuncionario == 0)
                         {!! $infoSelectVazio !!}
+                    @else
+                    {!! $infoSelectVazio !!}
                     @endif
 
                     @foreach ($listaFuncionarios as $funcionario)
@@ -472,6 +474,7 @@
                             {{ $funcionario->nomeFuncionario }}
                         </option>
                     @endforeach
+                        
 
                 </select>
             </div>

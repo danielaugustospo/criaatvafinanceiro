@@ -42,12 +42,24 @@ class Relatorio extends Model
         $stringQuery = "SELECT 
                         r.datapagamentoreceita, 
                         r.idosreceita, 
-                        r.descricaoreceita, 
+
+
+                        CASE
+                            WHEN r.idosreceita is NOT NULL THEN os.eventoOrdemdeServico
+                            ELSE r.descricaoreceita
+                        END AS descricaoreceita,
+
+                        -- r.descricaoreceita, 
                         fpg.nomeFormaPagamento, 
                         r.valorreceita, 
                         cc.nomeConta as conta
-                        FROM receita r, formapagamento fpg, conta cc
-                        WHERE fpg.id = r.idformapagamentoreceita and cc.id = r.contareceita ";
+                        FROM receita r, formapagamento fpg, conta cc, ordemdeservico os
+                        -- LEFT JOIN ordemdeservico   AS os 	ON r.idosreceita = os.id
+                        WHERE fpg.id = r.idformapagamentoreceita 
+                        and cc.id = r.contareceita
+                        and os.id = r.idosreceita
+                        and r.ativoreceita  = 1
+                        and r.valorreceita  != '0.00'";
 
         return $stringQuery;
     }

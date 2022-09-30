@@ -239,7 +239,23 @@ class OrdemdeServicoController extends Controller
 
                 $receita['idosreceita']                 = "$idDaOS";
 
-                $receita->save();
+                // $receita->save();
+
+                $novaReceitaOS = Receita::create([
+                    'idformapagamentoreceita'   => $receita->idformapagamentoreceita,
+                    'descricaoreceita'          => $request->eventoOrdemdeServico,
+                    'idclientereceita'          => $request->idClienteOrdemdeServico,
+                    'datapagamentoreceita'      => $receita->datapagamentoreceita,
+                    'dataemissaoreceita'        => $receita->dataemissaoreceita,
+                    'valorreceita'              => $receita->valorreceita,
+                    'pagoreceita'               => $receita->pagoreceita,
+                    'contareceita'              => $receita->contareceita,
+                    'registroreceita'           => $receita->registroreceita,
+                    'nfreceita'                 => $receita->nfreceita,
+                    'idosreceita'               => "$idDaOS"
+                ]);
+
+
                 $idReceita = $receita->id;
                 $this->logCadastraReceitaOS($idReceita);
             }
@@ -508,48 +524,83 @@ class OrdemdeServicoController extends Controller
                 $receita['idosreceita'] = $ordemdeservico->id;
 
                 if ($receita->idReceita == 'novo') {
-                    DB::insert(
-                        'insert into receita 
-                    (idformapagamentoreceita,
-                    datapagamentoreceita,
-                    dataemissaoreceita,
-                    valorreceita,
-                    pagoreceita,
-                    contareceita,
-                    registroreceita,
-                    nfreceita,
-                    idosreceita,
-                    excluidoreceita,
-                    ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        [
-                            $receita->idformapagamentoreceita,
-                            $receita->datapagamentoreceita,
-                            $receita->dataemissaoreceita,
-                            $receita->valorreceita,
-                            $receita->pagoreceita,
-                            $receita->contareceita,
-                            $receita->registroreceita,
-                            $receita->nfreceita,
-                            $receita->idosreceita,
-                            $receita->excluidoreceita,
-                            $receita->ativoreceita                  
+
+                    $novaReceitaOS = Receita::create([
+                        'idformapagamentoreceita'   => $receita->idformapagamentoreceita,
+                        'descricaoreceita'          => $request->eventoOrdemdeServico,
+                        'idclientereceita'          => $request->idClienteOrdemdeServico,
+                        'datapagamentoreceita'      => $receita->datapagamentoreceita,
+                        'dataemissaoreceita'        => $receita->dataemissaoreceita,
+                        'valorreceita'              => $receita->valorreceita,
+                        'pagoreceita'               => $receita->pagoreceita,
+                        'contareceita'              => $receita->contareceita,
+                        'registroreceita'           => $receita->registroreceita,
+                        'nfreceita'                 => $receita->nfreceita,
+                        'idosreceita'               => $receita->idosreceita,
+                        'excluidoreceita'           => $receita->excluidoreceita,
+                        'ativoreceita'              => $receita->ativoreceita 
+                    ]);
+                    // DB::insert(
+                    //     'insert into receita 
+                    // (idformapagamentoreceita,
+                    // datapagamentoreceita,
+                    // dataemissaoreceita,
+                    // valorreceita,
+                    // pagoreceita,
+                    // contareceita,
+                    // registroreceita,
+                    // nfreceita,
+                    // idosreceita,
+                    // excluidoreceita,
+                    // ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    //     [
+                    //         $receita->idformapagamentoreceita,
+                    //         $receita->datapagamentoreceita,
+                    //         $receita->dataemissaoreceita,
+                    //         $receita->valorreceita,
+                    //         $receita->pagoreceita,
+                    //         $receita->contareceita,
+                    //         $receita->registroreceita,
+                    //         $receita->nfreceita,
+                    //         $receita->idosreceita,
+                    //         $receita->excluidoreceita,
+                    //         $receita->ativoreceita                  
             
-                        ]
-                    );
+                    //     ]
+                    // );
                 } else {
-                    DB::update("UPDATE receita
-                SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-                datapagamentoreceita        = '$receita->datapagamentoreceita',           
-                dataemissaoreceita          = '$receita->dataemissaoreceita',             
-                valorreceita                = '$receita->valorreceita',                   
-                pagoreceita                 = '$receita->pagoreceita',                    
-                contareceita                = '$receita->contareceita',                   
-                registroreceita             = '$receita->registroreceita',                
-                nfreceita                   = '$receita->nfreceita',                      
-                idosreceita                 = '$receita->idosreceita',                  
-                excluidoreceita             = '$receita->excluidoreceita',
-                ativoreceita                = '$receita->ativoreceita'                  
-                WHERE id                    = '$receita->idReceita'");
+
+                Receita::where('id', $receita->idReceita)
+                ->update([
+                            'idformapagamentoreceita'     => $receita->idformapagamentoreceita, 
+                            'descricaoreceita'            => $request->eventoOrdemdeServico,
+                            'idclientereceita'            => $request->idClienteOrdemdeServico,
+                            'datapagamentoreceita'        => $receita->datapagamentoreceita,           
+                            'dataemissaoreceita'          => $receita->dataemissaoreceita,             
+                            'valorreceita'                => $receita->valorreceita,                   
+                            'pagoreceita'                 => $receita->pagoreceita,                    
+                            'contareceita'                => $receita->contareceita,                   
+                            'registroreceita'             => $receita->registroreceita,                
+                            'nfreceita'                   => $receita->nfreceita,                      
+                            'idosreceita'                 => $receita->idosreceita,                  
+                            'excluidoreceita'             => $receita->excluidoreceita,
+                            'ativoreceita'                => $receita->ativoreceita 
+                        ]);
+
+                        // DB::update("UPDATE receita
+                        // SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
+                        // datapagamentoreceita        = '$receita->datapagamentoreceita',           
+                        // dataemissaoreceita          = '$receita->dataemissaoreceita',             
+                        // valorreceita                = '$receita->valorreceita',                   
+                        // pagoreceita                 = '$receita->pagoreceita',                    
+                        // contareceita                = '$receita->contareceita',                   
+                        // registroreceita             = '$receita->registroreceita',                
+                        // nfreceita                   = '$receita->nfreceita',                      
+                        // idosreceita                 = '$receita->idosreceita',                  
+                        // excluidoreceita             = '$receita->excluidoreceita',
+                        // ativoreceita                = '$receita->ativoreceita'                  
+                        // WHERE id                    = '$receita->idReceita'");
+
                 }
             }
         }
