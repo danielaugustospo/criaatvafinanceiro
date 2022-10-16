@@ -23,6 +23,7 @@ use App\Estoque;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use stdClass;
 use Illuminate\Support\Facades\Crypt;
+use Gate;
 
 class DespesaController extends Controller
 {
@@ -36,7 +37,7 @@ class DespesaController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:despesa-list|despesa-create|despesa-edit|despesa-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:despesa-list|despesa-list-all|despesa-create|despesa-edit|despesa-delete', ['only' => ['index', 'show']]);
         $this->middleware('permission:despesa-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:despesa-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:despesa-delete', ['only' => ['destroy']]);
@@ -89,6 +90,13 @@ class DespesaController extends Controller
                     ->with('warning', 'Depesa ' . $iddespesa . ' é um dado excluído, ou uma despesa inexistente, não podendo ser acessado');
             }
         }
+
+        if (!Gate::allows('despesa-list') && !Gate::allows('despesa-list-all')) {
+            abort(401, 'Não Autorizado');
+        } elseif (Gate::allows('despesa-list')) {
+            $request->idUser = Auth::id();
+        }
+
         $validacoesPesquisa = $this->validaPesquisa($request);
 
         $despesas               = $validacoesPesquisa[0];
@@ -118,25 +126,33 @@ class DespesaController extends Controller
     public function apidespesas(Request $request)
     {
         $permissaoTotal = 0;
-        if (isset($request->idUser)) {
-            $idUser = Crypt::decrypt($request->idUser);
-            if (User::find($idUser)->can('despesa-list')) {
+        if (isset(Auth()->user()->id)) {
+            if (User::find(Auth()->user()->id)->can('despesa-list-all')) {
                 $permissaoTotal = 1;
-            } else {
-                abort(401, 'Não Autorizado');
-            }
-            // elseif (User::find($idUser)->can('despesa-create')){
-
-            // }
-        } elseif (isset(Auth()->user()->id)) {
-            if (User::find(Auth()->user()->id)->can('despesa-list')) {
-                $permissaoTotal = 1;
-            } else {
+            } elseif (User::find(Auth()->user()->id)->can('despesa-list')) {
                 $idUser = Auth()->user()->id;
             }
-        } else {
+            else {
+                abort(401, 'Não Autorizado');
+            }
+        } elseif (isset($request->idUser)) {
+            $idUser = Crypt::decrypt($request->idUser);
+            if (User::find($idUser)->can('despesa-list-all')) {
+                $permissaoTotal = 1;
+            } 
+            elseif (User::find($idUser)->can('despesa-list')) {
+                $idUser = $idUser;
+            } 
+            else {
+                abort(401, 'Não Autorizado');
+            }
+        }
+        else {
             abort(401, 'Não Autorizado');
         }
+        // elseif (User::find($idUser)->can('despesa-create')){
+
+        // }
         $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = '$idUser' ";
 
         // TODO: Montar filtro genérico de despesas
@@ -725,7 +741,7 @@ class DespesaController extends Controller
                     //         }
                     //     }
                     // }
-                    
+
                     $this->logCadastraDespesas($despesa);
                 }
             } elseif ($request->get('unicadespesa') == '1') {
@@ -807,7 +823,7 @@ class DespesaController extends Controller
             $mensagemErro = "Não encontramos o id referente a esta despesa.";
             return view('home', compact('mensagemErro'));
         }
-        if ($request->user()->cannot('despesa-list') &&  $despesa->idAutor !=  auth()->user()->id) {
+        if ($request->user()->cannot('despesa-list-all') &&  $despesa->idAutor !=  auth()->user()->id) {
             abort(401, 'Não Autorizado');
         }
 
@@ -904,7 +920,7 @@ class DespesaController extends Controller
     {
         $despesa        = Despesa::find($id);
 
-        if (User::find(auth()->user()->id)->cannot('despesa-list') &&  $despesa->idAutor !=  auth()->user()->id) {
+        if (User::find(auth()->user()->id)->cannot('despesa-list-all') &&  $despesa->idAutor !=  auth()->user()->id) {
             abort(401, 'Não Autorizado');
         }
 

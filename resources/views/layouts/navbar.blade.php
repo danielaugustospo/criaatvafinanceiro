@@ -375,11 +375,11 @@
                     </div>
                     <label class="ml-2 mt-2">Período</label>
                     <div class="row">
-                        
+
                         <input type="date" required class="form-control col-sm-5 ml-4 mr-1" name="datainicial"
-                        id="datainicial">
+                            id="datainicial">
                         <input type="date" required class="form-control col-sm-5 " name="datafinal"
-                        id="datafinal">
+                            id="datafinal">
                         <input type="hidden" value="" name="modorelatorio" id="modorelatorio">
                     </div>
 
@@ -456,17 +456,37 @@
 
 
 <datalist id="datalistIdDespesa">
-    @foreach ($listaDespesas as $despesas)
-        <option value="{{ $despesas->id }}">{{ $despesas->id }}
-        </option>
-    @endforeach
+    @can('despesa-list-all')
+        @foreach ($listaDespesas as $despesas)
+            <option value="{{ $despesas->id }}">{{ $despesas->id }}
+            </option>
+        @endforeach
+    @endcan
+    @can('despesa-list')
+        @foreach ($listaDespesas as $despesas)
+            @if ($despesas->idAutor == Auth::user()->id)
+                <option value="{{ $despesas->id }}">{{ $despesas->id }}
+                </option>
+            @endif
+        @endforeach
+    @endcan
 </datalist>
 
 <datalist id="datalistDescricaoDespesa">
-    @foreach ($listaDespesas as $despesas)
-        <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
-        </option>
-    @endforeach
+    @can('despesa-list-all')
+        @foreach ($listaDespesas as $despesas)
+            <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
+            </option>
+        @endforeach
+    @endcan
+    @can('despesa-list')
+        @foreach ($listaDespesas as $despesas)
+            @if ($despesas->idAutor == Auth::user()->id)
+                <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
+                </option>
+            @endif
+        @endforeach
+    @endcan
 </datalist>
 
 <datalist id="datalistOrdemServico">

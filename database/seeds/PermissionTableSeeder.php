@@ -100,6 +100,9 @@ class PermissionTableSeeder extends Seeder
             // 'despesa-create',
             // 'despesa-edit',
             // 'despesa-delete',
+            'despesa-list-all',
+            'despesa-edit-all',
+            'despesa-delete-all',
 
             // 'verba-list',
             // 'verba-create',
