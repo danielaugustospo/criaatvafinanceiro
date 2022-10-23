@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
+use App\Sandbox;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
 
         $listaDespesas = DB::select('SELECT id, UPPER(descricaoDespesa) as descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela, idAutor FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
@@ -142,6 +144,13 @@ class AppServiceProvider extends ServiceProvider
 
         $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
         view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
+        
+        // $modoSandbox = DB::select('select * from sandbox');
+        
+        
+        $modoSandbox = Sandbox::first();
+        view()->share('modoSandbox', $modoSandbox);
+
     }
 
     public static function pegaCountPedidoAprovado($id)

@@ -1,7 +1,13 @@
 <?php //use App\Providers\AppServiceProvider;
 ?>
 
-<nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
+<nav class="navbar navbar-expand-md navbar-dark navbar-laravel" id="navbar"
+@can('sandbox-modify')
+    @if($modoSandbox->ativo == '1' || $modoSandbox->ativo == 1)
+        style="background-color:darkorange !important;"
+    @endif
+@endcan    
+>
     @yield('nav')
     <div class="container" style="max-width: fit-content !important;">
         <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>

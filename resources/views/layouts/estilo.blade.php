@@ -1,9 +1,6 @@
-    <!-- CSS -->
-    @if(!isset($paginaModal) || isset($relatorioKendoGrid))
-
-            <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
-        @endif
-
+@if (!isset($paginaModal) || isset($relatorioKendoGrid))
+<link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
+@endif
 
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" /> --}}
     {{-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> --}}
@@ -32,12 +29,14 @@
             text-transform: uppercase !important;
         }
 
-        .select2{
+        .select2 {
             min-width: 150px !important;
         }
-        .campo-moeda{
+
+        .campo-moeda {
             min-width: 150px !important;
         }
+
         .fontenormal {
             text-transform: initial;
             font-size: 12pt;
@@ -48,7 +47,8 @@
         .k-input,
         .k-item,
         .k-grid-Ver,
-        .k-grid-Editar, .k-grid-Visualizar {
+        .k-grid-Editar,
+        .k-grid-Visualizar {
             font-family: "DejaVu Sans", "Arial", sans-serif;
             font-size: 7pt;
         }
@@ -173,31 +173,10 @@
                 font-size: 13px;
             }
         }
+        
 
-        /*
-    Use the DejaVu Sans font for displaying and embedding in the PDF file.
-    The standard PDF fonts do not support Unicode characters.
-*/
-        div,
-        table,
-        td {
-            font-family: "DejaVu Sans", "Arial", sans-serif;
-            font-size: 10px !important;
-        }
-
-
-        .sombreamento{
-            box-shadow: 25px 2px 25px 1px; 
-            padding-top: 20px; 
-            padding-bottom: 20px;
-        }
-
-        /*
-  The example loads the DejaVu Sans from the Kendo UI CDN.
-  Other fonts have to be hosted from your application.
-  The official site of the Deja Vu Fonts project is
-  https://dejavu-fonts.github.io/.
-*/
+        @if (isset($relatorioKendoGrid))
+        
         @font-face {
             font-family: "DejaVu Sans";
             src: url("https://kendo.cdn.telerik.com/2017.2.621/styles/fonts/DejaVu/DejaVuSans.ttf") format("truetype");
@@ -221,6 +200,7 @@
             font-style: italic;
             src: url("https://kendo.cdn.telerik.com/2017.2.621/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf") format("truetype");
         }
+        @endif
     </style>
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">

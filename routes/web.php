@@ -129,5 +129,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('aliquotamensal','AliquotaMensalController');
     Route::resource('pedidocompra','PedidoCompraController');
     Route::resource('relatorio','RelatorioController');
+    Route::resource('sandbox','SandboxController');
 
 });
