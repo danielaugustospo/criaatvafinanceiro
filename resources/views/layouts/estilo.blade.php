@@ -153,18 +153,27 @@
         .shadowDiv {
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
         }
-        @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
-            .nav-link,
-            #navbarDropdown {
-                color: yellow !important;
-            }
+        @can('sandbox-modify')
+
+            @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+                .nav-link,
+                #navbarDropdown {
+                    color: yellow !important;
+                }
+            @else
+                .nav-link,
+                #navbarDropdown {
+                    color: black !important;
+                    font-weight: bold !important;
+                }
+            @endif
         @else
             .nav-link,
-            #navbarDropdown {
-                color: black !important;
-                font-weight: bold !important;
+                #navbarDropdown {
+                color: yellow !important;
             }
-        @endif
+
+        @endcan
 
         @media (min-width: 700px) and (max-width: 1500px) {
 
