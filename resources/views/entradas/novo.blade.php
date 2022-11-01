@@ -4,7 +4,7 @@
         <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
         @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}"        
         @else
-        value="{{ "CRIA00". $novaEntrada }}"
+        value="{{ "CRIAATIVA00". $novaEntrada }}"
         @endif readonly>
     </div>
 </div>

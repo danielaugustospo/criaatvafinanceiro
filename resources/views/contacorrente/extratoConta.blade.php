@@ -78,7 +78,8 @@
                             dtoperacao: { type: "date" },
                             created_at: { type: "date" },
                             valorreceita: { type: "number" },
-                            saldo: { type: "number" },
+                            saldoNovo: { type: "number" },
+                            // saldoTeste: { type: "number" },
                             conta: { type: "string" },
                         }
                     },
@@ -111,7 +112,8 @@
                 { field: "valorreceita", title: "Valor", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 
                 // Retirada solicitada pelo Nelio dia 30/04/2022
-                { field: "saldo", title: "Saldo", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                { field: "saldoNovo", title: "Saldo", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                // { field: "saldoTeste", title: "saldoTeste", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
                 { field: "created_at", title: "Lançamento",  format: "{0:dd/MM/yyyy}", 
                     filterable: {
                         cell: {

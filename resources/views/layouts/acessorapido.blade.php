@@ -70,11 +70,19 @@
                             dataType: "json",
                             success: function(data) {
                                 document.getElementById("navbar").style.backgroundColor = corBackground;
-                                // document.getElementsByClassName("nav-link")[0].style.color = cor;
+                                // document.getElementById("navbar").style.backgroundColor = corBackground;
+                                // tamanhoCollection = document.getElementsByClassName("nav-link").length;
+                                for (let index = 0; index < document.getElementsByClassName("nav-link").length; index++) {
+                                    // const element = array[index];
+                                    document.getElementsByClassName("nav-link")[index].style.color = cor;
+                                }
                                 swalWithBootstrapButtons.fire(
                                     realizadoTitle,
                                     realizadoText,
                                     'success'
+                                ).then((recarrega) => {
+                                    window.location.reload();  
+                                    }
                                 )
                             },
 

@@ -54,6 +54,22 @@ class RelatorioController extends Controller
         $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
         $extrato = DB::select($stringQueryExtratoConta);
 
+
+        $tamExtrato = sizeof($extrato);
+        if($tamExtrato > 0 && $tamExtrato != null){
+            $tamExtrato = $tamExtrato - 1;
+
+            for ($i=0; $i <= $tamExtrato; $i++) { 
+                if($extrato[0] == $extrato[$i]){                    
+                    $extrato[0]->saldoNovo = $extrato[0]->saldo; 
+                }
+                else {
+                    $valDescrescido = $i - 1;
+                    $extrato[$i]->saldoNovo = bcadd($extrato[$valDescrescido]->saldoNovo, $extrato[$i]->valorreceita, 2);
+                }
+            }
+
+        }
         // $contador = count($extrato);
 
         // for ($i = 0; $i < $contador; $i++) {

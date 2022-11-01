@@ -55,8 +55,22 @@ function validaFormulario() {
     anodataDaCompra     = new Date(dataDaCompra).getFullYear();
     anodataDoTrabalho   = new Date(dataDoTrabalho).getFullYear();
 
-    const dataAtual = new Date();
+    var dataAtual = new Date();
     const anoAtual = dataAtual.getFullYear();
+
+    @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+    function addHours(numOfHours, date = new Date()) {
+        date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+        return date;
+    }
+    vencimentoNovo = addHours(26.999, new Date(vencimento));
+
+    if (vencimentoNovo < dataAtual) {
+        texto = texto +
+        '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual</label></br>';
+        alertaErros(texto, contadorErros++);
+    }
+    @endif
 
     //Verifica se não o campo compra foi informado
     if ((ehcompra != "N") && (ehcompra != "S")) {
@@ -106,34 +120,34 @@ function validaFormulario() {
     }
 
     resultadoFormulario = validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta,
-        despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento);
+        despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento, dataAtual);
 
     return resultadoFormulario;
 }
 
 
 function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa,
-    ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento) {
+    ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento, dataAtual) {
     if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
         texto = texto +
-            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>'; contadorErros++;
+            '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>'; contadorErros++;
     }
     if ((formapagamento == 0) || (formapagamento == '') || (formapagamento == null)) {
         texto = texto +
-            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>'; contadorErros++;
+            '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Forma de Pagamento</label></br>'; contadorErros++;
     }
 
     if ((conta == '') || (conta == null)) {
         texto = texto +
-            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Conta</label></br>'; contadorErros++;
+            '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Conta</label></br>'; contadorErros++;
     }
     if ((despesaFixa == '') || (despesaFixa == null)) {
         texto = texto +
-            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>'; contadorErros++;
+            '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Se é uma despesa fixa</label></br>'; contadorErros++;
     }
     if ((fornecedor == 0) || (fornecedor == '') || (fornecedor == null)) {
         texto = texto +
-            '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>'; contadorErros++;
+            '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Fornecedor</label></br>'; contadorErros++;
     }
 
     if ((ehcompra == 1) || (ehcompra == 'S')) {
@@ -154,12 +168,12 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             
             if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null) && (compraparcelada != 'S')) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
                 contadorErros++;
             }
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
                 contadorErros++;
             }
         } else if ((inserirestoque == 0) && (compraparcelada == 'N') && (unicadespesa == '1')) {
@@ -169,11 +183,11 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             
             if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>'; contadorErros++;
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Despesa</label></br>'; contadorErros++;
             }
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
                 contadorErros++;
             }
         }
@@ -201,7 +215,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
                 data.push(descricaoTabela[i].value);
                 if ((data[i] == '') || ((data[i] == null))) {
                     texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' + sum([i, 1]) + '</label></br>'; contadorErros++;
+                        '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' + sum([i, 1]) + '</label></br>'; contadorErros++;
                 }
             }
 
@@ -213,13 +227,28 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
                             undefined)) {
 
                     texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da despesa na linha ' + sum([i, 1]) + '</label></br>'; contadorErros++;
+                        '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe o valor da despesa na linha ' + sum([i, 1]) + '</label></br>'; contadorErros++;
                 }
             }
 
             for (var i = 0; i < vencimentoTabela.length; i++) {
                 data.push(vencimentoTabela[i].value);
                 vencimento = vencimentoTabela[i].value;
+
+                @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+                function addHours(numOfHours, date = new Date()) {
+                    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+                    return date;
+                }
+                vencimentoNovo = addHours(26.999, new Date(vencimento));
+    
+                if (vencimentoNovo < dataAtual) {
+                    texto = texto +
+                    '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                    alertaErros(texto, contadorErros++);
+                }
+                @endif
+
                 vencimento = parseInt(vencimento.slice(0, 4));
 
                 if ((vencimento < 2000) || (vencimento > 2099)) {
@@ -245,7 +274,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
         } else if ((compraparcelada == 'N')  && (unicadespesa == '1')) {
             if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>'; contadorErros++;
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>'; contadorErros++;
             }
         } else if (compraparcelada == 'S') {
             //TODO: FAZER AJUSTE PARA PEGAR AS OBRIGATORIEDADES NAS TABELAS
@@ -270,7 +299,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
                 data.push(descricaoTabela[i].value);
                 if ((data[i] == '') || ((data[i] == null))) {
                     texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
+                        '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe a despesa na linha ' +
                         sum([i, 1]) + '</label></br>';
                     contadorErros++;
                 }
@@ -284,7 +313,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
                             undefined)) {
 
                     texto = texto +
-                        '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
+                        '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe o valor da parcela na linha ' +
                         sum([i, 1]) + '</label></br>';
                     contadorErros++;
                 }
@@ -293,8 +322,23 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             for (var i = 0; i < vencimentoTabela.length; i++) {
                 data.push(vencimentoTabela[i].value);
                 vencimento = vencimentoTabela[i].value;
-                vencimento = parseInt(vencimento.slice(0, 4));
 
+
+                @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+                function addHours(numOfHours, date = new Date()) {
+                    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+                    return date;
+                }
+                vencimentoNovo = addHours(26.999, new Date(vencimento));
+    
+                if (vencimentoNovo < dataAtual) {
+                    texto = texto +
+                    '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                    alertaErros(texto, contadorErros++);
+                }
+                @endif
+
+                vencimento = parseInt(vencimento.slice(0, 4));
                 if ((vencimento < 2000) || (vencimento > 2099)) {
                     texto = texto +
                         '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Data de Vencimento Inválida (ano ' +
@@ -319,18 +363,18 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
         var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
         if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
             texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
+                '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Valor da despesa</label></br>';
             contadorErros++;
         }
 
         if ((descricaoDespesaCompra == '') || (descricaoDespesaCompra == null)) {
             texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
+                '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Despesa</label></br>';
             contadorErros++;
         }
         if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
             texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
+                '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';
             contadorErros++;
         }
 

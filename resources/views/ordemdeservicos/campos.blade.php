@@ -337,6 +337,20 @@
         for (var i = 0; i < vencimentoTabela.length; i++) {
             data.push(vencimentoTabela[i].value);
             vencimento = vencimentoTabela[i].value;
+
+            @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+            function addHours(numOfHours, date = new Date()) {
+                date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+                return date;
+            }
+            vencimentoNovo = addHours(26.999, new Date(vencimento));
+
+            if (vencimentoNovo < dataAtual) {
+                texto = texto +
+                '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                alertaErros(texto, contadorErros++);
+            }
+            @endif
             
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +

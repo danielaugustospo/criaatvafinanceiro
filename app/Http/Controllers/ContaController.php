@@ -640,13 +640,22 @@ class ContaController extends Controller
         $tamExtrato = sizeof($extrato);
         if($tamExtrato > 0 && $tamExtrato != null){
             $tamExtrato = $tamExtrato - 1;
-    
-            $conta   = $extrato[0]->conta;
+
+            for ($i=0; $i <= $tamExtrato; $i++) { 
+                if($extrato[0] == $extrato[$i]){                    
+                    $extrato[0]->saldoNovo = $extrato[0]->saldo; 
+                }
+                else {
+                    $valDescrescido = $i - 1;
+                    $extrato[$i]->saldoNovo = bcadd($extrato[$valDescrescido]->saldoNovo, $extrato[$i]->valorreceita, 2);
+                }
+            }
+                $conta   = $extrato[0]->conta;
                        
-            $saldoFinal     = $extrato[$tamExtrato]->saldo;
+            $saldoFinal     = $extrato[$tamExtrato]->saldoNovo;
             // $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
             bcscale(2);
-            $saldoInicial = bcsub($extrato[0]->saldo, $extrato[0]->valorreceita);
+            $saldoInicial = bcsub($extrato[0]->saldoNovo, $extrato[0]->valorreceita);
         }
         else{
             $conta   = 'Indefinido';

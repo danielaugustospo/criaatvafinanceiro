@@ -153,13 +153,18 @@
         .shadowDiv {
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
         }
-
-        .nav-link,
-        #navbarDropdown {
-            color: yellow !important;
-            /* background-color: brown;
-        background-size: 0.2%; */
-        }
+        @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+            .nav-link,
+            #navbarDropdown {
+                color: yellow !important;
+            }
+        @else
+            .nav-link,
+            #navbarDropdown {
+                color: black !important;
+                font-weight: bold !important;
+            }
+        @endif
 
         @media (min-width: 700px) and (max-width: 1500px) {
 

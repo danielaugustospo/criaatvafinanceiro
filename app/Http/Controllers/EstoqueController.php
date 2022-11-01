@@ -127,9 +127,9 @@ class EstoqueController extends Controller
     {
         $request->validate([
 
-            'codbarras'                     => 'required|min:3',
-            'nomematerial'                  => 'required',
-            'descricao'                     => 'required',
+            // 'codbarras'                     => 'required|min:3',
+            // 'nomematerial'                  => 'required',
+            // 'descricao'                     => 'required',
             'idbenspatrimoniais'            => 'required',
             'ativadoestoque'                => 'required',
             'excluidoestoque'               => 'required'
@@ -137,10 +137,10 @@ class EstoqueController extends Controller
         ]);
 
         $estoque = Estoque::find($id);
-        $estoque->nomematerial          = $request->input('nomematerial');
-        $estoque->codbarras             = $request->input('codbarras');
+        $estoque->nomematerial          = $request->input('nomeestoque');
+        // $estoque->codbarras             = $request->input('codbarras');
         $estoque->idbenspatrimoniais    = $request->input('idbenspatrimoniais');
-        $estoque->descricao             = $request->input('descricao');
+        $estoque->descricao             = $request->input('descricaoestoque');
         $estoque->ativadoestoque        = $request->input('ativadoestoque');
         $estoque->excluidoestoque       = $request->input('excluidoestoque');
         $estoque->save();
