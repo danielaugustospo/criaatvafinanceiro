@@ -290,12 +290,12 @@ class OrdemdeServicoController extends Controller
         $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  ativoreceita = 1 and excluidoreceita = 0 and  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $cliente = DB::select('select distinct id, nomeCliente, razaosocialCliente from clientes  where  ativoCliente = 1 and id = :clienteOrdemServico', ['clienteOrdemServico' => $ordemdeservico->idClienteOrdemdeServico]);
-        $despesaPorOS = DB::select('select distinct * from despesas  where  ativoDespesa = 1 and idOS = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $despesaPorOS = DB::select('select distinct * from despesas  where  ativoDespesa = 1 and excluidoDespesa = 0 and idOS = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $percentualPorOS = DB::select('select distinct * from tabelapercentual  where  idostabelapercentual = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totaldespesasAPagar = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.pago = "N" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totaldespesasPagas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.pago = "S" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id  and despesas.excluidoDespesa = 0  and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesasAPagar = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.excluidoDespesa = 0  and despesas.pago = "N" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesasPagas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.excluidoDespesa = 0  and despesas.pago = "S" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
 
         $contadorDespesas = count($totaldespesas);
         $contadorDespesasAPagar = count($totaldespesasAPagar);
@@ -368,7 +368,7 @@ class OrdemdeServicoController extends Controller
 
         $porcentagemLucro = bcmul($lucro, 100); //cem por cento da regra de tres
 
-        if (($porcentagemLucro > 0) && ($totalOS > 0)) {
+        if (($porcentagemLucro <> 0) && ($totalOS <> 0)) {
             $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
         }
 
@@ -391,7 +391,7 @@ class OrdemdeServicoController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where  excluidoDespesa = 0 and  idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $this->logVisualizaOS($ordemdeservico);
