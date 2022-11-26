@@ -28,6 +28,7 @@ class NotasRecibos extends Model
         'Valor',
         'imposto',
         'aliquota',
+        'idOS'
         
     ];
 

@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 use App\Providers\FormatacoesServiceProvider;
 
 
+use Illuminate\Support\Facades\App;
+use Auth;
+use Gate;
+
+
 class AliquotaMensalController extends Controller
 {
     /**
@@ -23,17 +28,17 @@ class AliquotaMensalController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:aliquotamensal-list|aliquotamensal-create|aliquotamensal-edit|aliquotamensal-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:aliquotamensal-create', ['only' => ['create','store']]);
-         $this->middleware('permission:aliquotamensal-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:aliquotamensal-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:aliquotamensal-list|aliquotamensal-create|aliquotamensal-edit|aliquotamensal-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:aliquotamensal-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:aliquotamensal-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:aliquotamensal-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function indexOld(Request $request)
     {
         if ($request->ajax()) {
 
@@ -50,8 +55,8 @@ class AliquotaMensalController extends Controller
                     $issComFatorR =     $request->get('issComFatorR');
                     $reciboComFatorR =  $request->get('reciboComFatorR');
 
-                    
-                    
+
+
                     if (!empty($idconta)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['idconta'], $request->get('idconta')) ? true : false;
@@ -114,7 +119,7 @@ class AliquotaMensalController extends Controller
                                 return true;
                             } else if (Str::is(Str::lower($row['reciboComFatorR']), Str::lower($request->get('search')))) {
                                 return true;
-                            } 
+                            }
                             return false;
                         });
                     }
@@ -128,11 +133,71 @@ class AliquotaMensalController extends Controller
                 ->make(true);
         } else {
 
-        $data = AliquotaMensal::orderBy('id','DESC')->paginate(5);
-        return view('aliquotamensal.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            $data = AliquotaMensal::orderBy('id', 'DESC')->paginate(5);
+            return view('aliquotamensal.index_old', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
-}
+
+
+
+ /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        if ($request->get('id')) {
+            $idAliquota = $request->get('id');
+            settype($idAliquota, "integer");
+            $this->show($request, $idAliquota);
+
+            $aliquota = AliquotaMensal::where('id', $idAliquota)->get();
+
+            if (count($aliquota) == 1) {
+
+                header("Location: aliquotamensal/$idAliquota");
+                exit();
+            } else {
+                return redirect()->route('aliquotamensal.index')
+                    ->with('warning', 'Alíquota id ' . $idAliquota . ' é um dado excluído, ou inexistente, não podendo ser acessado');
+            }
+        }
+
+        if (!Gate::allows('aliquotamensal-list') && !Gate::allows('aliquotamensal-list-all')) {
+            abort(401, 'Não Autorizado');
+        } elseif (Gate::allows('aliquotamensal-list')) {
+            $request->idUser = Auth::id();
+        }
+
+        $param = "id=$request->id&amp;idconta=$request->idconta&amp;mes=$request->mes&amp;dasSemFatorR=$request->dasSemFatorR&amp;issSemFatorR=$request->issSemFatorR&amp;reciboSemFatorR=$request->reciboSemFatorR&amp;dasComFatorR=$request->dasComFatorR&amp;issComFatorR=$request->issComFatorR&amp;reciboComFatorR=$request->reciboComFatorR";
+        
+        
+        return view('aliquotamensal.index', compact('param'));
+    }
+
+
+    public function apiAliquotaMensal(Request $request)
+    {
+
+        $listaAliquotaMensal = AliquotaMensal::where('idconta', '!=', '' );
+
+        $listaAliquotaMensal->leftJoin('conta', 'aliquotamensal.idconta', '=', 'conta.id');
+
+        $listaAliquotaMensal =  (!is_null($request->idconta))         ?  $listaAliquotaMensal->where('idconta', $request->idconta) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->mes))             ?  $listaAliquotaMensal->where('mes', $request->mes) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->dasSemFatorR))    ?  $listaAliquotaMensal->where('dasSemFatorR', $request->dasSemFatorR) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->issSemFatorR))    ?  $listaAliquotaMensal->where('issSemFatorR', $request->issSemFatorR) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->reciboSemFatorR)) ?  $listaAliquotaMensal->where('reciboSemFatorR', $request->reciboSemFatorR) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->dasComFatorR))    ?  $listaAliquotaMensal->where('dasComFatorR', $request->dasComFatorR) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->issComFatorR))    ?  $listaAliquotaMensal->where('issComFatorR', $request->issComFatorR) : $listaAliquotaMensal;
+        $listaAliquotaMensal =  (!is_null($request->reciboComFatorR)) ?  $listaAliquotaMensal->where('reciboComFatorR', $request->reciboComFatorR) : $listaAliquotaMensal;
+
+        $listaAliquotaMensal = $listaAliquotaMensal->get();
+
+        return $listaAliquotaMensal;
+    }
 
 
     /**
@@ -143,7 +208,7 @@ class AliquotaMensalController extends Controller
     public function create()
     {
         // $dadosaliquotamensal =  DB::select('select * from aliquotamensal;');
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'editavel');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
 
         return view('aliquotamensal.create', compact('readonlyOuNao'));
     }
@@ -176,7 +241,7 @@ class AliquotaMensalController extends Controller
 
 
         return redirect()->route('aliquotamensal.index')
-                        ->with('success','Alíquota Mensal criada com êxito.');
+            ->with('success', 'Alíquota Mensal criada com êxito.');
     }
 
 
@@ -189,11 +254,11 @@ class AliquotaMensalController extends Controller
     public function show($id)
     {
         $dadosaliquotamensal = AliquotaMensal::find($id);
-        $selectContaSetada = DB::select('select * from conta order by id= '. $dadosaliquotamensal->idconta .' desc;');
+        $selectContaSetada = DB::select('select * from conta order by id= ' . $dadosaliquotamensal->idconta . ' desc;');
 
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'editavel');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
 
-        return view('aliquotamensal.show',compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
+        return view('aliquotamensal.show', compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
     }
 
 
@@ -206,12 +271,11 @@ class AliquotaMensalController extends Controller
     public function edit($id)
     {
         $dadosaliquotamensal = AliquotaMensal::find($id);
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'editavel');
-        $selectContaSetada = DB::select('select * from conta order by id= '. $dadosaliquotamensal->idconta .' desc;');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
+        $selectContaSetada = DB::select('select * from conta order by id= ' . $dadosaliquotamensal->idconta . ' desc;');
 
 
-        return view('aliquotamensal.edit',compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
-
+        return view('aliquotamensal.edit', compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
     }
 
 
@@ -224,7 +288,7 @@ class AliquotaMensalController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $request->validate([
+        $request->validate([
 
             'idconta'           => 'required',
             'mes'               => 'required',
@@ -249,7 +313,7 @@ class AliquotaMensalController extends Controller
 
 
         return redirect()->route('aliquotamensal.index')
-                        ->with('success','Alíquota Mensal atualizada com sucesso');
+            ->with('success', 'Alíquota Mensal atualizada com sucesso');
     }
 
 
@@ -265,6 +329,6 @@ class AliquotaMensalController extends Controller
         AliquotaMensal::find($id)->delete();
 
         return redirect()->route('aliquotamensal.index')
-                        ->with('success','Alíquota Mensal excluída com êxito!');
+            ->with('success', 'Alíquota Mensal excluída com êxito!');
     }
 }

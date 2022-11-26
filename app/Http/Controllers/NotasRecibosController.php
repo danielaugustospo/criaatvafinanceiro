@@ -14,7 +14,12 @@ use DataTables;
 use Illuminate\Support\Str;
 use App\Providers\FormatacoesServiceProvider;
 
-
+use App\Despesa;
+use App\User;
+use Illuminate\Support\Facades\App;
+use Auth;
+use Illuminate\Support\Facades\Crypt;
+use Gate;
 class NotasRecibosController extends Controller
 {
     /**
@@ -24,23 +29,80 @@ class NotasRecibosController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:notasrecibos-list|notasrecibos-create|notasrecibos-edit|notasrecibos-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:notasrecibos-create', ['only' => ['create','store']]);
-         $this->middleware('permission:notasrecibos-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:notasrecibos-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:notasrecibos-list|notasrecibos-create|notasrecibos-edit|notasrecibos-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:notasrecibos-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:notasrecibos-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:notasrecibos-delete', ['only' => ['destroy']]);
     }
-    /**
+
+
+ /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        if ($request->get('id')) {
+            $idNotaRecibo = $request->get('id');
+            settype($idNotaRecibo, "integer");
+            $this->show($request, $idNotaRecibo);
+
+            $notaRecibo = NotasRecibos::where('id', $idNotaRecibo)->get();
+
+            if (count($notaRecibo) == 1) {
+
+                header("Location: notasrecibos/$idNotaRecibo");
+                exit();
+            } else {
+                return redirect()->route('notasrecibos.index')
+                    ->with('warning', 'Nota/Recibo id ' . $idNotaRecibo . ' é um dado excluído, ou inexistente, não podendo ser acessado');
+            }
+        }
+
+        if (!Gate::allows('notasrecibos-list') && !Gate::allows('notasrecibos-list-all')) {
+            abort(401, 'Não Autorizado');
+        } elseif (Gate::allows('notasrecibos-list')) {
+            $request->idUser = Auth::id();
+        }
+
+        $param = "dtInicioEmissao=$request->dtInicioEmissao&amp;dtFimEmissao=$request->dtFimEmissao&amp;valorNFRecibo=$request->valorNFRecibo&amp;notaRecibo=$request->notaRecibo&amp;aliquota=$request->aliquota&amp;ordemServico=$request->ordemServico&amp;valorImposto=$request->valorImposto&amp;dtInicioRecebimento=$request->dtInicioRecebimento&amp;dtFimRecebimento=$request->dtFimRecebimento&amp;pago=$request->pago&amp;conta=$request->conta&amp;tpRel=";
+        
+        
+        return view('notasrecibos.index', compact('param'));
+    }
+
+
+    public function apiNotasRecibos(Request $request)
+    {
+
+        $listaNotasRecibos = NotasRecibos::where('OS', '!=', '' );
+        
+        $listaNotasRecibos = (!is_null($request->ordemServico))        ?  $listaNotasRecibos->where('OS', $request->ordemServico) : $listaNotasRecibos;
+               
+        
+        $listaNotasRecibos = (!is_null($request->dtInicioEmissao)) && (!is_null($request->dtFimEmissao) ) ?  $listaNotasRecibos->whereBetween('Emissao', [$request->dtInicioEmissao, $request->dtFimEmissao]) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->valorNFRecibo))       ?  $listaNotasRecibos->where('Valor', FormatacoesServiceProvider::validaValoresParaBackEnd($request->valorNFRecibo)) : $listaNotasRecibos;
+
+        $listaNotasRecibos = (!is_null($request->valorImposto))       ?  $listaNotasRecibos->where('imposto', FormatacoesServiceProvider::validaValoresParaBackEnd($request->valorImposto)) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->notaRecibo))          ?  $listaNotasRecibos->where('nfRecibo', $request->notaRecibo) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->aliquota))            ?  $listaNotasRecibos->where('aliquota', $request->aliquota) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->conta))               ?  $listaNotasRecibos->where('nomeConta', $request->conta) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->pago) && ($request->pago != 'T'))               ?  $listaNotasRecibos->where('pagoreceita', $request->pago) : $listaNotasRecibos;
+        $listaNotasRecibos = (!is_null($request->dtInicioRecebimento)) && (!is_null($request->dtFimRecebimento) ) ?  $listaNotasRecibos->whereBetween('datapagamentoreceita', [$request->dtInicioRecebimento, $request->dtFimRecebimento]) : $listaNotasRecibos;
+
+        $listaNotasRecibos = $listaNotasRecibos->get();
+
+        return $listaNotasRecibos;
+    }
+
+    public function indexOld(Request $request)
+    {
         if ($request->ajax()) {
 
             // $consulta = new NotasRecibos();
             // $data = NotasRecibos::consultaNotasRecibos();
-             $data = NotasRecibos::latest()->get();
+            $data = NotasRecibos::latest()->get();
             //  var_dump($data);
             //  exit;
             // $data = NotasRecibos::consultaNotasRecibos()->get();
@@ -131,11 +193,11 @@ class NotasRecibosController extends Controller
                 ->make(true);
         } else {
 
-        $data = NotasRecibos::orderBy('Emissao','DESC')->paginate(5);
-        return view('notasrecibos.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            $data = NotasRecibos::orderBy('Emissao', 'DESC')->paginate(5);
+            return view('notasrecibos.index_old', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
     }
-}
 
 
     /**
@@ -146,10 +208,10 @@ class NotasRecibosController extends Controller
     public function create()
     {
         $notasrecibos = DB::select('SELECT * from notasrecibos');
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'editavel');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
 
 
-        return view('notasrecibos.create', compact('notasrecibos','readonlyOuNao'));
+        return view('notasrecibos.create', compact('notasrecibos', 'readonlyOuNao'));
     }
 
 
@@ -180,7 +242,7 @@ class NotasRecibosController extends Controller
 
 
         return redirect()->route('notasrecibos.index')
-                        ->with('success','Nota/Recibo criado com êxito.');
+            ->with('success', 'Nota/Recibo criado com êxito.');
     }
 
     /**
@@ -194,10 +256,10 @@ class NotasRecibosController extends Controller
         $notasrecibos = NotasRecibos::find($id);
         $dadosNota = NotasRecibos::find($id);
 
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'naoeditavel');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'naoeditavel');
 
 
-        return view('notasrecibos.show',compact('notasrecibos', 'dadosNota', 'readonlyOuNao'));
+        return view('notasrecibos.show', compact('notasrecibos', 'dadosNota', 'readonlyOuNao'));
     }
 
 
@@ -212,10 +274,9 @@ class NotasRecibosController extends Controller
         $notasrecibos = NotasRecibos::find($id);
         $dadosNota = NotasRecibos::find($id);
 
-        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null,'editavel');
+        $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
 
-        return view('notasrecibos.edit',compact('notasrecibos','dadosNota', 'readonlyOuNao'));
-
+        return view('notasrecibos.edit', compact('notasrecibos', 'dadosNota', 'readonlyOuNao'));
     }
 
 
@@ -228,7 +289,7 @@ class NotasRecibosController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $request->validate([
+        $request->validate([
 
             'dtemissao'         => 'required',
             'nfrecibo'          => 'required',
@@ -253,7 +314,7 @@ class NotasRecibosController extends Controller
 
 
         return redirect()->route('notasrecibos.index')
-                        ->with('success','Nota/Recibo atualizado com sucesso');
+            ->with('success', 'Nota/Recibo atualizado com sucesso');
     }
 
 
@@ -269,6 +330,6 @@ class NotasRecibosController extends Controller
         NotasRecibos::find($id)->delete();
 
         return redirect()->route('notasrecibos.index')
-                        ->with('success','Nota/Recibo excluído com êxito!');
+            ->with('success', 'Nota/Recibo excluído com êxito!');
     }
 }

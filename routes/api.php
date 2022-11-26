@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('apibenspatrimoniais');
 
 Route::get('/apidespesas', 'DespesaController@apidespesas')->name('apidespesas');
+Route::get('/apiAliquotaMensal', 'AliquotaMensalController@apiAliquotaMensal')->name('apiAliquotaMensal');
+Route::get('/apiNotasRecibos', 'NotasRecibosController@apiNotasRecibos')->name('apiNotasRecibos');
 
 // Route::post('/apicreatedespesas', 'DespesaController@apistore')->name('apicreatedespesas');
 Route::get('/apireceita', 'ReceitaController@apireceita')->name('apireceita');
