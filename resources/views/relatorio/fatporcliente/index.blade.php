@@ -23,18 +23,26 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <label for="">Exibindo filtros para:</label>
+                <label for="">Filtro selecionado:</label>
                 @php
                 if ($_SERVER['QUERY_STRING'] == 'p=s'):
                     $complementorota = 'S';
-                    echo ' <span class="badge badge-primary"><label class="pt-1">Pago</label></span>';
+                    echo ' <span class="ml-2 badge badge-primary"><label class="pt-1">Pago</label></span>';
                     echo '<label class="pl-2"><a href="fatporcliente?p=n"> Alterar para Não Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente"> Listar Todos</a></label>';
+
                 elseif ($_SERVER['QUERY_STRING'] == 'p=n'):
                     $complementorota = 'N';
-                    echo ' <span class="badge badge-danger"><label class="pt-1">Não Pago</label></span>';
+                    echo ' <span class="ml-2 badge badge-danger"><label class="pt-1">Não Pago</label></span>';
                     echo '<label class="pl-2"><a href="fatporcliente?p=s"> Alterar para Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente"> Listar Todos</a></label>';
+
                 else:
                     $complementorota = null;
+                    echo ' <span class="ml-2 badge badge-primary"><label class="pt-1">Pago e Não Pago</label></span>';
+                    echo '<label class="pl-2 text-danger"><a class="text-danger" href="fatporcliente?p=n"> Alterar para Não Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente?p=s"> Alterar para Pago</a></label>';
+
                 endif;
                 @endphp
             </div>
