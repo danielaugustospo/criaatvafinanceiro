@@ -20,7 +20,8 @@ class Relatorio extends Model
                         os.dataCriacaoOrdemdeServico, 
                         r.datapagamentoreceita,
                         -- sum(r.valorreceita) 'valortotal'
-                        r.valorreceita  as 'valortotal'
+                        r.valorreceita  as 'valortotal',
+                        r.pagoreceita
 
                         FROM ordemdeservico os
 
