@@ -4,18 +4,16 @@
 namespace App\Http\Controllers;
 
 use App\OrdemdeServico;
-use App\Despesa;
 use App\Receita;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\FormatacoesServiceProvider;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-// use Freshbitsweb\Laratables\Laratables;
 use DataTables;
-use Illuminate\Support\Str;
-use PhpParser\Node\Stmt\TryCatch;
 use App\Classes\Logger;
+use Gate;
+
 
 
 class OrdemdeServicoController extends Controller
@@ -30,10 +28,11 @@ class OrdemdeServicoController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:ordemdeservico-list|ordemdeservico-create|ordemdeservico-edit|ordemdeservico-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:ordemdeservico-list|ordemdeservico-create|ordemdeservico-edit|ordemdeservico-delete', ['only' => ['index']]);
         $this->middleware('permission:ordemdeservico-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:ordemdeservico-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:ordemdeservico-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:ordemdeservico-show', ['only' => ['show']]);
 
         $this->acao =  request()->segment(count(request()->segments()));
         $this->valorInput = null;
@@ -69,12 +68,13 @@ class OrdemdeServicoController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($consulta) {
 
-                $btnVisualizar = '<div class="row col-sm-12">
-                    <a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn-sm" style="background-color:#066B4B !important;" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                    <a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn-sm" style="background-color:#066B4B !important;" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-thumbs-up" aria-hidden="true"></i></a>' : '';
+                
+                $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
+                    '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
                     </div>';
 
-                return $btnVisualizar;
+                return $grupoBtn;
                 })
 
                 ->rawColumns(['action'])
@@ -114,12 +114,13 @@ class OrdemdeServicoController extends Controller
         ->addIndexColumn()
         ->addColumn('action', function($consulta) {
 
-            $btnVisualizar = '<div class="row col-sm-12">
-            <a href="ordemdeservicos/' . $consulta->id . '" class="edit btn-primary btn-sm" title="Visualizar Financeiro">Visualizar</a>
-            <a href="ordemdeservicos/' . $consulta->id . '/edit" class="pt-1 btn-success btn-sm" title="Editar OS">Editar</a>
-            </div>';
+            $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
+                
+            $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
+                '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                </div>';
 
-        return $btnVisualizar;
+            return $grupoBtn;
         })
     
         ->rawColumns(['action'])
@@ -270,7 +271,7 @@ class OrdemdeServicoController extends Controller
                 ->with('success', 'Ordem de Serviço n°' . $idDaOS . ' cadastrada com êxito. Não foram cadastradas receitas.');
         }
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -279,6 +280,7 @@ class OrdemdeServicoController extends Controller
      */
     public  function show($id)
     {
+
         $ordemdeservico = OrdemdeServico::find($id);
         $dataInicio = $ordemdeservico->dataCriacaoOrdemdeServico;
 

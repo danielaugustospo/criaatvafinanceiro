@@ -27,15 +27,14 @@ error/
 favicon.ico
 robots.txt
 standard_index.html
-stats/
 
 # 
 public/migracao/
 node_modules/
 vendor/
-stats/awsindex.html
 storage/
-storage/*
-storage/logs/acoes.log
-storage/framework/cache/
-storage/framework/cache/data/*
+public/js/select2/src/scss/
+
+database/
+stats/
+public/js/select2/

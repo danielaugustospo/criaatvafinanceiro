@@ -29,10 +29,9 @@ class Relatorio extends Model
 
                         -- (os.idClienteOrdemdeServico = c.id) 
                         -- and (os.id = r.idosreceita)
-                        WHERE (r.pagoreceita = '$param')
 
                         -- GROUP BY os.id 
-                        ";                
+                        " . $param;                
 
         return $stringQuery;
     }

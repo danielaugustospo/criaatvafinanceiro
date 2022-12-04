@@ -102,7 +102,10 @@ class RelatorioController extends Controller
     public function apiFaturamentoPorCliente(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosRelatorioFaturamentoPorCliente($request->a);
+
+        // $condicao = "WHERE (r.pagoreceita = '$request->a')";
+        $condicao = (isset($request->a) && ($request->a == 'S' || $request->a == 'N')) ? "WHERE (r.pagoreceita = '$request->a')" : " ";
+        $stringConsulta = $relatorio->dadosRelatorioFaturamentoPorCliente($condicao);
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }

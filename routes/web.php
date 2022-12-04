@@ -55,7 +55,11 @@ Route::get('/despesasfixavariavel', function () { return view('relatorio.despesa
 Route::get('/notafiscalfornecedor', function () { return view('relatorio.notafiscalfornecedor.index'); });
 Route::get('/notasemitidas', function () { return view('relatorio.notasemitidas.index'); });
 Route::get('/notasficaisemitidascriaatva', function () { return view('relatorio.notasficaisemitidascriaatva.index'); });
-Route::get('/fechamentofinal', function () { return view('relatorio.fechamentofinal.index'); });
+Route::get('/fechamentofinal', function () { 
+    if(Gate::allows('rel-fechamentofinal')){
+        return view('relatorio.fechamentofinal.index'); 
+    }
+});
 
 
 
