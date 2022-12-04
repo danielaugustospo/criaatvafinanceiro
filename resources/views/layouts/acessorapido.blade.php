@@ -14,98 +14,116 @@
     }
 </style>
 <script>
-    function validaSandbox() {
+    $(document).ready(function() {
 
-        $.ajax({
-            method: "GET",
-            dataType: "json",
-            url: "{{ route('sandbox.index') }}",
-            beforeSend: function(xhr) {
-                xhr.overrideMimeType("text/plain; charset=x-user-defined");
-            },
-            success: function(data) {
-                if (data.ativo == '1') {
-                    var title = 'Deseja desligar o modo de conciliação?';
-                    var text = 'Ao confirmar, não será possível realizar lançamentos retroativos!';
-                    var realizadoTitle = 'Desligado';
-                    var realizadoText = 'Agora não será mais possível realizar lançamentos retroativos!';
-                    var statusInverso = 0;
-                    var corBackground = "black";
-                    var cor           = "yellow";
-                } else if (data.ativo == '0') {
-                    var title = 'Deseja ligar o modo de conciliação?';
-                    var text = 'Ao confirmar, será possível realizar lançamentos retroativos!';
-                    var realizadoTitle = 'Ligado';
-                    var realizadoText = 'Agora será possível realizar lançamentos retroativos!';
-                    var statusInverso = 1;
-                    var corBackground = "darkorange";
-                    var cor           = "black";
-                }
+        $(".linkSandbox").click(function() {
 
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: title,
-                    text: text,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, desejo prosseguir',
-                    cancelButtonText: 'Não, cancelar!',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var request = $.ajax({
-                            url: "{{ route('sandbox.store') }}",
-                            method: "POST",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                ativo: statusInverso
-                            },
-                            dataType: "json",
-                            success: function(data) {
-                                document.getElementById("navbar").style.backgroundColor = corBackground;
-                                // document.getElementById("navbar").style.backgroundColor = corBackground;
-                                // tamanhoCollection = document.getElementsByClassName("nav-link").length;
-                                for (let index = 0; index < document.getElementsByClassName("nav-link").length; index++) {
-                                    // const element = array[index];
-                                    document.getElementsByClassName("nav-link")[index].style.color = cor;
-                                }
-                                swalWithBootstrapButtons.fire(
-                                    realizadoTitle,
-                                    realizadoText,
-                                    'success'
-                                ).then((recarrega) => {
-                                    window.location.reload();  
-                                    }
-                                )
-                            },
-
-                            error: function (request, status, error) {
-                                alert("Ocorreu um erro ao atualizar: " + status);
-                            }
-                        });
-
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        swalWithBootstrapButtons.fire(
-                            'Operação Cancelada',
-                            'Nenhuma operação foi realizada',
-                            'info'
-                        )
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+                url: "{{ route('sandbox.index') }}",
+                beforeSend: function(xhr) {
+                    xhr.overrideMimeType("text/plain; charset=x-user-defined");
+                },
+                success: function(data) {
+                    if (data.ativo == '1') {
+                        var title = 'Deseja desligar o modo de conciliação?';
+                        var text =
+                            'Ao confirmar, não será possível realizar lançamentos retroativos!';
+                        var realizadoTitle = 'Desligado';
+                        var realizadoText =
+                            'Agora não será mais possível realizar lançamentos retroativos!';
+                        var statusInverso = 0;
+                        var corBackground = "black";
+                        var cor = "yellow";
+                    } else if (data.ativo == '0') {
+                        var title = 'Deseja ligar o modo de conciliação?';
+                        var text =
+                            'Ao confirmar, será possível realizar lançamentos retroativos!';
+                        var realizadoTitle = 'Ligado';
+                        var realizadoText =
+                            'Agora será possível realizar lançamentos retroativos!';
+                        var statusInverso = 1;
+                        var corBackground = "darkorange";
+                        var cor = "black";
                     }
-                })
-            },
-        });
 
-    }
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                        title: title,
+                        text: text,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, desejo prosseguir',
+                        cancelButtonText: 'Não, cancelar!',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var request = $.ajax({
+                                url: "{{ route('sandbox.store') }}",
+                                method: "POST",
+                                data: {
+                                    _token: "{{ csrf_token() }}",
+                                    ativo: statusInverso
+                                },
+                                dataType: "json",
+                                success: function(data) {
+                                    document.getElementById("navbar")
+                                        .style
+                                        .backgroundColor =
+                                        corBackground;
+                                    // document.getElementById("navbar").style.backgroundColor = corBackground;
+                                    // tamanhoCollection = document.getElementsByClassName("nav-link").length;
+                                    for (let index = 0; index < document
+                                        .getElementsByClassName(
+                                            "nav-link")
+                                        .length; index++) {
+                                        // const element = array[index];
+                                        document.getElementsByClassName(
+                                                "nav-link")[index].style
+                                            .color =
+                                            cor;
+                                    }
+                                    swalWithBootstrapButtons.fire(
+                                        realizadoTitle,
+                                        realizadoText,
+                                        'success'
+                                    ).then((recarrega) => {
+                                        window.location
+                                    .reload();
+                                    })
+                                },
+
+                                error: function(request, status, error) {
+                                    alert("Ocorreu um erro ao atualizar: " +
+                                        status);
+                                }
+                            });
+
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                                'Operação Cancelada',
+                                'Nenhuma operação foi realizada',
+                                'info'
+                            )
+                        }
+                    })
+                },
+            });
+
+
+        });
+    });
 </script>
 <div style=" display: none;">
 
@@ -299,7 +317,7 @@
     @endcan
     @can('sandbox-modify')
         <div class="d-flex justify-content-around mt-3">
-            <a onclick="validaSandbox();" style="cursor: pointer;">
+            <a class="linkSandbox" style="cursor: pointer;">
                 <div class="card text-white bg-dark mb-3 cardCustomizado"
                     style="max-width: 18rem;box-shadow: 10px 10px 30px 3px darkgrey;border-radius: 11px 37px 0px 37px;background-color: darkgrey;transition: 0.3s;color: white;">
 
