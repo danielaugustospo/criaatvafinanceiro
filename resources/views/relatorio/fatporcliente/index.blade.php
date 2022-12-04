@@ -125,7 +125,10 @@
                     // { field: "valorrecebido", title: "Valor Recebido", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", format: '{0:0.00}' },
 
                     // { field: "porcentagemOS", title: "Perc(%)", filterable: true, width: 20,  format: '{0:0.00}'}
-                    { field: "porcentagemOS", title: "Perc(%)", width: 180, template:template }
+                    { field: "porcentagemOS", title: "Perc(%)", width: 180, template:template },
+                    @if($_SERVER['QUERY_STRING'] != 'p=s' && $_SERVER['QUERY_STRING'] != 'p=n')
+                        { field: "pagoreceita", title: "Pago", width: 180 }
+                    @endif
                 ],
 
                 @include('layouts/helpersview/finaltabela')
