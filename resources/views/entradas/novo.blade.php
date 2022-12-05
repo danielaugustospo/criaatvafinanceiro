@@ -4,7 +4,7 @@
         <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
         @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}"        
         @else
-        value="{{ "CRIAATVA00". $novaEntrada }}"
+        value="{{ "CRIAATVA00000". $novaEntrada }}"
         @endif readonly>
     </div>
 </div>
@@ -45,7 +45,6 @@
         {{-- {!! Form::text('descricaoentrada', '', ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
         <input type="text" class="form-control" name="descricaoentrada" placeholder="Descrição" maxlength="100"
         @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->descricaoentrada }}" readonly @endif>
-
     </div>
 </div>
 
