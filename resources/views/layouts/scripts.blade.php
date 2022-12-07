@@ -1,7 +1,7 @@
 <script>
     $(document).ready(function() {
         @if(Auth::user())
-                    timeout = setTimeout(encerraSessaoSozinho, 900600); //15min e 01 seg
+                    timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
                     
                     function encerraSessaoSozinho() {
                         Swal.fire({
