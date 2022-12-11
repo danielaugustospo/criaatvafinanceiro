@@ -360,6 +360,15 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
     else if ((ehcompra == 0) || (ehcompra == 'N')) {
 
         var descricaoDespesaCompra = $('.descricaoDespesa').val();
+        if(despesaCodigoDespesas == '33'){
+            var idFuncionario = $('#idFuncionario').val();
+            if ((idFuncionario == '') || (idFuncionario == ' ') || (idFuncionario == null) || (idFuncionario == undefined)) {
+                texto = texto +
+                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Funcionário - Pró Labore</label></br>';
+                contadorErros++;
+            }
+        }
+
         var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
         if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {
             texto = texto +

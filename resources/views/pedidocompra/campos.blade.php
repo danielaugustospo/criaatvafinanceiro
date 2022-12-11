@@ -21,18 +21,18 @@
 
     <input class="ml-2 mr-2 mt-1" type="radio" name="oscriaatva" 
 
-        @if((old('ped_os') ==  'CRIAATVA') || (old('oscriaatva') ==  'CRIAATVA')) checked @endif
+        @if((old('ped_os') ==  'EMPRESA/CRIAATVA') || (old('oscriaatva') ==  'EMPRESA/CRIAATVA')) checked @endif
 
-        @isset($pedido) @if ($pedido->ped_os == 'CRIAATVA') checked  @endif @endisset
+        @isset($pedido) @if ($pedido->ped_os == 'EMPRESA/CRIAATVA') checked  @endif @endisset
     
-    name="ped_os" id="compraCRIAATVA" value="CRIAATVA" {{ $variavelDisabledNaView }}>
+    name="ped_os" id="compraCRIAATVA" value="EMPRESA/CRIAATVA" {{ $variavelDisabledNaView }}>
 
 <label class="mr-2 mr-4" for="">CRIAATVA</label>
 <input class="mr-2 mt-1" type="radio" name="oscriaatva" 
 
 @if((old('ped_os') ==  'OS') || (old('oscriaatva') ==  'OS')) checked @endif
 
-@isset($pedido) @if ($pedido->ped_os != 'CRIAATVA') checked @endif @endisset
+@isset($pedido) @if ($pedido->ped_os != 'EMPRESA/CRIAATVA') checked @endif @endisset
 
 name="ped_os" id="compraOS" value="OS" {{ $variavelDisabledNaView }}>
 <label class="mr-2" for="">OS</label>
@@ -40,14 +40,14 @@ name="ped_os" id="compraOS" value="OS" {{ $variavelDisabledNaView }}>
 
 <div id="telaOS">
 <select name="ped_os" id="ped_os" class="selecionaComInput col-sm-12" required {{ $variavelDisabledNaView }}>
-    <option value="CRIAATVA">SEM OS</option>
+    <option value="EMPRESA/CRIAATVA">SEM OS</option>
     @foreach ($listaOrdemDeServicos as $listaOS)
         @isset($pedido)
             @if ($pedido->ped_os == $listaOS->id)
                 <option value="{{ $listaOS->id }}" selected>{{ $listaOS->id }} |
                     {{ $listaOS->eventoOrdemdeServico }}</option>
-                @if (($pedido->ped_os == 'CRIAATVA') || (old('ped_os') == 'CRIAATVA'))
-                    <option value="CRIAATVA" selected>SEM OS</option>
+                @if (($pedido->ped_os == 'EMPRESA/CRIAATVA') || (old('ped_os') == 'EMPRESA/CRIAATVA'))
+                    <option value="EMPRESA/CRIAATVA" selected>SEM OS</option>
                 @endif
             @endif
         @endisset

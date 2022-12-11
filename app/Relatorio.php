@@ -403,7 +403,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA/CRIAATVA'
         	and d.vencimento like '$ano[0]-$mes[0]%') AS despprimeiromes on d.id = despprimeiromes.id
             -- inicio segundo
             RIGHT JOIN (SELECT 
@@ -422,7 +422,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA/CRIAATVA'
         	and d.vencimento like '$ano[1]-$mes[1]%') AS despsegundomes on d.id = despsegundomes.id
             -- inicio terceiro
             RIGHT JOIN (SELECT 
@@ -437,7 +437,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA/CRIAATVA'
         	and d.vencimento like '$ano[2]-$mes[2]%') AS despterceiromes on d.id = despterceiromes.id";
 
         var_dump($stringQuery);

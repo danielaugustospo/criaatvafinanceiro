@@ -69,14 +69,14 @@
         <div class="col-sm-7">
 
             <select name="idOS" id="idOS" class="selecionaComInput col-sm-10" {{ $variavelDisabledNaView }}>
-                <option value="CRIAATVA">SEM OS</option>
+                <option value="00000">SEM OS</option>
                 @foreach ($todasOSAtivas as $listaOS)
                     @isset($despesa)
                         @if ($despesa->idOS == $listaOS->id)
                             <option value="{{ $listaOS->id }}" selected>{{ $listaOS->id }} |
                                 {{ $listaOS->eventoOrdemdeServico }}</option>
-                            @if ($despesa->idOS == 'CRIAATVA')
-                                <option value="CRIAATVA" selected>SEM OS</option>
+                            @if ($despesa->idOS == '00000')
+                                <option value="00000" selected>SEM OS</option>
                             @endif
                         @endif
                     @endisset

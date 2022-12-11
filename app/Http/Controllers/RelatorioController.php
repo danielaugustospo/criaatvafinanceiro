@@ -730,7 +730,7 @@ class RelatorioController extends Controller
                     if (isset($jsonvencimentos[$movimentacoes]['Numvenda'])) {
                         $despesa->idOS               = $jsonvencimentos[$movimentacoes]['Numvenda'];
                     } else {
-                        $despesa->idOS               = 'CRIAATVA';
+                        $despesa->idOS               = 'EMPRESA/CRIAATVA';
                     }
 
                     //Verificação Vencimento
