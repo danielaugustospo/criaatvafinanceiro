@@ -67,10 +67,20 @@ function validaFormulario() {
 
     if (vencimentoNovo < dataAtual) {
         texto = texto +
-        '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual</label></br>';
+        '<span class="badge badge-danger">Operação Proibida - ATIVAR SANDBOX</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual</label></br>';
         alertaErros(texto, contadorErros++);
     }
     @endif
+
+    if(despesaCodigoDespesas == '33'){
+        var idFuncionario = $('#idFuncionario').val();
+        
+        if ((idFuncionario == '') || (idFuncionario == ' ') || (idFuncionario == null) || (idFuncionario == undefined)) {
+            texto = texto +
+                '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Funcionário - Pró Labore</label></br>';
+            contadorErros++;
+        }
+    }
 
     //Verifica se não o campo compra foi informado
     if ((ehcompra != "N") && (ehcompra != "S")) {
@@ -244,7 +254,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
     
                 if (vencimentoNovo < dataAtual) {
                     texto = texto +
-                    '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                    '<span class="badge badge-danger">Operação Proibida - ATIVAR SANDBOX</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
                     alertaErros(texto, contadorErros++);
                 }
                 @endif
@@ -333,7 +343,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
     
                 if (vencimentoNovo < dataAtual) {
                     texto = texto +
-                    '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                    '<span class="badge badge-danger">Operação Proibida - ATIVAR SANDBOX</span><label class="fontenormal pl-2">Data de Vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
                     alertaErros(texto, contadorErros++);
                 }
                 @endif
@@ -360,14 +370,6 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
     else if ((ehcompra == 0) || (ehcompra == 'N')) {
 
         var descricaoDespesaCompra = $('.descricaoDespesa').val();
-        if(despesaCodigoDespesas == '33'){
-            var idFuncionario = $('#idFuncionario').val();
-            if ((idFuncionario == '') || (idFuncionario == ' ') || (idFuncionario == null) || (idFuncionario == undefined)) {
-                texto = texto +
-                    '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Funcionário - Pró Labore</label></br>';
-                contadorErros++;
-            }
-        }
 
         var compraparcelada = document.querySelector('input[name="descricaoTabela[]"]:checked')?.value;
         if ((precoReal == '') || (precoReal == ' ') || (precoReal == null) || (precoReal == undefined)) {

@@ -24,7 +24,7 @@
                 $("#telaFuncionario").hide();
                 $("#despesaNaoCompra").hide();
                 $("#telaDataTrabalho").hide();
-                $("#telaPrestador").hide();
+                // $("#telaPrestador").hide();
             }
         });
         $("#naocomprou").click(function() {
@@ -56,7 +56,7 @@
 
                 $("#telaDataCompra").hide();
                 $("#telaDataTrabalho").show();
-                $("#telaPrestador").show();
+                // $("#telaPrestador").show();
 
                 $("#tabelaDespesas").hide();
 
@@ -196,7 +196,7 @@
             $("#telaFuncionario").hide();
             $("#despesaNaoCompra").hide();
             $("#telaDataTrabalho").hide();
-            $("#telaPrestador").hide();
+            // $("#telaPrestador").hide();
 
         } else if (checaNaoCompra.checked) {
 
@@ -220,7 +220,7 @@
             $("#telaFuncionario").show();
             $("#despesaNaoCompra").show();
             $("#telaDataTrabalho").show();
-            $("#telaPrestador").show();
+            // $("#telaPrestador").show();
 
         }
         if (checaInsereEstoque.checked) {
