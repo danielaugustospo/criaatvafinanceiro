@@ -182,8 +182,10 @@ class AliquotaMensalController extends Controller
     {
 
         $listaAliquotaMensal = AliquotaMensal::where('idconta', '!=', '' );
-
-        $listaAliquotaMensal->leftJoin('conta', 'aliquotamensal.idconta', '=', 'conta.id');
+        $listaAliquotaMensal->select(
+            'aliquotamensal.id as id','aliquotamensal.idconta','aliquotamensal.mes','aliquotamensal.dasSemFatorR','aliquotamensal.issSemFatorR','aliquotamensal.reciboSemFatorR','aliquotamensal.dasComFatorR','aliquotamensal.issComFatorR','aliquotamensal.reciboComFatorR','aliquotamensal.created_at','aliquotamensal.updated_at','conta.nomeConta','conta.apelidoConta','conta.ativoConta','conta.excluidoConta','conta.created_at','conta.updated_at'
+        );
+        $listaAliquotaMensal->join('conta', 'aliquotamensal.idconta', '=', 'conta.id');
 
         $listaAliquotaMensal =  (!is_null($request->idconta))         ?  $listaAliquotaMensal->where('idconta', $request->idconta) : $listaAliquotaMensal;
         $listaAliquotaMensal =  (!is_null($request->mes))             ?  $listaAliquotaMensal->where('mes', $request->mes) : $listaAliquotaMensal;
