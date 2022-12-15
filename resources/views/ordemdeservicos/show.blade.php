@@ -208,39 +208,38 @@
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .5) !important;
         }
     </style>
+
     <div class="row">
         <div class="col-lg-12 margin-tb">
-            <div class="row pull-left">
-                <h2 class="ml-2"> Dados da OS: </h2>
-                <h1 class="ml-2" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }} - {{ $ordemdeservico->eventoOrdemdeServico }}</h1>
-            </div>
+            <div class="pull-left">
+                <h2 class="text-center"> Dados da OS: </h2>
+                <h1 class="text-center" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }} -
+                    {{ $ordemdeservico->eventoOrdemdeServico }}</h1>
+                
+                <div class="form-row d-flex justify-content-center mt-2">
 
-            <div class="pull-right">
-                <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
+                    <a class="btn btn-danger d-flex justify-content-center" href="{{ route('ordemdeservicos.index') }}">
+                        Voltar</a>
 
-                @can('ordemdeservico-edit')
-                    <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit', $ordemdeservico->id) }}">Editar</a>
-                @endcan
-
-
-                <hr />
-                <br>
-
-                <!-- <form action="{{ route('ordemdeservicos.destroy', $ordemdeservico->id) }}" method="POST">
                     @can('ordemdeservico-edit')
-        <a class="btn btn-primary" href="{{ route('ordemdeservicos.edit', $ordemdeservico->id) }}">Editar</a>
-    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('ordemdeservico-delete')
-        <button type="submit" class="btn btn-danger">Excluir</button>
-    @endcan
-                </form> -->
-
+                        <a class="btn btn-primary d-flex justify-content-center"
+                            href="{{ route('ordemdeservicos.edit', $ordemdeservico->id) }}">Editar</a>
+                    @endcan
+                    {{-- <form action="{{ route('ordemdeservicos.destroy', $ordemdeservico->id) }}" method="POST"> 
+                                @csrf
+                                @method('DELETE')
+                                @can('ordemdeservico-delete')
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                @endcan
+                            </form>
+                        --}}
+                </div>
+                <hr/>
             </div>
         </div>
     </div>
+
+
 
 
 
@@ -296,9 +295,9 @@
             <h3 style="color:red;"> {{ $porcentagemReceitaAPagar }} % A receber </h3>
         @endif
     </div>
-
-    <h3 class="text-center">Resumo Financeiro</h3>
-
+    <div class="d-flex justify-content-center">
+        <h3 class="text-center">Resumo Financeiro</h3>
+    </div>
     <div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center"
         style="background-color: black !important; color:white;">
 
@@ -387,7 +386,8 @@
         <div class="form-group row mb-0">
             <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Venda</label>
             <div class="col-sm-6">
-                <label class="col-sm-4 form-control">{{ date("d/m/Y", strtotime($ordemdeservico->dataCriacaoOrdemdeServico)) }}</label>
+                <label
+                    class="col-sm-4 form-control">{{ date('d/m/Y', strtotime($ordemdeservico->dataCriacaoOrdemdeServico)) }}</label>
             </div>
 
             <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
@@ -414,6 +414,9 @@
         </div>
     </div>
 
+    <div>
+        <h4 class="text-center">Forma de Pagamento</h4>
+    </div>
 
     <hr />
     <br>
@@ -439,7 +442,7 @@
                 <th class="col-sm-1" style="width:-webkit-fill-available;">
                     <nobr>Nota Fiscal<nobr>
                 </th>
-                <th></th>
+
             </tr>
         </thead>
         <tbody id="habilita_receita" class="habilita_receita">
@@ -458,249 +461,6 @@
 
         </tbody>
     </table>
-
-
-    {{-- Tabela Despesas e Receitas sendo comentada em 17/07/2021 a pedido do Nélio em reunião no dia 17/07/2021 --}
-
-<!-- 
-<h2 class="text-center">Despesas</h2>
-
-
-<table id="tabelaDespesaPorOS" class="table table-bordered table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>Código Despesas</th>
-            <th>Id OS</th>
-            <th>Descrição Despesa</th>
-            <th width="280px">Ação</th>
-        </tr>
-    </thead>
-
-
-
-
-
-    @foreach ($despesaPorOS as $tabeladespesa)
-
-    <tr>
-        <td>{{ $tabeladespesa->id }}</td>
-        <td>{{ $tabeladespesa->despesaCodigoDespesas }}</td>
-        <td>{{ $tabeladespesa->idOS }}</td>
-        <td>{{ $tabeladespesa->descricaoDespesa }}</td>
-        <td>
-            <form action="{{ route('despesas.destroy',$tabeladespesa->id) }}" method="POST">
-                <a class="btn btn-info btn-sm" href="{{ route('despesas.show',$tabeladespesa->id) }}">Visualizar</a>
-                @can('despesa-edit')
-                <a class="btn btn-primary btn-sm" href="{{ route('despesas.edit',$tabeladespesa->id) }}">Editar</a>
-                @endcan
-
-                @csrf
-                @method('DELETE')
-                @can('despesa-delete')
-                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                @endcan
-            </form>
-        </td>
-    </tr>
-    @endforeach
-
-</table>
-
-<script>
-    function createFilter(table, columns) {
-        $.fn.dataTable.ext.search.push(function(
-            settings,
-            searchData,
-            index,
-            rowData,
-            counter
-        ) {
-            var val = input.val().toLowerCase();
-
-            for (var i = 0, ien = columns.length; i < ien; i++) {
-                if (searchData[columns[i]].toLowerCase().indexOf(val) !== -1) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-        return input;
-    }
-
-    $(document).ready(function() {
-
-
-        $("#tabelaDespesaPorOS").DataTable({
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nenhum dado cadastrado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro encontrado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
-                },
-            },
-        })
-
-
-        var table = $("#tabelaDespesaPorOS").DataTable();
-
-    });
-</script>
-
-<hr />
-<br>
-<h2 class="text-center">Receitas</h2>
-
-
-
-<table id="tabelaReceitaPorOS" class="table table-bordered table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>OS Receita</th>
-            <th>Valor</th>
-            <th>Pago</th>
-            <th>Conta</th>
-            <th width="280px">Ação</th>
-        </tr>
-    </thead>
-
-
-
-    @foreach ($receitasPorOS as $tabelareceita)
-
-    <tr>
-        <td>{{ $tabelareceita->id }}</td>
-        <td>{{ $tabelareceita->idosreceita }}</td>
-        <td>{{ $tabelareceita->valorreceita }}</td>
-        <td>{{ $tabelareceita->pagoreceita }}</td>
-        <td>{{ $tabelareceita->contareceita }}</td>
-        <td>
-            <form action="{{ route('receita.destroy',$tabelareceita->id) }}" method="POST">
-                <a class="btn btn-info btn-sm" href="{{ route('receita.show',$tabelareceita->id) }}">Visualizar</a>
-                @can('receita-edit')
-                <a class="btn btn-primary btn-sm" href="{{ route('receita.edit',$tabelareceita->id) }}">Editar</a>
-                @endcan
-
-                @csrf
-                @method('DELETE')
-                @can('receita-delete')
-                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                @endcan
-            </form>
-        </td>
-    </tr>
-    @endforeach
-
-</table>
-
-<script>
-    function createFilter(table, columns) {
-        $.fn.dataTable.ext.search.push(function(
-            settings,
-            searchData,
-            index,
-            rowData,
-            counter
-        ) {
-            var val = input.val().toLowerCase();
-
-            for (var i = 0, ien = columns.length; i < ien; i++) {
-                if (searchData[columns[i]].toLowerCase().indexOf(val) !== -1) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-        return input;
-    }
-
-    $(document).ready(function() {
-
-        $("#tabelaReceitaPorOS").DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            "language": {
-                "lengthMenu": "Exibindo _MENU_ registros por página",
-                "zeroRecords": "Nenhum dado cadastrado",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro encontrado",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo",
-                },
-            },
-        })
-
-
-        var table = $("#tabelaReceitaPorOS").DataTable();
-    });
-</script>
-
-<hr />
-<br> -->
-
-
-    {{-- Tabela Percentual sendo comentada em 24/04/2021 a pedido do Nélio em reunião no dia 17/04/2021
-    <h2 class="text-center">Tabela Percentual</h2>
-
-
-    <table id="tabelaPercentualPorOS" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Nome Parte</th>
-                <th>Percentual</th>
-                <th>Pago</th>
-                <th>Id OS</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-
-
-        @foreach ($percentualPorOS as $tabelapercentual)
-
-        <tr>
-            <td>{{ $tabelapercentual->id }}</td>
-            <td>{{ $tabelapercentual->nometabelapercentual }}</td>
-            <td>{{ $tabelapercentual->percentualtabelapercentual }}</td>
-            <td>{{ $tabelapercentual->pgtabelapercentual }}</td>
-            <td>{{ $tabelapercentual->idostabelapercentual }}</td>
-            <td>
-                <form action="{{ route('tabelapercentual.destroy',$tabelapercentual->id) }}" method="POST">
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('tabelapercentual.show',$tabelapercentual->id) }}">Visualizar</a>
-                    @can('tabelapercentual-edit')
-                    <a class="btn btn-primary btn-sm"
-                        href="{{ route('tabelapercentual.edit',$tabelapercentual->id) }}">Editar</a>
-                    @endcan
-
-                    @csrf
-                    @method('DELETE')
-                    @can('tabelapercentual-delete')
-                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                    @endcan
-                </form>
-            </td>
-        </tr>
-        @endforeach
-
-    </table> --}}
-
-
 
     <script>
         function createFilter(table, columns) {
