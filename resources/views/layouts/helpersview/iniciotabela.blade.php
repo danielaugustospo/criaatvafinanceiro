@@ -97,10 +97,11 @@ $.LoadingOverlay("show", {
             groupable: true,
             columnMenu: true,
             responsible: true,
-            mobile: true,
             reorderable: true,
             width: 'auto',
+            height: 550,
             pageable: {
                 pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                 numeric: false
             },
+

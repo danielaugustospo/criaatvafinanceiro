@@ -178,13 +178,13 @@ dataSource.fetch().then(function() {
             },
 
             columns: [
-                { field: "vencimento", title: "Data", filterable: true, width: 15, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "descricaoDespesa", title: "Despesa", filterable: true, width: 20 },
-                { field: "precoReal", title: "Valor", filterable: true, width: 15, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 10 },
-                { field: "porcentagemOS", title: "Perc(%)",  width: 15, template:template},
-                { field: "despesaCodigoDespesa", title: "Grupo",  filterable: true, width: 15 },
-                { field: "idOS", title: "N° OS", filterable: true, width: 10 },
+                { field: "vencimento", title: "Data", filterable: true, width: 150, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "descricaoDespesa", title: "Despesa", filterable: true, width: 200 },
+                { field: "precoReal", title: "Valor", filterable: true, width: 150, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },
+                { field: "porcentagemOS", title: "Perc(%)",  width: 150, template:template},
+                { field: "despesaCodigoDespesa", title: "Grupo",  filterable: true, width: 150 },
+                { field: "idOS", title: "N° OS", filterable: true, width: 100 },
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

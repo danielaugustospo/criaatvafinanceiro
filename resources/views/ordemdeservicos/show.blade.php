@@ -30,6 +30,7 @@
         background-color: #ebf3f9;
     }
 
+
     .rwd-table th {
         display: none;
     }
@@ -49,7 +50,7 @@
     .rwd-table td:before {
         content: attr(data-th) ": ";
         font-weight: bold;
-        width: 120px;
+        width: 100%;
         display: inline-block;
         color: #000;
     }
@@ -78,6 +79,7 @@
         .rwd-table tr:nth-child(2) {
             border-top: none;
         }
+
     }
 
     @media screen and (min-width: 600px) {
@@ -197,6 +199,31 @@
         border-radius: 7%;
         padding: 3%;
     }
+
+
+    table td::before {
+        content: attr(data-label) !important;
+        float: left !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        white-space: nowrap;
+    }
+
+    tr {
+        background: white !important;
+        border-color: black !important;
+        border-top: 50px !important;
+        /* box-shadow: 0 1rem 3rem rgb(0 0 0 / 50%) !important; */
+
+    }
+
+
+    tr:nth-child(2n+1) {
+        background: #ebf3f9 !important;
+        border-color: black !important;
+        border-top: 50px !important;
+        /* box-shadow: 0 1rem 3rem rgb(0 0 0 / 50%) !important; */
+    }
 </style>
 
 
@@ -215,7 +242,7 @@
                 <h2 class="text-center"> Dados da OS: </h2>
                 <h1 class="text-center" style="margin-top:-6px !important; color: red;">{{ $ordemdeservico->id }} -
                     {{ $ordemdeservico->eventoOrdemdeServico }}</h1>
-                
+
                 <div class="form-row d-flex justify-content-center mt-2">
 
                     <a class="btn btn-danger d-flex justify-content-center" href="{{ route('ordemdeservicos.index') }}">
@@ -234,7 +261,7 @@
                             </form>
                         --}}
                 </div>
-                <hr/>
+                <hr />
             </div>
         </div>
     </div>
@@ -298,13 +325,13 @@
     <div class="d-flex justify-content-center">
         <h3 class="text-center">Resumo Financeiro</h3>
     </div>
-    <div class="shadowDiv p-3 mb-5 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center"
+    <div class="shadowDiv p-3 mb-2 bg-white rounded row d-flex justify-content-center  pt-2 text-lg-center"
         style="background-color: black !important; color:white;">
 
         <form name="form1" method="post" action="">
             <div class="row">
 
-                <div class="shadowDiv bg-white rounded col-sm-6 p-2 mr-3" style="background-color: white !important;">
+                <div class="shadowDiv bg-white rounded col-sm-5 p-2 mb-3" style="background-color: white !important;">
                     <input class="form-control" type="hidden" name="num1" id="num1"
                         value="{{ $ordemdeservico->valorOrdemdeServico }}" readonly />
 
@@ -335,7 +362,8 @@
 
                 </div>
 
-                <div class="shadowDiv bg-white rounded col-sm-5  p-2 ml-2" style="background-color: white !important;">
+
+                <div class="shadowDiv bg-white rounded col-sm-5 p-2 mb-3" style="background-color: white !important;">
                     <input class="form-control" type="hidden" name="num1" id="num1"
                         value="{{ $ordemdeservico->valorOrdemdeServico }}" readonly />
 
@@ -415,7 +443,7 @@
     </div>
 
     <div>
-        <h4 class="text-center">Forma de Pagamento</h4>
+        <h4 class="text-center">Parcelas</h4>
     </div>
 
     <hr />
@@ -423,16 +451,16 @@
 
     <table class="styled-table rwd-table" id="tabelaPagamento">
         <thead>
-            <tr class="col-sm-10" style="background-color:#3490dc;">
+            <tr class="col-sm-10" style="background-color:#3490dc !important;">
                 {{-- <input style="cursor: pointer;" id="btnAddColumn" class="btn btn-primary" value="Adicionar Parcela"
                     readonly> --}}
                 {{-- <input onclick="removerCampos()" class="btn btn-danger" value="Remover Parcelas" readonly
                     style="cursor:pointer;"> --}}
 
-                <th class="col-sm-2" style="width:20%;">
+                <th title="Forma Pagamento" class="col-sm-2" style="width:20%;">
                     <nobr>Forma Pagamento</nobr>
                 </th>
-                <th class="col-sm-1" style="width:-webkit-fill-available;">
+                <th data-label="Valor Parcela" class="col-sm-1" style="width:-webkit-fill-available;">
                     <nobr>Valor Parcela</nobr>
                 </th>
                 <th class="col-sm-1" style="width:-webkit-fill-available;">Pago</th>

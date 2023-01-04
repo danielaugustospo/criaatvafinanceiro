@@ -139,6 +139,12 @@ class ClientesController extends Controller
     }
 }
 
+    public function listaClientes()
+    {
+        return Clientes::all();
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *

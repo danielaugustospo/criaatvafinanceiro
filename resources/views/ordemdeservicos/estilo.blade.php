@@ -254,4 +254,12 @@
         border-radius: 7%;
         padding: 3%;
     }
+
+    table td::before {
+            content: attr(data-label) !important;
+            float: left !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            white-space:nowrap;
+        }
 </style>

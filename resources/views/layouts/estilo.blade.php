@@ -48,6 +48,7 @@
         .k-item,
         .k-grid-Ver,
         .k-grid-Editar,
+        .k-grid-Excluir,
         .k-grid-Visualizar {
             font-family: "DejaVu Sans", "Arial", sans-serif;
             font-size: 7pt;

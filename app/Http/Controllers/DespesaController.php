@@ -1120,15 +1120,15 @@ class DespesaController extends Controller
      * @param  \App\Despesa  $despesa
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Despesa::where('id', $id)
-            ->update(['excluidoDespesa' => 1]);
-
+        $excluiDespesa = Despesa::where('id', $id)->update(['excluidoDespesa' => 1]);
+            
         $this->logExcluiDespesas($id);
+            
+        if($request->assync && $excluiDespesa == '1'): return response()->json(['success' => 'success'], 200); endif;
 
-        return redirect()->route('despesas.index')
-            ->with('success', 'Despesa ' . $id . ' excluída com êxito!');
+        return redirect()->route('despesas.index')->with('success', 'Despesa ' . $id . ' excluída com êxito!');
     }
 
 

@@ -401,7 +401,7 @@
                                         <div class="row ml-2 mr-2">
 
                                             <label class="col-sm-4" for="">Mês/Ano</label>
-                                            <input type="month" class="form-control col-sm-8 campo-aliquota"
+                                            <input type="month" class="form-control col-sm-8"
                                                 name="mes" id="mes" value="">
                                         </div>
                                         <div class="row ml-2 mr-2">

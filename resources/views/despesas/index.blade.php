@@ -246,100 +246,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     },
                     dataSource: dataSource,
                     columns: [{
-                            field: "id",
-                            title: "ID",
-                            filterable: true,
-                            autowidth: true
-                        },
-                        {
-                            field: "apelidoConta",
-                            title: "C/C",
-                            filterable: true,
-                            autowidth: true,
-                        },
-                        {
-                            field: "despesaCodigoDespesa",
-                            title: "Cód.<br>Despesa",
-                            filterable: true,
-                            autowidth: true,
-                        },
-                        {
-                            field: "idOS",
-                            title: "OS",
-                            filterable: true,
-                            width: 90
-                        },
-                        {
-                            field: "descricaoDespesa",
-                            title: "Despesa",
-                            filterable: true,
-                            width: 150
-                        },
-                        {
-                            field: "razaosocialFornecedor",
-                            title: "Fornecedor",
-                            filterable: true,
-                            autowidth: true,
-                            aggregates: ["count"],
-                            footerTemplate: "QTD. Total: #=count#",
-                            groupHeaderColumnTemplate: "Qtd.: #=count#"
-                        },
-
-                        {
-                            field: "vencimento",
-                            title: "Venc.",
-                            filterable: true,
-                            width: 150,
-                            format: "{0:dd/MM/yyyy}",
-                            filterable: {
-                                cell: {
-                                    template: betweenFilter
-                                }
-                            }
-                        },
-                        {
-                            field: "precoReal",
-                            title: "Valor",
-                            filterable: true,
-                            autowidth: true,
-                            decimals: 2,
-                            aggregates: ["sum"],
-                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
-                            format: '{0:0.00}'
-                        },
-                        {
-                            field: "notaFiscal",
-                            title: "NF",
-                            filterable: true,
-                            autowidth: true,
-                        },
-                        {
-                            field: "pago",
-                            title: "Pago",
-                            filterable: true,
-                            width: 90
-                        },
-                            {
-                                field: "nomeFuncionario",
-                                title: "Funcionário",
-                                filterable: true,
-                                width: 150,
-                            },
-                        {
-                            field: "created_at",
-                            title: "Criado Em",
-                            format: "{0:dd/MM/yyyy}",
-                            filterable: true,
-                            width: 90
-                        },
-
-                        // { field: "vale", title: "Vale", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                        // { field: "despesareal", title: "Valor<br>Final", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                        // { field: "datavale", title: "PG<br>Vale", filterable: true, width: 200, format: "{0:dd/MM/yyyy}" },
-
-
-                        {
                             command: [{
                                 name: "Ver",
                                 iconClass: "k-icon k-i-eye",
@@ -370,7 +276,107 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             }],
                             width: 90,
                             exportable: false,
+                        },{
+                            field: "id",
+                            title: "ID",
+                            filterable: true,
+                            autowidth: true,
+                            width: 100
                         },
+                        {
+                            field: "apelidoConta",
+                            title: "C/C",
+                            filterable: true,
+                            autowidth: true,
+                            width: 100,
+                        },
+                        {
+                            field: "despesaCodigoDespesa",
+                            title: "Cód.<br>Despesa",
+                            filterable: true,
+                            autowidth: true,
+                            width: 100,
+                        },
+                        {
+                            field: "idOS",
+                            title: "OS",
+                            filterable: true,
+                            width: 90
+                        },
+                        {
+                            field: "descricaoDespesa",
+                            title: "Despesa",
+                            filterable: true,
+                            width: 150
+                        },
+                        {
+                            field: "razaosocialFornecedor",
+                            title: "Fornecedor",
+                            filterable: true,
+                            autowidth: true,
+                            aggregates: ["count"],
+                            footerTemplate: "QTD. Total: #=count#",
+                            groupHeaderColumnTemplate: "Qtd.: #=count#",
+                            width: 100
+                        },
+
+                        {
+                            field: "vencimento",
+                            title: "Venc.",
+                            filterable: true,
+                            width: 150,
+                            format: "{0:dd/MM/yyyy}",
+                            filterable: {
+                                cell: {
+                                    template: betweenFilter
+                                }
+                            }
+                        },
+                        {
+                            field: "precoReal",
+                            title: "Valor",
+                            filterable: true,
+                            autowidth: true,
+                            decimals: 2,
+                            aggregates: ["sum"],
+                            groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #",
+                            format: '{0:0.00}',
+                            width: 150
+                        },
+                        {
+                            field: "notaFiscal",
+                            title: "NF",
+                            filterable: true,
+                            autowidth: true,
+                            width: 100
+                        },
+                        {
+                            field: "pago",
+                            title: "Pago",
+                            filterable: true,
+                            width: 90
+                        },
+                            {
+                                field: "nomeFuncionario",
+                                title: "Funcionário",
+                                filterable: true,
+                                width: 150,
+                            },
+                        {
+                            field: "created_at",
+                            title: "Criado Em",
+                            format: "{0:dd/MM/yyyy}",
+                            filterable: true,
+                            width: 90
+                        },
+
+                        // { field: "vale", title: "Vale", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                        // { field: "despesareal", title: "Valor<br>Final", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                        // { field: "datavale", title: "PG<br>Vale", filterable: true, width: 200, format: "{0:dd/MM/yyyy}" },
+
+
+                        
                     ],
                     groupExpand: function(e) {
                         for (let i = 0; i < e.group.items.length; i++) {

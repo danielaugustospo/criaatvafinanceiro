@@ -103,16 +103,16 @@
             },
 
             columns: [
-                { field: "id", title: "ID", filterable: true, width: "10%" },
-                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: "10%"  , filterable: false},
-                { field: "historico", title: "Histórico", filterable: true, width: "30%"  },
-                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: "15%"  },
+                { field: "id", title: "ID", filterable: true, width: 100 },
+                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: 100  , filterable: false},
+                { field: "historico", title: "Histórico", filterable: true, width: 300  },
+                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: 150  },
                 // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
                 // { field: "vencimento", title: "Vencimento", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" },
-                { field: "valorreceita", title: "Valor", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "valorreceita", title: "Valor", filterable: true,  width: 150, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 
                 // Retirada solicitada pelo Nelio dia 30/04/2022
-                { field: "saldoNovo", title: "Saldo", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                { field: "saldoNovo", title: "Saldo", filterable: true,  width: 150, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
                 // { field: "saldoTeste", title: "saldoTeste", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
                 { field: "created_at", title: "Lançamento",  format: "{0:dd/MM/yyyy}", 
                     filterable: {
@@ -120,7 +120,7 @@
                             template: betweenFilter
                             }
                         },
-                    width: "15%"},
+                    width: 150},
                 
                 // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],

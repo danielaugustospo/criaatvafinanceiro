@@ -258,6 +258,13 @@ class AliquotaMensalController extends Controller
         $dadosaliquotamensal = AliquotaMensal::find($id);
         $selectContaSetada = DB::select('select * from conta order by id= ' . $dadosaliquotamensal->idconta . ' desc;');
 
+        $dadosaliquotamensal->dasSemFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->dasSemFatorR);
+        $dadosaliquotamensal->issSemFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->issSemFatorR);
+        $dadosaliquotamensal->reciboSemFatorR   = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->reciboSemFatorR);
+        $dadosaliquotamensal->dasComFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->dasComFatorR);
+        $dadosaliquotamensal->issComFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->issComFatorR);
+        $dadosaliquotamensal->reciboComFatorR   = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->reciboComFatorR);
+
         $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
 
         return view('aliquotamensal.show', compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
@@ -276,6 +283,12 @@ class AliquotaMensalController extends Controller
         $readonlyOuNao = FormatacoesServiceProvider::campoReadOnly(null, 'editavel');
         $selectContaSetada = DB::select('select * from conta order by id= ' . $dadosaliquotamensal->idconta . ' desc;');
 
+        $dadosaliquotamensal->dasSemFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->dasSemFatorR);
+        $dadosaliquotamensal->issSemFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->issSemFatorR);
+        $dadosaliquotamensal->reciboSemFatorR   = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->reciboSemFatorR);
+        $dadosaliquotamensal->dasComFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->dasComFatorR);
+        $dadosaliquotamensal->issComFatorR      = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->issComFatorR);
+        $dadosaliquotamensal->reciboComFatorR   = FormatacoesServiceProvider::validaValoresParaView($dadosaliquotamensal->reciboComFatorR);
 
         return view('aliquotamensal.edit', compact('dadosaliquotamensal', 'selectContaSetada', 'readonlyOuNao'));
     }
