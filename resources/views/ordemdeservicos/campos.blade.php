@@ -212,8 +212,7 @@
 
         $.getJSON(url, function(data) {
             $.each(data, function(key, dadosjson) {
-                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson
-                    .razaosocialCliente));
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialCliente));
             })
         });
         $('#idClienteOrdemdeServico').select2();
