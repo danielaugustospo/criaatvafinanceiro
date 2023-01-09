@@ -113,7 +113,7 @@ class RelatorioController extends Controller
     public function apiEntradasPorContaBancaria(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosRelatorioEntradasPorContaBancaria(null);
+        $stringConsulta = $relatorio->dadosRelatorioEntradasPorContaBancaria(" AND r.pagoreceita = 'S'");
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }

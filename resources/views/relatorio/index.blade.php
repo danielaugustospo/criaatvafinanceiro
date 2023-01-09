@@ -33,7 +33,7 @@
         <!-- <a href="areceberporos">                <label class="text-center fontenormal row" for="">A Receber por OS &nbsp; </label></a> -->
         <a href="contasAReceber">               <label class="text-center fontenormal row" for="">Contas a Receber &nbsp;</label></a>
         <a href="entradasdereceitasrecebidas">  <label class="text-center fontenormal row" for="">Entradas de Receitas Recebidas  &nbsp;</label></a>    
-        <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Entradas por Conta Bancária&nbsp;</label></a>
+        <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Entradas por Conta Bancária/NF&nbsp;</label></a>
         <a href="fatporcliente?p=s">            <label class="text-center fontenormal row" for="">Faturamento por Cliente &nbsp;</label></a>
         <a href="notasemitidas">                <label class="text-center fontenormal row" for="">Notas Emitidas - FORNECEDOR &nbsp; </label></a>
         <a href="notasficaisemitidascriaatva">  <label class="text-center fontenormal row" for="">Notas Emitidas - CRIAATVA &nbsp; </label></a>

@@ -3,7 +3,7 @@
     // $rotaapi = "apiordemdeservicorecebidas";
     $rotaapi = "apientradaporcontabancaria";
     
-    $titulo  = "Entrada Por Conta Bancária";
+    $titulo  = "Entrada Por Conta Bancária/NF";
     $campodata = 'datapagamentoreceita';
     $relatorioKendoGrid = true;
 
@@ -81,6 +81,7 @@
                 { field: "descricaoreceita", title: "Receita", filterable: true, width: 100 },
                 { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "nfreceita", title: "NF", filterable: true, width: 80},
                 { field: "conta", title: "Conta", filterable: true, width: 100 },
             ],
             @include('layouts/helpersview/finaltabela')

@@ -39,7 +39,7 @@ class Relatorio extends Model
 
     public function dadosRelatorioEntradasPorContaBancaria($stringQuery)
     {
-        $stringQuery = "SELECT 
+        $query = "SELECT 
                         r.datapagamentoreceita, 
                         r.idosreceita, 
 
@@ -48,7 +48,7 @@ class Relatorio extends Model
                             WHEN r.idosreceita is NOT NULL THEN os.eventoOrdemdeServico
                             ELSE r.descricaoreceita
                         END AS descricaoreceita,
-
+                        r.nfreceita,
                         -- r.descricaoreceita, 
                         fpg.nomeFormaPagamento, 
                         r.valorreceita, 
@@ -59,9 +59,9 @@ class Relatorio extends Model
                         and cc.id = r.contareceita
                         and os.id = r.idosreceita
                         and r.ativoreceita  = 1
-                        and r.valorreceita  != '0.00'";
+                        and r.valorreceita  != '0.00'" . $stringQuery;
 
-        return $stringQuery;
+        return $query;
     }
 
     public function dadosRelatorioDespesasPagasPorContaBancaria($stringQuery)
