@@ -13,14 +13,17 @@ function resetaIdComprador() {
 
 function alteraRetornoCadastroDespesa(retorno) {
 
+    document.getElementById("tpRetorno").value = retorno;
     validador = validaFormulario();
     if (validador == 0) {
-        document.getElementById("tpRetorno").value = retorno;
-        $('#btnSalvareVisualizar').attr('disabled', 'disabled');
-        $('#btnSalvareNovo').attr('disabled', 'disabled');
-        $("#criaDespesas").submit();
+        submitaForm();
     }
+}
 
+function submitaForm(){
+    $('#btnSalvareVisualizar').attr('disabled', 'disabled');
+    $('#btnSalvareNovo').attr('disabled', 'disabled');
+    $("#criaDespesas").submit();
 }
 
 $('body').on('click', '.recarregaMateriais', function() {

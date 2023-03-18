@@ -20,7 +20,8 @@ class Relatorio extends Model
                         os.dataCriacaoOrdemdeServico, 
                         r.datapagamentoreceita,
                         -- sum(r.valorreceita) 'valortotal'
-                        r.valorreceita  as 'valortotal'
+                        r.valorreceita  as 'valortotal',
+                        r.pagoreceita
 
                         FROM ordemdeservico os
 
@@ -29,27 +30,38 @@ class Relatorio extends Model
 
                         -- (os.idClienteOrdemdeServico = c.id) 
                         -- and (os.id = r.idosreceita)
-                        WHERE (r.pagoreceita = '$param')
 
                         -- GROUP BY os.id 
-                        ";                
+                        " . $param;                
 
         return $stringQuery;
     }
 
     public function dadosRelatorioEntradasPorContaBancaria($stringQuery)
     {
-        $stringQuery = "SELECT 
+        $query = "SELECT 
                         r.datapagamentoreceita, 
                         r.idosreceita, 
-                        r.descricaoreceita, 
+
+
+                        CASE
+                            WHEN r.idosreceita is NOT NULL THEN os.eventoOrdemdeServico
+                            ELSE r.descricaoreceita
+                        END AS descricaoreceita,
+                        r.nfreceita,
+                        -- r.descricaoreceita, 
                         fpg.nomeFormaPagamento, 
                         r.valorreceita, 
                         cc.nomeConta as conta
-                        FROM receita r, formapagamento fpg, conta cc
-                        WHERE fpg.id = r.idformapagamentoreceita and cc.id = r.contareceita ";
+                        FROM receita r, formapagamento fpg, conta cc, ordemdeservico os
+                        -- LEFT JOIN ordemdeservico   AS os 	ON r.idosreceita = os.id
+                        WHERE fpg.id = r.idformapagamentoreceita 
+                        and cc.id = r.contareceita
+                        and os.id = r.idosreceita
+                        and r.ativoreceita  = 1
+                        and r.valorreceita  != '0.00'" . $stringQuery;
 
-        return $stringQuery;
+        return $query;
     }
 
     public function dadosRelatorioDespesasPagasPorContaBancaria($stringQuery)
@@ -286,6 +298,7 @@ where d.pago = 'S' ";
         LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
      
         WHERE r.pagoreceita = 'N' 
+        and r.ativoreceita  = 1
         and r.valorreceita  != 0
         and r.idosreceita   != ''
         and r.idosreceita   != 'CRIAATVA' " . $parametros;
@@ -320,7 +333,7 @@ where d.pago = 'S' ";
          LEFT JOIN clientes		  clireceita ON r.idclientereceita = clireceita.id
          LEFT JOIN conta 	      cc  ON r.contareceita = cc.id
          LEFT JOIN formapagamento fpg ON r.idformapagamentoreceita = fpg.id
-         where os.id != ''";
+         where os.id != '' ";
 
         return $stringQuery;
 
@@ -390,7 +403,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA GERAL'
         	and d.vencimento like '$ano[0]-$mes[0]%') AS despprimeiromes on d.id = despprimeiromes.id
             -- inicio segundo
             RIGHT JOIN (SELECT 
@@ -409,7 +422,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA GERAL'
         	and d.vencimento like '$ano[1]-$mes[1]%') AS despsegundomes on d.id = despsegundomes.id
             -- inicio terceiro
             RIGHT JOIN (SELECT 
@@ -424,7 +437,7 @@ where d.pago = 'S' ";
 		    LEFT JOIN fornecedores  AS f ON d.idFornecedor = f.id
 		    LEFT JOIN benspatrimoniais AS b ON d.descricaoDespesa = b.id
 		    LEFT JOIN conta AS cc ON d.conta = cc.id 
-		    where d.pago = 'N' and d.idOS = 'CRIAATVA'
+		    where d.pago = 'N' and d.idOS = 'EMPRESA GERAL'
         	and d.vencimento like '$ano[2]-$mes[2]%') AS despterceiromes on d.id = despterceiromes.id";
 
         var_dump($stringQuery);

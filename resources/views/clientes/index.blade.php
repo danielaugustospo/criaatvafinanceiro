@@ -157,6 +157,7 @@ var table = $('.data-table').DataTable({
             visible: false
             },
         },
+
     ],
     dom: 'Bfrtip',
     buttons: [{

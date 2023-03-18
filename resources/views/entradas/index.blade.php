@@ -1,8 +1,9 @@
 <?php
 $intervaloCelulas = 'A1:H1';
-$rotaapi = 'api/apientrada';
-$titulo = 'Estoque - Entradas';
+$rotaapi = '/api/apientrada';
+$titulo = 'Estoque - Consulta Entradas';
 $relatorioKendoGrid = true;
+$campodata = 'created_at';
 
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
@@ -25,7 +26,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=novo">Lançar Entrada
                         </a>
                     @endcan    
-                    <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modalentrada"
+                    <a class="btn btn-primary d-flex justify-content-center" onclick="$('.modalentradasestoque').modal('show');"
                         style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
                     @can('entradas-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=devolucao">Lançar Devolução
@@ -43,8 +44,10 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div id="filter-menu"></div>
     <br /><br />
     <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
+        @include('layouts/helpersview/infofiltrosestoqueentrada')
     </div>
     <script>
+        
         $.LoadingOverlay("show", {
             image: "",
             progress: true
@@ -53,11 +56,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    @if (isset($despesas))
-                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
-                    @else
-                        url: "{{ $rotaapi }}",
-                    @endif
+                    url: "{{ $rotaapi }}?codbarras={{ $codbarras }}&nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&descricaoentrada={{ $descricaoentrada }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&tipoEntrada={{ $tipoEntrada }}",
                     dataType: "json"
                 },
             },
@@ -163,6 +162,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 },
                                 descricao: {
                                     type: "string"
+                                },
+                                created_at: {
+                                    type: "date"
                                 }
                             }
                         },
@@ -175,25 +177,38 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        width: 90
+                        width: '10%'
                     },
                     {
                         field: "codbarras",
                         title: "Cod Barras",
                         filterable: true,
-                        autowidth: true
+                        width: '15%'
                     },
                     {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
-                        autowidth: true
+                        width: '20%'
                     },
                     {
-                        field: "descricao",
+                        field: "descricaoentrada",
                         title: "Descrição",
                         filterable: true,
-                        autowidth: true
+                        width: '10%'
+                    },
+                    {
+                        field: "tipo",
+                        title: "Tipo Entrada",
+                        filterable: true,
+                        width: '15%'
+                    },
+                    {
+                        field: "created_at",
+                        title: "Data Entrada",
+                        format: "{0:dd/MM/yyyy}",
+                        filterable: true,
+                        width: '10%'
                     },
                     {
                         command: [{
@@ -207,7 +222,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                     data.id;
                             }
                         }],
-                        width: 130,
+                        width: '10%',
                         exportable: false,
                     },
                     // {
@@ -295,9 +310,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         var count = 0;
                         var interval = setInterval(function() {
                                 @if (isset($despesas))
-                                    if (count >= 100) {
+                                    if (count >= 20) {
                                     @else
-                                        if (count >= 800) {
+                                        if (count >= 50) {
                                         @endif
                                         clearInterval(interval);
                                         $('.k-link')[0].click();
@@ -313,6 +328,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                     });
 
-                @include('layouts/filtradata')
     </script>
+
+@include('layouts/modal/estoque/modalentradaestoque')
+
 @endsection
+

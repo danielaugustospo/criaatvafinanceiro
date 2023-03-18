@@ -1,5 +1,27 @@
 <script>
+ 
     $(document).ready(function() {
+        @if(Auth::user())
+                    timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
+                    
+                    function encerraSessaoSozinho() {
+                        Swal.fire({
+                            icon:   'error',
+                            title:  'Sessão Expirada!',
+                            text:   'Estaremos lhe redirecionando para a página inicial!',
+                            timer:  3000
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.replace('/');
+                            }
+                            else {
+                                location.replace('/');
+                            }
+                        });
+                    }
+                        // var ultimaAtividade = {{ session('lastActivityTime') }};
+                @endif
+
         $(".selecionaComInput").select2();
     });
 

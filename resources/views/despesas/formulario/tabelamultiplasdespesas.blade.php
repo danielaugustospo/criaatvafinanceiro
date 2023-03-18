@@ -34,13 +34,13 @@
                     <option value="{{ $os->id }}">{{ $os->id }}</option>
                     @endforeach
                      --}}
-                    <option value="CRIAATVA">SEM OS</option>
+                    <option value="EMPRESA GERAL">SEM OS</option>
                     @foreach ($todasOSAtivas as $listaOS)
                       @isset($despesa)
                         @if ($despesa->idOS == $listaOS->id)
                           <option value="{{$listaOS->id}}" selected>{{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}</option>
-                          @if ($despesa->idOS == 'CRIAATVA')
-                            <option value="CRIAATVA" selected>SEM OS</option>              
+                          @if ($despesa->idOS == 'EMPRESA GERAL')
+                            <option value="EMPRESA GERAL" selected>SEM OS</option>              
                           @endif
                         @endif
                       @endisset
@@ -48,7 +48,7 @@
                     @endforeach
                 </select>
             </td>
-            <td data-th="NF">
+            <td class="col-sm-1" data-th="NF">
                 {!! Form::text('notaFiscalTabelaMultiplo[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control', 'maxlength' => '20', $variavelReadOnlyNaView]) !!}
             </td>

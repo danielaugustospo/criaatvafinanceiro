@@ -2,7 +2,7 @@
 @section('content')
 @include('estoque/script')
 @include('estoque/estilo')
-@php $titulo = 'Dados da Retirada'; $rotavoltar = 'saidas.index'; @endphp
+@php $titulo = 'Retirada: '. $saidas->codbarras .' - ' . $listaSaidas[0]->nomeBensPatrimoniais; $rotavoltar = 'saidas.index'; @endphp
 
 
     @include('layouts/helpersview/iniciorelatorio')

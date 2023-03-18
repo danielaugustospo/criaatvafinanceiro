@@ -50,7 +50,10 @@
                                           <input class="form-control" list="datalistOrdemServico" id="ordemservico"
                                               name="ordemservico" placeholder="Digite ou selecione...">
                                       </div>
-
+                                      <div class="row ml-2 mr-2"><label for="">CONTA </label>
+                                        <input class="form-control" list="datalistContas" id="conta" name="conta"
+                                            placeholder="Digite ou selecione...">
+                                    </div>
                                   </div>
 
 
@@ -95,14 +98,18 @@
                                             <option value="S">PAGO</option>
                                     </select>    
                                 </div>
-                                <div class="row ml-2 mr-2"><label for="">CONTA </label>
-                                    <input class="form-control" list="datalistContas" id="conta" name="conta"
-                                        placeholder="Digite ou selecione...">
-                                </div>
+
                                 <input type="hidden" name="tpRel" id="tpRel" value="">
                               </div>
-                              
                             </div>
+                            <div class="row ml-2 mr-2 mt-1 d-flex justify-content-center">
+                              <label class="pr-2 mt-1" for="">Lançamento </label>
+
+                              <input class="form-control col-sm-3 mr-1" type="date" name="dtiniciolancamento"
+                                  id="dtiniciolancamento">
+                              <input class="form-control col-sm-3" type="date" name="dtfimlancamento" id="dtfimlancamento">
+
+                          </div>
                             {{-- footer --}}
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

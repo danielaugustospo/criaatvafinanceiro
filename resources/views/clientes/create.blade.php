@@ -28,6 +28,7 @@
 
 
 {!! Form::open(array('route' => 'clientes.store','method'=>'POST')) !!}
+{!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 
 @include('clientes/campos')
 

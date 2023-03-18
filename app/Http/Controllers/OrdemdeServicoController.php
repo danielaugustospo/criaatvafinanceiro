@@ -4,18 +4,16 @@
 namespace App\Http\Controllers;
 
 use App\OrdemdeServico;
-use App\Despesa;
 use App\Receita;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\FormatacoesServiceProvider;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-// use Freshbitsweb\Laratables\Laratables;
 use DataTables;
-use Illuminate\Support\Str;
-use PhpParser\Node\Stmt\TryCatch;
 use App\Classes\Logger;
+use Gate;
+
 
 
 class OrdemdeServicoController extends Controller
@@ -30,10 +28,11 @@ class OrdemdeServicoController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:ordemdeservico-list|ordemdeservico-create|ordemdeservico-edit|ordemdeservico-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:ordemdeservico-list|ordemdeservico-create|ordemdeservico-edit|ordemdeservico-delete', ['only' => ['index']]);
         $this->middleware('permission:ordemdeservico-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:ordemdeservico-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:ordemdeservico-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:ordemdeservico-show', ['only' => ['show']]);
 
         $this->acao =  request()->segment(count(request()->segments()));
         $this->valorInput = null;
@@ -69,12 +68,13 @@ class OrdemdeServicoController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($consulta) {
 
-                $btnVisualizar = '<div class="row col-sm-12">
-                    <a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn-sm" style="background-color:#066B4B !important;" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                    <a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn-sm" style="background-color:#066B4B !important;" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-thumbs-up" aria-hidden="true"></i></a>' : '';
+                
+                $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
+                    '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
                     </div>';
 
-                return $btnVisualizar;
+                return $grupoBtn;
                 })
 
                 ->rawColumns(['action'])
@@ -114,12 +114,13 @@ class OrdemdeServicoController extends Controller
         ->addIndexColumn()
         ->addColumn('action', function($consulta) {
 
-            $btnVisualizar = '<div class="row col-sm-12">
-            <a href="ordemdeservicos/' . $consulta->id . '" class="edit btn-primary btn-sm" title="Visualizar Financeiro">Visualizar</a>
-            <a href="ordemdeservicos/' . $consulta->id . '/edit" class="pt-1 btn-success btn-sm" title="Editar OS">Editar</a>
-            </div>';
+            $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
+                
+            $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
+                '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                </div>';
 
-        return $btnVisualizar;
+            return $grupoBtn;
         })
     
         ->rawColumns(['action'])
@@ -239,7 +240,23 @@ class OrdemdeServicoController extends Controller
 
                 $receita['idosreceita']                 = "$idDaOS";
 
-                $receita->save();
+                // $receita->save();
+
+                $novaReceitaOS = Receita::create([
+                    'idformapagamentoreceita'   => $receita->idformapagamentoreceita,
+                    'descricaoreceita'          => $request->eventoOrdemdeServico,
+                    'idclientereceita'          => $request->idClienteOrdemdeServico,
+                    'datapagamentoreceita'      => $receita->datapagamentoreceita,
+                    'dataemissaoreceita'        => $receita->dataemissaoreceita,
+                    'valorreceita'              => $receita->valorreceita,
+                    'pagoreceita'               => $receita->pagoreceita,
+                    'contareceita'              => $receita->contareceita,
+                    'registroreceita'           => $receita->registroreceita,
+                    'nfreceita'                 => $receita->nfreceita,
+                    'idosreceita'               => "$idDaOS"
+                ]);
+
+
                 $idReceita = $receita->id;
                 $this->logCadastraReceitaOS($idReceita);
             }
@@ -254,7 +271,7 @@ class OrdemdeServicoController extends Controller
                 ->with('success', 'Ordem de Serviço n°' . $idDaOS . ' cadastrada com êxito. Não foram cadastradas receitas.');
         }
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -263,6 +280,7 @@ class OrdemdeServicoController extends Controller
      */
     public  function show($id)
     {
+
         $ordemdeservico = OrdemdeServico::find($id);
         $dataInicio = $ordemdeservico->dataCriacaoOrdemdeServico;
 
@@ -274,12 +292,12 @@ class OrdemdeServicoController extends Controller
         $receitasPorOS = DB::select('select distinct id as idReceita, idosreceita, idclientereceita,idformapagamentoreceita,datapagamentoreceita,dataemissaoreceita,valorreceita,pagoreceita,contareceita,descricaoreceita,registroreceita,nfreceita from receita  where  ativoreceita = 1 and excluidoreceita = 0 and  idosreceita = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $cliente = DB::select('select distinct id, nomeCliente, razaosocialCliente from clientes  where  ativoCliente = 1 and id = :clienteOrdemServico', ['clienteOrdemServico' => $ordemdeservico->idClienteOrdemdeServico]);
-        $despesaPorOS = DB::select('select distinct * from despesas  where  ativoDespesa = 1 and idOS = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $despesaPorOS = DB::select('select distinct * from despesas  where  ativoDespesa = 1 and excluidoDespesa = 0 and idOS = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $percentualPorOS = DB::select('select distinct * from tabelapercentual  where  idostabelapercentual = :idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
-        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totaldespesasAPagar = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.pago = "N" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totaldespesasPagas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.pago = "S" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id  and despesas.excluidoDespesa = 0  and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesasAPagar = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.excluidoDespesa = 0  and despesas.pago = "N" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totaldespesasPagas = DB::select('select sum(despesas.precoReal) as totaldespesa, ordemdeservico.id from despesas, ordemdeservico where despesas.idOS = ordemdeservico.id and despesas.excluidoDespesa = 0  and despesas.pago = "S" and ordemdeservico.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
 
         $contadorDespesas = count($totaldespesas);
         $contadorDespesasAPagar = count($totaldespesasAPagar);
@@ -303,8 +321,8 @@ class OrdemdeServicoController extends Controller
             $getArrayTotalDespesasPagas = $totaldespesasPagas[0]->totaldespesa;
         }
 
-        $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
-        $totalreceitasAPagar = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where  r.idosreceita = o.id and r.pagoreceita = "N" and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totalreceitas = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where excluidoreceita = 0 and ativoreceita = 1 and r.idosreceita = o.id and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
+        $totalreceitasAPagar = DB::select('select  sum(r.valorreceita) as totalreceita, o.id from  receita r, ordemdeservico o where excluidoreceita = 0 and ativoreceita = 1 and   r.idosreceita = o.id and r.pagoreceita = "N" and o.id = :idOrdemServico GROUP BY id', ['idOrdemServico' => $ordemdeservico->id]);
 
         $tamanhoArrayReceita = count($totalreceitas);
         if ($tamanhoArrayReceita == 0) {
@@ -352,7 +370,7 @@ class OrdemdeServicoController extends Controller
 
         $porcentagemLucro = bcmul($lucro, 100); //cem por cento da regra de tres
 
-        if (($porcentagemLucro > 0) && ($totalOS > 0)) {
+        if (($porcentagemLucro <> 0) && ($totalOS <> 0)) {
             $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
         }
 
@@ -375,7 +393,7 @@ class OrdemdeServicoController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
 
-        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
+        $qtdDespesas = DB::select('select COUNT(precoReal) as numerodespesas FROM despesas where  excluidoDespesa = 0 and  idOS =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $this->logVisualizaOS($ordemdeservico);
@@ -508,48 +526,83 @@ class OrdemdeServicoController extends Controller
                 $receita['idosreceita'] = $ordemdeservico->id;
 
                 if ($receita->idReceita == 'novo') {
-                    DB::insert(
-                        'insert into receita 
-                    (idformapagamentoreceita,
-                    datapagamentoreceita,
-                    dataemissaoreceita,
-                    valorreceita,
-                    pagoreceita,
-                    contareceita,
-                    registroreceita,
-                    nfreceita,
-                    idosreceita,
-                    excluidoreceita,
-                    ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        [
-                            $receita->idformapagamentoreceita,
-                            $receita->datapagamentoreceita,
-                            $receita->dataemissaoreceita,
-                            $receita->valorreceita,
-                            $receita->pagoreceita,
-                            $receita->contareceita,
-                            $receita->registroreceita,
-                            $receita->nfreceita,
-                            $receita->idosreceita,
-                            $receita->excluidoreceita,
-                            $receita->ativoreceita                  
+
+                    $novaReceitaOS = Receita::create([
+                        'idformapagamentoreceita'   => $receita->idformapagamentoreceita,
+                        'descricaoreceita'          => $request->eventoOrdemdeServico,
+                        'idclientereceita'          => $request->idClienteOrdemdeServico,
+                        'datapagamentoreceita'      => $receita->datapagamentoreceita,
+                        'dataemissaoreceita'        => $receita->dataemissaoreceita,
+                        'valorreceita'              => $receita->valorreceita,
+                        'pagoreceita'               => $receita->pagoreceita,
+                        'contareceita'              => $receita->contareceita,
+                        'registroreceita'           => $receita->registroreceita,
+                        'nfreceita'                 => $receita->nfreceita,
+                        'idosreceita'               => $receita->idosreceita,
+                        'excluidoreceita'           => $receita->excluidoreceita,
+                        'ativoreceita'              => $receita->ativoreceita 
+                    ]);
+                    // DB::insert(
+                    //     'insert into receita 
+                    // (idformapagamentoreceita,
+                    // datapagamentoreceita,
+                    // dataemissaoreceita,
+                    // valorreceita,
+                    // pagoreceita,
+                    // contareceita,
+                    // registroreceita,
+                    // nfreceita,
+                    // idosreceita,
+                    // excluidoreceita,
+                    // ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    //     [
+                    //         $receita->idformapagamentoreceita,
+                    //         $receita->datapagamentoreceita,
+                    //         $receita->dataemissaoreceita,
+                    //         $receita->valorreceita,
+                    //         $receita->pagoreceita,
+                    //         $receita->contareceita,
+                    //         $receita->registroreceita,
+                    //         $receita->nfreceita,
+                    //         $receita->idosreceita,
+                    //         $receita->excluidoreceita,
+                    //         $receita->ativoreceita                  
             
-                        ]
-                    );
+                    //     ]
+                    // );
                 } else {
-                    DB::update("UPDATE receita
-                SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-                datapagamentoreceita        = '$receita->datapagamentoreceita',           
-                dataemissaoreceita          = '$receita->dataemissaoreceita',             
-                valorreceita                = '$receita->valorreceita',                   
-                pagoreceita                 = '$receita->pagoreceita',                    
-                contareceita                = '$receita->contareceita',                   
-                registroreceita             = '$receita->registroreceita',                
-                nfreceita                   = '$receita->nfreceita',                      
-                idosreceita                 = '$receita->idosreceita',                  
-                excluidoreceita             = '$receita->excluidoreceita',
-                ativoreceita                = '$receita->ativoreceita'                  
-                WHERE id                    = '$receita->idReceita'");
+
+                Receita::where('id', $receita->idReceita)
+                ->update([
+                            'idformapagamentoreceita'     => $receita->idformapagamentoreceita, 
+                            'descricaoreceita'            => $request->eventoOrdemdeServico,
+                            'idclientereceita'            => $request->idClienteOrdemdeServico,
+                            'datapagamentoreceita'        => $receita->datapagamentoreceita,           
+                            'dataemissaoreceita'          => $receita->dataemissaoreceita,             
+                            'valorreceita'                => $receita->valorreceita,                   
+                            'pagoreceita'                 => $receita->pagoreceita,                    
+                            'contareceita'                => $receita->contareceita,                   
+                            'registroreceita'             => $receita->registroreceita,                
+                            'nfreceita'                   => $receita->nfreceita,                      
+                            'idosreceita'                 => $receita->idosreceita,                  
+                            'excluidoreceita'             => $receita->excluidoreceita,
+                            'ativoreceita'                => $receita->ativoreceita 
+                        ]);
+
+                        // DB::update("UPDATE receita
+                        // SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
+                        // datapagamentoreceita        = '$receita->datapagamentoreceita',           
+                        // dataemissaoreceita          = '$receita->dataemissaoreceita',             
+                        // valorreceita                = '$receita->valorreceita',                   
+                        // pagoreceita                 = '$receita->pagoreceita',                    
+                        // contareceita                = '$receita->contareceita',                   
+                        // registroreceita             = '$receita->registroreceita',                
+                        // nfreceita                   = '$receita->nfreceita',                      
+                        // idosreceita                 = '$receita->idosreceita',                  
+                        // excluidoreceita             = '$receita->excluidoreceita',
+                        // ativoreceita                = '$receita->ativoreceita'                  
+                        // WHERE id                    = '$receita->idReceita'");
+
                 }
             }
         }

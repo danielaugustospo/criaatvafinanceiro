@@ -54,6 +54,22 @@ class RelatorioController extends Controller
         $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
         $extrato = DB::select($stringQueryExtratoConta);
 
+
+        $tamExtrato = sizeof($extrato);
+        if($tamExtrato > 0 && $tamExtrato != null){
+            $tamExtrato = $tamExtrato - 1;
+
+            for ($i=0; $i <= $tamExtrato; $i++) { 
+                if($extrato[0] == $extrato[$i]){                    
+                    $extrato[0]->saldoNovo = $extrato[0]->saldo; 
+                }
+                else {
+                    $valDescrescido = $i - 1;
+                    $extrato[$i]->saldoNovo = bcadd($extrato[$valDescrescido]->saldoNovo, $extrato[$i]->valorreceita, 2);
+                }
+            }
+
+        }
         // $contador = count($extrato);
 
         // for ($i = 0; $i < $contador; $i++) {
@@ -72,8 +88,7 @@ class RelatorioController extends Controller
         //     }
         //     $extrato[$i]->saldo = $saldo;
         // }
-        // var_dump($extrato);
-        // exit;
+
         return $extrato;
     }
 
@@ -87,7 +102,10 @@ class RelatorioController extends Controller
     public function apiFaturamentoPorCliente(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosRelatorioFaturamentoPorCliente($request->a);
+
+        // $condicao = "WHERE (r.pagoreceita = '$request->a')";
+        $condicao = (isset($request->a) && ($request->a == 'S' || $request->a == 'N')) ? "WHERE (r.pagoreceita = '$request->a')" : " ";
+        $stringConsulta = $relatorio->dadosRelatorioFaturamentoPorCliente($condicao);
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -95,7 +113,7 @@ class RelatorioController extends Controller
     public function apiEntradasPorContaBancaria(Request $request)
     {
         $relatorio = new Relatorio();
-        $stringConsulta = $relatorio->dadosRelatorioEntradasPorContaBancaria(null);
+        $stringConsulta = $relatorio->dadosRelatorioEntradasPorContaBancaria(" AND r.pagoreceita = 'S'");
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;
     }
@@ -712,7 +730,7 @@ class RelatorioController extends Controller
                     if (isset($jsonvencimentos[$movimentacoes]['Numvenda'])) {
                         $despesa->idOS               = $jsonvencimentos[$movimentacoes]['Numvenda'];
                     } else {
-                        $despesa->idOS               = 'CRIAATVA';
+                        $despesa->idOS               = 'EMPRESA GERAL';
                     }
 
                     //Verificação Vencimento

@@ -5,7 +5,8 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados da Saída n°  {{$saidas->id}}</h2>
+            <h2>Editar Retirada: {{$saidas->codbarras}} - {{$listaSaidas[0]->nomeBensPatrimoniais}}
+            </h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('saidas.index') }}"> Voltar</a>
@@ -42,7 +43,7 @@
     </div>
 </div>
 
-<div class="form-group row">
+{{-- <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Bem Patrimonial</label>
     <div class="col-sm-10">
             <select name="idbenspatrimoniais" id="idbenspatrimoniais"  class="selecionaComInput form-control">
@@ -51,7 +52,7 @@
                 @endforeach
         </select>
     </div>
-</div>
+</div> --}}
 
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Portador Saída</label>
@@ -78,7 +79,7 @@
 <div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Ocorrências</label>
     <div class="col-sm-12">
-        {!! Form::textarea('ocorrenciasaida', null, ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrenciasaida']) !!}
+        {!! Form::textarea('ocorrencia', null, ['placeholder' => 'Ocorrências', 'class' => 'form-control col-sm-12', 'maxlength' => '100', 'id' => 'ocorrencia']) !!}
     </div>
 </div>
 

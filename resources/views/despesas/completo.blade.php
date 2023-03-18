@@ -11,6 +11,16 @@ if (isset($despesas)) {
 } else {
     $despesas = '';
 }
+if (isset($dtiniciolancamento)) {
+    $dtiniciolancamento = $dtiniciolancamento;
+} else {
+    $dtiniciolancamento = '';
+}
+if (isset($dtfimlancamento)) {
+    $dtfimlancamento = $dtfimlancamento;
+} else {
+    $dtfimlancamento = '';
+}
 if (isset($idSalvo)) {
     //Verificação após retorno de lançamento de mais de uma despesa
     $tamanhoIdSalvo = count($idSalvo);
@@ -102,7 +112,7 @@ $idFrame1 = 'framecriadepesa';
                     transport: {
                         read: {
                             @if (isset($despesas))
-                                url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}",
+                                url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{ $idUser }}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}",
                             @else
                                 url: "{{ $rotaapi }}",
                             @endif
@@ -145,6 +155,9 @@ $idFrame1 = 'framecriadepesa';
                                     type: "date"
                                 },
                                 dataDoTrabalho: {
+                                    type: "date"
+                                },
+                                created_at: {
                                     type: "date"
                                 },
                             }
@@ -272,6 +285,7 @@ $idFrame1 = 'framecriadepesa';
                         responsible: true,
                         reorderable: true,
                         width: 'auto',
+                        height: 550,
                         pageable: {
                             pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                             numeric: false,
@@ -286,8 +300,7 @@ $idFrame1 = 'framecriadepesa';
                                     iconClass: "k-icon k-i-pencil",
                                     click: function(e) {
                                         e.preventDefault();
-                                        var tr = $(e.target).closest(
-                                            "tr"); // get the current table row (tr)
+                                        var tr = $(e.target).closest("tr"); // get the current table row (tr)
                                         var data = this.dataItem(tr);
                                         rota = 'modaledicaodespesas/' + data.id + '';
                                         $('#frameatualizadespesa').attr('src', rota);
@@ -298,6 +311,68 @@ $idFrame1 = 'framecriadepesa';
                                 }],
                                 width: 90,
                                 exportable: false,
+                            }, {
+                                command: [{
+                                    name: "Excluir",
+                                    iconClass: "k-icon k-i-trash",
+                                    click: function(e) {
+
+                                        // e.preventDefault();
+                                        var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                                        var linha = this.dataItem(tr);
+                                        var rota = `{{ url('despesas') }}/${linha.id}`;
+
+                                        Swal.fire({
+                                            title: "Excluir Despesa?",
+                                            text: "Id: " + linha.id +
+                                                " - Descrição: " + linha.descricaoDespesa,
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Sim, desejo excluir!",
+                                            cancelButtonText: "Cancelar",
+                                            icon: 'warning'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+
+                                                $.ajax({
+                                                    url: rota,
+                                                    type: "DELETE",
+                                                    data: {
+                                                        _token: "{{ csrf_token() }}",
+                                                        id: linha.id,
+                                                        assync: true
+                                                    },
+                                                    dataType: "json",
+                                                    success: function() {
+                                                        Swal.fire(
+                                                            "Operação concluída!",
+                                                            "Despesa " + linha.descricaoDespesa + " excluída com sucesso",
+                                                            "success"
+                                                        );
+                                                        $('#grid').data('kendoGrid').dataSource.read();
+                                                        $('#grid').data('kendoGrid').refresh();
+                                                    },
+                                                    error: function(
+                                                        xhr,
+                                                        ajaxOptions,
+                                                        thrownError
+                                                    ) {
+                                                        Swal.fire(
+                                                            "Operação não concluída!",
+                                                            "Tente novamente",
+                                                            "error"
+                                                        );
+                                                    }
+                                                });
+
+                                            }
+                                        });
+
+                                    }
+                                }],
+                                width: 100,
+                                exportable: false,
+
                             },
                             {
                                 field: "id",
@@ -370,6 +445,13 @@ $idFrame1 = 'framecriadepesa';
                             {
                                 field: "pago",
                                 title: "Pago",
+                                filterable: true,
+                                width: 90
+                            },
+                            {
+                                field: "created_at",
+                                format: "{0:dd/MM/yyyy}",
+                                title: "Criado em",
                                 filterable: true,
                                 width: 90
                             },
@@ -489,14 +571,22 @@ $idFrame1 = 'framecriadepesa';
                                 title: "Funcionário",
                                 filterable: true,
                                 width: 150,
+                            },
+                            {
+                                field: "nomeusuario",
+                                title: "Usuário Lançador",
+                                filterable: true,
+                                width: 150,
                             }
+
                         ],
                         editable: "popup",
 
                         groupExpand: function(e) {
                             for (let i = 0; i < e.group.items.length; i++) {
                                 var expanded = e.group.items[i].value
-                                e.sender.expandGroup(".k-grouping-row:contains(" + expanded + ")");
+                                e.sender.expandGroup(".k-grouping-row:contains(" + expanded +
+                                    ")");
                             }
                         },
                         columnMenu: true,
@@ -552,6 +642,8 @@ $idFrame1 = 'framecriadepesa';
                     }
 
                 });
+
+
             });
             @if (isset($paginaModal))
             @else

@@ -2,7 +2,10 @@
     <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
     <div class="col-sm-7">
         <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
-        @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}" readonly @endif>
+        @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->codbarras }}"        
+        @else
+        value="{{ "CRIAATVA00000". $novaEntrada }}"
+        @endif readonly>
     </div>
 </div>
 <div class="form-group row">
@@ -42,7 +45,6 @@
         {{-- {!! Form::text('descricaoentrada', '', ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '100']) !!} --}}
         <input type="text" class="form-control" name="descricaoentrada" placeholder="Descrição" maxlength="100"
         @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->descricaoentrada }}" readonly @endif>
-
     </div>
 </div>
 

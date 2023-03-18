@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados do Inventário N° <b>{{$estoque->id}}<b></h2>
+            <h2> Dados do Item <b>{{ $estoque->codbarras }}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('estoque.index') }}"> Voltar</a>
@@ -28,15 +28,15 @@
 
 {!! Form::model($estoque, ['method' => 'PATCH','route' => ['estoque.update', $estoque->id]]) !!}
 <div class="form-group row">
-    <label for="nomeestoque" class="col-sm-2 col-form-label">Nome</label>
+    <label for="nomematerial" class="col-sm-2 col-form-label">Nome</label>
     <div class="col-sm-10">
-        {!! Form::text('nomeestoque', null, ['placeholder' => 'Nome', 'class' => 'form-control', 'maxlength' => '100']) !!}
+        {!! Form::text('nomematerial', null, ['placeholder' => 'Nome', 'class' => 'form-control', 'maxlength' => '100']) !!}
     </div>
 </div>
 <div class="form-group row">
-    <label for="descricaoestoque" class="col-sm-2 col-form-label">Descrição</label>
+    <label for="descricao" class="col-sm-2 col-form-label">Descrição</label>
     <div class="col-sm-10">
-        {!! Form::text('descricaoestoque', null, ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'descricaoestoque']) !!}
+        {!! Form::text('descricao', null, ['placeholder' => 'Descrição', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'descricao']) !!}
     </div>
 </div>
 

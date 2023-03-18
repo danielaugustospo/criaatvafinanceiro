@@ -19,6 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
+
+
 //Rotas de modal
 Route::get('/cadastragrupodespesa', function () { return view('grupodespesas.campos'); });
 Route::get('/modalmateriais', function () { return view('benspatrimoniais.camposmodal'); });
@@ -37,6 +40,7 @@ Route::get('/entradaporcontabancaria', function () { return view('relatorio.entr
 Route::get('/despesaspagasporcontabancaria', function () { return view('relatorio.despesaspagasporcontabancaria.index'); });
 Route::get('/despesasporos', function () { return view('relatorio.despesasporos.index'); });
 Route::get('/despesassinteticaporos', function () { return view('relatorio.despesassinteticaporos.index'); });
+Route::get('/controleconsumomaterial', function () { return view('relatorio.controleconsumomaterial.index'); });
 Route::get('/despesasporclienteanalitico', function () { return view('relatorio.despesasporclienteanalitico.index'); });
 Route::get('/oscadastradas', function () { return view('relatorio.oscadastradas.index'); });
 Route::get('/contaspagasporgrupo', function () { return view('relatorio.contaspagasporgrupo.index'); });
@@ -55,7 +59,11 @@ Route::get('/despesasfixavariavel', function () { return view('relatorio.despesa
 Route::get('/notafiscalfornecedor', function () { return view('relatorio.notafiscalfornecedor.index'); });
 Route::get('/notasemitidas', function () { return view('relatorio.notasemitidas.index'); });
 Route::get('/notasficaisemitidascriaatva', function () { return view('relatorio.notasficaisemitidascriaatva.index'); });
-Route::get('/fechamentofinal', function () { return view('relatorio.fechamentofinal.index'); });
+Route::get('/fechamentofinal', function () { 
+    if(Gate::allows('rel-fechamentofinal')){
+        return view('relatorio.fechamentofinal.index'); 
+    }
+});
 
 
 
@@ -89,6 +97,7 @@ Route::get('/tabelaOrdemServicos', 'OrdemdeServicoController@tabelaOrdemServicos
 
 Route::get('/listaCodigoDespesa', 'DespesaController@listaCodigoDespesa')->name('listaCodigoDespesa');
 Route::get('/listaMateriais', 'DespesaController@listaMateriais')->name('listaMateriais');
+Route::get('/listaClientes', 'ClientesController@listaClientes')->name('listaClientes');
 Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
 Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('listaTipoMateriais');
 
@@ -129,5 +138,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('aliquotamensal','AliquotaMensalController');
     Route::resource('pedidocompra','PedidoCompraController');
     Route::resource('relatorio','RelatorioController');
+    Route::resource('sandbox','SandboxController');
 
 });

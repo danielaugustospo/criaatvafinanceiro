@@ -1,9 +1,19 @@
 @include('receita/validador')
+@isset($receita->idosreceita)
+    @if ($receita->idosreceita != 'CRIAATVA' && $receita->idosreceita != '')
+        <script>
+            $(function() {
+                $( "#idclientereceita" ).prop( "disabled", true );
+            });            
+        </script>
+        <h5 class="text-danger" for="">Cliente é da OS {{ $receita->idosreceita }}, não podendo ser alterado por aqui</h5>        
+    @endif    
+@endisset
 <div class="form-group row">
     <label for="idclientereceita" class="col-sm-2 col-form-label">Cliente/Receita</label>
     <div class="col-sm-10 mb-3">
         <select name="idclientereceita" id="idclientereceita" class="selecionaComInput form-control"
-            style="width: -webkit-fill-available;" required {{ $variavelDisabledNaView }}>
+            style="width: -webkit-fill-available;" required  {{ $variavelDisabledNaView }}>
             @foreach ($todosClientesAtivos as $listaClientes)
                 <option value="{{ $listaClientes->id }}">
                     {{ $listaClientes->razaosocialCliente }}

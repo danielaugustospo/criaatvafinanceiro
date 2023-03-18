@@ -38,7 +38,7 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+@can('rel-fechamentofinal')
 
             dataSource: {
                 data: data,
@@ -67,16 +67,16 @@
             },
 
             columns: [
-                { field: "idOS", title: "OS", aggregates: ["count"], footerTemplate: "Total de OS: #=count#",  filterable: true, width: 10  },
-                { field: "dataCriacaoOrdemdeServico", title: "Data OS", filterable: true, width: 15, format: "{0:dd/MM/yyyy}",filterable: { cell: { template: betweenFilter}} },
-                // { field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 30, format: "{0:dd/MM/yyyy}" },
-                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 10 },
-                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 15 },
-                { field: "valorOrdemdeServico", title: "Valor do<br>Projeto", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "custo", title: "Total de<br>Custos", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "lucro", title: "Lucro ou<br>Prejuízo", filterable: true, width: 10, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "porcentagem", title: "Perc(%)", filterable: true, width: 10, decimals: 2, aggregates: ["average"], footerTemplate: calculaPorcentagem, format: '{0:0.00} %' },            
-                { field: "status", title: "Pago", filterable: true, width: 8 },            
+                { field: "idOS", title: "OS", aggregates: ["count"], footerTemplate: "Total de OS: #=count#",  filterable: true, width: 100  },
+                { field: "dataCriacaoOrdemdeServico", title: "Data OS", filterable: true, width: 150, format: "{0:dd/MM/yyyy}",filterable: { cell: { template: betweenFilter}} },
+                // { field: "datapagamentoreceita", title: "Data do Pagamento", filterable: true, width: 300, format: "{0:dd/MM/yyyy}" },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100 },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 150 },
+                { field: "valorOrdemdeServico", title: "Valor do<br>Projeto", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "custo", title: "Total de<br>Custos", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "lucro", title: "Lucro ou<br>Prejuízo", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "porcentagem", title: "Perc(%)", filterable: true, width: 100, decimals: 2, aggregates: ["average"], footerTemplate: calculaPorcentagem, format: '{0:0.00} %' },            
+                { field: "status", title: "Pago", filterable: true, width: 80},            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')

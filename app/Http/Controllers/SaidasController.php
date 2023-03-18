@@ -52,22 +52,19 @@ class SaidasController extends Controller
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
 
-        $saida       = $validacoesPesquisa[0];
-        $valor          = $validacoesPesquisa[1];
-        $dtinicio       = $validacoesPesquisa[2];
-        $dtfim          = $validacoesPesquisa[3];
-        $coddespesa     = $validacoesPesquisa[4];
-        $fornecedor     = $validacoesPesquisa[5];
-        $ordemservico   = $validacoesPesquisa[6];
-        $conta          = $validacoesPesquisa[7];
-        $notafiscal     = $validacoesPesquisa[8];
-        $cliente        = $validacoesPesquisa[9];
-        $fixavariavel   = $validacoesPesquisa[10];
-        $pago           = $validacoesPesquisa[11];
+        $codbarras               = $validacoesPesquisa[0];
+        $descricaosaida          = $validacoesPesquisa[1];
+        $nomeBensPatrimoniais      = $validacoesPesquisa[2];
+        $portador                = $validacoesPesquisa[3];
+        $ordemdeservico          = $validacoesPesquisa[4];
+        $dataretiradainicial     = $validacoesPesquisa[5];
+        $dataretiradafinal       = $validacoesPesquisa[6];
+        $datapararetornoinicial  = $validacoesPesquisa[7];
+        $datapararetornofinal    = $validacoesPesquisa[8];
 
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('saida', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago'));
+        return view($rota, compact('codbarras', 'descricaosaida', 'nomeBensPatrimoniais', 'portador', 'ordemdeservico', 'dataretiradainicial', 'dataretiradafinal', 'datapararetornoinicial', 'datapararetornofinal'));
     }
 
 
@@ -75,114 +72,102 @@ class SaidasController extends Controller
     {
         // TODO: Montar filtro genérico de despesas
 
-        // $descricao = $this->montaFiltrosConsulta($request);
-        $descricao = '';
-        $listaDespesas = DB::select('SELECT s.*, 
+        $descricao = $this->montaFiltrosConsulta($request);
+        // $descricao = '';
+        $listaDespesas = DB::select("SELECT s.*, 
         DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        CASE
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
+    	ELSE 'Sem contagem disponível'
+		END as qtddiaspararetorno,
          b.nomeBensPatrimoniais 
             FROM  saidas s 
-            LEFT JOIN benspatrimoniais b on s.idbenspatrimoniais = b.id
-            WHERE s.excluidosaida = 0' . $descricao);
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.excluidosaida = 0 AND e.excluidoestoque = 0 AND e.ativadoestoque = 0" . $descricao . " GROUP BY e.id");
 
         return $listaDespesas;
     }
 
     private function montaFiltrosConsulta($request)
     {
+
+  
         $descricao = "";
         $verificaInputCampos = 0;
-        if ($request->despesas) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
+        if ($request->codbarras) :     $descricao .= " AND s.codbarras =  '$request->codbarras'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->descricaosaida) :     $descricao .= " AND s.descricaosaida LIKE  '%$request->descricaosaida%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->descricaosaida) :     $descricao .= " AND s.descricaosaida LIKE  '%$request->descricaosaida%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->nomeBensPatrimoniais) :     $descricao .= " AND b.nomeBensPatrimoniais LIKE  '%$request->nomeBensPatrimoniais%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->portador) :     $descricao .= " AND s.portador LIKE  '%$request->portador%'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->ordemdeservico) :     $descricao .= " AND s.ordemdeservico LIKE  '%$request->ordemdeservico%'";
             $verificaInputCampos++;
         endif;
 
-        if ($request->coddespesa) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->fornecedor) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->ordemservico) : $descricao .= " AND d.idOS = '$request->ordemservico'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->valor) :        $descricao .= " AND d.precoReal = '$request->valor'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->conta) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->prolabore) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
-            $verificaInputCampos++;
-        endif;
-        if ($request->reembolso) : $descricao .= " AND d.reembolsado != '0'";
-            $verificaInputCampos++;
+        if ($request->dataretiradafinal) :        $dataretiradafinal    = $request->dataretiradafinal;
+        elseif ($verificaInputCampos == 0) : $dataretiradafinal = date('Y-m-t');
         endif;
 
-
-        if ($request->notafiscal) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->cliente) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->fixavariavel) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
-            $verificaInputCampos++;
-        endif;
-        if ($request->pago) :        $descricao .= " AND d.pago = '$request->pago'";
-            $verificaInputCampos++;
+        if ($request->dataretiradainicial) :     $descricao .= " AND s.dataretirada BETWEEN  '$request->dataretiradainicial' and '$dataretiradafinal'";
+        elseif ($verificaInputCampos == 0) :   $dataretiradainicial = date('Y-m') . '-01';
+            $descricao .= " AND s.dataretirada BETWEEN  '$dataretiradainicial' and '$dataretiradafinal'";
         endif;
 
-
-        if ($request->dtfim) :        $datafim    = $request->dtfim;
-        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
+        if ($request->datapararetornofinal) :        $datapararetornofinal    = $request->datapararetornofinal;
+        elseif ($verificaInputCampos == 0) : $datapararetornofinal = date('Y-m-t');
         endif;
 
-        if ($request->dtinicio) :     $descricao .= " AND d.vencimento BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
-            $descricao .= " AND d.vencimento BETWEEN  '$datainicio' and '$datafim'";
+        if ($request->datapararetornoinicial) :     $descricao .= " AND s.datapararetorno BETWEEN  '$request->datapararetornoinicial' and '$datapararetornofinal'";
+        elseif ($verificaInputCampos == 0) :   $datapararetornoinicial = date('Y-m') . '-01';
+            $descricao .= " AND s.datapararetorno BETWEEN  '$datapararetornoinicial' and '$datapararetornofinal'";
         endif;
         return $descricao;
     }
 
     private function validaPesquisa($request)
-    {
-        if ($request->get('despesas')) :     $despesas = $request->get('despesas');
-        else : $despesas = '';
+    {   
+        
+        if ($request->get('codbarras')) :     $codbarras = $request->get('codbarras');
+        else : $codbarras = '';
         endif;
-        if ($request->get('valor')) :        $valor = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valor'));
-        else : $valor = '';
+        if ($request->get('descricaosaida')) :     $descricaosaida = $request->get('descricaosaida');
+        else : $descricaosaida = '';
         endif;
-        if ($request->get('dtinicio')) :     $dtinicio = $request->get('dtinicio');
-        else : $dtinicio = '';
+        if ($request->get('nomeBensPatrimoniais')) :     $nomeBensPatrimoniais = $request->get('nomeBensPatrimoniais');
+        else : $nomeBensPatrimoniais = '';
         endif;
-        if ($request->get('dtfim')) :        $dtfim = $request->get('dtfim');
-        else : $dtfim = '';
+        if ($request->get('portador')) :     $portador = $request->get('portador');
+        else : $portador = '';
         endif;
-        if ($request->get('coddespesa')) :   $coddespesa = $request->get('coddespesa');
-        else : $coddespesa = '';
+        if ($request->get('ordemdeservico')) :     $ordemdeservico = $request->get('ordemdeservico');
+        else : $ordemdeservico = '';
         endif;
-        if ($request->get('fornecedor')) :   $fornecedor = $request->get('fornecedor');
-        else : $fornecedor = '';
+        if ($request->get('dataretiradainicial')) :     $dataretiradainicial = $request->get('dataretiradainicial');
+        else : $dataretiradainicial = '';
         endif;
-        if ($request->get('ordemservico')) : $ordemservico = $request->get('ordemservico');
-        else : $ordemservico = '';
+        if ($request->get('dataretiradafinal')) :     $dataretiradafinal = $request->get('dataretiradafinal');
+        else : $dataretiradafinal = '';
         endif;
-        if ($request->get('conta')) :        $conta = $request->get('conta');
-        else : $conta = '';
+        if ($request->get('datapararetornoinicial')) :     $datapararetornoinicial = $request->get('datapararetornoinicial');
+        else : $datapararetornoinicial = '';
         endif;
-        if ($request->get('notafiscal')) :    $notafiscal = $request->get('notafiscal');
-        else : $notafiscal = '';
-        endif;
-        if ($request->get('cliente')) :       $cliente = $request->get('cliente');
-        else : $cliente = '';
-        endif;
-        if ($request->get('fixavariavel')) :  $fixavariavel = $request->get('fixavariavel');
-        else : $fixavariavel = '';
-        endif;
-        if ($request->get('pago')) :        $pago = $request->get('pago');
-        else : $pago = '';
+        if ($request->get('datapararetornofinal')) :        $datapararetornofinal = $request->get('datapararetornofinal');
+        else : $datapararetornofinal = '';
         endif;
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago);
+        $solicitacaoArray = array($codbarras, $descricaosaida, $nomeBensPatrimoniais, $portador, $ordemdeservico, $dataretiradainicial, $dataretiradafinal, $datapararetornoinicial, $datapararetornofinal);
         return $solicitacaoArray;
     }
 
@@ -226,7 +211,7 @@ class SaidasController extends Controller
             // 'datapararetiradasaida'     => 'required',
             // 'dataretiradasaida'         => 'required', 
             // 'dataretornoretiradasaida'  => 'required',
-            // 'ocorrenciasaida'           => 'required',
+            // 'ocorrencia'           => 'required',
             // 'ativadosaida'              => 'required',    
             // 'excluidosaida'             => 'required'
         ]);
@@ -234,14 +219,14 @@ class SaidasController extends Controller
             $salvaSaidas = Saidas::create([
                 'codbarras'             => $request->codbarras,
                 'descricaosaida'        => $request->descricaosaida,
-                'idbenspatrimoniais'    => $request->idbenspatrimoniais,
+                // 'idbenspatrimoniais'    => $request->idbenspatrimoniais,
                 'excluidosaida'         => $request->excluidosaida,
                 'portador'              => $request->portadorsaida,
                 'ordemdeservico'        => $request->ordemdeservico,
                 'datapararetirada'      => $request->datapararetiradasaida,
                 'dataretirada'          => $request->dataretiradasaida,
                 'datapararetorno'       => $request->dataretornoretiradasaida,
-                'ocorrencia'            => $request->ocorrenciasaida,
+                'ocorrencia'            => $request->ocorrencia,
             ]);
             if($salvaSaidas){
             Estoque::where('codbarras', $request->codbarras)
@@ -272,7 +257,7 @@ class SaidasController extends Controller
      
             if($visualiza == 1){
                 $saidas = Saidas::find($id);
-                $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
+                $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id desc');
         
                 return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
             }
@@ -295,9 +280,22 @@ class SaidasController extends Controller
     public function show($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.show', compact('saidas', 'bensPatrimoniais'));
+        $listaSaidas = DB::select("SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        CASE
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
+    	ELSE 'Sem contagem disponível'
+		END as qtddiaspararetorno,
+        b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.id = $id and s.excluidosaida = 0");
+
+        return view('saidas.show', compact('saidas', 'listaSaidas'));
     }
 
 
@@ -311,9 +309,22 @@ class SaidasController extends Controller
     public function edit($id)
     {
         $saidas = Saidas::find($id);
-        $bensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais WHERE ativadobenspatrimoniais = 1 order by id =' . $saidas->idbenspatrimoniais . ' desc');
 
-        return view('saidas.edit', compact('saidas', 'bensPatrimoniais'));
+        $listaSaidas = DB::select("SELECT s.*, 
+        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
+        CASE
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
+    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
+    	ELSE 'Sem contagem disponível'
+		END as qtddiaspararetorno,
+        b.nomeBensPatrimoniais 
+            FROM  saidas s 
+            LEFT JOIN estoque e on s.codbarras = e.codbarras
+            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            WHERE s.id = $id and s.excluidosaida = 0");
+
+        return view('saidas.edit', compact('saidas', 'listaSaidas'));
     }
 
 
@@ -336,7 +347,7 @@ class SaidasController extends Controller
             'datapararetiradasaida'     => 'required',
             // 'dataretiradasaida'         => 'required', 
             'dataretornoretiradasaida'  => 'required',
-            'ocorrenciasaida'           => 'required',
+            'ocorrencia'           => 'required',
             // 'ativadosaida'              => 'required',    
             'excluidosaida'             => 'required'
         ]);
@@ -350,7 +361,7 @@ class SaidasController extends Controller
         $saidas->datapararetiradasaida      = $request->input('datapararetiradasaida');
         $saidas->dataretiradasaida          = $request->input('dataretiradasaida');
         $saidas->dataretornoretiradasaida   = $request->input('dataretornoretiradasaida');
-        $saidas->ocorrenciasaida            = $request->input('ocorrenciasaida');
+        $saidas->ocorrencia                 = $request->input('ocorrencia');
         // $saidas->ativadosaida               = $request->input('ativadosaida');
         $saidas->excluidosaida              = $request->input('excluidosaida');
         $saidas->save();

@@ -229,6 +229,7 @@ public function apibenspatrimoniais(Request $request)
         $benspatrimoniais->qtdestoqueminimo             = $request->input('qtdestoqueminimo');
         $benspatrimoniais->descricaoBensPatrimoniais    = $request->input('descricaoBensPatrimoniais');
         $benspatrimoniais->statusbenspatrimoniais       = $request->input('statusbenspatrimoniais');
+        $benspatrimoniais->unidademedida                = $request->input('unidademedida');
         $benspatrimoniais->save();
 
 

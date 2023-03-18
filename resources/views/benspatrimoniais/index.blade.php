@@ -12,8 +12,7 @@
     <div class="pull-left">
       <h2 class="text-center">Bens Patrimoniais / Catálogo de Materiais</h2>
     </div>
-    <div class="d-flex justify-content-between pull-right">
-      @can('benspatrimoniais-create')
+      {{-- @can('benspatrimoniais-create')
       <a class="btn btn-success" href="{{ route('benspatrimoniais.create') }}"> Adicionar item</a>
       @endcan
 
@@ -27,11 +26,19 @@
 
       @can('estoque-list')
         <a class="btn btn-success" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
-      @endcan
+      @endcan --}}
+
+      <div class="form-row d-flex justify-content-center">
+        
+        <a href="{{ route('benspatrimoniais.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> CATALOGAR MATERIAL</a>
+        <a href="{{ route('estoque.index') }}"  class="btn btn-secondary"><i class="fa fa-list" aria-hidden="true"></i> Estoque (Inventário) </a>
+
+
+    </div>
 
       {{-- @include('layouts/exibeFiltro') --}}
 
-    </div>
+    {{-- </div> --}}
   </div>
 </div>
 
@@ -42,12 +49,10 @@
 </div>
 @endif
 
-<hr>
-{{-- @include('benspatrimoniais/filtroindex') --}}
-
+<hr class="m-1">
 
 <div id="filter-menu"></div>
-<br /><br />
+
 <div id="grid"></div>
 
 <script>
@@ -101,24 +106,33 @@
         template: $("#page-template").html(),
         scale: 0.8
       },
+      
       dataSource: {
         data: data,
-        pageSize: 15,
+        pageSize: 100,
 
       },
-      height: 550,
-      filterable: true,
+      height: '65%',
+      filterable: {
+          extra: false,
+          mode: "row"
+      },
       sortable: true,
       resizable: true,
-      // responsible: true,
+      scrollable: true,
+      groupable: true,
+      columnMenu: true,
+      responsible: true,
+      reorderable: true,
+      width: 'auto',
       pageable: {
-        pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-        numeric: false
+          pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+          numeric: false
       },
       columns: [
-        { field: "id", title: "ID", filterable: true, width: 30 },
-        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: 200 },
-        { field: "qtdestoqueminimo", title: "Estoque Mínimo", filterable: true, width: 100 },
+        { field: "id", title: "ID", filterable: true, width: '10%' },
+        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '70%' },
+        { field: "qtdestoqueminimo", title: "Estoque Mín.", filterable: true, width: '10%' },
 
         {
           command: [{
@@ -130,7 +144,7 @@
               window.location.href = location.href + '/' + data.id;
             }
           }],
-          width: 50,
+          width: '10%',
           exportable: false,
         },
         {
@@ -143,7 +157,7 @@
               window.location.href = location.href + '/' + data.id + '/edit';
             }
           }],
-          width: 40,
+          width: '10%',
           exportable: false,
         },
       ],

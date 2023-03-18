@@ -21,13 +21,19 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
             <div class="pull-left">
                 <h2 class="text-center">Consulta do {{ $titulo }}</h2>
                 <div class="form-row d-flex justify-content-center">
-
+                    <a href="{{ route('entradas.create') }}?metodo=novo" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> ENTRADA</a>
+                    <a href="{{ route('entradas.create') }}?metodo=devolucao" class="btn btn-primary"><i class="fa fa-retweet" aria-hidden="true"></i> DEVOLUÇÃO</a>
+                    <a href="{{ route('saidas.create') }}" class="btn btn-danger"><i class="fa fa-minus-circle" aria-hidden="true"></i> SAÍDA</a>
+{{-- 
                     @can('despesa-create')
                         <a class="btn btn-dark d-flex justify-content-center" href="{{ route('despesas.create') }}">Cadastrar
                             Despesas</a>
                     @endcan
                     <a class="btn btn-primary d-flex justify-content-center" data-toggle="modal" data-target=".modaldepesas"
-                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
+                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a> --}}
+{{-- 
+                        <a class="btn btn-secondary d-flex justify-content-center" data-toggle="modal" data-target=".pesquisaHibridaEstoque"
+                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a> --}}
                 </div>
             </div>
         </div>
@@ -153,7 +159,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 codbarras: {
                                     type: "string"
                                 },
-                                nomematerial: {
+                                nomeBensPatrimoniais: {
                                     type: "string"
                                 },
                                 descricao: {
@@ -166,22 +172,16 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         },
                     },
 
-
-                    aggregate: [{
-                            field: "razaosocialFornecedor",
+                    group: {
+                    field: "nomeBensPatrimoniais",
+                    aggregates: [{
+                            field: "nomeBensPatrimoniais",
                             aggregate: "count"
-                        },
-                        {
-                            field: "precoReal",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "vale",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "despesareal",
-                            aggregate: "sum"
+                        }]
+                },
+                    aggregate: [{
+                            field: "nomeBensPatrimoniais",
+                            aggregate: "count"
                         }
                     ],
 
@@ -200,8 +200,11 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         autowidth: true
                     },
                     {
-                        field: "nomematerial",
+                        field: "nomeBensPatrimoniais",
                         title: "Nome Material",
+                        aggregates: ["count"],
+                        footerTemplate: "ITENS BUSCADOS: #=count#",
+                        groupHeaderColumnTemplate: "QUANTIDADE: #=count#",
                         filterable: true,
                         autowidth: true
                     },
@@ -209,14 +212,14 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "descricao",
                         title: "Descrição",
                         filterable: true,
-                        width: 90
+                        autowidth: true
                     },
-                    {
-                        field: "idbensPatrimoniais",
-                        title: "Id Material",
-                        filterable: true,
-                        width: 200
-                    },
+                    // {
+                    //     field: "idbensPatrimoniais",
+                    //     title: "Id Material",
+                    //     filterable: true,
+                    //     width: 200
+                    // },
                     {
                         command: [{
                             name: "Visualizar",
@@ -232,21 +235,21 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         width: 130,
                         exportable: false,
                     },
-                    {
-                        command: [{
-                            name: "Editar",
-                            click: function(e) {
-                                e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
-                                var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/estoque/" +
-                                    data.id + '/edit';
-                            }
-                        }],
-                        autowidth: true,
-                        exportable: false,
-                    },
+                    // {
+                    //     command: [{
+                    //         name: "Editar",
+                    //         click: function(e) {
+                    //             e.preventDefault();
+                    //             var tr = $(e.target).closest(
+                    //                 "tr"); // get the current table row (tr)
+                    //             var data = this.dataItem(tr);
+                    //             window.location.href = "@php echo env('APP_URL'); @endphp" + "/estoque/" +
+                    //                 data.id + '/edit';
+                    //         }
+                    //     }],
+                    //     autowidth: true,
+                    //     exportable: false,
+                    // },
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {
@@ -334,4 +337,5 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
         @include('layouts/filtradata')
     </script>
+ 
 @endsection

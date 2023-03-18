@@ -28,13 +28,32 @@
     <label for="idTipoBensPatrimoniais" class="col-sm-2 col-form-label">Tipo de Bem Patrimonial</label>
     <div class="col-sm-10">
         <select name="idTipoBensPatrimoniais" id="idTipoBensPatrimoniais" class="selecionaComInput form-control">
+            @if (!isset($benspatrimoniais->idTipoBensPatrimoniais))
+            <option selected>Selecione</option>
+            @endif
             @foreach ($tipoBensPatrimoniais as $tipo)
-            <option value="{{ $tipo->id }}">{{ $tipo->name }}</option>
+            <option value="{{ $tipo->id }}"  @if (isset($benspatrimoniais) && $benspatrimoniais->idTipoBensPatrimoniais == $tipo->id) selected @endif>{{ $tipo->name }}</option>
             @endforeach
         </select>
         <!-- {!! Form::text('idTipoBensPatrimoniais', '', ['placeholder' => 'Tipo de Bem Patrimonial', 'class' => 'form-control', 'maxlength' => '8', 'id' => 'idTipoBensPatrimoniais','onblur' =>'pesquisacep(this.value)']) !!} -->
     </div>
 
+</div>
+<div class="form-group row">
+    <label for="unidademedida" class="col-sm-2 col-form-label">Unidade</label>
+    <div class="col-sm-6">
+        <select name="unidademedida" id="unidademedida" class="selecionaComInput form-control">
+            @if (!isset($benspatrimoniais->unidademedida))
+            <option selected>Selecione</option>
+            @endif
+            @foreach ($listaUnidadeMedida as $unidade)
+            <option value="{{ $unidade->id }}" @if (isset($benspatrimoniais) && $benspatrimoniais->unidademedida == $unidade->id) selected @endif>
+                {{ $unidade->sigla }} | {{ $unidade->nomeunidade }}
+            </option>
+            @endforeach
+
+        </select>
+    </div>
 </div>
 <div class="form-group row">
 

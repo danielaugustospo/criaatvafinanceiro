@@ -1,7 +1,13 @@
-<?php //use App\Providers\AppServiceProvider;
+<?php use App\Providers\AppServiceProvider;
 ?>
 
-<nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
+<nav class="navbar navbar-expand-md navbar-dark navbar-laravel" id="navbar"
+@can('sandbox-modify')
+    @if($modoSandbox->ativo == '1' || $modoSandbox->ativo == 1)
+        style="background-color:darkorange !important;"
+    @endif
+@endcan    
+>
     @yield('nav')
     <div class="container" style="max-width: fit-content !important;">
         <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>
@@ -94,7 +100,7 @@
                     </li>
 
                     <li class="nav-item ">
-                        @can('visualiza-relatoriogeral')
+                        @can('relatorio-list')
                             <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
                                 Relatórios <span class="caret"></span>
                             </a>
@@ -106,7 +112,7 @@
                         </div>
                     </li>
 
-                    {{-- @can('pedidocompra-list')
+                    @can('pedidocompra-list')
                         <li class="nav-item dropdown">
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -169,7 +175,7 @@
                                 @endcan
                             </div>
                         </li>
-                    @endcan --}}
+                    @endcan
 
                     <li class="nav-item dropdown">
                         @can('fornecedor-list')
@@ -342,7 +348,9 @@
             </ul>
         </div>
     </div>
+
 </nav>
+
 
 
 <!-- Modal -->
@@ -456,17 +464,37 @@
 
 
 <datalist id="datalistIdDespesa">
-    @foreach ($listaDespesas as $despesas)
-        <option value="{{ $despesas->id }}">{{ $despesas->id }}
-        </option>
-    @endforeach
+    @can('despesa-list-all')
+        @foreach ($listaDespesas as $despesas)
+            <option value="{{ $despesas->id }}">{{ $despesas->id }}
+            </option>
+        @endforeach
+    @endcan
+    @can('despesa-list')
+        @foreach ($listaDespesas as $despesas)
+            @if ($despesas->idAutor == Auth::user()->id)
+                <option value="{{ $despesas->id }}">{{ $despesas->id }}
+                </option>
+            @endif
+        @endforeach
+    @endcan
 </datalist>
 
 <datalist id="datalistDescricaoDespesa">
-    @foreach ($listaDespesas as $despesas)
-        <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
-        </option>
-    @endforeach
+    @can('despesa-list-all')
+        @foreach ($listaDespesas as $despesas)
+            <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
+            </option>
+        @endforeach
+    @endcan
+    @can('despesa-list')
+        @foreach ($listaDespesas as $despesas)
+            @if ($despesas->idAutor == Auth::user()->id)
+                <option value="{{ $despesas->descricaoDespesa }}">{{ $despesas->descricaoDespesa }}
+                </option>
+            @endif
+        @endforeach
+    @endcan
 </datalist>
 
 <datalist id="datalistOrdemServico">

@@ -57,6 +57,19 @@
         const dataAtual = new Date();
         const anoAtual = dataAtual.getFullYear();
 
+        @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+            function addHours(numOfHours, date = new Date()) {
+                date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+                return date;
+            }
+            vencimentoNovo = addHours(26.999, new Date(vencimento));
+
+            if (vencimentoNovo < dataAtual) {
+                texto = "Data do vencimento é menor do que a data atual";
+                alertaErros(texto, contadorErros++);
+            }
+        @endif
+
         if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
             texto = texto +
                 '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento</label></br>';

@@ -25,4 +25,12 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function getTimeRemaining()
+    {
+        $expiresAt = session()->get('expires_at');
+        $currentTime = now();
+        $remainingTime = $expiresAt->diffInSeconds($currentTime);
+        return response()->json(['remaining_time' => $remainingTime]);
+    }
 }

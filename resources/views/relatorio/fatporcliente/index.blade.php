@@ -23,18 +23,26 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <label for="">Exibindo filtros para:</label>
+                <label for="">Filtro selecionado:</label>
                 @php
                 if ($_SERVER['QUERY_STRING'] == 'p=s'):
                     $complementorota = 'S';
-                    echo ' <span class="badge badge-primary"><label class="pt-1">Pago</label></span>';
+                    echo ' <span class="ml-2 badge badge-primary"><label class="pt-1">Pago</label></span>';
                     echo '<label class="pl-2"><a href="fatporcliente?p=n"> Alterar para Não Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente"> Listar Todos</a></label>';
+
                 elseif ($_SERVER['QUERY_STRING'] == 'p=n'):
                     $complementorota = 'N';
-                    echo ' <span class="badge badge-danger"><label class="pt-1">Não Pago</label></span>';
+                    echo ' <span class="ml-2 badge badge-danger"><label class="pt-1">Não Pago</label></span>';
                     echo '<label class="pl-2"><a href="fatporcliente?p=s"> Alterar para Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente"> Listar Todos</a></label>';
+
                 else:
                     $complementorota = null;
+                    echo ' <span class="ml-2 badge badge-primary"><label class="pt-1">Pago e Não Pago</label></span>';
+                    echo '<label class="pl-2 text-danger"><a class="text-danger" href="fatporcliente?p=n"> Alterar para Não Pago</a></label>';
+                    echo '<label class="pl-2"><a href="fatporcliente?p=s"> Alterar para Pago</a></label>';
+
                 endif;
                 @endphp
             </div>
@@ -117,7 +125,10 @@
                     // { field: "valorrecebido", title: "Valor Recebido", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') # ", format: '{0:0.00}' },
 
                     // { field: "porcentagemOS", title: "Perc(%)", filterable: true, width: 20,  format: '{0:0.00}'}
-                    { field: "porcentagemOS", title: "Perc(%)", width: 180, template:template }
+                    { field: "porcentagemOS", title: "Perc(%)", width: 180, template:template },
+                    @if($_SERVER['QUERY_STRING'] != 'p=s' && $_SERVER['QUERY_STRING'] != 'p=n')
+                        { field: "pagoreceita", title: "Pago", width: 180 }
+                    @endif
                 ],
 
                 @include('layouts/helpersview/finaltabela')

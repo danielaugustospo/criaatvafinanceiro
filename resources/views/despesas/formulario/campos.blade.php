@@ -63,20 +63,48 @@
         </div>
 
     </div>
+    
+    <div class=" form-group row" id="telaPrestador">
+        <label for="valorUnitario" class="col-sm-2 col-form-label">Código Funcionário</label>
+        <div class="col-sm-7">
+            <select name="idFuncionario" id="idFuncionario" class="selecionaComInput form-control col-sm-10"
+                    {{ $variavelDisabledNaView }}>
+
+                    @if (!isset($despesa->idFuncionario) ||
+                        $despesa->idFuncionario == null ||
+                        $despesa->idFuncionario == '' ||
+                        $despesa->idFuncionario == 0)
+                        {!! $infoSelectVazio !!}
+                    @else
+                    {!! $infoSelectVazio !!}
+                    @endif
+
+                    @foreach ($listaFuncionarios as $funcionario)
+                        <option value="{{ $funcionario->id }}" @if (isset($despesa) && $despesa->idFuncionario == $funcionario->id) selected @endif>
+                            {{ $funcionario->nomeFuncionario }}
+                        </option>
+                    @endforeach
+                        
+
+                </select>
+        </div>
+        </div>
+
+        {{-- Tela Prestador de Serviços --}}
 
     <div class="form-group row" id="telaOS">
         <label for="idOS" class="col-sm-2 col-form-label">OS</label>
         <div class="col-sm-7">
 
             <select name="idOS" id="idOS" class="selecionaComInput col-sm-10" {{ $variavelDisabledNaView }}>
-                <option value="CRIAATVA">SEM OS</option>
+                <option value="EMPRESA GERAL">SEM OS</option>
                 @foreach ($todasOSAtivas as $listaOS)
                     @isset($despesa)
                         @if ($despesa->idOS == $listaOS->id)
                             <option value="{{ $listaOS->id }}" selected>{{ $listaOS->id }} |
                                 {{ $listaOS->eventoOrdemdeServico }}</option>
-                            @if ($despesa->idOS == 'CRIAATVA')
-                                <option value="CRIAATVA" selected>SEM OS</option>
+                            @if ($despesa->idOS == 'EMPRESA GERAL')
+                                <option value="EMPRESA GERAL" selected>SEM OS</option>
                             @endif
                         @endif
                     @endisset
@@ -95,9 +123,13 @@
 
             <div id="despesaCompra">
                 <select class="selecionaComInput form-control descricaoDespesaCompra" id="descricaoDespesa"
-                    name="descricaoDespesaCompra">
-                    @if (!isset($despesa))
-                        <option disabled selected>Selecione...</option>
+                    name="descricaoDespesaCompra" {{$variavelDisabledNaView}}>
+
+                    @if (!isset($despesa->descricaoDespesa) ||
+                    $despesa->descricaoDespesa == null ||
+                    $despesa->descricaoDespesa == '' ||
+                    $despesa->descricaoDespesa == 0)
+                    {!! $infoSelectVazio !!}
                     @endif
                     @foreach ($listaBensPatrimoniais as $bempatrimonial)
                         <option value="{{ $bempatrimonial->id }}" @php
@@ -217,7 +249,7 @@
 
     {{-- Tela Quantidade --}}
     <div class="form-group row" id="telaQuantidade">
-        <label for="quantidade" class="col-sm-2 col-form-label">Quantidade / Unidade</label>
+        <label for="quantidade" class="col-sm-2 col-form-label">Quantidade</label>
         <div class="col-sm-2">
             {!! Form::text('quantidade', $valorInput, [
                 'placeholder' => 'Preencha este campo',
@@ -448,31 +480,8 @@
             <label for="despesaFixa" class="text-center col-sm-12 mt-5 pr-2" style="color:red;">Esta despesa já é uma
                 despesa fixa. Despesa Pai id n°{{ $despesa->idDespesaPai }}</label>
         @endif
-
-        {{-- Tela Prestador de Serviços --}}
-        <div class="ml-5 pl-5 form-group row" id="telaPrestador">
-            <label for="" class="col-sm-3 col-form-label ">Código Funcionário</label>
-            <div class="col-sm-6">
-                <select name="idFuncionario" id="idFuncionario" class="selecionaComInput form-control col-sm-12"
-                    {{ $variavelDisabledNaView }}>
-
-                    @if (!isset($despesa->idFuncionario) ||
-                        $despesa->idFuncionario == null ||
-                        $despesa->idFuncionario == '' ||
-                        $despesa->idFuncionario == 0)
-                        {!! $infoSelectVazio !!}
-                    @endif
-
-                    @foreach ($listaFuncionarios as $funcionario)
-                        <option value="{{ $funcionario->id }}" @if (isset($despesa) && $despesa->idFuncionario == $funcionario->id) selected @endif>
-                            {{ $funcionario->nomeFuncionario }}
-                        </option>
-                    @endforeach
-
-
-                </select>
-            </div>
-        </div>
+        
+       
 
     </div>
 

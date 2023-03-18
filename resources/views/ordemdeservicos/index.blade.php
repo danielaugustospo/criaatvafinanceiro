@@ -4,19 +4,19 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
-        <hr class="col-sm-5">
+        {{-- <hr class="col-sm-5"> --}}
 
         <div class="pull-left">
             <h2 class="text-center">Consulta de OS</h2>
         </div>
-        <hr class="col-sm-5">
-        <div class="d-flex justify-content-between pull-right">
+        <div class="form-row d-flex justify-content-center">
             @can('ordemdeservico-create')
             <a class="btn btn-success ml-3" href="{{ route('ordemdeservicos.create') }}"> Cadastrar OS</a>
             @endcan
             <input class="btn btn-primary" id="btnReveal" style="cursor:pointer;" value="Exibir Busca" readonly>
             <input class="btn btn-secondary" id="btnEsconde" style="cursor:pointer;" value="Ocultar Busca" readonly>
         </div>
+        
     </div>
 </div>
 
@@ -33,7 +33,7 @@
 
 <div class="container shadowDiv mb-5 p-2 rounded" style="background-color: white !important;" id="container">
 
-    <table class="table table-bordered data-table">
+    <table class="table table-bordered data-table"  style="width:100%">
         <thead>
             <tr>
                 <th class="text-center">N° OS</th>
@@ -70,9 +70,15 @@
     })
 
     var table = $('.data-table').DataTable({
+
+        responsible: true,
+        scrollY: 200,
+        scrollX: true,
+
+
         processing: true,
         serverSide: true,
-        "iDisplayLength": 10,
+        "iDisplayLength": 5,
         "aLengthMenu": [
             [5, 10, 25, 50, 100, 200, -1],
             ['5 resultados', '10  resultados', '25  resultados', '50  resultados', '100  resultados', '200  resultados', "Listar Tudo"]

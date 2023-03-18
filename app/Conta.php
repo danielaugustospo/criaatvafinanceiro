@@ -47,10 +47,14 @@ class Conta extends Model
         FROM (
     
         SELECT id, dtoperacao, historico, idosreceita, apelidoConta as conta, idconta, valorreceita, pagoreceita, nomeFormaPagamento,
-        SUM(valorreceita) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo
-    
-            from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, `receita`.`descricaoreceita` as historico, `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
-             `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento 
+        SUM(CAST(valorreceita AS DECIMAL(10,2))) OVER (PARTITION BY conta order by dtoperacao, id) AS saldo, created_at
+         
+            from ((select concat('C-',`receita`.`id`) as id, `receita`.`datapagamentoreceita` as dtoperacao, 
+                        
+            `receita`.`descricaoreceita` as historico, 
+            
+            `conta`.`apelidoConta`, conta.id as idconta, `receita`.`valorreceita`,
+             `receita`.`idosreceita`, `receita`.`pagoreceita` , formapagamento.nomeFormaPagamento, receita.created_at
             
             from receita 
             
@@ -67,7 +71,7 @@ class Conta extends Model
             
             
             `conta`.`apelidoConta`, conta.id as idconta, `despesas`.`precoReal` * (-1),
-             `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento
+             `despesas`.`idOS`, `despesas`.`pago` as pagoreceita, formapagamento.nomeFormaPagamento, despesas.created_at
             
             from despesas
             
@@ -85,9 +89,6 @@ class Conta extends Model
             ) as selecionageral
             $complemento " ;
 
-// var_dump($stringQueryExtrato);
-// exit;
-
         return $stringQueryExtrato;
     }
 
@@ -98,9 +99,8 @@ class Conta extends Model
         os.dataCriacaoOrdemdeServico, 
         os.eventoOrdemdeServico, 
         os.valorOrdemdeServico, 
-        SUM(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'S' THEN receita.valorreceita ELSE 0 END) as 'receitapaga',
-        SUM(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'N' THEN receita.valorreceita ELSE 0 END) as 'valorareceber'
-        
+        SUM(CAST(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'S' THEN receita.valorreceita ELSE 0 END AS DECIMAL(10,2))) as 'receitapaga',
+        SUM(CAST(CASE WHEN receita.idosreceita = os.id and receita.pagoreceita = 'N' THEN receita.valorreceita ELSE 0 END AS DECIMAL(10,2))) as 'valorareceber'
         from ordemdeservico os, receita, clientes 
         
         GROUP by os.id";

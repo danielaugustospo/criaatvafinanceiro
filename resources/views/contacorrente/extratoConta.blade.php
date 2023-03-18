@@ -1,15 +1,18 @@
 @php 
     $intervaloCelulas = "A1:G1"; 
     // $rotaapi = "apiextratocontarelatorio";
-    $titulo  = "Conta Corrente";
-    $campodata = 'dtoperacao';
-    $contaSelecionada = $contaSelecionada; 
-    $datainicial = $datainicial;
-    $datafinal = $datafinal;
-    $conta          = $conta;
-    $saldoInicial   = $saldoInicial;
-    $saldoFinal     = $saldoFinal;
-    $contacorrente     = 1;
+    $titulo             = "Conta Corrente";
+    $campodata          = 'created_at';
+    $contaSelecionada   = $contaSelecionada; 
+    $datainicial        = $datainicial;
+    $datafinal          = $datafinal;
+    $conta              = $conta;
+    $saldoInicial       = $saldoInicial;
+    $saldoFinal         = $saldoFinal;
+    // $dtiniciolancamento = $dtiniciolancamento; 
+    // $dtfimlancamento    = $dtfimlancamento; 
+
+    $contacorrente      = 1;
     $relatorioKendoGrid = true;
 
     $urlContaCorrente = route('apiextratocontarelatorio');
@@ -73,8 +76,10 @@
                     model: {
                         fields: {
                             dtoperacao: { type: "date" },
+                            created_at: { type: "date" },
                             valorreceita: { type: "number" },
-                            saldo: { type: "number" },
+                            saldoNovo: { type: "number" },
+                            // saldoTeste: { type: "number" },
                             conta: { type: "string" },
                         }
                     },
@@ -98,21 +103,31 @@
             },
 
             columns: [
-                { field: "id", title: "ID", filterable: true, width: 80 },
-                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: 80  , filterable: false},
-                { field: "historico", title: "Histórico", filterable: true, width: 180  },
-                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: 100  },
+                { field: "id", title: "ID", filterable: true, width: 100 },
+                { field: "dtoperacao", title: "Data",  format: "{0:dd/MM/yyyy}", width: 100  , filterable: false},
+                { field: "historico", title: "Histórico", filterable: true, width: 300  },
+                { field: "nomeFormaPagamento", title: "Forma PG", filterable: true,  width: 150  },
                 // { field: "conta", title: "Conta", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
                 // { field: "vencimento", title: "Vencimento", filterable: true, width: 100, format: "{0:dd/MM/yyyy}" },
-                { field: "valorreceita", title: "Valor", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
+                { field: "valorreceita", title: "Valor", filterable: true,  width: 150, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Mov.: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 
                 // Retirada solicitada pelo Nelio dia 30/04/2022
-                { field: "saldo", title: "Saldo", filterable: true,  width: 80, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                { field: "saldoNovo", title: "Saldo", filterable: true,  width: 150, decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                // { field: "saldoTeste", title: "saldoTeste", filterable: true,  width: "10%", decimals: 2, aggregates: ["sum"], format: '{0:0.00}', groupHeaderColumnTemplate: '@php $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); echo ' SALDO INICIAL:' . $numberFormatter->format($saldoInicial); @endphp', footerTemplate: '@php echo ' SALDO FINAL:' . $numberFormatter->format($saldoFinal); @endphp' },
+                { field: "created_at", title: "Lançamento",  format: "{0:dd/MM/yyyy}", 
+                    filterable: {
+                        cell: {
+                            template: betweenFilter
+                            }
+                        },
+                    width: 150},
                 
                 // { field: "notaFiscal", title: "Nota Fiscal", filterable: true, width: 100 },
             ],
 
             @include('layouts/helpersview/finaltabela')
+            @include('layouts/filtradata')
+
            
 </script>
 

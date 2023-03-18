@@ -1,6 +1,10 @@
+@php 
+    $numberFormatter = new \NumberFormatter('pt-BR',\NumberFormatter::CURRENCY); 
+    setlocale(LC_MONETARY, 'pt_BR');
+@endphp
 <div id="informacoes" class="d-flex justify-content-center">
 
-    @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == '')
+    @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == ''&& $dtiniciolancamento == '' && $dtfimlancamento == '')
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
         <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
@@ -41,6 +45,12 @@
     @endif
     @if ($pago != '')
         <label class="fontenormal"><b>Pago:</b> {{ $pago }} &nbsp; </label>
+    @endif
+    @if ($dtiniciolancamento != '')
+    <label class="fontenormal"><b>Dt Lançamento Inicial:</b> {{ date('d/m/Y', strtotime($dtiniciolancamento)) }} &nbsp; </label>
+    @endif
+    @if ($dtfimlancamento != '')
+        <label class="fontenormal"><b>Dt Lançamento Final:</b> {{ date('d/m/Y', strtotime($dtfimlancamento)) }} &nbsp; </label>
     @endif
 
 

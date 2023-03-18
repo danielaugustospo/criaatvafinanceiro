@@ -1,4 +1,6 @@
 @extends('ordemdeservicos.estilo')
+@include('layouts/cadastracliente')
+
 <div class="form-group row">
     <label for="dataVendaOrdemdeServico" class="col-sm-2 col-form-label">Data Início</label>
     <div class="col-sm-6">
@@ -13,7 +15,7 @@
 <div class="form-group row">
 
     <label for="idClienteOrdemdeServico" class="col-sm-2 col-form-label">Cliente</label>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <select name="idClienteOrdemdeServico" id="idClienteOrdemdeServico" class="selecionaComInput form-control">
             <option value="" selected disabled>Selecione...</option>
             @foreach ($cliente as $clientes)
@@ -21,6 +23,13 @@
                     @if (isset($ordemdeservico)) @if ($ordemdeservico->idClienteOrdemdeServico == $clientes->id) selected @endif @endif>{{ $clientes->razaosocialCliente }}</option>
             @endforeach
         </select>
+    </div>
+
+    <div class="col-sm-2 pl-0">
+        <button type="button" onclick="recarregaComboCliente()" class="btn btn-dark"><i
+                class="fas fa-sync"></i></i></button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".cliente"><i
+                class="fas fa-industry pr-1"></i>Novo Cliente</button>
     </div>
 
 
@@ -62,14 +71,18 @@
 <div class="form-group row">
     {{-- <label for="">Serviço com fator R?</label> --}}
     <label for="fatorR" class="col-sm-2 col-form-label">Serviço com fator R?</label>
-
-    <input type="radio" class="mt-3" name="fatorR" id="fatorR" value="0"
+    <div class="ml-4 row mt-3">
+        
+        <input type="radio"  name="fatorR" id="fatorR" value="0"
         @if (isset($ordemdeservico->fatorR) && $ordemdeservico->fatorR == '0') checked @endif>
-    <label for="fatorR" class="col-sm-1  mt-3 pl-0 col-form-label">Não</label>
-    <input type="radio" class="mt-3" name="fatorR" id="fatorR" value="1"
-        @if (isset($ordemdeservico->fatorR) && $ordemdeservico->fatorR == '1') checked @endif>
-    <label for="fatorR" class="col-sm-1 mt-3 pl-0 col-form-label">Sim</label>
-
+        <label for="fatorR" class="col-sm-1 p-0 col-form-label">Não</label>
+    </div>
+    <div class="ml-4 row mt-3">
+        
+            <input type="radio" name="fatorR" id="fatorR" value="1"
+                @if (isset($ordemdeservico->fatorR) && $ordemdeservico->fatorR == '1') checked @endif>
+            <label for="fatorR" class="col-sm-1 p-0 col-form-label">Sim</label>
+    </div>
 </div>
 
 
@@ -187,6 +200,24 @@
 
 
 <script>
+    function recarregaComboCliente() {
+        $('#idClienteOrdemdeServico').select2('destroy');
+
+        let dropdown = $('#idClienteOrdemdeServico');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>SELECIONE O CLIENTE...</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        const url = "{{ route('listaClientes') }}";
+
+        $.getJSON(url, function(data) {
+            $.each(data, function(key, dadosjson) {
+                dropdown.append($('<option></option>').attr('value', dadosjson.id).text(dadosjson.razaosocialCliente));
+            })
+        });
+        $('#idClienteOrdemdeServico').select2();
+    }
+
     function pegaIdFornecedor() {
         var selecionado = $('#pagoreceita').find(':selected').val();
     }
@@ -337,6 +368,20 @@
         for (var i = 0; i < vencimentoTabela.length; i++) {
             data.push(vencimentoTabela[i].value);
             vencimento = vencimentoTabela[i].value;
+
+            @if($modoSandbox->ativo == '0' || $modoSandbox->ativo == 0)
+            function addHours(numOfHours, date = new Date()) {
+                date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+                return date;
+            }
+            vencimentoNovo = addHours(26.999, new Date(vencimento));
+
+            if (vencimentoNovo < dataAtual) {
+                texto = texto +
+                '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                alertaErros(texto, contadorErros++);
+            }
+            @endif
             
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +
@@ -389,7 +434,7 @@
         console.log('erros: ' + contadorErros);
         console.log('dt dif: ' + contadorDatasDiferentesAnoAtual);
         if (contadorDatasDiferentesAnoAtual == 0 && contadorErros == 0) {
-            // return contadorErros;
+            return contadorErros;
         }
 
     }

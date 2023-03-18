@@ -21,6 +21,7 @@ class BensPatrimoniais extends Model
         'ativadoBensPatrimoniais',
         'excluidoBensPatrimoniais',
         'statusbenspatrimoniais',
-        'qtdestoqueminimo'
+        'qtdestoqueminimo',
+        'unidademedida'
         ];
 }

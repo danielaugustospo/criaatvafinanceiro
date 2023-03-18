@@ -85,7 +85,7 @@
     </div>
     <div class="row d-flex justify-content-center">
         <h5 class="col-sm-3" for="">Mês/Ano</h5>
-        <input type="month" class="form-control col-sm-3 campo-aliquota" name="mes" id="mes" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->mes; else: echo ''; endif ?>" {{$readonlyOuNao}}>
+        <input type="month" class="form-control col-sm-3" name="mes" id="mes" required value="<?php if(isset($dadosaliquotamensal)): echo $dadosaliquotamensal->mes; else: echo ''; endif ?>" {{$readonlyOuNao}}>
     </div>
     <div class="row d-flex justify-content-center">
         <h5 class="col-sm-3" for="">DAS Sem Fator</h5>

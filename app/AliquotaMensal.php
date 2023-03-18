@@ -15,6 +15,7 @@ class AliquotaMensal extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'idconta',
         'mes',
         'dasSemFatorR',
