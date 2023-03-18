@@ -2,13 +2,51 @@
     $(document).ready(function() {
         @if(Auth::user())
                     timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
+                    var renovaSessao = setTimeout(avisoRenovaSessao, 1500000); //27min
+
+                    function avisoRenovaSessao() {
+                        playNotification(nome = 'notification');
+                        Swal.fire({
+                            icon:   'info',
+                            title:  'Renove a sua sessão',
+                            text:   'O seu tempo de acesso expirará em 3 minutos. Para renovar, basta clicar no botão abaixo.',
+                            timer:  60000
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.get('renovaSessao', function(data, status) {
+                                   
+                                    if (data != null || data != undefined) {
+                                        clearTimeout(timeout);
+                                        clearTimeout(renovaSessao);
+                                        timeout = setTimeout(encerraSessaoSozinho, 1800600);
+                                        renovaSessao = setTimeout(avisoRenovaSessao, 1500000);
+                                        playNotification(nome = 'success');
+                                        Swal.fire({
+                                            icon:   'success',
+                                            title:  'Sessão restabelecida!',
+                                            text:   'Seu tempo de sessão foi renovado. A partir de agora, você tem mais 30 minutos para executar as operações dentro sistema sem necessidade de sair da página. Quando faltarem 3 minutos para finalizar a sua sessão avisaremos novamente.',
+                                            timer:  60000
+                                        })
+                                    }
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                        icon:   'error',
+                                        title:  'Sessão não renovada!',
+                                        text:   'Seu tempo de sessão está acabando e você optou por não renovar. É recomendado salvar quaisquer operações pendentes.',
+                                        timer:  60000
+                                })
+                            }
+                        });
+                    }
                     
                     function encerraSessaoSozinho() {
                         Swal.fire({
                             icon:   'error',
                             title:  'Sessão Expirada!',
                             text:   'Estaremos lhe redirecionando para a página inicial!',
-                            timer:  3000
+                            timer:  5000
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 location.replace('/');
@@ -19,7 +57,29 @@
                         });
                     }
                         // var ultimaAtividade = {{ session('lastActivityTime') }};
+                        function playNotification(nome) {
+
+                            // cria o contexto de áudio
+                            var AudioContext = window.AudioContext || window.webkitAudioContext;
+                            var audioCtx = new AudioContext();
+        
+                            // carrega o arquivo de áudio
+                            var audioElement = new Audio(nome+'.mp3');
+                            var track = audioCtx.createMediaElementSource(audioElement);
+        
+                            // cria um ganho para controlar o volume do áudio
+                            var gainNode = audioCtx.createGain();
+                            track.connect(gainNode);
+                            gainNode.connect(audioCtx.destination);
+                            gainNode.gain.value = 0.5; // define o volume para 50%
+        
+                            // reproduz o áudio
+                            audioElement.play();
+                        }
                 @endif
+
+
+
 
         $(".selecionaComInput").select2();
     });

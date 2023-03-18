@@ -136,4 +136,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('relatorio','RelatorioController');
     Route::resource('sandbox','SandboxController');
 
+    Route::get('/renovaSessao', function () { 
+        return response()->json('Renovado');
+    });
+    
+
+
 });
