@@ -116,7 +116,7 @@ class DespesaController extends Controller
         $dtiniciolancamento     = $validacoesPesquisa[14];
         $dtfimlancamento        = $validacoesPesquisa[15];
 
-
+        
         $rota = $this->verificaRelatorio($request);
 
         return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento'));
@@ -171,11 +171,27 @@ class DespesaController extends Controller
         } else {
             $descricao = $this->montaFiltrosConsulta($request);
         }
+        $controleconsumomaterial = '';
+        $controleConsumoMaterialLeftJoin = '';
+        $groupByControleConsumo = '';
 
+        if (isset($request->rel) && ($request->rel ==  'controleconsumomaterial')){
+            $controleconsumomaterial = "
+            bp.nomeBensPatrimoniais as 'material',
+            COUNT( bp.nomeBensPatrimoniais) as 'qtde',
+            p.name      as 'tipo',
+            un.sigla    as 'unidade',";
+
+            $controleConsumoMaterialLeftJoin = "
+            LEFT JOIN products         	AS p		ON bp.idTipoBensPatrimoniais = p.id
+            LEFT JOIN unidademedida 	AS un		ON bp.unidademedida = un.id";
+
+            $groupByControleConsumo = " group by bp.nomeBensPatrimoniais ";
+        }
 
         $listaDespesas = DB::select('SELECT distinct d.id, 
         c.despesaCodigoDespesa,
-        g.grupoDespesa,
+        g.grupoDespesa,' . $controleconsumomaterial .'
         CASE
             WHEN d.ehcompra = 1 and (insereestoque IS NULL or insereestoque = 1) THEN UPPER(bp.nomeBensPatrimoniais)
             ELSE UPPER(d.descricaoDespesa)
@@ -222,17 +238,16 @@ class DespesaController extends Controller
         LEFT JOIN ordemdeservico    AS os      ON d.idOS = os.id
         LEFT JOIN grupodespesas     AS g       ON c.idGrupoCodigoDespesa = g.id
         LEFT JOIN formapagamento    AS fpg     ON d.idFormaPagamento = fpg.id
-        LEFT JOIN benspatrimoniais  AS bp       ON d.descricaoDespesa = bp.id
+        LEFT JOIN benspatrimoniais  AS bp      ON d.descricaoDespesa = bp.id
         LEFT JOIN clientes          AS cli     ON os.idClienteOrdemdeServico = cli.id
         
         LEFT JOIN fornecedores      AS fqc     ON d.quemcomprou = fqc.id
         LEFT JOIN banco             AS b       ON d.idBanco = b.id
         LEFT JOIN fornecedores      AS fre     ON d.reembolsado = fre.id
-        LEFT JOIN users             AS u ON d.idAutor = u.id
+        LEFT JOIN users             AS u        ON d.idAutor = u.id
+        ' . $controleConsumoMaterialLeftJoin . '
      
-        
-        WHERE d.excluidoDespesa = 0 ' . $visaoLimitada . $descricao);
-
+        WHERE d.excluidoDespesa = 0 ' . $visaoLimitada . $descricao . $groupByControleConsumo);
 
         return $listaDespesas;
     }
@@ -242,44 +257,32 @@ class DespesaController extends Controller
         $descricao = "";
         $verificaInputCampos = 0;
 
-        if (isset($request->despesas)) :     $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'";
-            $verificaInputCampos++;
-        endif;
+        if (isset($request->despesas))      $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'"; $verificaInputCampos++;
 
-        if (isset($request->coddespesa)) :   $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->fornecedor)) :   $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->ordemservico)) : $descricao .= " AND d.idOS = '$request->ordemservico'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->valor)) :        $descricao .= " AND d.precoReal = '$request->valor'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->conta)) :        $descricao .= " AND cc.apelidoConta = '$request->conta'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->prolabore)) : $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->reembolso)) : $descricao .= " AND d.reembolsado != '0'";
-            $verificaInputCampos++;
-        endif;
+        if (isset($request->coddespesa))    $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'"; $verificaInputCampos++;
+        
+        if (isset($request->fornecedor))    $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'"; $verificaInputCampos++;
+        
+        if (isset($request->ordemservico))  $descricao .= " AND d.idOS = '$request->ordemservico'"; $verificaInputCampos++;
+        
+        if (isset($request->valor))         $descricao .= " AND d.precoReal = '$request->valor'"; $verificaInputCampos++;
+        
+        if (isset($request->conta))         $descricao .= " AND cc.apelidoConta = '$request->conta'"; $verificaInputCampos++;
+        
+        if (isset($request->prolabore))     $descricao .= " AND (fun.nomeFuncionario != '') and (c.id = 33)"; $verificaInputCampos++;
+        
+        if (isset($request->reembolso))     $descricao .= " AND d.reembolsado != '0'"; $verificaInputCampos++;
 
-        if (isset($request->notafiscal)) : $descricao  .= " AND d.notaFiscal = '$request->notafiscal'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->cliente)) : $descricao     .= " AND os.idClienteOrdemdeServico = '$request->cliente'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->fixavariavel)) : $descricao .= " AND d.despesaFixa = '$request->fixavariavel'";
-            $verificaInputCampos++;
-        endif;
-        if (isset($request->pago)) :        $descricao .= " AND d.pago = '$request->pago'";
-            $verificaInputCampos++;
-        endif;
+        if (isset($request->notafiscal))    $descricao .= " AND d.notaFiscal = '$request->notafiscal'"; $verificaInputCampos++;
+        
+        if (isset($request->cliente))       $descricao .= " AND os.idClienteOrdemdeServico = '$request->cliente'"; $verificaInputCampos++;
+        
+        if (isset($request->fixavariavel))  $descricao .= " AND d.despesaFixa = '$request->fixavariavel'"; $verificaInputCampos++;
+        
+        if (isset($request->pago))          $descricao .= " AND d.pago = '$request->pago'"; $verificaInputCampos++;
+        
+        if (isset($request->rel) && ($request->rel ==  'controleconsumomaterial'))   $descricao .= " AND d.ehcompra = '1'"; $verificaInputCampos++;
+        
 
         if (isset($request->dtfim)) :        $datafim    = $request->dtfim;
         else : $datafim = date('Y-m-t');
@@ -304,7 +307,6 @@ class DespesaController extends Controller
 
     private function validaPesquisa($request)
     {
-
 
         if ($request->get('despesas')) :     $despesas = $request->get('despesas');
         else : $despesas = '';
@@ -365,51 +367,54 @@ class DespesaController extends Controller
 
     private function verificaRelatorio($request)
     {
-
         if ($request == null) {
             $rotaRetorno = 'despesas.index';
             return $rotaRetorno;
         }
+
         $rotaRetorno = 'despesas.index';
 
-        if ($request->get('tpRel') ==  'pesquisadespesascompleto') :
+        if ($request->tpRel ==  'pesquisadespesascompleto') :
             $rotaRetorno = 'despesas.completo';
 
-        elseif ($request->get('tpRel') ==  'fornecedor') :
+        elseif ($request->tpRel ==  'fornecedor') :
             $rotaRetorno = 'relatorio.fornecedor.index';
 
-        elseif ($request->get('tpRel') ==  'pclienteanalitico') :
+        elseif ($request->tpRel ==  'pclienteanalitico') :
             $rotaRetorno = 'relatorio.despesasporclienteanalitico.index';
 
-        elseif ($request->get('tpRel') ==  'contasapagarporgrupo') :
+        elseif ($request->tpRel ==  'contasapagarporgrupo') :
             $rotaRetorno = 'relatorio.contasapagarporgrupo.index';
 
-        elseif ($request->get('tpRel') ==  'contaspagasporgrupo') :
+        elseif ($request->tpRel ==  'contaspagasporgrupo') :
             $rotaRetorno = 'relatorio.contaspagasporgrupo.index';
 
-        elseif ($request->get('tpRel') ==  'despesasfixavariavel') :
+        elseif ($request->tpRel ==  'despesasfixavariavel') :
             $rotaRetorno = 'relatorio.despesasfixavariavel.index';
 
-        elseif ($request->get('tpRel') ==  'notafiscalfornecedor') :
+        elseif ($request->tpRel ==  'notafiscalfornecedor') :
             $rotaRetorno = 'relatorio.notafiscalfornecedor.index';
 
-        elseif ($request->get('tpRel') ==  'despesaspagasporcontabancaria') :
+        elseif ($request->tpRel ==  'despesaspagasporcontabancaria') :
             $rotaRetorno = 'relatorio.despesaspagasporcontabancaria.index';
 
-        elseif ($request->get('tpRel') ==  'despesasporos') :
+        elseif ($request->tpRel ==  'despesasporos') :
             $rotaRetorno = 'relatorio.despesasporos.index';
 
-        elseif ($request->get('tpRel') ==  'despesasporosplanilha') :
+        elseif ($request->tpRel ==  'despesasporosplanilha') :
             $rotaRetorno = 'relatorio.despesasporosplanilha.index';
 
-        elseif ($request->get('tpRel') ==  'despesassinteticaporos') :
+        elseif ($request->tpRel ==  'despesassinteticaporos') :
             $rotaRetorno = 'relatorio.despesassinteticaporos.index';
 
-        elseif ($request->get('tpRel') ==  'prolabore') :
+        elseif ($request->tpRel ==  'prolabore') :
             $rotaRetorno = 'relatorio.prolabore.index';
 
-        elseif ($request->get('tpRel') ==  'reembolso') :
+        elseif ($request->tpRel ==  'reembolso') :
             $rotaRetorno = 'relatorio.reembolso.index';
+
+        elseif ($request->tpRel ==  'controleconsumomaterial') :
+            $rotaRetorno = 'relatorio.controleconsumomaterial.index';
 
         endif;
 
@@ -436,15 +441,14 @@ class DespesaController extends Controller
     public function create(Request $request)
     {
 
-
-        $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
+        $listaContas   = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
         where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
 
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
-        $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
-        $todasOSAtivas = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
-        $todosOSBancos = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
+        $formapagamento   = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
+        $todasOSAtivas    = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
+        $todosOSBancos    = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
         $precoReal = " ";
         $vale = " ";
         $valorInput             = $this->valorInput;

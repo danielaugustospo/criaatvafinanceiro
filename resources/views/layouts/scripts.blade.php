@@ -1,4 +1,5 @@
 <script>
+ 
     $(document).ready(function() {
         @if(Auth::user())
                     timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg

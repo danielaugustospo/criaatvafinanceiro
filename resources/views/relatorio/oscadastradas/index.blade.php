@@ -38,7 +38,7 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+@can('ordemdeservico-show')
     
 
         dataSource: {
@@ -62,10 +62,10 @@
                     ]
                 },
             columns: [
-                { field: "id", title: "N° OS", filterable: true, width: 25, aggregates: ["count"], footerTemplate: "Total de OS:  #=count#" },
-                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 25, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 50 },
-                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 50 }
+                { field: "id", title: "N° OS", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "Total de OS:  #=count#" },
+                { field: "dataCriacaoOrdemdeServico", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 200 },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 200 }
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

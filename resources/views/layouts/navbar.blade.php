@@ -1,4 +1,4 @@
-<?php //use App\Providers\AppServiceProvider;
+<?php use App\Providers\AppServiceProvider;
 ?>
 
 <nav class="navbar navbar-expand-md navbar-dark navbar-laravel" id="navbar"
@@ -100,7 +100,7 @@
                     </li>
 
                     <li class="nav-item ">
-                        @can('visualiza-relatoriogeral')
+                        @can('relatorio-list')
                             <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
                                 Relatórios <span class="caret"></span>
                             </a>
@@ -112,7 +112,7 @@
                         </div>
                     </li>
 
-                    {{-- @can('pedidocompra-list')
+                    @can('pedidocompra-list')
                         <li class="nav-item dropdown">
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -175,7 +175,7 @@
                                 @endcan
                             </div>
                         </li>
-                    @endcan --}}
+                    @endcan
 
                     <li class="nav-item dropdown">
                         @can('fornecedor-list')
@@ -348,7 +348,9 @@
             </ul>
         </div>
     </div>
+
 </nav>
+
 
 
 <!-- Modal -->

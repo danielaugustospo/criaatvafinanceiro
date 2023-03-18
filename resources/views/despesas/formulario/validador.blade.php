@@ -129,15 +129,6 @@ function validaFormulario() {
             anodataDoTrabalho + '</label></br>'; contadorDatasDiferentesAnoAtual++;
     }
 
-    resultadoFormulario = validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta,
-        despesaFixa, ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento, dataAtual);
-
-    return resultadoFormulario;
-}
-
-
-function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapagamento, conta, despesaFixa,
-    ehcompra, fornecedor, precoReal, contadorDatasDiferentesAnoAtual, anoAtual, vencimento, dataAtual) {
     if ((despesaCodigoDespesas == '') || (despesaCodigoDespesas == null)) {
         texto = texto +
             '<span class="badge badge-warning">Validar</span><label class="fontenormal pl-2">Informe o código da despesa</label></br>'; contadorErros++;
@@ -166,7 +157,8 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
         var compraparcelada = document.querySelector('input[name=compraparcelada]:checked')?.value;
         inserirestoque      = document.querySelector('input[name=inserirestoque]:checked')?.value;
         unicadespesa        = document.querySelector('input[name=unicadespesa]:checked')?.value;
-
+        quemComprou         = despesaCodigoDespesas = $('#selecionaComprador').val();
+        
         if ((inserirestoque == '') || (inserirestoque == ' ') || (inserirestoque == null) || (inserirestoque == undefined)) {
             // Opção de inserção no estoque não foi atendida 
             texto = texto +
@@ -365,6 +357,9 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             }
 
         }
+        if ((quemComprou == '') || (quemComprou == ' ') || (quemComprou == null) || (quemComprou == undefined)) {            texto = texto +
+            '<span class="badge badge-danger">Selecionar</span><label class="fontenormal pl-2">Quem comprou</label></br>'; contadorErros++;
+        }
     }
     //Verifica se não é compra
     else if ((ehcompra == 0) || (ehcompra == 'N')) {
@@ -392,6 +387,7 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
     }
 
     if (contadorDatasDiferentesAnoAtual > 0) {
+        contadorErros++;
         var areaInformeData = document.createElement("span");
         areaInformeData.innerHTML = textoData;
         Swal.fire({
@@ -405,7 +401,11 @@ function validadorAdicional(despesaCodigoDespesas, texto, contadorErros, formapa
             cancelButtonText: 'Não, irei alterar'
         }).then((result) => {
             if (result.isConfirmed) {
-                alertaErros(texto, contadorErros)
+                contadorErros--;
+                alertaErros(texto, contadorErros);
+                if(contadorErros == 0){
+                    submitaForm();
+                }
             }
         })
     } else {

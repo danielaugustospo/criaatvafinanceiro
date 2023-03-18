@@ -27,13 +27,13 @@
                     <option value="{{ $os->id }}">{{ $os->id }}</option>
                     @endforeach
                      --}}
-                    <option value="EMPRESA/CRIAATVA">SEM OS</option>
+                    <option value="EMPRESA GERAL">SEM OS</option>
                     @foreach ($todasOSAtivas as $listaOS)
                       @isset($despesa)
                         @if ($despesa->idOS == $listaOS->id)
                           <option value="{{$listaOS->id}}" selected>{{$listaOS->id}} | {{$listaOS->eventoOrdemdeServico}}</option>
-                          @if ($despesa->idOS == 'EMPRESA/CRIAATVA')
-                            <option value="EMPRESA/CRIAATVA" selected>SEM OS</option>              
+                          @if ($despesa->idOS == 'EMPRESA GERAL')
+                            <option value="EMPRESA GERAL" selected>SEM OS</option>              
                           @endif
                         @endif
                       @endisset

@@ -28,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-
         $listaDespesas = DB::select('SELECT id, UPPER(descricaoDespesa) as descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela, idAutor FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
@@ -72,6 +71,9 @@ class AppServiceProvider extends ServiceProvider
 
         $listaTiposBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
         view()->share('listaTiposBensPatrimoniais', $listaTiposBensPatrimoniais);
+
+        $listaUnidadeMedida = DB::select('SELECT * FROM unidademedida');
+        view()->share('listaUnidadeMedida', $listaUnidadeMedida);
 
         $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
         view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
@@ -178,4 +180,6 @@ class AppServiceProvider extends ServiceProvider
         $optionSelect = "<option selected>Qual</option>";
         view()->share('optionSelect', $optionSelect);
     }
+    
+
 }

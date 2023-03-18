@@ -19,6 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
+
+
 //Rotas de modal
 Route::get('/cadastragrupodespesa', function () { return view('grupodespesas.campos'); });
 Route::get('/modalmateriais', function () { return view('benspatrimoniais.camposmodal'); });
@@ -37,6 +40,7 @@ Route::get('/entradaporcontabancaria', function () { return view('relatorio.entr
 Route::get('/despesaspagasporcontabancaria', function () { return view('relatorio.despesaspagasporcontabancaria.index'); });
 Route::get('/despesasporos', function () { return view('relatorio.despesasporos.index'); });
 Route::get('/despesassinteticaporos', function () { return view('relatorio.despesassinteticaporos.index'); });
+Route::get('/controleconsumomaterial', function () { return view('relatorio.controleconsumomaterial.index'); });
 Route::get('/despesasporclienteanalitico', function () { return view('relatorio.despesasporclienteanalitico.index'); });
 Route::get('/oscadastradas', function () { return view('relatorio.oscadastradas.index'); });
 Route::get('/contaspagasporgrupo', function () { return view('relatorio.contaspagasporgrupo.index'); });
