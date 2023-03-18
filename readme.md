@@ -28,6 +28,10 @@ php artisan db:seed --class=CreateAdminUserSeeder
 // Refresh the database and run all database seeds...
 php artisan migrate:refresh --seed
 
+Modo de manutenção
+php artisan down --allow=192.168.0.55 --message="Em Manutenção"
+php artisan up
+
 ----------------------------------------------------------------------------------------------------------------------------
 ## Instalação Validador
 
@@ -105,7 +109,7 @@ $this->validate($request, [
 ]);
 ```
 
-* **cns** - Verifica se um Cartão Nciona de Saúde (CNS) é válido.
+* **cns** - Verifica se um Cartão Nacional de Saúde (CNS) é válido.
 
 ```php
 $this->validate($request, [

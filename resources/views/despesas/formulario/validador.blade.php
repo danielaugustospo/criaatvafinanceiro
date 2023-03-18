@@ -157,7 +157,8 @@ function validaFormulario() {
         var compraparcelada = document.querySelector('input[name=compraparcelada]:checked')?.value;
         inserirestoque      = document.querySelector('input[name=inserirestoque]:checked')?.value;
         unicadespesa        = document.querySelector('input[name=unicadespesa]:checked')?.value;
-
+        quemComprou         = despesaCodigoDespesas = $('#selecionaComprador').val();
+        
         if ((inserirestoque == '') || (inserirestoque == ' ') || (inserirestoque == null) || (inserirestoque == undefined)) {
             // Opção de inserção no estoque não foi atendida 
             texto = texto +
@@ -355,6 +356,9 @@ function validaFormulario() {
                 }
             }
 
+        }
+        if ((quemComprou == '') || (quemComprou == ' ') || (quemComprou == null) || (quemComprou == undefined)) {            texto = texto +
+            '<span class="badge badge-danger">Selecionar</span><label class="fontenormal pl-2">Quem comprou</label></br>'; contadorErros++;
         }
     }
     //Verifica se não é compra

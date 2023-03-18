@@ -38,7 +38,7 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+@can('rel-fechamentofinal')
 
             dataSource: {
                 data: data,

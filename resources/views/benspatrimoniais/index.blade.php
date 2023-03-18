@@ -30,8 +30,7 @@
 
       <div class="form-row d-flex justify-content-center">
         
-        <a href="{{ route('entradas.index') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> ENTRADA</a>
-        <a href="{{ route('saidas.create')  }}" class="btn btn-danger"><i class="fa fa-minus-circle" aria-hidden="true"></i> SAÍDA</a>
+        <a href="{{ route('benspatrimoniais.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> CATALOGAR MATERIAL</a>
         <a href="{{ route('estoque.index') }}"  class="btn btn-secondary"><i class="fa fa-list" aria-hidden="true"></i> Estoque (Inventário) </a>
 
 

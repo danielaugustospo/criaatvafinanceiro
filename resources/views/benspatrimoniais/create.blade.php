@@ -29,6 +29,9 @@
         <label for="idTipoBensPatrimoniais" class="col-sm-2 col-form-label">Tipo</label>
         <div class="col-sm-6">
             <select name="idTipoBensPatrimoniais" id="idTipoBensPatrimoniais" class="selecionaComInput form-control">
+                @if (!isset($benspatrimoniais->idTipoBensPatrimoniais))
+                <option selected>Selecione</option>
+                @endif
                 @foreach ($listaTiposBensPatrimoniais as $tipo)
                     <option value="{{ $tipo->id }}">{{ $tipo->name }}</option>
                 @endforeach
@@ -41,6 +44,19 @@
 
             <input type="button" class="btn btn-primary" data-toggle="modal" data-target=".tipomaterial"
                 value="Cadastrar Novo Tipo" style="cursor: pointer;">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="unidademedida" class="col-sm-2 col-form-label">Unidade</label>
+        <div class="col-sm-6">
+            <select name="unidademedida" id="unidademedida" class="selecionaComInput form-control">
+                @if (!isset($benspatrimoniais->unidademedida))
+                <option selected>Selecione</option>
+                @endif
+                @foreach ($listaUnidadeMedida as $unidade)
+                    <option value="{{ $unidade->id }}">{{ $unidade->sigla }} | {{ $unidade->nomeunidade }} </option>
+                @endforeach
+            </select>
         </div>
     </div>
     @include('despesas/cadastratipomaterial')

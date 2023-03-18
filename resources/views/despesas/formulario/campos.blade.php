@@ -97,14 +97,14 @@
         <div class="col-sm-7">
 
             <select name="idOS" id="idOS" class="selecionaComInput col-sm-10" {{ $variavelDisabledNaView }}>
-                <option value="EMPRESA/CRIAATVA">SEM OS</option>
+                <option value="EMPRESA GERAL">SEM OS</option>
                 @foreach ($todasOSAtivas as $listaOS)
                     @isset($despesa)
                         @if ($despesa->idOS == $listaOS->id)
                             <option value="{{ $listaOS->id }}" selected>{{ $listaOS->id }} |
                                 {{ $listaOS->eventoOrdemdeServico }}</option>
-                            @if ($despesa->idOS == 'EMPRESA/CRIAATVA')
-                                <option value="EMPRESA/CRIAATVA" selected>SEM OS</option>
+                            @if ($despesa->idOS == 'EMPRESA GERAL')
+                                <option value="EMPRESA GERAL" selected>SEM OS</option>
                             @endif
                         @endif
                     @endisset
@@ -249,7 +249,7 @@
 
     {{-- Tela Quantidade --}}
     <div class="form-group row" id="telaQuantidade">
-        <label for="quantidade" class="col-sm-2 col-form-label">Quantidade / Unidade</label>
+        <label for="quantidade" class="col-sm-2 col-form-label">Quantidade</label>
         <div class="col-sm-2">
             {!! Form::text('quantidade', $valorInput, [
                 'placeholder' => 'Preencha este campo',

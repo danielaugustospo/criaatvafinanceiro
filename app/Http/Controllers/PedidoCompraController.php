@@ -92,7 +92,7 @@ class PedidoCompraController extends Controller
 
         $oscriaatva = $request->get('oscriaatva');
         if(isset($oscriaatva)){
-            if($oscriaatva == 'EMPRESA/CRIAATVA'){
+            if($oscriaatva == 'EMPRESA GERAL'){
                 $pedido->ped_os                     = $oscriaatva;
             }else{
                 $pedido->ped_os                     = $request->get('ped_os');
@@ -174,7 +174,7 @@ class PedidoCompraController extends Controller
 
         $oscriaatva = $request->get('oscriaatva');
         if(isset($oscriaatva)){
-            if($oscriaatva == 'EMPRESA/CRIAATVA'){
+            if($oscriaatva == 'EMPRESA GERAL'){
                 $pedido->ped_os                     = $oscriaatva;
             }else{
                 $pedido->ped_os                     = $request->get('ped_os');
