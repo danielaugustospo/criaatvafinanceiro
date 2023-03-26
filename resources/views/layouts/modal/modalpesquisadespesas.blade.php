@@ -98,6 +98,14 @@
                                             <option value="S">PAGO</option>
                                     </select>    
                                 </div>
+                                <div class="row ml-2 mr-2"><label for="">Forma de Pagamento </label>  
+                                    <select  class="form-control" name="formaPagamento" id="formaPagamento">
+                                        <option value="">Listar todos</option>
+                                        @foreach ($listaFormaPG as $formapg)
+                                            <option value="{{ $formapg->id }}">{{ nomeFormaPagamento }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                                 <input type="hidden" name="tpRel" id="tpRel" value="">
                               </div>

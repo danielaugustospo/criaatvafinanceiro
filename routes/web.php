@@ -19,7 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
 
 
 //Rotas de modal
@@ -139,11 +138,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('pedidocompra','PedidoCompraController');
     Route::resource('relatorio','RelatorioController');
     Route::resource('sandbox','SandboxController');
-
+    
     Route::get('/renovaSessao', function () { 
         return response()->json('Renovado');
     });
     
-
+    Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
+    
 
 });

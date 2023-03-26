@@ -2,15 +2,16 @@
  
     $(document).ready(function() {
         @if(Auth::user())
+                    // var renovaSessao = setTimeout(avisoRenovaSessao, 1500000); //25min
+                    var renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 25); // renova a sessão a cada 25 minutos
                     timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
-                    var renovaSessao = setTimeout(avisoRenovaSessao, 1500000); //27min
 
                     function avisoRenovaSessao() {
                         playNotification(nome = 'notification');
                         Swal.fire({
                             icon:   'info',
                             title:  'Renove a sua sessão',
-                            text:   'O seu tempo de acesso expirará em 3 minutos. Para renovar, basta clicar no botão abaixo.',
+                            text:   'O seu tempo de acesso expirará em 5 minutos. Para renovar, basta clicar no botão abaixo.',
                             timer:  60000
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -18,14 +19,14 @@
                                    
                                     if (data != null || data != undefined) {
                                         clearTimeout(timeout);
-                                        clearTimeout(renovaSessao);
+                                        // clearTimeout(renovaSessao);
+                                        renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 25);
                                         timeout = setTimeout(encerraSessaoSozinho, 1800600);
-                                        renovaSessao = setTimeout(avisoRenovaSessao, 1500000);
                                         playNotification(nome = 'success');
                                         Swal.fire({
                                             icon:   'success',
                                             title:  'Sessão restabelecida!',
-                                            text:   'Seu tempo de sessão foi renovado. A partir de agora, você tem mais 30 minutos para executar as operações dentro sistema sem necessidade de sair da página. Quando faltarem 3 minutos para finalizar a sua sessão avisaremos novamente.',
+                                            text:   'Seu tempo de sessão foi renovado. A partir de agora, você tem mais 30 minutos para executar as operações dentro sistema sem necessidade de sair da página. Quando faltarem 5 minutos para finalizar a sua sessão avisaremos novamente.',
                                             timer:  60000
                                         })
                                     }

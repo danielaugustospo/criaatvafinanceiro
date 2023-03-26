@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -29,8 +30,14 @@ class HomeController extends Controller
     public function getTimeRemaining()
     {
         $expiresAt = session()->get('expires_at');
-        $currentTime = now();
-        $remainingTime = $expiresAt->diffInSeconds($currentTime);
+        $currentTime = Carbon::now();
+        
+        if (!$expiresAt) {
+            return response()->json(['remaining_time' => null]);
+        }
+        
+        $remainingTime = optional($expiresAt)->diffInSeconds($currentTime);
+        
         return response()->json(['remaining_time' => $remainingTime]);
     }
 }
