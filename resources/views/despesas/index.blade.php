@@ -1,26 +1,14 @@
 <?php
-$intervaloCelulas = 'A1:K1';
-$rotaapi = 'api/apidespesas';
-$titulo = 'Despesas';
-$campodata = 'vencimento';
-$relatorioKendoGrid = true;
-$idUser = Crypt::encrypt(auth()->user()->id);
-if (isset($despesas)) {
-    $despesas = $despesas;
-} else {
-    $despesas = '';
-}
-if (isset($dtiniciolancamento)) {
-    $dtiniciolancamento = $dtiniciolancamento;
-} else {
-    $dtiniciolancamento = '';
-}
-if (isset($dtfimlancamento)) {
-    $dtfimlancamento = $dtfimlancamento;
-} else {
-    $dtfimlancamento = '';
-}
-$numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
+    $intervaloCelulas   = 'A1:K1';
+    $rotaapi            = 'api/apidespesas';
+    $titulo             = 'Despesas';
+    $campodata          = 'vencimento';
+    $relatorioKendoGrid = true;
+    $idUser             = Crypt::encrypt(auth()->user()->id);
+    $despesas           = (isset($despesas)) ? $despesas : '';
+    $dtiniciolancamento = (isset($dtiniciolancamento)) ? $dtiniciolancamento : '';
+    $dtfimlancamento    = (isset($dtfimlancamento)) ? $dtfimlancamento : '';
+    $numberFormatter    = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
 
 <head>
@@ -77,7 +65,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 transport: {
                     read: {
                         @if (isset($despesas))
-                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}",
+                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}&formaPagamento={{ $formaPagamento }}",
                         @else
                             url: "{{ $rotaapi }}",
                         @endif

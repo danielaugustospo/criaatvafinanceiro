@@ -102,7 +102,7 @@
                                     <select  class="form-control" name="formaPagamento" id="formaPagamento">
                                         <option value="">Listar todos</option>
                                         @foreach ($listaFormaPG as $formapg)
-                                            <option value="{{ $formapg->id }}">{{ nomeFormaPagamento }}</option>
+                                            <option value="{{ $formapg->nomeFormaPagamento }}">{{ $formapg->nomeFormaPagamento }}</option>
                                         @endforeach
                                     </select>
                                 </div>

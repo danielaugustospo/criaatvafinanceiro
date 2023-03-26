@@ -115,11 +115,11 @@ class DespesaController extends Controller
         $idUser                 = $validacoesPesquisa[13];
         $dtiniciolancamento     = $validacoesPesquisa[14];
         $dtfimlancamento        = $validacoesPesquisa[15];
-
+        $formaPagamento         = $validacoesPesquisa[16];
         
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento'));
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento', 'formaPagamento'));
     }
 
 
@@ -276,13 +276,15 @@ class DespesaController extends Controller
         if (isset($request->notafiscal))    $descricao .= " AND d.notaFiscal = '$request->notafiscal'"; $verificaInputCampos++;
         
         if (isset($request->cliente))       $descricao .= " AND os.idClienteOrdemdeServico = '$request->cliente'"; $verificaInputCampos++;
+
+        if (isset($request->formaPagamento)) $descricao .= " AND fpg.nomeFormaPagamento = '$request->formaPagamento'"; $verificaInputCampos++;
         
         if (isset($request->fixavariavel))  $descricao .= " AND d.despesaFixa = '$request->fixavariavel'"; $verificaInputCampos++;
         
         if (isset($request->pago))          $descricao .= " AND d.pago = '$request->pago'"; $verificaInputCampos++;
-        
+       
         if (isset($request->rel) && ($request->rel ==  'controleconsumomaterial'))   $descricao .= " AND d.ehcompra = '1'"; $verificaInputCampos++;
-        
+       
 
         if (isset($request->dtfim)) :        $datafim    = $request->dtfim;
         else : $datafim = date('Y-m-t');
@@ -350,6 +352,9 @@ class DespesaController extends Controller
         if ($request->get('dtfimlancamento')) :        $dtfimlancamento = $request->get('dtfimlancamento');
         else : $dtfimlancamento = '';
         endif;
+        if ($request->get('formaPagamento')) :   $formaPagamento = $request->get('formaPagamento');
+        else : $formaPagamento = '';
+        endif;
         if (isset($request->idSalvo)) {
             $idSalvos = $request->idSalvo;
         } else {
@@ -361,10 +366,10 @@ class DespesaController extends Controller
             $idUser = null;
         }
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser, $dtiniciolancamento, $dtfimlancamento);
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser, $dtiniciolancamento, $dtfimlancamento, $formaPagamento);
         return $solicitacaoArray;
     }
-
+    
     private function verificaRelatorio($request)
     {
         if ($request == null) {
