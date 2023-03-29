@@ -11,6 +11,8 @@ if (isset($despesas)) {
 } else {
     $despesas = '';
 }
+$formaPagamento     = (isset($formaPagamento)) ? $formaPagamento : '';
+
 if (isset($dtiniciolancamento)) {
     $dtiniciolancamento = $dtiniciolancamento;
 } else {

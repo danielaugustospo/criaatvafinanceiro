@@ -7,6 +7,7 @@
     $idUser             = Crypt::encrypt(auth()->user()->id);
     $despesas           = (isset($despesas)) ? $despesas : '';
     $dtiniciolancamento = (isset($dtiniciolancamento)) ? $dtiniciolancamento : '';
+    $formaPagamento     = (isset($formaPagamento)) ? $formaPagamento : '';
     $dtfimlancamento    = (isset($dtfimlancamento)) ? $dtfimlancamento : '';
     $numberFormatter    = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
