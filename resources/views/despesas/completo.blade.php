@@ -1,49 +1,35 @@
 <?php
-$intervaloCelulas = 'A1:K1';
-$rotaapi = 'api/apidespesas';
-$rotaapiupdate = 'api/apicreatedespesas';
-$titulo = 'Despesas (Geral)';
-$campodata = 'vencimento';
-$relatorioKendoGrid = true;
-$idUser = Crypt::encrypt(auth()->user()->id);
-if (isset($despesas)) {
-    $despesas = $despesas;
-} else {
-    $despesas = '';
-}
-$formaPagamento     = (isset($formaPagamento)) ? $formaPagamento : '';
+    $intervaloCelulas   = 'A1:K1';
+    $rotaapi            = 'api/apidespesas';
+    $rotaapiupdate      = 'api/apicreatedespesas';
+    $titulo             = 'Despesas (Geral)';
+    $campodata          = 'vencimento';
+    $relatorioKendoGrid = true;
+    $idUser             = Crypt::encrypt(auth()->user()->id);
+    $despesas           = (isset($despesas)) ? $despesas : '';
+    $formaPagamento     = (isset($formaPagamento)) ? $formaPagamento : '';
+    $dtiniciolancamento = (isset($dtiniciolancamento)) ? $dtiniciolancamento : '';
+    $dtfimlancamento    = (isset($dtfimlancamento)) ? $dtfimlancamento : '';
 
-if (isset($dtiniciolancamento)) {
-    $dtiniciolancamento = $dtiniciolancamento;
-} else {
-    $dtiniciolancamento = '';
-}
-if (isset($dtfimlancamento)) {
-    $dtfimlancamento = $dtfimlancamento;
-} else {
-    $dtfimlancamento = '';
-}
-if (isset($idSalvo)) {
-    //Verificação após retorno de lançamento de mais de uma despesa
-    $tamanhoIdSalvo = count($idSalvo);
-    if ($tamanhoIdSalvo > 1) {
-        $idSalvo = implode(',', $idSalvo);
+    if (isset($idSalvo)) {
+        //Verificação após retorno de lançamento de mais de uma despesa
+        $tamanhoIdSalvo = count($idSalvo);
+        if ($tamanhoIdSalvo > 1) {
+            $idSalvo = implode(',', $idSalvo);
+        }
+    } else {
+        $idSalvo = null;
     }
-} else {
-    $idSalvo = null;
-}
 
-$numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
-?>
+    $numberFormatter        = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
-<?php
-$chamadaCadastroModal = 'atualizadespesa';
-$tituloCadastroModal = 'Atualização de Despesa';
-$idFrame = 'frameatualizadespesa';
+    $chamadaCadastroModal   = 'atualizadespesa';
+    $tituloCadastroModal    = 'Atualização de Despesa';
+    $idFrame                = 'frameatualizadespesa';
 
-$chamadaCadastroModal1 = 'lancadespesa';
-$tituloCadastroModal1 = 'Lançamento de Despesa';
-$idFrame1 = 'framecriadepesa';
+    $chamadaCadastroModal1  = 'lancadespesa';
+    $tituloCadastroModal1   = 'Lançamento de Despesa';
+    $idFrame1               = 'framecriadepesa';
 ?>
 
 
@@ -739,7 +725,6 @@ $idFrame1 = 'framecriadepesa';
                     </button>
                 </div>
 
-                {{-- @include('despesas/create') --}}
                 <iframe class="modal-body" src="{{ route('despesas.create') }}?paginaModal=true" id="{{ $idFrame1 }}"
                     frameborder="0" style="height: 60vh;">
                 </iframe>
