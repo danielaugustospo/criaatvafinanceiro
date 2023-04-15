@@ -23,15 +23,14 @@
     {!! Form::open(['route' => 'ordemdeservicos.store', 'method' => 'POST', 'id' => 'manipulaOS']) !!}
     <div class="pull-right">
         <a class="btn btn-primary" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
-        {{-- {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!} --}}
-        <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'novo');" />
+        <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroOS(event, retorno = 'novo');" />
 
     </div>
 
     @include('ordemdeservicos/campos')
     <input type="hidden" name="idAutor" value="{{ Auth::user()->id }}">
     {{-- {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!} --}}
-    <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'novo');" />
+    <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroOS(event, retorno = 'novo');" />
 
     {!! Form::close() !!}
 @endsection

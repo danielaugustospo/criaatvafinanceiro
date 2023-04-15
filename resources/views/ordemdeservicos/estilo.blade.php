@@ -262,4 +262,21 @@
             text-transform: uppercase !important;
             white-space:nowrap;
         }
+
+
+    .swal2-content span {
+        display: block;
+        text-align: left;
+    }
+
+    .badge-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .badge-left span {
+        margin-right: 0.5rem;
+    }
+
+
 </style>

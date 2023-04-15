@@ -306,8 +306,8 @@
 
     });
 
-    function alteraRetornoCadastroDespesa(retorno) {
-
+    function alteraRetornoCadastroOS(e, retorno) {
+        e.preventDefault();
         validador = validaFormulario();
         if (validador == 0) {
             // document.getElementById("tpRetorno").value = retorno;
@@ -342,7 +342,7 @@
                 icon: 'error',
                 html: span,
                 title: 'Validações Necessárias',
-                footer: 'Restam  ' + contadorErros + ' pendentes.'
+                footer: 'Restam  ' + contadorErros + ' pendências.'
             })
         }
         return contadorErros;
@@ -360,10 +360,38 @@
         ----------------------------------------------------*/
         const dataAtual = new Date();
         const anoAtual = dataAtual.getFullYear();
-
+        
         data = [];
         tabela = document.getElementById('tabelaPagamento');
+        var dataCriacao  = $('input[name="dataCriacaoOrdemdeServico"]').val();
         vencimentoTabela = tabela.getElementsByClassName('datapagamentoreceita');
+        var idCliente    = $('#idClienteOrdemdeServico').val();
+        var valorProjeto = $('input[name="valorOrdemdeServico"]').val();
+        var evento       = $('input[name="eventoOrdemdeServico"]').val();
+
+        if ((dataCriacao.trim() === '') || (dataCriacao == null) || (dataCriacao == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Data Início</label></div>';
+            contadorErros++;     
+        }
+
+        if ((idCliente == '') || (idCliente == null) || (idCliente == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Cliente</label></div>';
+            contadorErros++;
+        }
+
+        if ((valorProjeto.trim() === '') || (valorProjeto == null) || (valorProjeto == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Valor do projeto</label></div>';
+            contadorErros++;     
+        }
+
+        if ((evento.trim() === '') || (evento == null) || (evento == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Evento não informado</label></div>';
+            contadorErros++;     
+        }
 
         for (var i = 0; i < vencimentoTabela.length; i++) {
             data.push(vencimentoTabela[i].value);
@@ -378,15 +406,15 @@
 
             if (vencimentoNovo < dataAtual) {
                 texto = texto +
-                '<span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></br>';
+                '<div class="badge-left mb-1"><span class="badge badge-danger">Operação Proibida</span><label class="fontenormal pl-2">Data vencimento menor do que a data atual - linha: ' + sum([i, 1])  +'</label></div>';
                 alertaErros(texto, contadorErros++);
             }
             @endif
             
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +
-                '<span class="badge badge-danger">Validar</span><label class="fontenormal pl-2">Vencimento não informado na linha: '+
-                    sum([i, 1])  +'</label></br>';
+                '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2" style="font-size: 80%;">Data Pagamento na linha: '+
+                    sum([i, 1])  +'</label></div>';
                 contadorErros++;
             }else{
                 vencimento = parseInt(vencimento.slice(0, 4));
@@ -394,15 +422,15 @@
 
             if ((vencimento < 2000) || (vencimento > 2099)) {
                 texto = texto +
-                    '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Vencimento Inválido (ano ' + 
+                    '<div class="badge-left mb-1"><span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">Vencimento Inválido (ano ' + 
                     vencimento + ') na linha ' +
-                    sum([i, 1]) + '</label></br>';
+                    sum([i, 1]) + '</label></div>';
                 contadorErros++;
             } else if ((vencimento > 2000) && (vencimento < 2099) && (vencimento != anoAtual)) {
 
                 textoData = textoData +
-                    '<span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Vencimento com ano ' +
-                    vencimento + ' na linha ' + sum([i, 1]) + '</label></br>';
+                    '<div class="badge-left mb-1"><span class="badge badge-warning">Atenção</span><label class="fontenormal pl-2">Vencimento com ano ' +
+                    vencimento + ' na linha ' + sum([i, 1]) + '</label></div>';
                 contadorDatasDiferentesAnoAtual++;
             }
         }
@@ -431,8 +459,7 @@
                 }
             })
         }
-        console.log('erros: ' + contadorErros);
-        console.log('dt dif: ' + contadorDatasDiferentesAnoAtual);
+
         if (contadorDatasDiferentesAnoAtual == 0 && contadorErros == 0) {
             return contadorErros;
         }

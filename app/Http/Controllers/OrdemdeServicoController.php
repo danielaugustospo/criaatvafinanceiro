@@ -185,17 +185,17 @@ class OrdemdeServicoController extends Controller
         $tamanhoArrayReceita = count($temReceita);
         $request->validate([
             'idClienteOrdemdeServico'        => 'required',
-            'valorProjetoOrdemdeServico'     => 'required|min:3',
             'valorOrdemdeServico'            => 'required|min:3',
-            'dataOrdemdeServico'             => 'required|min:3',
-            // 'clienteOrdemdeServico'          => 'required|min:3',
-            'eventoOrdemdeServico'           => 'required|min:3',
-            'servicoOrdemdeServico'          => 'required|min:3',
+            'eventoOrdemdeServico'           => 'required|min:2',
             'dataCriacaoOrdemdeServico'      => 'required|min:3',
-            'dataExclusaoOrdemdeServico'     => 'required',
 
-            'ativoOrdemdeServico'            => 'required|min:1',
-            'excluidoOrdemdeServico'         => 'required|min:1',
+            // 'valorProjetoOrdemdeServico'     => 'required|min:3',
+            // 'dataOrdemdeServico'             => 'required|min:3',
+            // // 'clienteOrdemdeServico'          => 'required|min:3',
+            // 'servicoOrdemdeServico'          => 'required|min:3',
+            // 'dataExclusaoOrdemdeServico'     => 'required',
+            // 'ativoOrdemdeServico'            => 'required|min:1',
+            // 'excluidoOrdemdeServico'         => 'required|min:1',
         ]);
 
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');

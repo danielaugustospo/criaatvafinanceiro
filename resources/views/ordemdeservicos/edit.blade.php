@@ -13,7 +13,7 @@
             <a class="btn btn-danger" href="{{ route('ordemdeservicos.index') }}"> Voltar</a>
             <a class="btn btn-success" href="{{ route('ordemdeservicos.show',$ordemdeservico->id) }}">Financeiro</a>
             {{-- <button type="submit" class="btn btn-primary">Salvar</button> --}}
-            <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'edicao');" />
+            <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroOS(event, retorno = 'edicao');" />
         </div>
     </div>
 </div>
@@ -41,7 +41,7 @@
 
 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
     {{-- <button type="submit" class="btn btn-primary">Salvar</button> --}}
-    <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroDespesa(retorno = 'edicao');" />
+    <input type="button" class="btn btn-success" id="btnSalvar" value="Salvar" onclick="alteraRetornoCadastroOS(event, retorno = 'edicao');" />
 </div>
 
 {!! Form::close() !!}
