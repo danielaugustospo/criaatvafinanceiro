@@ -662,24 +662,22 @@ class DespesaController extends Controller
                 $despesa->save();
                 $idSalvo[$i] = $despesa->id;
 
-                if ($despesa->insereestoque == 1) {
-                    echo "Dentro do if";
+                // if ($despesa->insereestoque == 1) {
 
-                    $despesa->quantidade = intval($despesa->quantidade);
-                    for ($i = 0; $i < $despesa->quantidade; $i++) {
-                        //Lançando no estoque
-                        echo "Dentro do for";
-                        $ultimoId = Estoque::max('id');
-                        $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
-                        Estoque::create([
-                            'codbarras'             => $novoCodBarras,
-                            'idbenspatrimoniais'    => $despesa->descricaoDespesa,
-                            'descricao'             => "CRIADO VIA DESPESAS",
-                            'ativadoestoque'        => 1,
-                            'excluidoestoque'       => 0,
-                        ]);
-                    }
-                }
+                //     $despesa->quantidade = intval($despesa->quantidade);
+                //     for ($i = 0; $i < $despesa->quantidade; $i++) {
+                //         //Lançando no estoque
+                //         $ultimoId = Estoque::max('id');
+                //         $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
+                //         Estoque::create([
+                //             'codbarras'             => $novoCodBarras,
+                //             'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                //             'descricao'             => "CRIADO VIA DESPESAS",
+                //             'ativadoestoque'        => 1,
+                //             'excluidoestoque'       => 0,
+                //         ]);
+                //     }
+                // }
 
                 $this->logCadastraDespesas($despesa);
             }
