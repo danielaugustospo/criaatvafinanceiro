@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Relatorio extends Model
 {
@@ -11,6 +12,28 @@ class Relatorio extends Model
      *
      * @var array
      */
+
+    public function contasAPagarOuReceber($dado)
+    {
+        if($dado == 1){
+            //A pagar
+            $listaContas =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
+            os.id as idDaOS, os.eventoOrdemdeServico as evento, os.idClienteOrdemdeServico,
+            cli.id as idCliente, cli.nomeCliente, cli.agenciaCliente1 as agencia1, cli.agenciaCliente2 as agencia2, cli.agenciaCliente3 as agencia3
+            from despesas d, ordemdeservico os, clientes cli
+            where (os.idClienteOrdemdeServico = cli.id)
+            and (d.idOS = os.id) 
+            and (d.pago = "N")');
+        }elseif ($dado == 2) {
+            //A receber
+            $listaContas = DB::select("SELECT r.valorreceita as preco, r.datapagamentoreceita as vencimento, c.id as idConta, c.apelidoConta as agencia, r.idosreceita as idOS, cli.nomeCliente, os.idClienteOrdemdeServico as idCliente, os.eventoOrdemdeServico as evento, r.nfreceita as notaFiscal
+            from receita r, conta c, ordemdeservico os, clientes cli
+            where pagoreceita = 'N' and r.contareceita = c.id 
+            and r.idosreceita = os.id
+            and os.idClienteOrdemdeServico = cli.id");    
+        }
+        return $listaContas;
+    }
 
     public function dadosRelatorioFaturamentoPorCliente($param)
     {

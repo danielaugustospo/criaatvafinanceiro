@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\CodigoDespesa;
 use App\Despesa;
+use App\Conta;
+use App\Banco;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -445,15 +447,19 @@ class DespesaController extends Controller
      */
     public function create(Request $request)
     {
-
-        $listaContas   = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
-        $codigoDespesa = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
-        where (c.ativoCodigoDespesa = 1) and (g.id = c.idGrupoCodigoDespesa) order by c.id');
-
+        $listaContas    = Conta::select('id','apelidoConta', 'nomeConta')->where('ativoConta', '1')->get();
+        $codigoDespesa  = CodigoDespesa::select('c.id', 'c.despesaCodigoDespesa', 'c.idGrupoCodigoDespesa', 'g.grupoDespesa')
+                          ->from('codigodespesas as c')
+                          ->join('grupodespesas as g', 'g.id', '=', 'c.idGrupoCodigoDespesa')
+                          ->where('c.ativoCodigoDespesa', 1)
+                          ->orderBy('c.id')
+                          ->get();
+        
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
         $formapagamento   = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
         $todasOSAtivas    = DB::select('SELECT x.* FROM ordemdeservico x WHERE ativoOrdemdeServico = 1');
-        $todosOSBancos    = DB::select('SELECT * FROM banco WHERE ativoBanco = 1');
+        $todosOSBancos    = Banco::all()->where('ativoBanco', '1');
+        
         $precoReal = " ";
         $vale = " ";
         $valorInput             = $this->valorInput;
@@ -487,8 +493,8 @@ class DespesaController extends Controller
 
         $this->processaRequisicaoDeNaoCompraECompra($despesa, $request);
 
-        $compraparcelada =  $request->get('compraparcelada');
-        $verificaCompra =  $request->get('a');
+        $compraparcelada    =  $request->get('compraparcelada');
+        $verificaCompra     =  $request->get('a');
         $idSalvo = [];
         if ($verificaCompra == 'S') {
             $despesa->ehcompra = 1;
@@ -560,7 +566,6 @@ class DespesaController extends Controller
         $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
 
         if ($request->get('tpRetorno') == 'visualiza') {
-
 
             if ((int)$request->get('paginaModal') == 1) {
                 $paginaModal = true;
@@ -662,22 +667,23 @@ class DespesaController extends Controller
                 $despesa->save();
                 $idSalvo[$i] = $despesa->id;
 
-                // if ($despesa->insereestoque == 1) {
+                if ($despesa->insereestoque == 1) {
+                    //Lançando no estoque 
+                    //S S S [OK]
 
-                //     $despesa->quantidade = intval($despesa->quantidade);
-                //     for ($i = 0; $i < $despesa->quantidade; $i++) {
-                //         //Lançando no estoque
-                //         $ultimoId = Estoque::max('id');
-                //         $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
-                //         Estoque::create([
-                //             'codbarras'             => $novoCodBarras,
-                //             'idbenspatrimoniais'    => $despesa->descricaoDespesa,
-                //             'descricao'             => "CRIADO VIA DESPESAS",
-                //             'ativadoestoque'        => 1,
-                //             'excluidoestoque'       => 0,
-                //         ]);
-                //     }
-                // }
+                    $despesa->quantidade = intval($despesa->quantidade);
+                    for ($e = 0; $e < $despesa->quantidade; $e++) {
+                        $ultimoId = Estoque::max('id');
+                        $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
+                        $lancaEstoque = Estoque::create([
+                            'codbarras'             => $novoCodBarras,
+                            'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                            'descricao'             => "CRIADO VIA DESPESA ID $despesa->id",
+                            'ativadoestoque'        => 1,
+                            'excluidoestoque'       => 0,
+                        ]);
+                    }
+                }
 
                 $this->logCadastraDespesas($despesa);
             }
@@ -753,6 +759,24 @@ class DespesaController extends Controller
                     //     }
                     // }
 
+                    if ($despesa->insereestoque == 1) {
+                        //S N S N
+                        if ($despesa->quantidade == null || $despesa->quantidade = '') $despesa->quantidade = 1;
+                        $despesa->quantidade     = $request->get('quantidade');
+
+                        for ($e = 0; $e < $despesa->quantidade; $e++) {
+                            //Lançando no estoque
+                            $ultimoId = Estoque::max('id');
+                            $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
+                            $lancaEstoque = Estoque::create([
+                                'codbarras'             => $novoCodBarras,
+                                'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                                'descricao'             => "CRIADO VIA DESPESA ID $despesa->id",
+                                'ativadoestoque'        => 1,
+                                'excluidoestoque'       => 0,
+                            ]);
+                        }
+                    }
                     $this->logCadastraDespesas($despesa);
                 }
             } elseif ($request->get('unicadespesa') == '1') {
@@ -779,9 +803,27 @@ class DespesaController extends Controller
                 }
 
                 $despesa->save();
-
                 $idSalvo[0] = $despesa->id;
+                
+                if ($despesa->insereestoque == 1) {
+                    //S N S S
+                    if ($despesa->quantidade == null || $despesa->quantidade = '') $despesa->quantidade = 1;
+                    $despesa->quantidade     = $request->get('quantidade');
 
+                    for ($e = 0; $e < $despesa->quantidade; $e++) {
+                        //Lançando no estoque
+                        $ultimoId = Estoque::max('id');
+                        $novoCodBarras = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
+                        
+                        $lancaEstoque = Estoque::create([
+                            'codbarras'             => $novoCodBarras,
+                            'idbenspatrimoniais'    => $despesa->descricaoDespesa,
+                            'descricao'             => "CRIADO VIA DESPESA ID $despesa->id",
+                            'ativadoestoque'        => 1,
+                            'excluidoestoque'       => 0,
+                        ]);
+                    }
+                }
 
                 $this->logCadastraDespesas($despesa);
             }
@@ -793,7 +835,6 @@ class DespesaController extends Controller
 
     public function processaNaoCompra(&$despesa, &$request)
     {
-
         if ($despesa->ehcompra == 0) {
 
             $despesa->ehcompra              =  0;

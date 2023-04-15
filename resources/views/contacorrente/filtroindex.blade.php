@@ -1,13 +1,11 @@
 @if (Route::currentRouteName() == 'contasAPagar')
-    @php
-       $recebeVariavel =  $listaContasAPagar;
-    @endphp
+    @php $listaContas = 1; /*A pagar*/ @endphp
 @else
-    @php
-        $recebeVariavel =  $listaContasAReceber;
-    @endphp
+    @php $listaContas =  2; /*A receber*/ @endphp
 @endif
-
+@php
+    $recebeVariavel =  Relatorio::contasAPagarOuReceber($listaContas);
+@endphp
 
 <div class="container" id="container">
     <div id="areaTabela">

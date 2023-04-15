@@ -31,9 +31,6 @@ class AppServiceProvider extends ServiceProvider
         $listaDespesas = DB::select('SELECT id, UPPER(descricaoDespesa) as descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela, idAutor FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaDespesas', $listaDespesas);
 
-        $listaDescricaoDespesa = DB::select('SELECT id, descricaoDespesa, idAutor  FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) ');
-        view()->share('listaDescricaoDespesa', $listaDescricaoDespesa);
-
         $listaGrupoDespesas = DB::select('SELECT * FROM grupodespesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
         view()->share('listaGrupoDespesas', $listaGrupoDespesas);
 
@@ -122,34 +119,12 @@ class AppServiceProvider extends ServiceProvider
         $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
         view()->share('listaFuncionarios', $listaFuncionarios);
 
-        $listaContasAPagar =  DB::select('SELECT d.id as idDespesa, d.idOS, d.vencimento, d.precoReal as preco, d.notaFiscal as notaFiscal,
-        os.id as idDaOS, os.eventoOrdemdeServico as evento, os.idClienteOrdemdeServico,
-        cli.id as idCliente, cli.nomeCliente, cli.agenciaCliente1 as agencia1, cli.agenciaCliente2 as agencia2, cli.agenciaCliente3 as agencia3
-        from despesas d, ordemdeservico os, clientes cli
-        where (os.idClienteOrdemdeServico = cli.id)
-        and (d.idOS = os.id) 
-        and (d.pago = "N")');
-        view()->share('listaContasAPagar', $listaContasAPagar);
-
-        $listaContasAReceber = DB::select("SELECT r.valorreceita as preco, r.datapagamentoreceita as vencimento, c.id as idConta, c.apelidoConta as agencia, r.idosreceita as idOS, cli.nomeCliente, os.idClienteOrdemdeServico as idCliente, os.eventoOrdemdeServico as evento, r.nfreceita as notaFiscal
-        from receita r, conta c, ordemdeservico os, clientes cli
-        where pagoreceita = 'N' and r.contareceita = c.id 
-        and r.idosreceita = os.id
-        and os.idClienteOrdemdeServico = cli.id");
-        view()->share('listaContasAReceber', $listaContasAReceber);
-
-        $listaReceitasEDespesas = DB::select('SELECT r.id, r.valorreceita from receita r union all (select d.id, d.precoReal  from despesas d)');
-        view()->share('listaReceitasEDespesas', $listaReceitasEDespesas);
-
         $consultaNotasRecibosProvider = DB::select('SELECT distinct * from view_notasrecibos order by Emissao ASC');
         view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
 
         $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
         view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
-        
-        // $modoSandbox = DB::select('select * from sandbox');
-        
-        
+               
         $modoSandbox = Sandbox::first();
         view()->share('modoSandbox', $modoSandbox);
 

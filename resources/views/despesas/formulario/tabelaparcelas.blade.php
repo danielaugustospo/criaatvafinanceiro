@@ -1,4 +1,4 @@
-<table class="rwd-table tabelalistadespesa" id="tabelalistadespesa" style="font-size: 12px;max-width: max-content;width: 120%;">
+<table class="rwd-table tabelalistadespesa" id="tabelalistadespesa" style="font-size: 12px;max-width: max-content;">
     <tbody>
         <div class="justify-content-center" style="background-color: black; color:white;"><h4>Compra Parcelada</h4></div>
         <div class="row">

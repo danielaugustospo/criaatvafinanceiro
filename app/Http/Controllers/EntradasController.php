@@ -176,16 +176,9 @@ class EntradasController extends Controller
     {
         // $banco =  DB::select('select * from banco');
         $tipoEntrada    = $request->metodo;
-        $ultimaEntrada  =  Entradas::select('id')->orderBy('id', 'desc')->first();
-        if (isset($ultimaEntrada->id)) {
-            if (($ultimaEntrada->id) == null || $ultimaEntrada->id == '') {
-                $novaEntrada = 1;
-            } else {
-                $novaEntrada = $ultimaEntrada->id++;
-            }
-        } else {
-            $novaEntrada = 1;
-        }
+
+        $ultimoId = Estoque::max('id');
+        $novaEntrada = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
 
         return view('entradas.create', compact('tipoEntrada', 'novaEntrada'));
     }

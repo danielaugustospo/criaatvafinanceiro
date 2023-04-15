@@ -1,16 +1,4 @@
-{{-- <table class="rwd-table" id="tabelalistadespesamultipla" 
-    style="font-size: 12px;
-    /* max-width: max-content; */
-
-    background-color:black !important;
-    display: table;
-    width: 100%;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    white-space: nowrap;
-    "
-> --}}
-<table class="rwd-table tabelalistadespesamultipla" id="tabelalistadespesamultipla" style="font-size: 12px;max-width: max-content;width: 120%;">
+<table class="rwd-table tabelalistadespesamultipla" id="tabelalistadespesamultipla" style="font-size: 12px;max-width: max-content;">
 
     <tbody>
         <div class="justify-content-center" style="background-color: black; color:white;"><h4>Múltiplos Lançamentos</h4></div>
@@ -90,10 +78,9 @@
                 <option value="Vidro">
                 <option value="Litro">
                 <option value="Saco">
-                <option value="Pote"> --}}
-
-
-                </datalist>
+                <option value="Pote">  
+                
+                </datalist> --}}
 
             </td>
             <td data-th="VALOR UNITÁRIO">
