@@ -45,14 +45,6 @@
     </div>
 </div>
 
-<div class="form-group row">
-    <label for="tipoEntrada" class="col-sm-2 col-form-label">Primeira Entrada ou Devolução</label>
-    <select name="tipoEntrada" id="tipoEntrada">
-        <option value="">Selecione</option>
-        <option value="P">Primeira Entrada</option>
-        <option value="D">Primeira Entrada</option>
-    </select>
-</div>
 
 {!! Form::hidden('valorunitarioentrada', '0', ['placeholder' => 'Valor Unitário', 'class' => 'form-control', 'maxlength' => '2']) !!}
 {!! Form::hidden('qtdeEntrada', '1', ['placeholder' => 'Quantidade', 'class' => 'form-control', 'maxlength' => '2']) !!}

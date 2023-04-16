@@ -174,13 +174,17 @@ class EntradasController extends Controller
      */
     public function create(Request $request)
     {
-        // $banco =  DB::select('select * from banco');
-        $tipoEntrada    = $request->metodo;
-
-        $ultimoId = Estoque::max('id');
+        $listaInventarioaDevolver = Estoque::select('estoque.id', 'estoque.codbarras', 'b.nomeBensPatrimoniais as nomematerial')
+        ->where('ativadoestoque', 0)
+        ->where('excluidoestoque', 0)
+        ->join('benspatrimoniais as b', 'idbenspatrimoniais', 'b.id')
+        ->get();
+        
+        $tipoEntrada = $request->metodo;
+        $ultimoId    = Estoque::max('id');
         $novaEntrada = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
 
-        return view('entradas.create', compact('tipoEntrada', 'novaEntrada'));
+        return view('entradas.create', compact('tipoEntrada', 'novaEntrada', 'listaInventarioaDevolver'));
     }
 
 
@@ -192,7 +196,7 @@ class EntradasController extends Controller
      */
     public function store(Request $request)
     {
-
+        $tipoEntrada = $request->query('metodo');
         $tipoEntrada = $request->metodo;
 
 
