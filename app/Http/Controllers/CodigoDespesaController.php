@@ -36,7 +36,7 @@ class CodigoDespesaController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = CodigoDespesa::latest()->get();
+            $data = CodigoDespesa::latest()->with('grupoDespesa')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -83,7 +83,7 @@ class CodigoDespesaController extends Controller
                 ->make(true);
         }
         else {
-            $data = CodigoDespesa::orderBy('id', 'DESC')->paginate(5);
+            $data = CodigoDespesa::with('grupoDespesa')->orderBy('id', 'DESC')->paginate(5);
             return view('codigodespesas.index', compact('data'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
         } 

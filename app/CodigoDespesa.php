@@ -43,4 +43,9 @@ class CodigoDespesa extends Model
         return view('codigodespesas.action', compact('codigoDespesasModel'))->render();
     }
 
+
+    public function grupoDespesa()
+    {
+        return $this->BelongsTo(GrupoDespesa::class, 'idGrupoCodigoDespesa');
+    }
 }
