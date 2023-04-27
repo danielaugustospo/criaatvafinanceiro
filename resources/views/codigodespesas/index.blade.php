@@ -117,8 +117,8 @@ var table = $('.data-table').DataTable({
             name: 'despesaCodigoDespesa'
         },
         {
-            data: 'idGrupoCodigoDespesa',
-            name: 'idGrupoCodigoDespesa'
+            data: 'grupo_despesa.grupoDespesa',
+            name: 'grupo_despesa.grupoDespesa'
         },
         {
             data: 'action',
