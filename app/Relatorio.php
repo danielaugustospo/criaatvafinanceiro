@@ -65,7 +65,9 @@ class Relatorio extends Model
         $query = "SELECT 
                         r.datapagamentoreceita, 
                         r.idosreceita, 
-
+                        os.eventoOrdemdeServico,
+                        -- os.idClienteOrdemdeServico,
+                        c.razaosocialCliente,
 
                         CASE
                             WHEN r.idosreceita is NOT NULL THEN os.eventoOrdemdeServico
@@ -76,11 +78,12 @@ class Relatorio extends Model
                         fpg.nomeFormaPagamento, 
                         r.valorreceita, 
                         cc.nomeConta as conta
-                        FROM receita r, formapagamento fpg, conta cc, ordemdeservico os
+                        FROM receita r, formapagamento fpg, conta cc, ordemdeservico os, clientes c
                         -- LEFT JOIN ordemdeservico   AS os 	ON r.idosreceita = os.id
                         WHERE fpg.id = r.idformapagamentoreceita 
                         and cc.id = r.contareceita
                         and os.id = r.idosreceita
+                        and c.id  = os.idClienteOrdemdeServico
                         and r.ativoreceita  = 1
                         and r.valorreceita  != '0.00'" . $stringQuery;
 

@@ -40,8 +40,9 @@ class Conta extends Model
         return view('contas.action', compact('contasModel'))->render();
     }
 
-    public function dadosRelatorio($stringQueryExtrato, $complemento)
+    public function dadosRelatorio($conta = null, $complemento)
     {
+        $conta = (is_null($conta)) ? '' : ' and x.idconta = '.$conta ;
         $stringQueryExtrato = "SELECT 	
         selecionageral.*
         FROM (
@@ -83,11 +84,8 @@ class Conta extends Model
             where `despesas`.`excluidoDespesa` = 0)) as x 
             
             where (pagoreceita = 'S' or pagoreceita = '1') 
-            and historico != '' 
-            -- group by id
-            order by dtoperacao
-            ) as selecionageral
-            $complemento " ;
+            and historico != '' $conta 
+            order by dtoperacao) as selecionageral $complemento " ;
 
         return $stringQueryExtrato;
     }
