@@ -18,6 +18,8 @@ use App\Classes\Logger;
 use App\PedidoCompra;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 
 class PedidoCompraController extends Controller
@@ -387,7 +389,7 @@ class PedidoCompraController extends Controller
            
             if($pedido->ped_banco != '180'){
                 $request->validate([
-                    'ped_cpfcnpj'         => 'required' ],
+                    'ped_cpfcnpj'                 => 'required|cpf_cnpj' ],
                 [   'ped_cpfcnpj.required'        => 'CPF/CNPJ obrigatório']);
             }
 
@@ -433,7 +435,7 @@ class PedidoCompraController extends Controller
             // Se o Banco for diferente de Itau, validar o CPF/CNPJ
             if($pedido->ped_banco != '180'){
                 $request->validate([
-                    'ped_cpfcnpj'          => 'required' ],
+                    'ped_cpfcnpj'          => 'required|cpf_cnpj' ],
                 [   'ped_cpfcnpj.required' => 'CPF/CNPJ obrigatório']);
 
             }
@@ -453,11 +455,14 @@ class PedidoCompraController extends Controller
             ]);
         }
     }
+
+    
     public function validaDados($request)
     {
+        $validator = null;
+    
         if($request->get('ped_formapag') == 'avista'){
-
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 // 'ped_pix'           => 'required',
                 'ped_banco'         => 'required',
                 'ped_conta'         => 'required',
@@ -468,28 +473,34 @@ class PedidoCompraController extends Controller
                 'ped_banco.required'        => 'Nome do Banco é obrigatório', 
                 'ped_conta.required'        => 'Informe a conta', 
                 'ped_agenciaconta.required' => 'Informe a agência',     
-             ]);
+            ]);
         }
-        if($request->get('ped_formapag') == 'cred'){
-            
-            $request->validate([ 'ped_numcartao'  => 'required', 'ped_vzscartao'  => 'required'] ,
-             [  'ped_numcartao.required'=> 'O número final do cartão é obrigatório', 
-                'ped_vzscartao.required'=> 'O número de parcelas no cartão é obrigatório']);
-
+        elseif($request->get('ped_formapag') == 'cred'){
+            $validator = Validator::make($request->all(), [
+                'ped_numcartao'  => 'required',
+                'ped_vzscartao'  => 'required'
+            ],
+            [
+                'ped_numcartao.required'=> 'O número final do cartão é obrigatório', 
+                'ped_vzscartao.required'=> 'O número de parcelas no cartão é obrigatório'
+            ]);
         }
-        if($request->get('ped_formapag') == 'faturado'){
-
-            $request->validate([ 'ped_periodofaturado'  => 'required'] , [ 'ped_periodofaturado.required'=> 'O período faturado é obrigatório']);
-
+        elseif($request->get('ped_formapag') == 'faturado'){
+            $validator = Validator::make($request->all(), [
+                'ped_periodofaturado'  => 'required'
+            ],
+            [
+                'ped_periodofaturado.required'=> 'O período faturado é obrigatório'
+            ]);
         }
-        if($request->get('ped_formapag') == 'reembolsado'){
-            $request->validate([ 
+        elseif($request->get('ped_formapag') == 'reembolsado'){
+            $validator = Validator::make($request->all(), [
                 'ped_reembolsado'  => 'required',
                 'ped_banco'         => 'required',
                 'ped_conta'         => 'required',
                 'ped_agenciaconta'  => 'required',
-            ], 
-            [ 
+            ],
+            [
                 'ped_reembolsado.required'=> 'Nome do Reembolsado é obrigatório',
                 'ped_banco.required'        => 'Nome do Banco é obrigatório', 
                 'ped_conta.required'        => 'Informe a conta', 
@@ -497,17 +508,19 @@ class PedidoCompraController extends Controller
             ]);
         }
         else{
-            $request->validate([ 
+            $validator = Validator::make($request->all(), [
                 'ped_formapag'  => 'required',
-            ], 
-            [ 
+            ],
+            [
                 'ped_formapag.required'=> 'Informe o tipo da compra',
             ]);
         }
-        if ($request->fails()) {
-            return Redirect::back()->withErrors($request->errors())->withInput();
-        }else{
-            return $request;
+    
+        if ($validator->fails()) {
+            throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
         }
+    
+        return $request;
     }
+    
 }
