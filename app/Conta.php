@@ -40,8 +40,9 @@ class Conta extends Model
         return view('contas.action', compact('contasModel'))->render();
     }
 
-    public function dadosRelatorio($stringQueryExtrato, $complemento)
-    {
+    public function dadosRelatorio($conta = null, $complemento)
+    {   $conta = null;
+        $conta = (is_null($conta)) ? '' : ' and x.idconta = '.$conta ;
         $stringQueryExtrato = "SELECT 	
         selecionageral.*
         FROM (
@@ -77,17 +78,14 @@ class Conta extends Model
             
             inner join conta on `despesas`.`conta` = `conta`.`id`
             inner join formapagamento on `despesas`.`idFormaPagamento` = `formapagamento`.`id`
-            LEFT JOIN  benspatrimoniais  AS b    ON despesas.descricaoDespesa = b.id
+            LEFT JOIN  benspatrimoniais  AS b  ON despesas.descricaoDespesa = b.id
 
             
             where `despesas`.`excluidoDespesa` = 0)) as x 
             
             where (pagoreceita = 'S' or pagoreceita = '1') 
-            and historico != '' 
-            -- group by id
-            order by dtoperacao
-            ) as selecionageral
-            $complemento " ;
+            and historico != ''". $conta ."  
+            order by dtoperacao) as selecionageral " .$complemento ;
 
         return $stringQueryExtrato;
     }

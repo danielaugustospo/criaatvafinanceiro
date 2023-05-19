@@ -634,7 +634,7 @@ class ContaController extends Controller
         $modelConta = new Conta();
 
         $complemento = "WHERE idconta ='".$contaSelecionada."' and (dtoperacao  BETWEEN '".$datainicial."' AND '".$datafinal."')";
-        $stringQueryExtratoConta = $modelConta->dadosRelatorio(null, $complemento);
+        $stringQueryExtratoConta = $modelConta->dadosRelatorio($contaSelecionada, $complemento);
         $extrato = DB::select($stringQueryExtratoConta);
 
         $tamExtrato = sizeof($extrato);
@@ -656,6 +656,7 @@ class ContaController extends Controller
             // $saldoInicial   = $extrato[0]->saldo - $extrato[0]->valorreceita;
             bcscale(2);
             $saldoInicial = bcsub($extrato[0]->saldoNovo, $extrato[0]->valorreceita);
+
         }
         else{
             $conta   = 'Indefinido';

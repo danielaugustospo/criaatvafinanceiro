@@ -57,6 +57,7 @@
                             datapagamentoreceita: { type: "date"},
                             idosreceita: { type: "string"},
                             descricaoreceita: { type: "string"},
+                            razaosocialCliente: { type: "string"},
                             nomeFormaPagamento: { type: "string"},
                             conta: { type: "string"},
                         }
@@ -78,11 +79,12 @@
             columns: [
                 { field: "datapagamentoreceita", title: "Data", filterable: true, width: 85, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "idosreceita", title: "N° OS", filterable: true, width: 60 },
-                { field: "descricaoreceita", title: "Receita", filterable: true, width: 100 },
-                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 120 },
+                { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 100 },
+                { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 150 },
+                { field: "nomeFormaPagamento", title: "Forma Pagamento", filterable: true, width: 100 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total na conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "nfreceita", title: "NF", filterable: true, width: 80},
-                { field: "conta", title: "Conta", filterable: true, width: 100 },
+                { field: "nfreceita", title: "NF", filterable: true, width: 50},
+                { field: "conta", title: "Conta", filterable: true, width: 80 },
             ],
             @include('layouts/helpersview/finaltabela')
             @include('layouts/filtradata')

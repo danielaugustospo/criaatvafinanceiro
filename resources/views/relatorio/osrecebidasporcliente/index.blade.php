@@ -69,12 +69,12 @@
             columns: [
                 { field: "idOS", title: "N° OS", filterable: true, width: 80 },
                 { field: "nfreceita", title: "NFS", filterable: true, width: 50 },
-                { field: "dataCriacaoOrdemdeServico", title: "Data da OS", filterable: true, width: 90, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
+                { field: "datapagamentoreceita", title: "Data Recebimento", filterable: true, width: 90, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: segundoFiltroPeriodo}} },
                 { field: "eventoOrdemdeServico", title: "Evento", filterable: true, width: 120 },
-                { field: "datapagamentoreceita", title: "Data PG", filterable: true, width: 90, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: segundoFiltroPeriodo}} },
                 { field: "nomeFormaPagamento", title: "Forma de Pag.", filterable: true, width: 90 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 90, exportable:false },
+                { field: "dataCriacaoOrdemdeServico", title: "Criação da OS", filterable: true, width: 90, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "conta", title: "Conta", filterable: true, width: 80, exportable:false }            
                 ],
                 @include('layouts/helpersview/finaltabela')
