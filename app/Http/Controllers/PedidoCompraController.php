@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\App;
 use App\Classes\Logger;
 use App\PedidoCompra;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
+
 
 class PedidoCompraController extends Controller
 {
@@ -133,23 +135,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_fornecedor             = $request->get('ped_fornecedor');
         $pedido->ped_descprod               = $request->get('ped_descprod');
         $pedido->ped_valortotal             = $request->get('ped_valortotal');
-        // $pedido->ped_cartaodecredito        = $request->get('ped_cartaodecredito');
         $pedido->ped_formapag               = $request->get('ped_formapag');
-//Faturado        
-        // $pedido->ped_periodofaturado        = $request->get('ped_periodofaturado');
-// Conta
-        // $pedido->ped_pix                    = $request->get('ped_pix');
-        // $pedido->ped_banco                  = $request->get('ped_banco');
-        // $pedido->ped_conta                  = $request->get('ped_conta');
-        // $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');
-
-        // $pedido->ped_tipoconta              = $request->get('ped_tipoconta');
-//Cartao        
-        // $pedido->ped_numcartao              = $request->get('ped_numcartao');
-        // $pedido->ped_vzscartao              = $request->get('ped_vzscartao');
-//Reembolsado        
-        // $pedido->ped_reembolsado            = $request->get('ped_reembolsado');
-
         $pedido->ped_precounit              = $request->get('ped_precounit');
         $pedido->ped_qtd                    = $request->get('ped_qtd');
         $pedido->ped_observacao             = $request->get('ped_observacao');
@@ -444,23 +430,23 @@ class PedidoCompraController extends Controller
             $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');   
             $pedido->ped_cpfcnpj                = $request->get('ped_cpfcnpj');   
 
-
+            // Se o Banco for diferente de Itau, validar o CPF/CNPJ
             if($pedido->ped_banco != '180'){
                 $request->validate([
-                    'ped_cpfcnpj'         => 'required' ],
-                [   'ped_cpfcnpj.required'        => 'CPF/CNPJ obrigatório']);
+                    'ped_cpfcnpj'          => 'required' ],
+                [   'ped_cpfcnpj.required' => 'CPF/CNPJ obrigatório']);
 
             }
             return $pedido;
 
             $request->validate([ 
-                'ped_reembolsado'  => 'required',
+                'ped_reembolsado'   => 'required',
                 'ped_banco'         => 'required',
                 'ped_conta'         => 'required',
                 'ped_agenciaconta'  => 'required',
             ], 
             [ 
-                'ped_reembolsado.required'=> 'Nome do Reembolsado é obrigatório',
+                'ped_reembolsado.required'  => 'Nome do Reembolsado é obrigatório',
                 'ped_banco.required'        => 'Nome do Banco é obrigatório', 
                 'ped_conta.required'        => 'Informe a conta', 
                 'ped_agenciaconta.required' => 'Informe a agência', 
@@ -518,6 +504,10 @@ class PedidoCompraController extends Controller
                 'ped_formapag.required'=> 'Informe o tipo da compra',
             ]);
         }
-        return $request;
+        if ($request->fails()) {
+            return Redirect::back()->withErrors($request->errors())->withInput();
+        }else{
+            return $request;
+        }
     }
 }

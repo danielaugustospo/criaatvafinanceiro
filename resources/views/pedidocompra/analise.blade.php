@@ -1,8 +1,8 @@
-<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalPedidoCompra">
     <i class="fa fa-check" aria-hidden="true"></i><i class="fa fa-ban" aria-hidden="true"></i> Análise
 </button>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<div class="modal fade" id="modalPedidoCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
