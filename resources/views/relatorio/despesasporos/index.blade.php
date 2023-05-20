@@ -55,16 +55,8 @@ $.LoadingOverlay("show", {
 
 @can('visualiza-relatoriogeral')
 var dataSource = new kendo.data.DataSource({
-    transport: {
-        read: {
-            @if (isset($despesas))
-            url: "{{ $rotaapi}}?despesas={{$despesas}}&valor={{$valor}}&dtinicio={{$dtinicio}}&dtfim={{$dtfim}}&coddespesa={{$coddespesa}}&fornecedor={{$fornecedor}}&ordemservico={{$ordemservico}}&conta={{$conta}}&notafiscal={{$notafiscal}}&cliente={{$cliente}}&fixavariavel={{$fixavariavel}}&pago={{$pago}}&idUser={{$idUser}}&formaPagamento={{ $formaPagamento }}",
-            @else
-                url: "{{ $rotaapi }}",
-            @endif
-            dataType: "json"
-        },
-    },
+    @include('layouts/helpersview/transportdespesaskendogrid')
+
 });
 
 

@@ -4,7 +4,7 @@
 @endphp
 <div id="informacoes" class="d-flex justify-content-center">
 
-    @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == ''&& $dtiniciolancamento == '' && $dtfimlancamento == '' && $formaPagamento == '')
+    @if ($despesas == '' && $valor == '' && $dtinicio == '' && $dtfim == '' && $coddespesa == ''  && $grupodespesa == '' && $fornecedor == '' && $ordemservico == '' && $conta == '' && $notafiscal == '' && $cliente == '' && $fixavariavel == '' && $pago == ''&& $dtiniciolancamento == '' && $dtfimlancamento == '' && $formaPagamento == '')
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
         <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
@@ -24,6 +24,9 @@
     @endif
     @if ($coddespesa != '')
         <label class="fontenormal"><b>Cód de Despesa:</b> {{ $coddespesa }} &nbsp; </label>
+    @endif
+    @if ($grupodespesa != '')
+        <label class="fontenormal"><b>Grupo de Despesa:</b> {{ $grupodespesa }} &nbsp; </label>
     @endif
     @if ($fornecedor != '')
         <label class="fontenormal"><b>Fornecedor:</b> {{ $fornecedor }} &nbsp; </label>

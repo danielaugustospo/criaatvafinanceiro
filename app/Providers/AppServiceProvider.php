@@ -37,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
         $listaCodigoDespesa = DB::select('SELECT * FROM codigodespesas WHERE (excluidoCodigoDespesa = 0) and (ativoCodigoDespesa = 1) order by id');
         view()->share('listaCodigoDespesa', $listaCodigoDespesa);
 
+        $listaGrupoDespesa = DB::select('SELECT DISTINCT grupoDespesa FROM grupodespesas WHERE excluidoDespesa = 0 and ativoDespesa = 1');
+        view()->share('listaGrupoDespesa', $listaGrupoDespesa);
+
         $listaOrdemDeServicos = DB::select('SELECT ods.id, ods.idClienteOrdemdeServico, ods.dataVendaOrdemdeServico, ods.valorOrdemdeServico,ods.dataOrdemdeServico,clientes.id as idcliente,clientes.razaosocialCliente, ods.eventoOrdemdeServico,ods.servicoOrdemdeServico,ods.obsOrdemdeServico,ods.dataCriacaoOrdemdeServico,ods.dataExclusaoOrdemdeServico,ods.ativoOrdemdeServico,ods.excluidoOrdemdeServico
         from ordemdeservico ods 
         left join `clientes` on idClienteOrdemdeServico = `clientes`.`id`');

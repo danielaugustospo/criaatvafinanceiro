@@ -63,24 +63,7 @@
                 progress: true
             });
             dataSource = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        @if (isset($despesas))
-                            url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{$idUser}}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}&formaPagamento={{ $formaPagamento }}",
-                        @else
-                            url: "{{ $rotaapi }}",
-                        @endif
-                        dataType: "json"
-                    },
- 
-                    parameterMap: function(options, operation) {
-                        if (operation !== "read" && options.models) {
-                            return {
-                                models: kendo.stringify(options.models)
-                            };
-                        }
-                    }
-                },
+                @include('layouts/helpersview/transportdespesaskendogrid')
                 pageSize: 30,
                 batch: true,
                 schema: {

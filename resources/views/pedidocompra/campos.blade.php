@@ -15,7 +15,6 @@
 @endif
 
 
-
 @isset($pedido)
     <div class="row">
         <label class="col-sm-2 pr-2" for="">Pedido</label>
@@ -277,7 +276,7 @@
             value="@isset($pedido->ped_conta)  {{ $pedido->ped_conta }} @else {{ old('ped_conta') }} @endisset">
 
         <label class="col-sm-2 mr-2 mt-2" for="ped_conta">CPF/CNPJ</label>
-        <input name="ped_cpfcnpj" id="ped_cpfcnpj" class="col-sm-3 form-control" maxlength="11"
+        <input name="ped_cpfcnpj" id="ped_cpfcnpj" class="col-sm-3 form-control" maxlength="14"
             {{ $variavelReadOnlyNaView }}
             value="@isset($pedido->ped_cpfcnpj)  {{ $pedido->ped_cpfcnpj }} @else {{ old('ped_cpfcnpj') }} @endisset">
     </div>

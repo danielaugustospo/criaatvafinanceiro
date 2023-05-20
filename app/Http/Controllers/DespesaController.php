@@ -106,22 +106,23 @@ class DespesaController extends Controller
         $dtinicio               = $validacoesPesquisa[2];
         $dtfim                  = $validacoesPesquisa[3];
         $coddespesa             = $validacoesPesquisa[4];
-        $fornecedor             = $validacoesPesquisa[5];
-        $ordemservico           = $validacoesPesquisa[6];
-        $conta                  = $validacoesPesquisa[7];
-        $notafiscal             = $validacoesPesquisa[8];
-        $cliente                = $validacoesPesquisa[9];
-        $fixavariavel           = $validacoesPesquisa[10];
-        $pago                   = $validacoesPesquisa[11];
-        $idSalvo                = $validacoesPesquisa[12];
-        $idUser                 = $validacoesPesquisa[13];
-        $dtiniciolancamento     = $validacoesPesquisa[14];
-        $dtfimlancamento        = $validacoesPesquisa[15];
-        $formaPagamento         = $validacoesPesquisa[16];
+        $grupodespesa           = $validacoesPesquisa[5];
+        $fornecedor             = $validacoesPesquisa[6];
+        $ordemservico           = $validacoesPesquisa[7];
+        $conta                  = $validacoesPesquisa[8];
+        $notafiscal             = $validacoesPesquisa[9];
+        $cliente                = $validacoesPesquisa[10];
+        $fixavariavel           = $validacoesPesquisa[11];
+        $pago                   = $validacoesPesquisa[12];
+        $idSalvo                = $validacoesPesquisa[13];
+        $idUser                 = $validacoesPesquisa[14];
+        $dtiniciolancamento     = $validacoesPesquisa[15];
+        $dtfimlancamento        = $validacoesPesquisa[16];
+        $formaPagamento         = $validacoesPesquisa[17];
         
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento', 'formaPagamento'));
+        return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'grupodespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento', 'formaPagamento'));
     }
 
 
@@ -262,6 +263,8 @@ class DespesaController extends Controller
         if (isset($request->despesas))      $descricao .= " AND d.descricaoDespesa like  '%$request->despesas%'"; $verificaInputCampos++;
 
         if (isset($request->coddespesa))    $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'"; $verificaInputCampos++;
+
+        if (isset($request->grupodespesa))  $descricao .= " AND g.grupoDespesa like  '%$request->grupodespesa%'"; $verificaInputCampos++;
         
         if (isset($request->fornecedor))    $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'"; $verificaInputCampos++;
         
@@ -327,6 +330,9 @@ class DespesaController extends Controller
         if ($request->get('coddespesa')) :   $coddespesa = $request->get('coddespesa');
         else : $coddespesa = '';
         endif;
+        if ($request->get('grupodespesa')) :   $grupodespesa = $request->get('grupodespesa');
+        else : $grupodespesa = '';
+        endif;
         if ($request->get('fornecedor')) :   $fornecedor = $request->get('fornecedor');
         else : $fornecedor = '';
         endif;
@@ -368,7 +374,7 @@ class DespesaController extends Controller
             $idUser = null;
         }
 
-        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser, $dtiniciolancamento, $dtfimlancamento, $formaPagamento);
+        $solicitacaoArray = array($despesas, $valor, $dtinicio, $dtfim, $coddespesa, $grupodespesa, $fornecedor, $ordemservico, $conta, $notafiscal, $cliente, $fixavariavel, $pago, $idSalvos, $idUser, $dtiniciolancamento, $dtfimlancamento, $formaPagamento);
         return $solicitacaoArray;
     }
     

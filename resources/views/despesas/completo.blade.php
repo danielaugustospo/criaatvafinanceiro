@@ -97,24 +97,8 @@
             $(document).ready(function() {
 
                 var dataSource = new kendo.data.DataSource({
-                    transport: {
-                        read: {
-                            @if (isset($despesas))
-                                url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}&idSalvo={{ $idSalvo }}&idUser={{ $idUser }}&dtiniciolancamento={{ $dtiniciolancamento }}&dtfimlancamento={{ $dtfimlancamento }}&formaPagamento={{ $formaPagamento }}",
-                            @else
-                                url: "{{ $rotaapi }}",
-                            @endif
-                            dataType: "json"
-                        },
+                    @include('layouts/helpersview/transportdespesaskendogrid')
 
-                        parameterMap: function(options, operation) {
-                            if (operation !== "read" && options.models) {
-                                return {
-                                    models: kendo.stringify(options.models)
-                                };
-                            }
-                        }
-                    },
                     pageSize: 30,
                     schema: {
 

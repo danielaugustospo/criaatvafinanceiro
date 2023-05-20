@@ -518,6 +518,14 @@
         </option>
     @endforeach
 </datalist>
+
+<datalist id="datalistGrupoDespesa">
+    @foreach ($listaGrupoDespesa as $grupodespesa)
+        <option value="{{ $grupodespesa->grupoDespesa }}">{{ $grupodespesa->grupoDespesa }}
+        </option>
+    @endforeach
+</datalist>
+
 <datalist id="datalistContas">
     @foreach ($listaContas as $conta)
         <option value="{{ $conta->apelidoConta }}">{{ $conta->nomeConta }} - {{ $conta->apelidoConta }}
