@@ -170,7 +170,7 @@
                                     <a class="dropdown-item"
                                         href="{{ route('pedidocompra.index') }}?aprovado=3&notificado=1">Avaliador - <span
                                             class="badge badge-warning mt-0"
-                                            style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao()[0]->aguardaprov }}</span>
+                                            style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
                                         pedido(s) para aprovar</a>
                                 @endcan
                             </div>
@@ -442,27 +442,6 @@
     @endforeach
 </datalist>
 
-{{-- <datalist id="datalistOrdemServicoReceita">
-      @foreach ($pegaidOS as $ordemdeservico)
-          <option value="{{ $ordemdeservico->id }}">{{ $ordemdeservico->id }}
-          </option>
-      @endforeach
-  </datalist> --}}
-
-{{-- <datalist id="datalistContasReceita">
-      @foreach ($listaContas as $contareceita)
-          <option value="{{ $contareceita->apelidoConta }}">{{ $contareceita->nomeConta }} - {{ $contareceita->apelidoConta }}
-          </option>
-      @endforeach
-  </datalist> --}}
-
-{{-- <datalist id="datalistClienteReceita">
-      @foreach ($nomeclientes as $cliente)
-          <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>
-      @endforeach
-  </datalist> --}}
-
-
 <datalist id="datalistIdDespesa">
     @can('despesa-list-all')
         @foreach ($listaDespesas as $despesas)
@@ -532,11 +511,7 @@
         </option>
     @endforeach
 </datalist>
-{{-- <datalist id="datalistNotaFiscal">
-    @foreach ($listaDespesas as $despesas)
-        <option value="{{ $despesas->notaFiscal }}">{{ $despesas->notaFiscal }}</option>
-    @endforeach
-</datalist> --}}
+
 <datalist id="datalistCliente">
     @foreach ($listaClientes as $cliente)
         <option value="{{ $cliente->id }}">{{ $cliente->razaosocialCliente }}</option>

@@ -4,6 +4,7 @@
     $titulo  = "Controle de consumo de materiais";
     $campodata = 'vencimento';
     $relatorioKendoGrid = true;
+    $rel = 'controleconsumomaterial';
     
     if (isset($despesas)) {
         $despesas = $despesas;

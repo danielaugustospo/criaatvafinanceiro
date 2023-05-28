@@ -40,7 +40,7 @@
         @can('rel-entradaporcontabancaria')
             <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Entradas por Conta Bancária/NF&nbsp;</label></a>
         @endcan
-        @can('fatporcliente')
+        @can('rel-fatporcliente')
             <a href="fatporcliente?p=s">            <label class="text-center fontenormal row" for="">Faturamento por Cliente &nbsp;</label></a>
         @endcan
         @can('rel-notasemitidas')

@@ -4,6 +4,7 @@
     $titulo  = "CONTAS PAGAS POR DESPESA/GRUPO";
     $campodata = 'vencimento';
     $relatorioKendoGrid = true;
+    $pago = 'S';
 
     if (isset($despesas)) {
         $despesas = $despesas;

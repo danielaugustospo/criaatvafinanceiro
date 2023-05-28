@@ -103,8 +103,11 @@ class RelatorioController extends Controller
     {
         $relatorio = new Relatorio();
 
-        // $condicao = "WHERE (r.pagoreceita = '$request->a')";
-        $condicao = (isset($request->a) && ($request->a == 'S' || $request->a == 'N')) ? "WHERE (r.pagoreceita = '$request->a')" : " ";
+        $condicao = (isset($request->a) && ($request->a == 'S' || $request->a == 'N')) ? 
+        //Remove as formas de pagamento canceladas id 5 (CANCELADA) e 11 (CaNCELADA/O).
+        "WHERE (r.pagoreceita = '$request->a') and (r.idformapagamentoreceita not in (5,11))" : 
+        "WHERE (r.idformapagamentoreceita not in (5,11))"; 
+ 
         $stringConsulta = $relatorio->dadosRelatorioFaturamentoPorCliente($condicao);
         $dadosConsulta = DB::select($stringConsulta);
         return $dadosConsulta;

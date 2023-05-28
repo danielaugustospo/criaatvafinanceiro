@@ -57,6 +57,7 @@
         <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
             @include('layouts/helpersview/infofiltrosdepesa')
         </div>
+        <button id="update">Update</button>
         <script>
             $.LoadingOverlay("show", {
                 image: "",
@@ -261,13 +262,14 @@
                             filterable: true,
                             autowidth: true,
                             width: 100,
+                            editable: isEditable
                         },
                         {
                             field: "despesaCodigoDespesa",
                             title: "Cód.<br>Despesa",
                             filterable: true,
                             autowidth: true,
-                            width: 100,
+                            width: 100
                         },
                         {
                             field: "idOS",
@@ -329,12 +331,12 @@
                             filterable: true,
                             width: 90
                         },
-                            {
-                                field: "nomeFuncionario",
-                                title: "Funcionário",
-                                filterable: true,
-                                width: 150,
-                            },
+                        {
+                            field: "nomeFuncionario",
+                            title: "Funcionário",
+                            filterable: true,
+                            width: 150
+                        },
                         {
                             field: "created_at",
                             title: "Criado Em",
@@ -342,7 +344,7 @@
                             filterable: true,
                             width: 90
                         },
-
+                        { command: "edit" }
                         // { field: "vale", title: "Vale", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                         // { field: "despesareal", title: "Valor<br>Final", filterable: true, width: 200, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Val. Total: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                         // { field: "datavale", title: "PG<br>Vale", filterable: true, width: 200, format: "{0:dd/MM/yyyy}" },
@@ -350,6 +352,9 @@
 
                         
                     ],
+                    editable: {
+                        mode: "inline"
+                    },
                     groupExpand: function(e) {
                         for (let i = 0; i < e.group.items.length; i++) {
                             var expanded = e.group.items[i].value
@@ -391,6 +396,41 @@
                     }
                 });
 
+                $("#update").click(function() {
+                    var grid = $("#grid").data("kendoGrid");
+                    var dataItems = grid.dataSource.data();
+                
+                    var updatedData = [];
+
+                    for (var i = 0; i < dataItems.length; i++) {
+                        var item = dataItems[i];
+                        item.set('Category.CategoryID', '6');
+                        item.set('Category.CategoryName', 'Meat/Poultry');
+                        updatedData.push(item.toJSON());
+                    
+                        var row = grid.tbody.find("tr[data-uid='" + item.uid + "']");
+                        var cell = row.find("td:eq(1)");
+                        cell.addClass("k-dirty-cell").prepend("<span class='k-dirty' />");
+                    }
+
+                    // Enviar a requisição para o backend
+                    $.ajax({
+                        url: "api/updatedespesas",
+                        method: "POST",
+                        data: JSON.stringify(updatedData),
+                        contentType: "application/json",
+                        success: function(response) {
+                            // Requisição bem-sucedida
+                            alert("Dados atualizados com sucesso!");
+                        },
+                        error: function(xhr, status, error) {
+                            // Ocorreu um erro na requisição
+                            alert("Erro ao atualizar os dados: " + error);
+                        }
+                    });
+                });
+
+
 
                 function showHideAll(show, field, element) {
                     // find the master Grid element
@@ -406,6 +446,12 @@
                             grid.hideColumn(field);
                         }
                     }
+                }
+
+                function isEditable(e){
+                    var dataSource = $("#grid").data("kendoGrid").dataSource;
+                    // If the id(ProductID) is null, then it is editable.
+                    return e.ProductID == null;
                 }
 
             });
@@ -438,6 +484,20 @@
                         });
 
                     @include('layouts/filtradata')
+
+                    function categoryDropDownEditor(container, options) {
+                    $('<input required data-text-field="CategoryName" data-value-field="CategoryID" data-bind="value:' + options.field + '"/>')
+                    .appendTo(container)
+                    .kendoDropDownList({
+                        autoBind: false,
+                        dataSource: {
+                            type: "odata",
+                            transport: {
+                                read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories"
+                            }
+                        }
+                    });
+            }
         </script>
 
 @endsection
