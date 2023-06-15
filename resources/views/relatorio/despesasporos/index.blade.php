@@ -150,6 +150,7 @@ dataSource.fetch().then(function() {
                         fields: {
                             vencimento: { type: "date" },
                             precoReal: { type: "number" },
+                            porcentagemOS: { type: "number" },
                         }
                     },
                 },
@@ -174,7 +175,15 @@ dataSource.fetch().then(function() {
                 { field: "descricaoDespesa", title: "Despesa", filterable: true, width: 200 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 150, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },
-                { field: "porcentagemOS", title: "Perc(%)",  width: 150, template:template},
+                { 
+                    field: "porcentagemOS", 
+                    title: "Perc(%)",  
+                    width: 150,  
+                    decimals: 2, 
+                    aggregates: ["sum"], 
+                    groupHeaderColumnTemplate: "#= calcularPorcentagem(data, grid) #", 
+                    template: template
+                },
                 { field: "despesaCodigoDespesa", title: "Grupo",  filterable: true, width: 150 },
                 { field: "idOS", title: "N° OS", filterable: true, width: 100 },
             ],
@@ -183,11 +192,24 @@ dataSource.fetch().then(function() {
 
             function template(data){
                 var grid = $('#grid').data('kendoGrid');
-            
                 var valorPorcentagem = 100 * (+data.precoReal) / grid.dataSource.aggregates().precoReal.sum;
-                valorPorcentagem = parseFloat(valorPorcentagem).toFixed(2)+"%";
-                return  valorPorcentagem;
+                valorPorcentagem = parseFloat(valorPorcentagem).toFixed(2);
+                return valorPorcentagem;
             }
+
+            function calcularPorcentagem(data, grid) {
+                var group = data.aggregates.precoReal.sum;
+                var precoRealSum = group || 0; // Definir como zero se a soma for nula
+                
+                var grid  = $('#grid').data('kendoGrid');
+                var total = grid.dataSource.aggregates().precoReal.sum; 
+
+                if (precoRealSum !== 0) {
+                    porcentagem = (precoRealSum  * 100) / total; // Calcula a porcentagem com base no valor de precoReal já somado
+                }
+
+            return "Total: R$" + kendo.toString(precoRealSum, "n2") + " (" + kendo.toString(porcentagem, "n2") + "%)";
+}
 
 </script>
 
