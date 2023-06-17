@@ -1,10 +1,7 @@
 @include('layouts/modal/includesmodal')
 
-@if (isset($mensagem))
-<div class="alert alert-success" role="alert">
-    <p>{{ $mensagem }}</p>
-</div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
+
 
 {!! Form::open(array('route' => 'cadastrocodigodespesa','method'=>'POST')) !!}
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}

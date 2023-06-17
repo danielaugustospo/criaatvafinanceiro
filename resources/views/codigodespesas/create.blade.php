@@ -17,28 +17,19 @@
 @include('layouts/helpersview/mensagemRetorno')
 
 
-
-
 {!! Form::open(array('route' => 'codigodespesas.store','method'=>'POST')) !!}
 
-<!-- <div class="form-group row">
-    <label for="idGrupoCodigoDespesa" class="col-sm-2 col-form-label">Código da Despesa</label>
-    <div class="col-sm-2">
-        {!! Form::text('idGrupoCodigoDespesa', '', ['placeholder' => 'Código Despesa', 'class' => 'form-control', 'maxlength' => '20']) !!}
 
-    </div>
-</div> -->
 <div class="form-group row">
-    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Tipo de Despesa</label>
-    <div class="col-sm-10">
+    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Código de Despesa</label>
+    <div class="col-sm-5">
         {!! Form::text('despesaCodigoDespesa', '', ['placeholder' => 'Tipo de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!}
     </div>
 </div>
 <div class="form-group row">
     <label for="idGrupoCodigoDespesa" class=" col-sm-2 col-form-label">Selecione o Grupo</label>
     <div class="col-sm-10">
-        <!-- {!! Form::text('despesaCodigoDespesa', '', ['placeholder' => 'Tipo de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!} -->
-        <select name="idGrupoCodigoDespesa" id="idGrupoCodigoDespesa" class="selecionaComInput">
+        <select name="idGrupoCodigoDespesa" id="idGrupoCodigoDespesa" class="selecionaComInput col-sm-12" style="width:500px;">
         @foreach ($grupodespesas as $grupoDespesa)
             <option value="{{ $grupoDespesa->id }}">Código: {{ $grupoDespesa->id }} - Grupo: {{ $grupoDespesa->grupoDespesa }}</option>
         @endforeach
@@ -51,9 +42,6 @@
 
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
-
- 
-
 
 
 @endsection

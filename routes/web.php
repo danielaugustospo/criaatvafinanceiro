@@ -110,6 +110,24 @@ Route::post('/cadastrotipomateriais', 'ProductController@salvarmodal')->name('ca
 Route::post('/cadastrocodigodespesa', 'CodigoDespesaController@salvarmodal')->name('cadastrocodigodespesa');
 Route::post('/cadastrofornecedor', 'FornecedorController@salvarmodal')->name('cadastrofornecedor');
 
+//View
+Route::get('/replacegrupodespesa', function () { 
+    if(Gate::allows('grupodespesa-edit')){
+        return view('grupodespesas.replace'); 
+    }
+});
+//Submit
+Route::post('/replacegrupodespesa', 'GrupoDespesaController@replaceGrupoDespesa')->name('replacegrupodespesa');
+
+//View
+Route::get('/replacecodigodespesa', function () { 
+    if(Gate::allows('codigodespesa-edit')){
+        return view('codigodespesas.replace'); 
+    }
+});
+//Submit
+Route::post('/replacecodigodespesa', 'CodigoDespesaController@replaceCodigoDespesa')->name('replacecodigodespesa');
+
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');

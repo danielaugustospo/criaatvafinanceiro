@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Editar Dados do Código de Despesas {{$codigodespesa->despesaCodigoDespesa}}</h2>
+            <h2>Editar Dados do Código/Grupo: <b>{{$codigodespesa->despesaCodigoDespesa}}<b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('codigodespesas.index') }}"> Voltar</a>
@@ -28,16 +28,21 @@
 
 {!! Form::model($codigodespesa, ['method' => 'PATCH','route' => ['codigodespesas.update', $codigodespesa->id]]) !!}
 <div class="form-group row">
-    <label for="idGrupoCodigoDespesa" class="col-sm-2 col-form-label">Código da Despesa</label>
+    <label for="idGrupoCodigoDespesa" class="col-sm-2 col-form-label">Grupo de Despesa</label>
     <div class="col-sm-2">
-        {!! Form::text('idGrupoCodigoDespesa', null, ['placeholder' => 'Código Despesa', 'class' => 'form-control', 'maxlength' => '20']) !!}
-
+        <select name="idGrupoCodigoDespesa" id="idGrupoCodigoDespesa" class="selecionaComInput form-control">
+            <option value="" selected disabled>Selecione...</option>
+            @foreach ($listaGrupoDespesas as $grupo)
+                <option value="{{ $grupo->id }}"
+                    @if (isset($codigodespesa)) @if ($codigodespesa->idGrupoCodigoDespesa == $grupo->id) selected @endif @endif>{{ $grupo->grupoDespesa }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 <div class="form-group row">
-    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Nome Classe de Despesa</label>
+    <label for="despesaCodigoDespesa" class="col-sm-2 col-form-label">Código de Despesa</label>
     <div class="col-sm-10">
-        {!! Form::text('despesaCodigoDespesa', null, ['placeholder' => 'Tipo de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!}
+        {!! Form::text('despesaCodigoDespesa', null, ['placeholder' => 'Código de Despesa', 'class' => 'form-control', 'maxlength' => '100', 'id' => 'despesaCodigoDespesa']) !!}
     </div>
 </div>
 

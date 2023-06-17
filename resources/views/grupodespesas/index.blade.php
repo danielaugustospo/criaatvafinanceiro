@@ -8,8 +8,11 @@
             <h2 class="text-center">Gerenciamento de Grupo de Despesas</h2>
         </div>
         <div class="d-flex justify-content-between pull-right">
-            @can('codigodespesa-create')
+            @can('grupodespesa-create')
                 <a class="btn btn-success" href="{{ route('grupodespesas.create') }}">Cadastrar Grupo de Despesas</a>
+            @endcan
+            @can('grupodespesa-edit')
+                <a class="btn btn-success" href="{{ route('replacegrupodespesa') }}">Substituir Grupo de Despesas</a>
             @endcan
 
             @include('layouts/exibeFiltro')
@@ -19,11 +22,7 @@
 <hr>
 
 
-@if ($message = Session::get('success'))
-    <div class="alert alert-success">
-        <p>{{ $message }}</p>
-    </div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
 
 
 @include('grupodespesas/filtroindex')
@@ -33,7 +32,7 @@
             <tr>
                 <th class="text-center">Id</th>
                 <th class="text-center">Grupo Despesa</th>
-                <th class="noExport">Ações</th>
+                <th width="200px" class="noExport">Ações</th>
             </tr>
         </thead>
 

@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 
 
 use App\CodigoDespesa;
+use App\Despesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-// use Freshbitsweb\Laratables\Laratables;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CodigoDespesaController extends Controller
 {
@@ -22,10 +24,10 @@ class CodigoDespesaController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:codigodespesa-list|codigodespesa-create|codigodespesa-edit|codigodespesa-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:codigodespesa-create', ['only' => ['create','store']]);
-         $this->middleware('permission:codigodespesa-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:codigodespesa-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:codigodespesa-list|codigodespesa-create|codigodespesa-edit|codigodespesa-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:codigodespesa-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:codigodespesa-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:codigodespesa-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -36,7 +38,7 @@ class CodigoDespesaController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = CodigoDespesa::latest()->with('grupoDespesa')->get();
+            $data = CodigoDespesa::where('excluidoCodigoDespesa', 0)->latest()->with('grupoDespesa')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -77,16 +79,19 @@ class CodigoDespesaController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $btnVisualizar = '<a href="codigodespesas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    if (Auth::user()->can('codigodespesa-edit')) {
+                        $btnVisualizar .= '<a href="codigodespesas/' . $row['id'] . '/edit" class="ml-2 edit btn btn-primary btn-sm">Editar</a>';
+                    }
                     return $btnVisualizar;
                 })
+
                 ->rawColumns(['action'])
                 ->make(true);
-        }
-        else {
+        } else {
             $data = CodigoDespesa::with('grupoDespesa')->orderBy('id', 'DESC')->paginate(5);
             return view('codigodespesas.index', compact('data'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
-        } 
+        }
     }
 
     /**
@@ -110,38 +115,71 @@ class CodigoDespesaController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-
-        'despesaCodigoDespesa'=> 'required',
-        'idGrupoCodigoDespesa'=> 'required',
-        'ativoCodigoDespesa'=> 'required',
-        'excluidoCodigoDespesa'=> 'required',
-
+        $validator = Validator::make($request->all(), [
+            'despesaCodigoDespesa' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $similarDespesas = CodigoDespesa::where('despesaCodigoDespesa', 'LIKE', $value . '%')->count();
+                    if ($similarDespesas > 0) {
+                        $fail('O código de despesa fornecido é muito semelhante a um já existente no banco de dados.');
+                    }
+                }
+            ],
+            'idGrupoCodigoDespesa'  => 'required',
+            'ativoCodigoDespesa'    => 'required',
+            'excluidoCodigoDespesa' => 'required',
+        ], [
+            'despesaCodigoDespesa.required'   => 'O campo Código de Despesa é obrigatório.',
+            'idGrupoCodigoDespesa.required'   => 'O campo ID do Grupo de Despesa é obrigatório.',
+            'ativoCodigoDespesa.required'     => 'O campo Ativo é obrigatório.',
+            'excluidoCodigoDespesa.required'  => 'O campo Excluído é obrigatório.',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         CodigoDespesa::create($request->all());
 
-
         return redirect()->route('codigodespesas.index')
-                        ->with('success','Código de Despesa cadastrado com êxito.');
+            ->with('success', 'Código de Despesa cadastrado com êxito.');
     }
 
     public function salvarmodal(Request $request)
     {
 
-        $request->validate([
-            'despesaCodigoDespesa'=> 'required',
-            'idGrupoCodigoDespesa'=> 'required',
-            'ativoCodigoDespesa'=> 'required',
-            'excluidoCodigoDespesa'=> 'required',
-    
+        $validator = Validator::make($request->all(), [
+            'despesaCodigoDespesa' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $similarDespesas = CodigoDespesa::where('despesaCodigoDespesa', 'LIKE', $value . '%')->count();
+                    if ($similarDespesas > 0) {
+                        $fail('O código de despesa fornecido é muito semelhante a um já existente no banco de dados.');
+                    }
+                }
+            ],
+            'idGrupoCodigoDespesa'  => 'required',
+            'ativoCodigoDespesa'    => 'required',
+            'excluidoCodigoDespesa' => 'required',
+        ], [
+            'despesaCodigoDespesa.required'   => 'O campo Código de Despesa é obrigatório.',
+            'idGrupoCodigoDespesa.required'   => 'O campo ID do Grupo de Despesa é obrigatório.',
+            'ativoCodigoDespesa.required'     => 'O campo Ativo é obrigatório.',
+            'excluidoCodigoDespesa.required'  => 'O campo Excluído é obrigatório.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         CodigoDespesa::create($request->all());
 
         return view('codigodespesas.camposmodal')
-                        ->with('mensagem','Código de Despesa cadastrado com êxito.');                        
+            ->with('mensagem', 'Código de Despesa cadastrado com êxito.');
     }
 
     /**
@@ -153,7 +191,7 @@ class CodigoDespesaController extends Controller
     public function show($id)
     {
         $codigodespesa = CodigoDespesa::find($id);
-        return view('codigodespesas.show',compact('codigodespesa'));
+        return view('codigodespesas.show', compact('codigodespesa'));
     }
 
 
@@ -168,8 +206,7 @@ class CodigoDespesaController extends Controller
         $codigodespesa = CodigoDespesa::find($id);
         // $roles = CodigoDespesa::pluck('nomeBanco','nomeBanco')->all();
 
-        return view('codigodespesas.edit',compact('codigodespesa'));
-
+        return view('codigodespesas.edit', compact('codigodespesa'));
     }
 
 
@@ -182,11 +219,11 @@ class CodigoDespesaController extends Controller
      */
     public function update(Request $request, CodigoDespesa $codigodespesa)
     {
-         request()->validate([
-            'despesaCodigoDespesa'=> 'required',
-            'idGrupoCodigoDespesa'=> 'required',
-            'ativoCodigoDespesa'=> 'required',
-            'excluidoCodigoDespesa'=> 'required',
+        request()->validate([
+            'despesaCodigoDespesa' => 'required',
+            'idGrupoCodigoDespesa' => 'required',
+            'ativoCodigoDespesa' => 'required',
+            'excluidoCodigoDespesa' => 'required',
         ]);
 
 
@@ -194,7 +231,7 @@ class CodigoDespesaController extends Controller
 
 
         return redirect()->route('codigodespesas.index')
-                        ->with('success','Código de Despesa atualizado com êxito');
+            ->with('success', 'Código de Despesa atualizado com êxito');
     }
 
 
@@ -210,6 +247,59 @@ class CodigoDespesaController extends Controller
         CodigoDespesa::find($id)->delete();
 
         return redirect()->route('codigodespesas.index')
-                        ->with('success','Código de Despesa excluído com êxito!');
+            ->with('success', 'Código de Despesa excluído com êxito!');
     }
+
+    public function replaceCodigoDespesa(Request $request)
+    {
+        $nomeCodigoDespesa = $request->codigoDespesa;
+        $rotaRetorno   = 'codigodespesas.index';
+    
+        // Obter todos os registros do codigoDespesa com o mesmo nome
+        $registros = CodigoDespesa::where('despesaCodigoDespesa', $nomeCodigoDespesa)->orderBy('id')->get();
+        if ($registros->count() <= 1) {
+            // Se houver menos de dois registros, não é necessário fazer nenhuma operação
+            $mensagemExito = 'Não há duplicidades para remover.';
+            return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
+        }
+        
+        DB::beginTransaction();
+        
+        try {
+            // Guardar o primeiro ID em uma variável separada
+            $idPrincipal = $registros->first()->id;
+            
+            // Guardar os IDs adicionais em uma outra variável
+            $outrosIds = $registros->slice(1)->pluck('id')->toArray();
+            foreach ($outrosIds as $idCodigoDespesas) {
+
+                $despesas = Despesa::where('despesaCodigoDespesas', $idCodigoDespesas)->get();
+                foreach ($despesas as $despesa) {
+                    if (!is_null($despesa)) {
+                        $despesa->despesaCodigoDespesas = (int)$idPrincipal;
+                        $despesa->save();                    
+                    }
+                }
+                
+                $codigoDespesa = CodigoDespesa::find($idCodigoDespesas);
+                $codigoDespesa->ativoCodigoDespesa = 0;
+                $codigoDespesa->excluidoCodigoDespesa = 1;
+                $codigoDespesa->save();
+            }
+            
+            DB::commit();
+            $mensagemExito = 'Duplicidades removidas com êxito.';
+            return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            var_dump($e->getMessage());
+            var_dump($e->getLine());
+            exit;
+
+            $mensagemExito = 'Ocorreu um erro ao remover as duplicidades.';
+            return redirect()->route($rotaRetorno)->with('error',  $mensagemExito);
+        }
+    }
+
 }

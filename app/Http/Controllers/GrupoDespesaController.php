@@ -3,7 +3,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\CodigoDespesa;
+use App\Despesa;
 use App\GrupoDespesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,10 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
+
 class GrupoDespesaController extends Controller
 {
     /**
@@ -22,7 +27,7 @@ class GrupoDespesaController extends Controller
     {
          $this->middleware('permission:grupodespesa-list|grupodespesa-create|grupodespesa-edit|grupodespesa-delete', ['only' => ['index','show']]);
          $this->middleware('permission:grupodespesa-create', ['only' => ['create','store']]);
-         $this->middleware('permission:grupodespesa-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:grupodespesa-edit', ['only' => ['edit','update', 'replaceGrupoDespesa']]);
          $this->middleware('permission:grupodespesa-delete', ['only' => ['destroy']]);
     }
     /**
@@ -36,7 +41,7 @@ class GrupoDespesaController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = GrupoDespesa::latest()->get();
+            $data = GrupoDespesa::where('excluidoDespesa', 0)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -77,6 +82,9 @@ class GrupoDespesaController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $btnVisualizar = '<a href="grupodespesas/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
+                    if (Auth::user()->can('grupodespesa-edit')) {
+                        $btnVisualizar .= '<a href="grupodespesas/' . $row['id'] . '/edit" class="ml-2 edit btn btn-primary btn-sm">Editar</a>';
+                    }
                     return $btnVisualizar;
                 })
                 ->rawColumns(['action'])
@@ -86,11 +94,6 @@ class GrupoDespesaController extends Controller
             ->with('error', 'Ocorreu um erro na solicitação. Tente novamente');
         }
     }
-
-    // public function basicLaratableData()
-    // {
-    //     return Laratables::recordsOf(GrupoDespesa::class);
-    // }
 
     /**
      * Show the form for creating a new resource.
@@ -114,15 +117,23 @@ class GrupoDespesaController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-        'grupoDespesa'      => 'required',
+        $validator = Validator::make($request->all(), [
+        'grupoDespesa'      => 'required|unique:grupodespesas',
         'ativoDespesa'      => 'required',
         'excluidoDespesa'   => 'required',
+        ],[
+            'grupoDespesa.unique'               => 'O Grupo de Despesa fornecido é muito semelhante a um já existente no banco de dados.',
+            'idGrupoCodigoDespesa.required'     => 'O campo Grupo de Despesa é obrigatório',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
 
         GrupoDespesa::create($request->all());
-
 
         return redirect()->route('grupodespesas.index')
                         ->with('success','Grupo de Despesa cadastrado com êxito.');
@@ -204,4 +215,54 @@ class GrupoDespesaController extends Controller
         return redirect()->route('grupodespesas.index')
                         ->with('success','Grupo de Despesa excluído com êxito!');
     }
+
+    public function replaceGrupoDespesa(Request $request)
+    {
+        $nomeGrupoDespesa = $request->grupoDespesa;
+    
+        // Obter todos os registros do grupoDespesa com o mesmo nome
+        $registros = GrupoDespesa::where('grupoDespesa', $nomeGrupoDespesa)->orderBy('id')->get();
+        if ($registros->count() <= 1) {
+            // Se houver menos de dois registros, não é necessário fazer nenhuma operação
+            $mensagemExito = 'Não há duplicidades para remover.';
+            $rotaRetorno   = 'grupodespesas.index';
+            return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
+        }
+        
+        DB::beginTransaction();
+        
+        try {
+            // Guardar o primeiro ID em uma variável separada
+            $idPrincipal = $registros->first()->id;
+            
+            // Guardar os IDs adicionais em uma outra variável
+            $outrosIds = $registros->slice(1)->pluck('id')->toArray();
+            foreach ($outrosIds as $idGrupo) {
+                $codigoDespesa = CodigoDespesa::where('idGrupoCodigoDespesa', $idGrupo)->first();
+                if (!is_null($codigoDespesa)) {
+                    $codigoDespesa->idGrupoCodigoDespesa = (int)$idPrincipal;
+                    $codigoDespesa->save();                    
+                }
+                $grupoDespesa = GrupoDespesa::find($idGrupo);
+                $grupoDespesa->ativoDespesa = 0;
+                $grupoDespesa->excluidoDespesa = 1;
+                $grupoDespesa->save();
+            }
+            
+            DB::commit();
+            $mensagemExito = 'Duplicidades removidas com êxito.';
+            $rotaRetorno   = 'grupodespesas.index';
+            return redirect()->route($rotaRetorno)->with('success',  $mensagemExito);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            var_dump($e->getMessage());
+            var_dump($e->getLine());
+
+            $mensagemExito = 'Ocorreu um erro ao remover as duplicidades.';
+            $rotaRetorno   = 'grupodespesas.index';
+            return redirect()->route($rotaRetorno)->with('error',  $mensagemExito);
+        }
+    }
+    
 }

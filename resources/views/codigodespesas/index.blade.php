@@ -11,17 +11,16 @@
             @can('codigodespesa-create')
             <a class="btn btn-success" href="{{ route('codigodespesas.create') }}">Cadastrar Código de Despesas</a>
             @endcan
+            @can('codigodespesa-edit')
+            <a class="btn btn-success" href="{{ route('replacecodigodespesa') }}">Substituir Código de Despesas</a>
+            @endcan
             @include('layouts/exibeFiltro')
         </div>
     </div>
 </div>
 
+@include('layouts/helpersview/mensagemRetorno')
 
-@if ($message = Session::get('success'))
-    <div class="alert alert-success">
-        <p>{{ $message }}</p>
-    </div>
-@endif
 
 <hr>
 @include('codigodespesas/filtroindex')
@@ -32,9 +31,9 @@
         <tr>
             <th class="text-center">Id</th>
             <th class="text-center">Código Despesa</th>
-            <th class="text-center">Código Grupo Despesa</th>
+            <th class="text-center">Grupo Despesa</th>
 
-            <th width="100px" class="noExport">Ações</th>
+            <th width="200px" class="noExport">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -107,7 +106,6 @@ var table = $('.data-table').DataTable({
     },
 
     columns: [
-        // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
         {
             data: 'id',
             name: 'id'
@@ -129,45 +127,40 @@ var table = $('.data-table').DataTable({
             visible: false
             },
         },
+
     ],
     dom: 'Bfrtip',
     buttons: [{
         extend: 'pageLength', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 },
             },{
         extend: 'copy', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 },
             },
             {
         extend: 'csv', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 },
             },
             {
         extend: 'excel', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 },
             },
             {
         extend: 'pdf', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 },
             },
             {
         extend: 'print', 
-                // title: 'Test Data export',
                 exportOptions: {
                     columns: "thead th:not(.noExport)"
                 }
