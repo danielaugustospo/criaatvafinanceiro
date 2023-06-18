@@ -15,24 +15,19 @@ class CreateTableOrdemdeServico extends Migration
     {
         Schema::create('ordemdeservico', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            // $table->string('nomeFormaPagamento');
-            $table->string('idClienteOrdemdeServico');
+            $table->string('idClienteOrdemdeServico', 191)->nullable(false);
             $table->timestamp('dataVendaOrdemdeServico')->nullable();
-            $table->string('valorProjetoOrdemdeServico')->default('0.0');
-            $table->string('valorOrdemdeServico')->default('0.0');
-            $table->string('dataOrdemdeServico')->nullable();
-            $table->string('fatorR')->nullable();
-            $table->string('eventoOrdemdeServico');
-            $table->string('servicoOrdemdeServico')->nullable();
-            $table->string('obsOrdemdeServico')->nullable();
-            $table->string('dataCriacaoOrdemdeServico')->nullable();
-            $table->string('dataExclusaoOrdemdeServico')->nullable();
-
-            $table->boolean('ativoOrdemdeServico')->default('1');
-            $table->boolean('excluidoOrdemdeServico')->default('0');
-
-
+            $table->string('valorProjetoOrdemdeServico', 191)->default('0.0')->nullable(false);
+            $table->string('valorOrdemdeServico', 191)->default('0.0')->nullable(false);
+            $table->string('dataOrdemdeServico', 191)->nullable();
+            $table->string('fatorR', 191)->nullable();
+            $table->string('eventoOrdemdeServico', 191)->nullable(false);
+            $table->string('servicoOrdemdeServico', 191)->nullable();
+            $table->string('obsOrdemdeServico', 191)->nullable();
+            $table->string('dataCriacaoOrdemdeServico', 191)->nullable();
+            $table->string('dataExclusaoOrdemdeServico', 191)->nullable();
+            $table->tinyInteger('ativoOrdemdeServico')->default(1)->nullable(false);
+            $table->tinyInteger('excluidoOrdemdeServico')->default(0)->nullable(false);
             $table->timestamps();
         });
     }

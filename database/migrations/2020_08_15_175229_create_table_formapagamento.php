@@ -15,13 +15,9 @@ class CreateTableFormaPagamento extends Migration
     {
         Schema::create('formapagamento', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('nomeFormaPagamento');
-
-            $table->boolean('ativoFormaPagamento');
-            $table->boolean('excluidoFormaPagamento');
-
-
+            $table->string('nomeFormaPagamento', 191)->nullable(false);
+            $table->tinyInteger('ativoFormaPagamento')->nullable(false);
+            $table->tinyInteger('excluidoFormaPagamento')->nullable(false);
             $table->timestamps();
         });
     }

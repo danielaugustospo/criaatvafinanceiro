@@ -13,24 +13,12 @@ class CreateTableContas extends Migration
      */
     public function up()
     {
-        // Schema::create('conta', function (Blueprint $table) {
-            Schema::create('conta', function (Blueprint $table) {
-
+        Schema::create('conta', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('nomeConta');
-            $table->string('apelidoConta');
-
-
-            // $table->foreign('idBanco')
-            // ->references('id')
-            // ->on('banco')
-            // ->onDelete('cascade');
-
-            $table->boolean('ativoConta')->default('1');
-            $table->boolean('excluidoConta')->default('0');
-
-
+            $table->string('nomeConta', 191)->nullable(false);
+            $table->string('apelidoConta', 191)->nullable(false);
+            $table->tinyInteger('ativoConta')->default(1)->nullable(false);
+            $table->tinyInteger('excluidoConta')->default(0)->nullable(false);
             $table->timestamps();
         });
     }

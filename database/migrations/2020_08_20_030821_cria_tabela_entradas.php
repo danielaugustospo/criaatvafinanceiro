@@ -13,26 +13,18 @@ class CriaTabelaEntradas extends Migration
      */
     public function up()
     {
-        //
         Schema::create('entradas', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-            $table->string('codbarras');
-            $table->string('descricaoentrada')->nullable();
-            $table->string('qtdeEntrada')->default('0');
-            
+            $table->bigIncrements('id');
+            $table->string('codbarras', 191)->nullable(false);
+            $table->string('descricaoentrada', 191)->nullable();
+            $table->string('qtdeEntrada', 191)->default('0')->nullable(false);
             $table->unsignedBigInteger('idbenspatrimoniais')->nullable();
-            
-            $table->boolean('valorunitarioentrada')->default('0');
-            
-            $table->string('dtdevolucao')->nullable();
-            $table->string('quemdevolveu')->nullable();
-            $table->string('ocorrenciadevolucao')->nullable();
-
-            $table->boolean('excluidoentrada')->default('0');
-
+            $table->unsignedTinyInteger('valorunitarioentrada')->default(0)->nullable(false);
+            $table->string('dtdevolucao', 191)->nullable();
+            $table->string('quemdevolveu', 191)->nullable();
+            $table->string('ocorrenciadevolucao', 191)->nullable();
+            $table->unsignedTinyInteger('excluidoentrada')->default(0)->nullable(false);
             $table->timestamps();
-
         });
     }
 

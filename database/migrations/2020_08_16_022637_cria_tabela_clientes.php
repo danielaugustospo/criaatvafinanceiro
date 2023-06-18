@@ -13,69 +13,49 @@ class CriaTabelaClientes extends Migration
      */
     public function up()
     {
-        //
         Schema::create('clientes', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-            $table->string('nomeCliente')->nullable();
-            $table->string('razaosocialCliente');
-            $table->string('siteCliente')->nullable();
-            $table->string('contatoCliente')->nullable();
-            $table->string('cepCliente')->nullable();
-            $table->string('enderecoCliente')->nullable();
-            $table->string('bairroCliente')->nullable();
-            $table->string('cidadeCliente')->nullable();
-            $table->string('estadoCliente')->nullable();
-            $table->string('telefone1Cliente')->nullable();
-            $table->string('telefone2Cliente')->nullable();
-            $table->string('cnpjCliente')->nullable();
-            $table->string('inscEstadualCliente')->nullable();
-            $table->string('cpfCliente')->nullable();
-            $table->string('identidadeCliente')->nullable();
-            $table->string('emailCliente')->nullable();
-            $table->string('dataCadastroCliente')->nullable();
-
-            $table->string('contacorrenteCliente1')->nullable();
-            $table->string('bancoCliente1')->nullable();
-            $table->string('nrcontaCliente1')->nullable();
-            $table->string('agenciaCliente1')->nullable();
-            $table->string('chavePixCliente1')->nullable();
-
-            $table->string('contacorrenteCliente2')->nullable();
-            $table->string('bancoCliente2')->nullable();
-            $table->string('nrcontaCliente2')->nullable();
-            $table->string('agenciaCliente2')->nullable();
-            $table->string('chavePixCliente2')->nullable();
-
-            $table->string('contacorrenteCliente3')->nullable();
-            $table->string('bancoCliente3')->nullable();
-            $table->string('nrcontaCliente3')->nullable();
-            $table->string('agenciaCliente3')->nullable();
-            $table->string('chavePixCliente3')->nullable();
-
-            $table->unsignedBigInteger('bancoFavorecidoCliente')->nullable();
-            // $table->foreign('bancoFavorecidoCliente')
-            // ->references('id')
-            // ->on('banco')
-            // ->onDelete('cascade');
-
-            $table->string('nomefavorecidoCliente')->nullable();
-            $table->string('cpffavorecidoCliente')->nullable();
-            $table->string('contacorrentefavorecidoCliente')->nullable();
-
-            $table->string('agenciafavorecidoCliente')->nullable();
-
-            $table->boolean('ativoCliente')->default('1');
-            $table->boolean('excluidoCliente')->default('0');
-
-            // $table->timestamp('created_at')->nullable(); //Data Criação
-
-
+            $table->bigIncrements('id');
+            $table->string('nomeCliente', 191)->nullable();
+            $table->string('razaosocialCliente', 191)->nullable(false);
+            $table->string('siteCliente', 191)->nullable();
+            $table->string('contatoCliente', 191)->nullable();
+            $table->string('cepCliente', 191)->nullable();
+            $table->string('enderecoCliente', 191)->nullable();
+            $table->string('bairroCliente', 191)->nullable();
+            $table->string('cidadeCliente', 191)->nullable();
+            $table->string('estadoCliente', 191)->nullable();
+            $table->string('telefone1Cliente', 191)->nullable();
+            $table->string('telefone2Cliente', 191)->nullable();
+            $table->string('cnpjCliente', 191)->nullable();
+            $table->string('inscEstadualCliente', 191)->nullable();
+            $table->string('cpfCliente', 191)->nullable();
+            $table->string('identidadeCliente', 191)->nullable();
+            $table->string('emailCliente', 191)->nullable();
+            $table->string('dataCadastroCliente', 191)->nullable();
+            $table->string('contacorrenteCliente1', 191)->nullable();
+            $table->string('bancoCliente1', 191)->nullable();
+            $table->string('nrcontaCliente1', 191)->nullable();
+            $table->string('agenciaCliente1', 191)->nullable();
+            $table->string('chavePixCliente1', 191)->nullable();
+            $table->string('contacorrenteCliente2', 191)->nullable();
+            $table->string('bancoCliente2', 191)->nullable();
+            $table->string('nrcontaCliente2', 191)->nullable();
+            $table->string('agenciaCliente2', 191)->nullable();
+            $table->string('chavePixCliente2', 191)->nullable();
+            $table->string('contacorrenteCliente3', 191)->nullable();
+            $table->string('bancoCliente3', 191)->nullable();
+            $table->string('nrcontaCliente3', 191)->nullable();
+            $table->string('agenciaCliente3', 191)->nullable();
+            $table->string('chavePixCliente3', 191)->nullable();
+            $table->bigInteger('bancoFavorecidoCliente')->unsigned()->nullable();
+            $table->string('nomefavorecidoCliente', 191)->nullable();
+            $table->string('cpffavorecidoCliente', 191)->nullable();
+            $table->string('contacorrentefavorecidoCliente', 191)->nullable();
+            $table->string('agenciafavorecidoCliente', 191)->nullable();
+            $table->tinyInteger('ativoCliente')->nullable(false)->default(1);
+            $table->tinyInteger('excluidoCliente')->nullable(false)->default(0);
             $table->timestamps();
             $table->softDeletes();
-
-            // $table->index(['cpfFuncionario']);
-            // $table->unique(['id']);
         });
     }
 
@@ -91,3 +71,5 @@ class CriaTabelaClientes extends Migration
 
     }
 }
+
+

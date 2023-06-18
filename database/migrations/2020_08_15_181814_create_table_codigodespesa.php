@@ -13,23 +13,12 @@ class CreateTableCodigoDespesa extends Migration
      */
     public function up()
     {
-            Schema::create('codigodespesas', function (Blueprint $table) {
-
+        Schema::create('codigodespesas', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('despesaCodigoDespesa');
-
-
-            $table->unsignedBigInteger('idGrupoCodigoDespesa');
-            // $table->foreign('idGrupoCodigoDespesa')
-            // ->references('id')
-            // ->on('grupodespesas')
-            // ->onDelete('cascade');
-
-            $table->string('ativoCodigoDespesa');
-            $table->string('excluidoCodigoDespesa');
-
-
+            $table->string('despesaCodigoDespesa', 191)->nullable(false);
+            $table->bigInteger('idGrupoCodigoDespesa')->unsigned()->nullable(false);
+            $table->string('ativoCodigoDespesa', 191)->nullable(false);
+            $table->string('excluidoCodigoDespesa', 191)->nullable(false);
             $table->timestamps();
         });
     }

@@ -13,16 +13,11 @@ class CreateTableGrupoDespesa extends Migration
      */
     public function up()
     {
-            Schema::create('grupodespesas', function (Blueprint $table) {
-
+        Schema::create('grupodespesas', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('grupoDespesa');
-
-            $table->string('ativoDespesa');
-            $table->string('excluidoDespesa');
-
-
+            $table->string('grupoDespesa', 191)->nullable(false);
+            $table->string('ativoDespesa', 191)->nullable(false);
+            $table->string('excluidoDespesa', 191)->nullable(false);
             $table->timestamps();
         });
     }

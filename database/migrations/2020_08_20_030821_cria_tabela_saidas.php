@@ -13,28 +13,21 @@ class CriaTabelaSaidas extends Migration
      */
     public function up()
     {
-        //
         Schema::create('saidas', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-            // $table->string('nomesaida');
-            $table->string('codbarras');
-            $table->string('descricaosaida')->nullable();
-
-
+            $table->bigIncrements('id');
+            $table->string('codbarras', 191)->nullable();
+            $table->string('descricaosaida', 191)->nullable();
             $table->unsignedBigInteger('idbenspatrimoniais');
-
-            $table->boolean('excluidosaida')->default('0');
-
-            $table->string('portador');
-            $table->string('ordemdeservico')->nullable();
-            $table->string('datapararetirada')->nullable();
-            $table->string('dataretirada')->nullable();
-            $table->string('datapararetorno')->nullable();
-            $table->string('ocorrencia')->nullable();
-
+            $table->boolean('excluidosaida')->default(false);
+            $table->string('portador', 191);
+            $table->string('ordemdeservico', 191)->nullable();
+            $table->string('datapararetirada', 191)->nullable();
+            $table->string('dataretirada', 191)->nullable();
+            $table->string('datapararetorno', 191)->nullable();
+            $table->string('ocorrencia', 191)->nullable();
             $table->timestamps();
 
+            $table->foreign('idbenspatrimoniais')->references('id')->on('benspatrimoniais');
         });
     }
 

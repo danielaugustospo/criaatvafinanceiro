@@ -15,14 +15,10 @@ class CreateTableOrgaorg extends Migration
     {
         Schema::create('orgaorg', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('nome');
-            $table->string('estadoOrgaoRG');
-
-            $table->boolean('ativoOrgaoRG');
-            $table->boolean('excluidoOrgaoRG');
-
-
+            $table->string('nome', 191)->nullable(false);
+            $table->string('estadoOrgaoRG', 191)->nullable(false);
+            $table->tinyInteger('ativoOrgaoRG')->nullable(false);
+            $table->tinyInteger('excluidoOrgaoRG')->nullable(false);
             $table->timestamps();
         });
     }

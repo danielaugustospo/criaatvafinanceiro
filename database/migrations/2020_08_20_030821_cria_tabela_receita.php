@@ -13,29 +13,23 @@ class CriaTabelaReceita extends Migration
      */
     public function up()
     {
-        //
         Schema::create('receita', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-            $table->string('idosreceita')->nullable();
-            $table->string('idclientereceita')->nullable();
-            $table->string('idformapagamentoreceita');
-            $table->string('datapagamentoreceita');
-            $table->string('dataemissaoreceita')->nullable();
-            $table->string('valorreceita');
-            $table->string('pagoreceita');
-            $table->string('contareceita');
-            $table->string('descricaoreceita')->nullable();
-            $table->string('registroreceita')->nullable();
-            // $table->string('emissaoreceita');
-            $table->string('nfreceita')->nullable();
-            $table->string('ativoreceita')->default('1');
-            $table->string('excluidoreceita')->default('0');
-
-
+            $table->bigIncrements('id');
+            $table->string('idosreceita', 191)->nullable();
+            $table->string('idclientereceita', 191)->nullable();
+            $table->string('idformapagamentoreceita', 191)->nullable();
+            $table->string('datapagamentoreceita', 191)->nullable();
+            $table->string('dataemissaoreceita', 191)->nullable();
+            $table->string('valorreceita', 191)->nullable();
+            $table->string('pagoreceita', 191)->nullable();
+            $table->string('contareceita', 191)->nullable();
+            $table->string('descricaoreceita', 191)->nullable();
+            $table->string('registroreceita', 191)->nullable();
+            $table->string('nfreceita', 191)->nullable();
+            $table->string('ativoreceita', 191)->default('1');
+            $table->string('excluidoreceita', 191)->default('0');
             $table->timestamps();
-
-        });
+        });    
     }
 
     /**

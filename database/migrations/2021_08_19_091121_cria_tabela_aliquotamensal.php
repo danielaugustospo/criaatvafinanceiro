@@ -15,21 +15,18 @@ class CriaTabelaAliquotamensal extends Migration
     {
         //
         Schema::create('aliquotamensal', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-
-            $table->string('idconta');
-            $table->string('mes')->nullable();
-            $table->string('dasSemFatorR')->nullable();
-            $table->string('issSemFatorR')->nullable();
-            $table->string('reciboSemFatorR')->nullable();
-            $table->string('dasComFatorR')->nullable();
-            $table->string('issComFatorR')->nullable();
-            $table->string('reciboComFatorR')->nullable();
-
+            $table->bigIncrements('id');
+            $table->string('idconta', 191);
+            $table->string('mes', 191)->nullable();
+            $table->string('dasSemFatorR', 191)->nullable();
+            $table->string('issSemFatorR', 191)->nullable();
+            $table->string('reciboSemFatorR', 191)->nullable();
+            $table->string('dasComFatorR', 191)->nullable();
+            $table->string('issComFatorR', 191)->nullable();
+            $table->string('reciboComFatorR', 191)->nullable();
             $table->timestamps();
-
         });
+        
     }
 
     /**

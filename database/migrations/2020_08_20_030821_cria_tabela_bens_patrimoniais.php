@@ -13,24 +13,17 @@ class CriaTabelaBensPatrimoniais extends Migration
      */
     public function up()
     {
-        //
         Schema::create('benspatrimoniais', function (Blueprint $table) {
-            $table->bigincrements('id');
-
-            $table->string('nomeBensPatrimoniais');
-            $table->string('descricaoBensPatrimoniais')->nullable();
-
-
-            $table->unsignedBigInteger('idTipoBensPatrimoniais');
-
-            $table->unsignedBigInteger('qtdestoqueminimo')->default('0');
-            $table->boolean('ativadobenspatrimoniais')->default('1');
-            $table->boolean('excluidobenspatrimoniais')->default('0');
-
-            $table->boolean('statusbenspatrimoniais')->default('1');
-
+            $table->bigIncrements('id');
+            $table->string('nomeBensPatrimoniais', 191)->nullable(false);
+            $table->string('descricaoBensPatrimoniais', 191)->nullable();
+            $table->bigInteger('idTipoBensPatrimoniais')->unsigned()->nullable(false);
+            $table->bigInteger('qtdestoqueminimo')->unsigned()->default(0);
+            $table->tinyInteger('ativadobenspatrimoniais')->nullable(false)->default(1);
+            $table->tinyInteger('excluidobenspatrimoniais')->nullable(false)->default(0);
+            $table->tinyInteger('statusbenspatrimoniais')->nullable(false)->default(1);
+            $table->string('unidademedida', 10)->nullable();
             $table->timestamps();
-
         });
     }
 

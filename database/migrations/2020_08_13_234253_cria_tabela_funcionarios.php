@@ -15,65 +15,54 @@ class CriaTabelaFuncionarios extends Migration
     {
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('nomeFuncionario');
-            $table->string('cepFuncionario')->nullable();
-            $table->string('enderecoFuncionario')->nullable();
-            $table->string('bairroFuncionario')->nullable();
-            $table->string('cidadeFuncionario')->nullable();
-            $table->string('ufFuncionario')->nullable();
-            $table->string('celularFuncionario')->nullable();
-            $table->string('telresidenciaFuncionario')->nullable();
-            $table->string('contatoemergenciaFuncionario')->nullable();
-            $table->string('emailFuncionario')->nullable();
-            $table->string('redesocialFuncionario')->nullable();
-            $table->string('facebookFuncionario')->nullable();
-            $table->string('telegramFuncionario')->nullable();
-            $table->string('cpfFuncionario')->nullable();
-            $table->string('rgFuncionario')->nullable();
-            $table->string('orgaoRGFuncionario')->nullable();
-            $table->string('expedicaoRGFuncionario')->nullable();
-            $table->string('tituloFuncionario')->nullable();
-            $table->string('maeFuncionario')->nullable();
-            $table->string('paiFuncionario')->nullable();
-            $table->string('profissaoFuncionario')->nullable();
-            $table->string('cargoEmpresaFuncionario')->nullable();
-            $table->string('tipocontratoFuncionario')->nullable();
-            $table->string('grauescolaridadeFuncionario')->nullable();
-            $table->string('descformacaoFuncionario')->nullable();
-            $table->string('certficFuncionario')->nullable();
-            $table->string('uncertificadoraFuncionario')->nullable();
-            $table->string('anocertificacaoFuncionario')->nullable();
-            
-            $table->string('contacorrenteFuncionario1')->nullable();
-            $table->string('bancoFuncionario1')->nullable();
-            $table->string('nrcontaFuncionario1')->nullable();
-            $table->string('agenciaFuncionario1')->nullable();
-            $table->string('chavePixFuncionario1')->nullable();
-
-            $table->string('contacorrenteFuncionario2')->nullable();
-            $table->string('bancoFuncionario2')->nullable();
-            $table->string('nrcontaFuncionario2')->nullable();
-            $table->string('agenciaFuncionario2')->nullable();
-            $table->string('chavePixFuncionario2')->nullable();
-            
-            $table->string('nomefavorecidoFuncionario')->nullable();
-            $table->string('cpffavorecidoFuncionario')->nullable();
-            $table->string('contacorrentefavorecidoFuncionario')->nullable();
-            $table->string('bancofavorecidoFuncionario')->nullable();
-            $table->string('nrcontafavorecidoFuncionario')->nullable();
-            $table->string('agenciafavorecidoFuncionario')->nullable();
-            $table->string('fotoFuncionario')->nullable();
-
-            $table->boolean('ativoFuncionario')->default('1');
-            $table->boolean('excluidoFuncionario')->default('0');
-
+            $table->string('nomeFuncionario', 191)->nullable(false);
+            $table->string('cepFuncionario', 191)->nullable();
+            $table->string('enderecoFuncionario', 191)->nullable();
+            $table->string('bairroFuncionario', 191)->nullable();
+            $table->string('cidadeFuncionario', 191)->nullable();
+            $table->string('ufFuncionario', 191)->nullable();
+            $table->string('celularFuncionario', 191)->nullable();
+            $table->string('telresidenciaFuncionario', 191)->nullable();
+            $table->string('contatoemergenciaFuncionario', 191)->nullable();
+            $table->string('emailFuncionario', 191)->nullable();
+            $table->string('redesocialFuncionario', 191)->nullable();
+            $table->string('facebookFuncionario', 191)->nullable();
+            $table->string('telegramFuncionario', 191)->nullable();
+            $table->string('cpfFuncionario', 191)->nullable();
+            $table->string('rgFuncionario', 191)->nullable();
+            $table->string('orgaoRGFuncionario', 191)->nullable();
+            $table->string('expedicaoRGFuncionario', 191)->nullable();
+            $table->string('tituloFuncionario', 191)->nullable();
+            $table->string('maeFuncionario', 191)->nullable();
+            $table->string('paiFuncionario', 191)->nullable();
+            $table->string('profissaoFuncionario', 191)->nullable();
+            $table->string('cargoEmpresaFuncionario', 191)->nullable();
+            $table->string('tipocontratoFuncionario', 191)->nullable();
+            $table->string('grauescolaridadeFuncionario', 191)->nullable();
+            $table->string('descformacaoFuncionario', 191)->nullable();
+            $table->string('certficFuncionario', 191)->nullable();
+            $table->string('uncertificadoraFuncionario', 191)->nullable();
+            $table->string('anocertificacaoFuncionario', 191)->nullable();
+            $table->string('contacorrenteFuncionario1', 191)->nullable();
+            $table->string('bancoFuncionario1', 191)->nullable();
+            $table->string('nrcontaFuncionario1', 191)->nullable();
+            $table->string('agenciaFuncionario1', 191)->nullable();
+            $table->string('chavePixFuncionario1', 191)->nullable();
+            $table->string('contacorrenteFuncionario2', 191)->nullable();
+            $table->string('bancoFuncionario2', 191)->nullable();
+            $table->string('nrcontaFuncionario2', 191)->nullable();
+            $table->string('agenciaFuncionario2', 191)->nullable();
+            $table->string('chavePixFuncionario2', 191)->nullable();
+            $table->string('nomefavorecidoFuncionario', 191)->nullable();
+            $table->string('cpffavorecidoFuncionario', 191)->nullable();
+            $table->string('contacorrentefavorecidoFuncionario', 191)->nullable();
+            $table->string('bancofavorecidoFuncionario', 191)->nullable();
+            $table->string('nrcontafavorecidoFuncionario', 191)->nullable();
+            $table->string('agenciafavorecidoFuncionario', 191)->nullable();
+            $table->string('fotoFuncionario', 191)->nullable();
+            $table->tinyInteger('ativoFuncionario')->default(1);
+            $table->tinyInteger('excluidoFuncionario')->default(0);
             $table->timestamps();
-            // $table->softDeletes();
-
-            // $table->index(['cpfFuncionario']);
-            // $table->unique(['cpfFuncionario']);
-
         });
     }
 
