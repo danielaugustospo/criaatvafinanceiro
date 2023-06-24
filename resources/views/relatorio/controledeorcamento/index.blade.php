@@ -66,7 +66,20 @@
                 { field: "percentualPermitido", title: "Percentual Permitido", filterable: true, width: 80, decimals: 2, format: '{0:0.00}' },
                 { field: "valorgasto", title: "Valor Gastos", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "saldo", title: "Saldo", filterable: true, width: 80, decimals: 2, format: '{0:0.00}' },
-                { field: "percentual", title: "Percentual %", filterable: true, width: 80, exportable:false }            
+                {
+                    field: "percentual",
+                    title: "Percentual %",
+                    filterable: true,
+                    width: 80,
+                    exportable: false,
+                    template: function(dataItem) {
+                        if (dataItem.percentual < 40) {
+                        return '<span style="color: red;">' + kendo.toString(dataItem.percentual, "0.00") + '%</span>';
+                        } else {
+                        return kendo.toString(dataItem.percentual, "0.00") + '%';
+                        }
+                    }
+                }            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
