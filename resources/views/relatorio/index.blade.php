@@ -18,11 +18,8 @@
     </div>
 </div>
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-    <p>{{ $message }}</p>
-</div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
+
 
 <hr>
 {{-- @include('despesas/filtroindex') --}}
@@ -51,6 +48,9 @@
         @endcan
         @can('rel-osrecebidasporcliente')
             <a href="osrecebidasporcliente">        <label class="text-center fontenormal row" for="">OS Recebidas por Cliente  &nbsp; </label></a>    
+        @endcan
+        @can('rel-osrecebidasporcliente')
+            <a href="controledeorcamento">          <label class="text-center fontenormal row" for="">Controle de Orçamento  &nbsp; </label></a>    
         @endcan
         <!-- <a href="ordemdeservicorecebidas">      <label class="text-center fontenormal row" for="">Ordem de Serviço Recebidas (Analítico)  &nbsp;</label></a> -->   
 

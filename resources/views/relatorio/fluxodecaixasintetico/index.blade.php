@@ -39,11 +39,8 @@
 </div>
  <a  class="d-flex justify-content-center" data-toggle="modal" data-target="#exampleModalCenter" style="cursor: pointer; color: red;"><i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-    <p>{{ $message }}</p>
-</div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
+
 
 
 

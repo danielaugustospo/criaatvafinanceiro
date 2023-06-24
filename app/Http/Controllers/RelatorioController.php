@@ -194,6 +194,27 @@ class RelatorioController extends Controller
         return $dadosConsulta;
     }
 
+    public function apiControleDeOrcamento(Request $request)
+    {
+        
+        $dados = OrdemdeServico::select(
+            'os.id', 
+            'os.dataCriacaoOrdemdeServico', 
+            'os.valorOrcamento', 
+            'os.percentualPermitido',
+            DB::raw('SUM(despesas.precoReal) AS  valorgasto'),
+            DB::raw('os.valorOrcamento -  SUM(despesas.precoReal) AS saldo'),
+            DB::raw('(SUM(despesas.precoReal) * 100) / (os.valorOrcamento) as percentual')
+            )
+        ->from('ordemdeservico as os')
+        ->join('despesas', 'os.id', 'despesas.idOS')
+        ->groupBy('os.id')
+        ->get();
+        
+        return $dados;
+
+    }
+
     public function apiEntradaReceitaRecebidas(Request $request)
     {
         $relatorio = new Relatorio();

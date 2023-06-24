@@ -77,8 +77,8 @@
                             </div>
                             <div class="row ml-2 mr-2 mt-1">
                                 <label class="pr-2 mt-1" for="">Venc.</label>
-                                <input class="form-control col-sm-2" type="date" name="dtinicio" id="dtinicio">
-                                <input class="form-control col-sm-4" type="date" name="dtfim" id="dtfim">
+                                <input class="form-control col-sm-2" type="date" value="{{date('Y-m-d')}}" name="dtinicio" id="dtinicio">
+                                <input class="form-control col-sm-4" type="date" value="{{date('Y-m-t')}}" name="dtfim" id="dtfim">
                             </div>
                             <div class="row ml-2 mr-2">
                                 <label for="">Pago</label>

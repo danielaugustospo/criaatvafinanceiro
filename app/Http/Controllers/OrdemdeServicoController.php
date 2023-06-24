@@ -189,13 +189,6 @@ class OrdemdeServicoController extends Controller
             'eventoOrdemdeServico'           => 'required|min:2',
             'dataCriacaoOrdemdeServico'      => 'required|min:3',
 
-            // 'valorProjetoOrdemdeServico'     => 'required|min:3',
-            // 'dataOrdemdeServico'             => 'required|min:3',
-            // // 'clienteOrdemdeServico'          => 'required|min:3',
-            // 'servicoOrdemdeServico'          => 'required|min:3',
-            // 'dataExclusaoOrdemdeServico'     => 'required',
-            // 'ativoOrdemdeServico'            => 'required|min:1',
-            // 'excluidoOrdemdeServico'         => 'required|min:1',
         ]);
 
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
@@ -204,6 +197,10 @@ class OrdemdeServicoController extends Controller
         $ordemdeservico->dataOrdemdeServico               = $request->get('dataOrdemdeServico');
         // $ordemdeservico->clienteOrdemdeServico            = $request->get('clienteOrdemdeServico');
         $ordemdeservico->eventoOrdemdeServico             = $request->get('eventoOrdemdeServico');
+
+        $ordemdeservico->percentualPermitido              = $request->get('percentualPermitido');
+        $ordemdeservico->valorOrcamento                   = $request->get('valorOrcamento');
+
         $ordemdeservico->servicoOrdemdeServico            = $request->get('servicoOrdemdeServico');
         $ordemdeservico->obsOrdemdeServico                = $request->get('obsOrdemdeServico');
         $ordemdeservico->dataCriacaoOrdemdeServico        = $request->get('dataCriacaoOrdemdeServico');
@@ -426,6 +423,11 @@ class OrdemdeServicoController extends Controller
         $valorOS = $ordemdeservico->valorOrdemdeServico;
         if (isset($valorOS)) {
             $ordemdeservico->valorOrdemdeServico = number_format($valorOS, 2, ',', '.');
+        }
+   
+        $valorOrcamento = $ordemdeservico->valorOrcamento;
+        if (isset($valorOrcamento)) {
+            $ordemdeservico->valorOrcamento = number_format($valorOrcamento, 2, ',', '.');
         }
 
         $contadorReceita = count($receitasPorOS);
@@ -651,6 +653,7 @@ class OrdemdeServicoController extends Controller
 
         
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
+        $request['valorOrcamento'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
         $ordemdeservico->update($request->all());
 
         $this->logVisualizaOS($ordemdeservico);

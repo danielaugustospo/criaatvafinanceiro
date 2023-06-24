@@ -43,13 +43,6 @@
     @include('layouts/helpersview/mensagemRetorno')
 
     <hr>
-    {{-- @if (!isset($permiteVisualizacaoDespesaCriada))
-        @can('despesa-list')
-            @php $permiteVisualizacaoDespesaCriada = 1; @endphp
-        @endcan
-    @endif
-
-    @if (isset($permiteVisualizacaoDespesaCriada)) --}}
 
         <div id="filter-menu"></div>
         <br /><br />
@@ -57,7 +50,6 @@
         <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
             @include('layouts/helpersview/infofiltrosdepesa')
         </div>
-        <button id="update">Update</button>
         <script>
             $.LoadingOverlay("show", {
                 image: "",
@@ -396,40 +388,7 @@
                     }
                 });
 
-                $("#update").click(function() {
-                    var grid = $("#grid").data("kendoGrid");
-                    var dataItems = grid.dataSource.data();
-                
-                    var updatedData = [];
-
-                    for (var i = 0; i < dataItems.length; i++) {
-                        var item = dataItems[i];
-                        item.set('Category.CategoryID', '6');
-                        item.set('Category.CategoryName', 'Meat/Poultry');
-                        updatedData.push(item.toJSON());
-                    
-                        var row = grid.tbody.find("tr[data-uid='" + item.uid + "']");
-                        var cell = row.find("td:eq(1)");
-                        cell.addClass("k-dirty-cell").prepend("<span class='k-dirty' />");
-                    }
-
-                    // Enviar a requisição para o backend
-                    $.ajax({
-                        url: "api/updatedespesas",
-                        method: "POST",
-                        data: JSON.stringify(updatedData),
-                        contentType: "application/json",
-                        success: function(response) {
-                            // Requisição bem-sucedida
-                            alert("Dados atualizados com sucesso!");
-                        },
-                        error: function(xhr, status, error) {
-                            // Ocorreu um erro na requisição
-                            alert("Erro ao atualizar os dados: " + error);
-                        }
-                    });
-                });
-
+               
 
 
                 function showHideAll(show, field, element) {
@@ -448,12 +407,6 @@
                     }
                 }
 
-                function isEditable(e){
-                    var dataSource = $("#grid").data("kendoGrid").dataSource;
-                    // If the id(ProductID) is null, then it is editable.
-                    return e.ProductID == null;
-                }
-
             });
 
             $(window).on('load', function() {
@@ -461,25 +414,23 @@
                         var $myDiv = $('#grid');
 
                         if ($myDiv.length === 1) {
-
                             var count = 0;
                             var interval = setInterval(function() {
-                                    @if (isset($despesas))
-                                        if (count >= 150) {
-                                        @else
-                                            if (count >= 900) {
-                                            @endif
-                                            clearInterval(interval);
-                                            $('.k-link')[0].click();
-                                            console.log('Ordenação Por Grupo Clicado Inicialmente');
-                                            $.LoadingOverlay("hide");
-                                            return;
-                                        }
-                                        count += 10;
-                                        $.LoadingOverlay("progress", count);
-                                    }, 500);
-
-                            }
+                                @if (isset($despesas))
+                                    if (count >= 150) {
+                                @else
+                                    if (count >= 900) {
+                                @endif
+                                        clearInterval(interval);
+                                        $('.k-link')[0].click();
+                                        console.log('Ordenação Por Grupo Clicado Inicialmente');
+                                        $.LoadingOverlay("hide");
+                                        return;
+                                    }
+                                    count += 10;
+                                    $.LoadingOverlay("progress", count);
+                            }, 500);
+                        }
 
                         });
 

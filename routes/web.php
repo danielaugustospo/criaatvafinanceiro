@@ -66,6 +66,7 @@ Route::get('/fechamentofinal', function () {
 
 
 
+Route::get('/controledeorcamento', function () { return view('relatorio.controledeorcamento.index'); });
 Route::get('/contasareceberporos', function () { return view('contacorrente.contasareceberporos'); });
 
 

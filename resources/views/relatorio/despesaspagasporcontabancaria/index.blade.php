@@ -34,11 +34,8 @@ $idUser = Crypt::encrypt(auth()->user()->id);
 <a onclick="abreModalDespesas(param = 'despesaspagasporcontabancaria');" class="d-flex justify-content-center" href="#"> <i class="fas fa-sync" ></i>Acessar Outro Período/Conta</a>
 
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-    <p>{{ $message }}</p>
-</div>
-@endif
+@include('layouts/helpersview/mensagemRetorno')
+
 
 
 <div id="filter-menu"></div>

@@ -5,7 +5,8 @@ transport: {
         @else
             url: "{{ $rotaapi }}",
         @endif
-        dataType: "json"
+        dataType: "json",
+        type: "GET"
     },
 
     parameterMap: function(options, operation) {

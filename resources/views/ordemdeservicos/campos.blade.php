@@ -43,6 +43,27 @@
     </div>
 </div>
 
+<div class="form-group row">
+
+    {{ Form::label('percentual', 'Percentual Permitido', ['class' => 'col-sm-2 col-form-label']) }}
+    <div class="col-sm-6">
+        <div class="input-group">
+            {{ Form::text('percentualPermitido', null, ['maxlength' => 3, 'step' => 1, 'class' => 'form-control col-sm-1', 'onfocusout' => "javascript: if (this.value < 40) this.value = 40; if (this.value.length >= 3) this.value = 100;"]) }}
+            <div class="input-group-append">
+                <span class="input-group-text">%</span>
+            </div>
+        </div>
+    </div>
+    <label for="valorOrcamento" class="col-sm-2 col-form-label">Valor do Orçamento</label>
+    <div class="col-sm-2">
+        {!! Form::text('valorOrcamento', $valorInput, [
+            'class' => 'campo-moeda form-control',
+            'step' => 'any',
+            'id' => 'campo-moeda',
+            ]) !!}
+    </div>
+</div>
+
 
 <div class="form-group row">
     <label for="eventoOrdemdeServico" class="col-sm-2 col-form-label">Evento</label>
@@ -69,7 +90,6 @@
 </div>
 
 <div class="form-group row">
-    {{-- <label for="">Serviço com fator R?</label> --}}
     <label for="fatorR" class="col-sm-2 col-form-label">Serviço com fator R?</label>
     <div class="ml-4 row mt-3">
         
@@ -275,10 +295,7 @@
     }
 
     $('body').on('click', '.deletar', function() {
-        // alert('Coloque este valor zerado. Remoção de receitas por OS retornará em breve.');
-        // contadorLinhasTabela = document.getElementById("tabelaPagamento").rows.length;
-        // console.log(contadorLinhasTabela);
-        // if (contadorLinhasTabela > 2) {
+
         var $tr = $(this).closest('tr');
         if ($tr.attr('class') == 'linhaTabela1') {
             @if (Request::path() == 'ordemdeservicos/create')
@@ -299,10 +316,7 @@
                 $tr.hide();
             @endif
         }
-        // } 
-        // else {
-        //     alert("Não é possível excluir a única linha da tabela");
-        // }
+
 
     });
 
@@ -362,12 +376,14 @@
         const anoAtual = dataAtual.getFullYear();
         
         data = [];
-        tabela = document.getElementById('tabelaPagamento');
-        var dataCriacao  = $('input[name="dataCriacaoOrdemdeServico"]').val();
-        vencimentoTabela = tabela.getElementsByClassName('datapagamentoreceita');
-        var idCliente    = $('#idClienteOrdemdeServico').val();
-        var valorProjeto = $('input[name="valorOrdemdeServico"]').val();
-        var evento       = $('input[name="eventoOrdemdeServico"]').val();
+        tabela                  = document.getElementById('tabelaPagamento');
+        var dataCriacao         = $('input[name="dataCriacaoOrdemdeServico"]').val();
+        vencimentoTabela        = tabela.getElementsByClassName('datapagamentoreceita');
+        var idCliente           = $('#idClienteOrdemdeServico').val();
+        var valorProjeto        = $('input[name="valorOrdemdeServico"]').val();
+        var valorOrcamento      = $('input[name="valorOrcamento"]').val();
+        var percentualPermitido = $('input[name="percentualPermitido"]').val();
+        var evento              = $('input[name="eventoOrdemdeServico"]').val();
 
         if ((dataCriacao.trim() === '') || (dataCriacao == null) || (dataCriacao == undefined)) {
             texto = texto +
@@ -384,6 +400,18 @@
         if ((valorProjeto.trim() === '') || (valorProjeto == null) || (valorProjeto == undefined)) {
             texto = texto +
             '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Valor do projeto</label></div>';
+            contadorErros++;     
+        }
+
+        if ((percentualPermitido.trim() === '') || (percentualPermitido == null) || (percentualPermitido == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Perc. Permitido (mín 40%)</label></div>';
+            contadorErros++;     
+        }
+
+        if ((valorOrcamento.trim() === '') || (valorOrcamento == null) || (valorOrcamento == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Valor do Orçamento</label></div>';
             contadorErros++;     
         }
 
