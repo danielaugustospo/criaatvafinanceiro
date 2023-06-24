@@ -204,7 +204,7 @@ class RelatorioController extends Controller
             'os.percentualPermitido',
             DB::raw('SUM(despesas.precoReal) AS  valorgasto'),
             DB::raw('os.valorOrcamento -  SUM(despesas.precoReal) AS saldo'),
-            DB::raw('(SUM(despesas.precoReal) * 100) / (os.valorOrcamento) as percentual')
+            DB::raw('(((os.valorOrcamento - SUM(despesas.precoReal)) * 100) / (os.valorOrcamento)) as percentual')
             )
         ->from('ordemdeservico as os')
         ->join('despesas', 'os.id', 'despesas.idOS')
