@@ -73,13 +73,13 @@
                     width: 80,
                     exportable: false,
                     template: function(dataItem) {
-                        if (dataItem.percentual < 40) {
+                        if (dataItem.percentual !== null && dataItem.percentual < 40) {
                         return '<span style="color: red;">' + kendo.toString(dataItem.percentual, "0.00") + '%</span>';
                         } else {
-                        return kendo.toString(dataItem.percentual, "0.00") + '%';
+                        return dataItem.percentual !== null ? kendo.toString(dataItem.percentual, "0.00") + '%' : '';
                         }
                     }
-                }            
+                }
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
