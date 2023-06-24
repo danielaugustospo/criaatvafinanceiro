@@ -71,7 +71,6 @@
                     title: "Percentual %",
                     filterable: true,
                     width: 80,
-                    exportable: false,
                     template: function(dataItem) {
                         if (dataItem.percentual !== null && dataItem.percentual < 40) {
                         return '<span style="color: red;">' + kendo.toString(dataItem.percentual, "0.00") + '%</span>';
