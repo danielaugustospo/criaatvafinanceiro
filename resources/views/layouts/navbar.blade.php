@@ -253,7 +253,7 @@
 
 
                     <li class="nav-item dropdown">
-                        @can('usuario-list')
+                        @can('configuracoes')
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Conf. <span class="caret"></span>

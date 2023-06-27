@@ -63,7 +63,20 @@
                 { field: "id", title: "N° OS", filterable: true, width: 80 },
                 { field: "dataCriacaoOrdemdeServico", title: "Data Abertura", filterable: true, width: 90, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
                 { field: "valorOrcamento", title: "Valor do Orçamento", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "percentualPermitido", title: "Percentual Permitido", filterable: true, width: 80, decimals: 2, format: '{0:0.00}' },
+                {
+                    field: "percentualPermitido",
+                    title: "Percentual Permitido %",
+                    filterable: true,
+                    width: 80,
+                    decimals: 2, format: '{0:0.00}',
+                    template: function(dataItem) {
+                        if (dataItem.percentualPermitido !== null && dataItem.percentualPermitido < 40) {
+                        return '<span style="color: red;">' + kendo.toString(dataItem.percentualPermitido, "0.00") + '%</span>';
+                        } else {
+                        return dataItem.percentualPermitido !== null ? kendo.toString(dataItem.percentualPermitido, "0.00") + '%' : '';
+                        }
+                    }
+                },
                 { field: "valorgasto", title: "Valor Gastos", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "saldo", title: "Saldo", filterable: true, width: 80, decimals: 2, format: '{0:0.00}' },
                 {
