@@ -48,6 +48,8 @@
                             valorOrcamento: { type: "number" },
                             valorgasto: { type: "number" },
                             saldo: { type: "number" },
+                            percentualPermitido: { type: "number" },
+                            percentual: { type: "number" },
                         }
                     },
                 },
@@ -84,6 +86,8 @@
                     title: "Percentual %",
                     filterable: true,
                     width: 80,
+                    decimals: 2, format: '{0:0.00}',
+
                     template: function(dataItem) {
                         if (dataItem.percentual !== null && dataItem.percentual < 40) {
                         return '<span style="color: red;">' + kendo.toString(dataItem.percentual, "0.00") + '%</span>';
