@@ -653,7 +653,8 @@ class OrdemdeServicoController extends Controller
 
         
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
-        $request['valorOrcamento'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
+        $ordemdeservico->percentualPermitido = $request->get('percentualPermitido');
+        $ordemdeservico->valorOrcamento      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
         $ordemdeservico->update($request->all());
 
         $this->logVisualizaOS($ordemdeservico);
