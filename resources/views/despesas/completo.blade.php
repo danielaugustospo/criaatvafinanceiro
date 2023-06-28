@@ -552,7 +552,6 @@
                             }
 
                         ],
-                        editable: "popup",
 
                         groupExpand: function(e) {
                             for (let i = 0; i < e.group.items.length; i++) {

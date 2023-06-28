@@ -3,8 +3,8 @@
 {{-- 
 <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.common.min.css" />
 <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.default.min.css" /> --}}
-<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.min.css" />
-<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.default.min.css" />
+<link rel="stylesheet" href="https://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.min.css" />
+<link rel="stylesheet" href="https://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.default.min.css" />
 @endif
 
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" /> --}}

@@ -253,8 +253,7 @@
                             title: "C/C",
                             filterable: true,
                             autowidth: true,
-                            width: 100,
-                            editable: isEditable
+                            width: 100
                         },
                         {
                             field: "despesaCodigoDespesa",
@@ -344,9 +343,7 @@
 
                         
                     ],
-                    editable: {
-                        mode: "inline"
-                    },
+
                     groupExpand: function(e) {
                         for (let i = 0; i < e.group.items.length; i++) {
                             var expanded = e.group.items[i].value
@@ -436,19 +433,6 @@
 
                     @include('layouts/filtradata')
 
-                    function categoryDropDownEditor(container, options) {
-                    $('<input required data-text-field="CategoryName" data-value-field="CategoryID" data-bind="value:' + options.field + '"/>')
-                    .appendTo(container)
-                    .kendoDropDownList({
-                        autoBind: false,
-                        dataSource: {
-                            type: "odata",
-                            transport: {
-                                read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories"
-                            }
-                        }
-                    });
-            }
         </script>
 
 @endsection
