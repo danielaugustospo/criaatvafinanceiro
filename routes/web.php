@@ -1,8 +1,7 @@
 <?php
 
-// use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Providers\AppServiceProvider;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,7 +129,7 @@ Route::get('/replacecodigodespesa', function () {
 Route::post('/replacecodigodespesa', 'CodigoDespesaController@replaceCodigoDespesa')->name('replacecodigodespesa');
 
 
-Route::group(['middleware' => ['auth']], function() {
+Route::middleware('auth')->group(function () {
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
     Route::resource('products','ProductController');
@@ -147,7 +146,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('formapagamentos','FormaPagamentoController');
     Route::resource('ordemdeservicos','OrdemdeServicoController');
     Route::resource('codigodespesas','CodigoDespesaController');
-    Route::resource('despesas','DespesaController');
+    Route::resource('despesas', 'DespesaController');
     Route::resource('verbas','VerbasController');
     Route::resource('tabelapercentual','TabelaPercentualController');
     Route::resource('receita','ReceitaController');
@@ -162,6 +161,9 @@ Route::group(['middleware' => ['auth']], function() {
         return response()->json('Renovado');
     });
     
+    Route::get('/despesas/{despesa}', 'DespesaController@show')->name('despesas.show');
+
+
     Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
     
 

@@ -515,11 +515,11 @@ class DespesaController extends Controller
 
                     if ((int)$request->get('paginaModal') == 1) {
                         $paginaModal = true;
-                        return redirect()->route('despesas.show', ['id' => $despesa->id])
+                        return redirect()->route('despesas.show', [$despesa->id])
                             ->with('paginaModal', $paginaModal)
                             ->with('success', $mensagemExito);
                     } elseif ((int)$request->get('paginaModal') == 0) {
-                        return redirect()->route('despesas.show', ['id' => $despesa->id])
+                        return redirect()->route('despesas.show', [$despesa->id])
                             ->with('success', $mensagemExito);
                     }
                 }
@@ -571,16 +571,16 @@ class DespesaController extends Controller
         }
 
         $mensagemExito = 'Despesa id ' . $despesa->id . ' cadastrada com êxito.';
-
+        
         if ($request->get('tpRetorno') == 'visualiza') {
-
+            
             if ((int)$request->get('paginaModal') == 1) {
                 $paginaModal = true;
-
-                return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito)
-                    ->with('paginaModal', $paginaModal);
+                
+                return redirect()->route('despesas.show', [$despesa->id])->with('success', $mensagemExito)
+                ->with('paginaModal', $paginaModal);
             } elseif ((int)$request->get('paginaModal') == 0) {
-                return redirect()->route('despesas.show', ['id' => $despesa->id])->with('success', $mensagemExito);
+                return redirect()->route('despesas.show', [$despesa->id])->with('success', $mensagemExito);
             }
         } elseif ($request->get('tpRetorno') == 'novo') {
             $rotaRetorno = 'despesas.create';
@@ -1158,15 +1158,15 @@ class DespesaController extends Controller
 
             if ((int)$request->get('paginaModal') == 1) {
                 $paginaModal = true;
-                return redirect()->route('despesas.show', ['id' => $despesa->id])
+                return redirect()->route('despesas.show', [$despesa->id])
                     ->with('paginaModal', $paginaModal)
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
             } elseif ((int)$request->get('paginaModal') == 0) {
-                return redirect()->route('despesas.show', ['id' => $despesa->id])
+                return redirect()->route('despesas.show', [$despesa->id])
                     ->with('success', 'Despesa ' . $despesa->id  . ' atualizada com êxito.');
             }
         } catch (\Throwable $th) {
-            return redirect()->route('despesas.show', ['id' => $despesa->id])
+            return redirect()->route('despesas.show', [$despesa->id])
                 ->with('error', 'Ocorreu um erro ao atualizar.');
         }
     }
