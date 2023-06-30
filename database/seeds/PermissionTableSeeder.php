@@ -191,7 +191,8 @@ class PermissionTableSeeder extends Seeder
             // 'rel-despesassinteticaporos',
             // 'rel-controleconsumomaterial',
             // 'rel-fechamentofinal',
-            'configuracoes'
+            'configuracoes',
+            'rel-controleorcamento'
 
         ];
 

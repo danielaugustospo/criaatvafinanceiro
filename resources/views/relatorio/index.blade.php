@@ -49,7 +49,7 @@
         @can('rel-osrecebidasporcliente')
             <a href="osrecebidasporcliente">        <label class="text-center fontenormal row" for="">OS Recebidas por Cliente  &nbsp; </label></a>    
         @endcan
-        @can('rel-osrecebidasporcliente')
+        @can('rel-controleorcamento')
             <a href="controledeorcamento">          <label class="text-center fontenormal row" for="">Controle de Orçamento  &nbsp; </label></a>    
         @endcan
         <!-- <a href="ordemdeservicorecebidas">      <label class="text-center fontenormal row" for="">Ordem de Serviço Recebidas (Analítico)  &nbsp;</label></a> -->   
