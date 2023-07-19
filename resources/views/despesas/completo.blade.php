@@ -105,82 +105,35 @@
                         model: {
                             id: "id",
                             fields: {
-                                valorUnitario: {
-                                    type: "number"
-                                },
-                                precoReal: {
-                                    type: "number"
-                                },
-                                vale: {
-                                    type: "number"
-                                },
-                                despesareal: {
-                                    type: "number"
-                                },
-                                vencimento: {
-                                    type: "date"
-                                },
-                                datavale: {
-                                    type: "date"
-                                },
-                                dataDaCompra: {
-                                    type: "date"
-                                },
-                                dataDoTrabalho: {
-                                    type: "date"
-                                },
-                                created_at: {
-                                    type: "date"
-                                },
+                                valorUnitario: { type: "number" },
+                                precoReal: { type: "number" },
+                                vale: { type: "number" },
+                                despesareal: { type: "number" },
+                                vencimento: { type: "date" },
+                                datavale: { type: "date" },
+                                dataDaCompra: { type: "date" },
+                                dataDoTrabalho: { type: "date" },
+                                created_at: { type: "date" },
                             }
                         },
                     },
 
                     group: {
                         field: "razaosocialFornecedor",
-                        aggregates: [{
-                                field: "razaosocialFornecedor",
-                                aggregate: "count"
-                            },
-                            {
-                                field: "valorUnitario",
-                                aggregate: "sum"
-                            },
-                            {
-                                field: "precoReal",
-                                aggregate: "sum"
-                            },
-                            {
-                                field: "vale",
-                                aggregate: "sum"
-                            },
-                            {
-                                field: "despesareal",
-                                aggregate: "sum"
-                            }
-
+                        aggregates: [
+                                    { field: "razaosocialFornecedor", aggregate: "count" },
+                                    { field: "valorUnitario",aggregate: "sum" },
+                                    { field: "precoReal", aggregate: "sum" },
+                                    { field: "vale", aggregate: "sum" },
+                                    { field: "despesareal", aggregate: "sum" }
                         ]
                     },
-                    aggregate: [{
-                            field: "razaosocialFornecedor",
-                            aggregate: "count"
-                        },
-                        {
-                            field: "valorUnitario",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "precoReal",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "vale",
-                            aggregate: "sum"
-                        },
-                        {
-                            field: "despesareal",
-                            aggregate: "sum"
-                        }
+                    aggregate: [
+                        { field: "razaosocialFornecedor", aggregate: "count" },
+                        { field: "valorUnitario", aggregate: "sum" },
+                        { field: "precoReal", aggregate: "sum" },
+                        { field: "vale", aggregate: "sum" },
+                        { field: "despesareal", aggregate: "sum" }
                     ],
                 });
 
@@ -347,16 +300,10 @@
 
                             },
                             {
-                                field: "id",
-                                title: "ID",
-                                filterable: true,
-                                width: 100,
+                                field: "id", title: "ID", filterable: true, width: 100,
                             },
                             {
-                                field: "apelidoConta",
-                                title: "C/C",
-                                filterable: true,
-                                width: 120,
+                                field: "apelidoConta", title: "C/C", filterable: true, width: 120,
                             },
                             {
                                 field: "despesaCodigoDespesa",
@@ -616,8 +563,7 @@
 
 
             });
-            @if (isset($paginaModal))
-            @else
+            @if (!isset($paginaModal))
                 $(window).on('load', function() {
 
                         var $myDiv = $('#grid');
@@ -627,12 +573,12 @@
                             var count = 0;
                             var interval = setInterval(function() {
                                     @if (isset($despesas))
-                                        if (count >= 100) {
+                                        if (count >= 80) {
                                         @else
-                                            if (count >= 800) {
+                                            if (count >= 200) {
                                             @endif
                                             clearInterval(interval);
-                                            $('.k-link')[0].click();
+                                            $('.k-link').eq(0).click();
                                             console.log('Ordenação Por Grupo Clicado Inicialmente');
                                             $.LoadingOverlay("hide");
                                             return;

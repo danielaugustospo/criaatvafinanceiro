@@ -979,9 +979,10 @@ class DespesaController extends Controller
     {
         $despesa        = Despesa::find($id);
 
-        if (User::find(auth()->user()->id)->cannot('despesa-list-all') &&  $despesa->idAutor !=  auth()->user()->id) {
+        if (auth()->check() && User::find(auth()->user()->id)->cannot('despesa-list-all') && $despesa->idAutor != auth()->user()->id) {
             abort(401, 'Não Autorizado');
         }
+       
 
         $listaContas    = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1 order by id = :conta desc', ['conta' => $despesa->conta]);
         $codigoDespesa  = DB::select('select c.id,  c.despesaCodigoDespesa, c.idGrupoCodigoDespesa, g.grupoDespesa from codigodespesas c, grupodespesas g 
