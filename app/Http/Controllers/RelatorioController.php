@@ -199,6 +199,7 @@ class RelatorioController extends Controller
         
         $dados = OrdemdeServico::select(
             'os.id', 
+            'fornecedores.razaosocialFornecedor as vendedor',
             'os.dataCriacaoOrdemdeServico', 
             'os.valorOrcamento', 
             'os.percentualPermitido',
@@ -207,7 +208,8 @@ class RelatorioController extends Controller
             DB::raw('(((SUM(despesas.precoReal)) / os.valorOrcamento)) * 100 as percentual')
             )
         ->from('ordemdeservico as os')
-        ->join('despesas', 'os.id', 'despesas.idOS')
+        ->leftJoin('despesas', 'os.id', 'despesas.idOS')
+        ->leftJoin('fornecedores', 'os.vendedor', 'fornecedores.id')
         ->groupBy('os.id')
         ->get();
         

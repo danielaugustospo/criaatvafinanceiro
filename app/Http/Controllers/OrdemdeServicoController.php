@@ -19,7 +19,6 @@ use Gate;
 class OrdemdeServicoController extends Controller
 {
 
-    private $Enc;
     private $Logger;
     /**
      * Display a listing of the resource.
@@ -144,28 +143,26 @@ class OrdemdeServicoController extends Controller
      */
     public function create()
     {
-
-
         $ultimaOS = DB::select('select max(id) idMaximo from ordemdeservico');
         if (isset($ultimaOS)) {
             $ultimaOSParseInt = $ultimaOS[0]->idMaximo;
             $novaOS = $ultimaOSParseInt + 1;
         }
 
-        $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
-        $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
-        $cliente = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
-        $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
-        $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
+        $listaContas            = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
+        $listaForncedores       = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
+        $cliente                = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
+        $formapagamento         = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1');
+        $codigoDespesa          = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
+        $vendedores             = $listaForncedores;
+        $dataInicio             = date("d/m/Y");
 
-        $dataInicio = date("d/m/Y");
-
-        $valorInput = $this->valorInput;
-        $valorSemCadastro = $this->valorSemCadastro;
+        $valorInput             = $this->valorInput;
+        $valorSemCadastro       = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('ordemdeservicos.create', compact('novaOS', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'dataInicio', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('ordemdeservicos.create', compact('novaOS', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'vendedores', 'dataInicio', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -192,6 +189,7 @@ class OrdemdeServicoController extends Controller
         ]);
 
         $ordemdeservico->idClienteOrdemdeServico          = $request->get('idClienteOrdemdeServico');
+        $ordemdeservico->vendedor                         = $request->get('vendedor');
         $ordemdeservico->valorProjetoOrdemdeServico       = $request->get('valorProjetoOrdemdeServico');
         $ordemdeservico->valorOrdemdeServico              = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->dataOrdemdeServico               = $request->get('dataOrdemdeServico');
@@ -199,7 +197,7 @@ class OrdemdeServicoController extends Controller
         $ordemdeservico->eventoOrdemdeServico             = $request->get('eventoOrdemdeServico');
 
         $ordemdeservico->percentualPermitido              = $request->get('percentualPermitido');
-        $ordemdeservico->valorOrcamento                   = $request->get('valorOrcamento');
+        $ordemdeservico->valorOrcamento                   = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
 
         $ordemdeservico->servicoOrdemdeServico            = $request->get('servicoOrdemdeServico');
         $ordemdeservico->obsOrdemdeServico                = $request->get('obsOrdemdeServico');
@@ -283,6 +281,7 @@ class OrdemdeServicoController extends Controller
 
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
+        $vendedores     = $listaForncedores;
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 and id = :idFormaPagamento', ['idFormaPagamento' => $ordemdeservico->nomeFormaPagamento]);
         $codigoDespesa = DB::select('select id, idGrupoCodigoDespesa, despesaCodigoDespesa from codigodespesas where ativoCodigoDespesa = 1');
 
@@ -394,7 +393,7 @@ class OrdemdeServicoController extends Controller
         $qtdReceitas = DB::select('select COUNT(valorreceita) as numeroreceitas FROM receita where idosreceita =:idOrdemServico', ['idOrdemServico' => $ordemdeservico->id]);
 
         $this->logVisualizaOS($ordemdeservico);
-        return view('ordemdeservicos.show', compact('ordemdeservico', 'dataInicio', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'despesaPorOS', 'receitasPorOS', 'percentualPorOS', 'totaldespesas', 'totaldespesasAPagar', 'totaldespesasPagas', 'totalreceitas', 'totalreceitasAPagar', 'qtdDespesas', 'qtdReceitas', 'lucro', 'totalOS', 'porcentagemDespesa', 'porcentagemReceita', 'porcentagemLucro', 'porcentagemDespesaAPagar', 'porcentagemDespesaPagas', 'porcentagemReceitaAPagar', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('ordemdeservicos.show', compact('ordemdeservico', 'dataInicio', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'vendedores', 'codigoDespesa', 'despesaPorOS', 'receitasPorOS', 'percentualPorOS', 'totaldespesas', 'totaldespesasAPagar', 'totaldespesasPagas', 'totalreceitas', 'totalreceitasAPagar', 'qtdDespesas', 'qtdReceitas', 'lucro', 'totalOS', 'porcentagemDespesa', 'porcentagemReceita', 'porcentagemLucro', 'porcentagemDespesaAPagar', 'porcentagemDespesaPagas', 'porcentagemReceitaAPagar', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
 
     }
 
@@ -413,6 +412,7 @@ class OrdemdeServicoController extends Controller
 
         $listaContas = DB::select('select id,apelidoConta, nomeConta from conta where ativoConta = 1');
         $listaForncedores = DB::select('select id,nomeFornecedor, razaosocialFornecedor, contatoFornecedor from fornecedores where ativoFornecedor = 1');
+        $vendedores = $listaForncedores;
         $cliente = DB::select('select id, nomeCliente, razaosocialCliente from clientes where ativoCliente = 1');
         $formapagamento = DB::select('select id,nomeFormaPagamento from formapagamento where ativoFormaPagamento = 1 order by id =' . $id);
 
@@ -446,7 +446,7 @@ class OrdemdeServicoController extends Controller
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
 
-        return view('ordemdeservicos.edit', compact('ordemdeservico', 'dataInicio', 'listaContas', 'listaForncedores', 'cliente', 'formapagamento', 'codigoDespesa', 'receitasPorOS', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        return view('ordemdeservicos.edit', compact('ordemdeservico', 'dataInicio', 'listaContas', 'listaForncedores', 'vendedores', 'cliente', 'formapagamento', 'codigoDespesa', 'receitasPorOS', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
 
@@ -465,18 +465,10 @@ class OrdemdeServicoController extends Controller
         $tamanhoArrayReceita = count($temReceita);
 
         $request->validate([
-            // 'nomeFormaPagamento'             => 'required',
+
             'idClienteOrdemdeServico'         => 'required',
-            // 'dataVendaOrdemdeServico'        => 'required|min:3',
-            // 'valorProjetoOrdemdeServico'     => 'required|min:3',
-            // 'valorOrdemdeServico'            => 'required|min:3',
-//            'dataOrdemdeServico'             => 'required|min:3',
-            // 'clienteOrdemdeServico'          => 'required|min:3',
             'eventoOrdemdeServico'           => 'required|min:3',
             'servicoOrdemdeServico'          => 'required|min:3',
-            // 'obsOrdemdeServico'              => 'required|min:3',
-            // 'dataCriacaoOrdemdeServico'      => 'required|min:3',
-            // 'dataExclusaoOrdemdeServico'     => 'required',
 
         ]);
 
@@ -488,21 +480,14 @@ class OrdemdeServicoController extends Controller
                 $request->validate([
                     'idformapagamentoreceita'       => 'required',
                     'datapagamentoreceita'          => 'required',
-                    // 'dataemissaoreceita'            => 'required',
-                    // 'valorreceita'                  => 'required',
                     'pagoreceita'                   => 'required',
                     'contareceita'                  => 'required',
-                    // 'registroreceita'            => 'required',
-                    // 'emissaoreceita'             => 'required',
                     'nfreceita'                     => 'required',
-                    // 'idosreceita'                => 'required',
-
                 ]);
 
                 $valorMonetarioReceita[$i]                  = $request->get('valorreceita')[$i];
                 $valorReceita[$i] = FormatacoesServiceProvider::validaValoresParaBackEnd($valorMonetarioReceita[$i]);
 
-                // $receita = new Receita;
                 $receita->idReceita                     = $request->get('idReceita')[$i];
                 $receita->idformapagamentoreceita       = $request->get('idformapagamentoreceita')[$i];
                 $receita->datapagamentoreceita          = $request->get('datapagamentoreceita')[$i];
@@ -544,34 +529,6 @@ class OrdemdeServicoController extends Controller
                         'excluidoreceita'           => $receita->excluidoreceita,
                         'ativoreceita'              => $receita->ativoreceita 
                     ]);
-                    // DB::insert(
-                    //     'insert into receita 
-                    // (idformapagamentoreceita,
-                    // datapagamentoreceita,
-                    // dataemissaoreceita,
-                    // valorreceita,
-                    // pagoreceita,
-                    // contareceita,
-                    // registroreceita,
-                    // nfreceita,
-                    // idosreceita,
-                    // excluidoreceita,
-                    // ativoreceita) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    //     [
-                    //         $receita->idformapagamentoreceita,
-                    //         $receita->datapagamentoreceita,
-                    //         $receita->dataemissaoreceita,
-                    //         $receita->valorreceita,
-                    //         $receita->pagoreceita,
-                    //         $receita->contareceita,
-                    //         $receita->registroreceita,
-                    //         $receita->nfreceita,
-                    //         $receita->idosreceita,
-                    //         $receita->excluidoreceita,
-                    //         $receita->ativoreceita                  
-            
-                    //     ]
-                    // );
                 } else {
 
                 Receita::where('id', $receita->idReceita)
@@ -590,68 +547,11 @@ class OrdemdeServicoController extends Controller
                             'excluidoreceita'             => $receita->excluidoreceita,
                             'ativoreceita'                => $receita->ativoreceita 
                         ]);
-
-                        // DB::update("UPDATE receita
-                        // SET idformapagamentoreceita = '$receita->idformapagamentoreceita', 
-                        // datapagamentoreceita        = '$receita->datapagamentoreceita',           
-                        // dataemissaoreceita          = '$receita->dataemissaoreceita',             
-                        // valorreceita                = '$receita->valorreceita',                   
-                        // pagoreceita                 = '$receita->pagoreceita',                    
-                        // contareceita                = '$receita->contareceita',                   
-                        // registroreceita             = '$receita->registroreceita',                
-                        // nfreceita                   = '$receita->nfreceita',                      
-                        // idosreceita                 = '$receita->idosreceita',                  
-                        // excluidoreceita             = '$receita->excluidoreceita',
-                        // ativoreceita                = '$receita->ativoreceita'                  
-                        // WHERE id                    = '$receita->idReceita'");
-
                 }
             }
         }
 
-
-        // $receita = Receita::select('id')->where('idosreceita', $ordemdeservico->id)->get();
-        // var_dump($receita);
-        // exit;
-        
-        
-        // //aqui eu tenho os dados enviados
-        // var_dump($temReceita);
-        // exit;
-
-
-
-        //Marca como excluído uma despesa removida na tabela
-        // $receitas = $request->get('idReceita');
-
-
-// $receitas = implode(',', $receitas);
-
-
-// Altera dados da exclusão
-// $stringRemovedora   = array(",novo,","novo");
-// $stringAlterada     = str_replace($stringRemovedora, "", $receitas);
-
-// dd($stringAlterada);
-
-
-            // DB::update("UPDATE receita
-            //     SET 
-            //     ativoreceita                = '0', 
-            //     excluidoreceita             = '1'
-            //     WHERE  id not in ($stringAlterada)
-            //     AND    idosreceita                    = '$ordemdeservico->id'");
-
-
-        // $atualiza = $receita
-        // ->whereNotIn('id', $receitas)
-        // ->where('idosreceita', $ordemdeservico->id )
-        // ->update([
-        //     'ativoreceita'      => '0', 
-        //     'excluidoreceita'   => '1'
-        // ]);
-
-        
+       
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->percentualPermitido = $request->get('percentualPermitido');
         $ordemdeservico->valorOrcamento      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));

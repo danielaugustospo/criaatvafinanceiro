@@ -45,6 +45,21 @@
 
 <div class="form-group row">
 
+    <label for="vendedor" class="col-sm-2 col-form-label">Vendedor</label>
+    <div class="col-sm-4">
+        <select name="vendedor" id="vendedor" class="selecionaComInput form-control">
+            <option value="" selected disabled>Selecione...</option>
+            @foreach ($vendedores as $vendedor)
+                <option value="{{ $vendedor->id }}"
+                    @if (isset($ordemdeservico)) @if ($ordemdeservico->vendedor == $vendedor->id) selected @endif @endif>{{ $vendedor->razaosocialFornecedor }}</option>
+            @endforeach
+        </select>
+    </div>
+
+</div>
+
+<div class="form-group row">
+
     {{ Form::label('percentual', 'Percentual Permitido', ['class' => 'col-sm-2 col-form-label']) }}
     <div class="col-sm-6">
         <div class="input-group">

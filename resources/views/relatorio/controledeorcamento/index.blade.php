@@ -63,6 +63,7 @@
 
             columns: [
                 { field: "id", title: "N° OS", filterable: true, width: 80 },
+                { field: "vendedor", title: "Vendedor", filterable: true, width: 80 },
                 { field: "dataCriacaoOrdemdeServico", title: "Data Abertura", filterable: true, width: 70, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
                 { field: "valorOrcamento", title: "Valor Orçamento", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 {
