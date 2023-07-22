@@ -395,6 +395,7 @@
         var dataCriacao         = $('input[name="dataCriacaoOrdemdeServico"]').val();
         vencimentoTabela        = tabela.getElementsByClassName('datapagamentoreceita');
         var idCliente           = $('#idClienteOrdemdeServico').val();
+        var vendedor            = $('#vendedor').val();
         var valorProjeto        = $('input[name="valorOrdemdeServico"]').val();
         var valorOrcamento      = $('input[name="valorOrcamento"]').val();
         var percentualPermitido = $('input[name="percentualPermitido"]').val();
@@ -409,6 +410,12 @@
         if ((idCliente == '') || (idCliente == null) || (idCliente == undefined)) {
             texto = texto +
             '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Cliente</label></div>';
+            contadorErros++;
+        }
+
+        if ((vendedor == '') || (vendedor == null) || (vendedor == undefined)) {
+            texto = texto +
+            '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Vendedor</label></div>';
             contadorErros++;
         }
 
