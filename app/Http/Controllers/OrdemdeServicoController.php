@@ -463,7 +463,6 @@ class OrdemdeServicoController extends Controller
         $temReceita = $request->get('idformapagamentoreceita');
 
         $tamanhoArrayReceita = count($temReceita);
-
         $request->validate([
 
             'idClienteOrdemdeServico'         => 'required',
@@ -553,6 +552,7 @@ class OrdemdeServicoController extends Controller
 
        
         $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
+        $ordemdeservico->vendedor            = $request->get('vendedor');
         $ordemdeservico->percentualPermitido = $request->get('percentualPermitido');
         $ordemdeservico->valorOrcamento      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
         $ordemdeservico->update($request->all());
