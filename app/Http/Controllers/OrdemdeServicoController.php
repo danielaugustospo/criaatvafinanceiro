@@ -459,7 +459,6 @@ class OrdemdeServicoController extends Controller
      */
     public function update(Request $request, OrdemdeServico $ordemdeservico, Receita $receita)
     {
-
         $temReceita = $request->get('idformapagamentoreceita');
 
         $tamanhoArrayReceita = count($temReceita);
@@ -551,10 +550,12 @@ class OrdemdeServicoController extends Controller
         }
 
        
-        $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
+        $request['valorOrdemdeServico']      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->vendedor            = $request->get('vendedor');
         $ordemdeservico->percentualPermitido = $request->get('percentualPermitido');
-        $ordemdeservico->valorOrcamento      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
+        $request['valorOrcamento']           = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
+
+
         $ordemdeservico->update($request->all());
 
         $this->logVisualizaOS($ordemdeservico);

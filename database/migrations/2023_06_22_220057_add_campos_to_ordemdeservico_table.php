@@ -8,7 +8,8 @@ class AddCamposToOrdemdeservicoTable extends Migration
     public function up()
     {
         Schema::table('ordemdeservico', function (Blueprint $table) {
-            $table->unsignedBigInteger('valorOrcamento')->nullable();
+            $table->string('valorOrcamento', 191)->default('0.0')->nullable(false);
+
             $table->tinyInteger('percentualPermitido')->unsigned();
         });
     }

@@ -29,6 +29,7 @@ class OrdemdeServico extends Model
     // 'dataVendaOrdemdeServico',
     'valorProjetoOrdemdeServico',
     'valorOrdemdeServico',
+    'valorOrcamento',
     'dataOrdemdeServico',
     // 'clienteOrdemdeServico',
     'fatorR',
