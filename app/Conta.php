@@ -60,7 +60,9 @@ class Conta extends Model
             from receita 
             
             inner join conta on `receita`.`contareceita` = `conta`.`id`
-            inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`) 
+            inner join formapagamento on `receita`.`idformapagamentoreceita` = `formapagamento`.`id`
+            where receita.ativoreceita = 1 and receita.excluidoreceita = 0
+            ) 
             union all (select concat('D-',`despesas`.`id`) as id, `despesas`.`vencimento` as dtoperacao, 
    
             
