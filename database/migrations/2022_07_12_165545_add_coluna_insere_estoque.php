@@ -14,7 +14,7 @@ class AddColunaInsereEstoque extends Migration
     public function up()
     {
         Schema::table('despesas', function ($table) {
-            $table->integer('insereestoque')->after('ehcompra')->nullable();
+            // $table->integer('insereestoque')->after('ehcompra')->nullable();
         });
     }
 

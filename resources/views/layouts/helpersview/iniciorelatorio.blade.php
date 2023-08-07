@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
-        <div class="row pull-left">
+        <div class="col-sm-12 row">
             <a class="btn btn-primary" href="{{ route("$rotavoltar") }}"> Voltar</a>
             <h2 class="pl-5">{{ $titulo }}</h2>
         </div>

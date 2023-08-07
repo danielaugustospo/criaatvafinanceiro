@@ -13,7 +13,6 @@ class Saidas extends Model
      */
     protected $fillable = [
         'nomesaida',
-        'codbarras',
         'descricaosaida',
         'idbenspatrimoniais',
         'excluidosaida',
@@ -23,7 +22,14 @@ class Saidas extends Model
         'dataretirada',
         'datapararetorno',
         'ocorrencia',
+        'id_estoque',
+        'itemporcionavel',
         ];
+
+    public function estoque()
+    {
+        return $this->belongsTo('App\Estoque', 'estoque_id');
+    }
 }
 
 

@@ -77,16 +77,18 @@ class SaidasController extends Controller
         $listaDespesas = DB::select("SELECT s.*, 
         DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
         CASE
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
-    	ELSE 'Sem contagem disponível'
-		END as qtddiaspararetorno,
-         b.nomeBensPatrimoniais 
-            FROM  saidas s 
-            LEFT JOIN estoque e on s.codbarras = e.codbarras
-            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-            WHERE s.excluidosaida = 0 AND e.excluidoestoque = 0 AND e.ativadoestoque = 0" . $descricao . " GROUP BY e.id");
+            WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
+            WHEN DATEDIFF(CURDATE(), s.datapararetorno) > 0 THEN CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
+            WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN CONCAT(DATEDIFF(CURDATE(), s.datapararetorno) * (-1), ' dia(s) restante(s)')
+            ELSE 'Sem contagem disponível'
+        END as qtddiaspararetorno,
+        b.nomeBensPatrimoniais 
+        FROM saidas s
+        LEFT JOIN estoque e ON s.id_estoque = e.id
+        LEFT JOIN benspatrimoniais b ON e.idbenspatrimoniais = b.id
+        WHERE s.deleted_at IS NULL AND e.excluidoestoque = 0 AND e.ativadoestoque = 0" . $descricao . "
+        GROUP BY e.id;
+        ");
 
         return $listaDespesas;
     }
@@ -293,7 +295,7 @@ class SaidasController extends Controller
             FROM  saidas s 
             LEFT JOIN estoque e on s.codbarras = e.codbarras
             LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-            WHERE s.id = $id and s.excluidosaida = 0");
+            WHERE s.id = $id and s.deleted_at IS NULL");
 
         return view('saidas.show', compact('saidas', 'listaSaidas'));
     }
@@ -322,7 +324,7 @@ class SaidasController extends Controller
             FROM  saidas s 
             LEFT JOIN estoque e on s.codbarras = e.codbarras
             LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-            WHERE s.id = $id and s.excluidosaida = 0");
+            WHERE s.id = $id and s.deleted_at IS NULL");
 
         return view('saidas.edit', compact('saidas', 'listaSaidas'));
     }

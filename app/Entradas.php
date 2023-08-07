@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Entradas extends Model
 {
@@ -14,15 +15,30 @@ class Entradas extends Model
     protected $fillable = [
         'codbarras',
         'descricaoentrada',
-        'qtdeEntrada',
+        'id_estoque',
+        'quantidade_entrada',
         'idbenspatrimoniais',
         'valorunitarioentrada',
-        // 'ativoentrada',
         'dtdevolucao',
         'excluidoentrada',
         'quemdevolveu',
         'ocorrenciadevolucao'
         ];
+
+
+        public function estoque()
+        {
+            return $this->belongsTo('App\Estoque', 'id_estoque');
+        }
+
+        public function listaEntradas()
+        {
+            return $this->select('entradas.*', 'benspatrimoniais.nomeBensPatrimoniais')
+                ->leftJoin('benspatrimoniais', 'entradas.idbenspatrimoniais', '=', 'benspatrimoniais.id')
+                ->whereNull('entradas.deleted_at')
+                ->addSelect(\DB::raw('CASE WHEN entradas.dtdevolucao IS NULL THEN "NOVO" ELSE "DEVOLUÇÃO" END as tipo'));
+        }
+        
 }
 
 

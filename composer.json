@@ -12,13 +12,14 @@
         "fideloper/proxy": "^4.0",
         "freshbitsweb/laratables": "^2.1",
         "geekcom/validator-docs": "^3.3",
-        "laravel/framework": "7.30.*",
+        "laravel/framework": "^8.0",
+        "doctrine/dbal": "^3.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.2",
         "phpoffice/phpspreadsheet": "^1.21",
         "spatie/laravel-permission": "^3.0",
-        "vlucas/phpdotenv": "^4.0",
+        "vlucas/phpdotenv": "^5.0",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {
