@@ -159,6 +159,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 codbarras: {
                                     type: "string"
                                 },
+                                quantidade: {
+                                    type: "number"
+                                },
                                 nomeBensPatrimoniais: {
                                     type: "string"
                                 },
@@ -173,16 +176,18 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     },
 
                     group: {
-                    field: "nomeBensPatrimoniais",
-                    aggregates: [{
+                    field: "nomeBensPatrimoniais", 
+                    aggregates: [
+                        {
                             field: "nomeBensPatrimoniais",
                             aggregate: "count"
-                        }]
+                        },
+                    ]
                 },
-                    aggregate: [{
+                    aggregate: [                          {
                             field: "nomeBensPatrimoniais",
                             aggregate: "count"
-                        }
+                        },
                     ],
 
                 },
@@ -200,11 +205,17 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         autowidth: true
                     },
                     {
+                        field: "quantidade",
+                        title: "Quantidade",
+                        aggregates: ["sum"],
+                        groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
+                        filterable: true,
+                        autowidth: true
+                    },
+                    {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         aggregates: ["count"],
-                        footerTemplate: "ITENS BUSCADOS: #=count#",
-                        groupHeaderColumnTemplate: "QUANTIDADE: #=count#",
                         filterable: true,
                         autowidth: true
                     },

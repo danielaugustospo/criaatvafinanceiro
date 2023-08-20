@@ -3,13 +3,17 @@
     <div class="col-sm-7">
 
                 @if (isset($propriedadesEntradas)) 
-                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->codbarras }}" readonly>
+                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->estoque->codbarras }}" readonly>
                 @else
                     <select class="selecionaComInput  form-control" style="height: 200px !important" name="codbarras" id="codbarras"> 
                         <option value="">Selecione...</option>
-                        @foreach ($listaInventarioaDevolver as $itensadevolver)
-                            <option value="{{ $itensadevolver->id }}">
-                                {{ $itensadevolver->codbarras }} &nbsp; - &nbsp; {{ $itensadevolver->nomematerial }}
+
+                        @foreach ($listaInventarioaDevolver->groupBy('estoque.id') as $idEstoque => $itensadevolverGrouped)
+                            @php
+                                $totalQuantidade = $itensadevolverGrouped->sum('quantidade_saida');
+                            @endphp
+                            <option value="{{ $idEstoque }}" data-max-quantity="{{ $totalQuantidade }}">
+                                {{ $itensadevolverGrouped[0]->estoque->codbarras }} &nbsp; - &nbsp; {{ $itensadevolverGrouped[0]->estoque->bensPatrimoniais->nomeBensPatrimoniais }} (Total na rua: {{ $totalQuantidade }})
                             </option>
                         @endforeach
                     </select>

@@ -9,23 +9,16 @@ use App\Banco;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-// use Freshbitsweb\Laratables\Laratables;
-use DataTables;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Route;
-use App\Providers\AppServiceProvider;
 use App\Providers\FormatacoesServiceProvider;
 use Illuminate\Support\Facades\App;
 use App\Classes\Logger;
 use Auth;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 use App\Estoque;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
-use stdClass;
 use Illuminate\Support\Facades\Crypt;
 use Gate;
+use App\BensPatrimoniais;
+use App\Enums\StatusEnumBensPatrimoniais;
 
 class DespesaController extends Controller
 {
@@ -1207,7 +1200,8 @@ class DespesaController extends Controller
 
     public function listaMateriais()
     {
-        $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
+        $listaBensPatrimoniais = BensPatrimoniais::where('statusbenspatrimoniais', StatusEnumBensPatrimoniais::VISIVEL_PARA_TODOS)->get();
+
         echo json_encode($listaBensPatrimoniais);
     }
 

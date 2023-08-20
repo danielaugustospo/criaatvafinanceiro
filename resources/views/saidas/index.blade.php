@@ -1,7 +1,7 @@
 <?php
 $intervaloCelulas = 'A1:H1';
 $rotaapi = 'api/apisaida';
-$titulo = 'Estoque - Consulta Saídas (Baixa de Material)';
+$titulo = 'Estoque - HISTÓRICO Saídas (Baixa de Material)';
 $campodata  = 'dataretirada';
 $campodata2 = 'datapararetorno';
 
@@ -156,6 +156,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 codbarras: {
                                     type: "string"
                                 },
+                                quantidade_saida: {
+                                    type: "number"
+                                },
                                 nomematerial: {
                                     type: "string"
                                 },
@@ -172,6 +175,20 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         },
                     },
 
+                    group: {
+                        field: "nomeBensPatrimoniais", 
+                        aggregates: [
+                                {
+                                    field: "nomeBensPatrimoniais",
+                                    aggregate: "count"
+                                },
+                            ]
+                    },
+                    aggregate: [                          {
+                            field: "nomeBensPatrimoniais",
+                            aggregate: "count"
+                        },
+                    ],
 
                 },
 
@@ -190,6 +207,14 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
+                        filterable: true,
+                        width: "10%"
+                    },
+                    {
+                        field: "quantidade_saida",
+                        title: "Quantidade",
+                        aggregates: ["sum"],
+                        groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
                         filterable: true,
                         width: "10%"
                     },

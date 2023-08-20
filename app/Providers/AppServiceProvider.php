@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use App\Sandbox;
+use Illuminate\Support\Facades\Cache;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +30,18 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $listaDespesas = DB::select('SELECT id, UPPER(descricaoDespesa) as descricaoDespesa, precoReal, vencimento, despesaCodigoDespesas, nRegistro, idOS, notaFiscal, valorparcela, idAutor FROM despesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
+        $listaDespesas = Cache::remember('listaDespesas', $minutes = 5, function () {
+            return DB::table('despesas')
+                ->select('id', 'descricaoDespesa', 'precoReal', 'vencimento', 'despesaCodigoDespesas', 'nRegistro', 'idOS', 'notaFiscal', 'valorparcela', 'idAutor')
+                ->where('excluidoDespesa', 0)
+                ->where('ativoDespesa', 1)
+                ->orderBy('id')
+                ->get();
+        });
+        
+        view()->share('listaDespesas', $listaDespesas);
+        
+        
         view()->share('listaDespesas', $listaDespesas);
 
         $listaGrupoDespesas = DB::select('SELECT * FROM grupodespesas WHERE (excluidoDespesa = 0) and (ativoDespesa = 1) order by id');
@@ -74,38 +87,6 @@ class AppServiceProvider extends ServiceProvider
 
         $listaUnidadeMedida = DB::select('SELECT * FROM unidademedida');
         view()->share('listaUnidadeMedida', $listaUnidadeMedida);
-
-        $listaBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1');
-        view()->share('listaBensPatrimoniais', $listaBensPatrimoniais);
-
-        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais,
-                                        CASE
-                                        WHEN e.dtdevolucao IS NULL THEN "NOVO"
-                                        ELSE "DEVOLUÇÃO"
-                                        END as tipo 
-                                        
-                                        FROM  entradas e 
-                                        LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-                                        where e.excluidoentrada = 0');
-        view()->share('listaEntradas', $listaEntradas);
-
-        $listaSaidas = DB::select("SELECT s.*, 
-        DATEDIFF(CURDATE(), s.dataretirada) AS qtddiasemprestado,
-        CASE
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) = 0 THEN 'Devolver hoje'
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno)  > 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno), ' dia(s) atrasado')
-    	WHEN DATEDIFF(CURDATE(), s.datapararetorno) < 0 THEN  CONCAT(DATEDIFF(CURDATE(), s.datapararetorno ) * (-1), ' dia(s) restante(s)')
-    	ELSE 'Sem contagem disponível'
-		END as qtddiaspararetorno,
-        b.nomeBensPatrimoniais 
-            FROM  saidas s 
-            LEFT JOIN estoque e on s.codbarras = e.codbarras
-            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
-            WHERE s.excluidosaida = 0");
-        view()->share('listaSaidas', $listaSaidas);
-
-        $listaInventario = DB::select('SELECT e.*,b.nomeBensPatrimoniais FROM estoque e LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id where ativadoestoque = 1  and  excluidoestoque = 0');
-        view()->share('listaInventario', $listaInventario);
 
         $listaFornecedores =  DB::select('SELECT * from fornecedores where ativoFornecedor = 1 and excluidoFornecedor = 0');
         view()->share('listaFornecedores', $listaFornecedores);

@@ -84,6 +84,10 @@
 
 
         $(".selecionaComInput").select2();
+        $('.popoverButton').click(function(event) {
+            event.preventDefault(); // Impede o comportamento padrão do botão (recarregar a página ou seguir o link)
+            $('[data-toggle="popover"]').popover('show'); // Mostra o popover
+        });
     });
 
     function chamaPrevencaodeClique(e) {

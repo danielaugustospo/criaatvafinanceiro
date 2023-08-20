@@ -22,6 +22,11 @@ class Estoque extends Model
         'ativadoestoque',
         'excluidoestoque'
         ];
+
+        public function bensPatrimoniais()
+        {
+            return $this->belongsTo(BensPatrimoniais::class, 'idbenspatrimoniais', 'id');
+        }
 }
 
 

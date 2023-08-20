@@ -77,6 +77,27 @@
                     }
                 },
             });
+            
+            @if( request()->query('metodo') == 'novo')
+                material = $('#descricaoMaterial').val();
+                //Verifica se o material foi informado
+                if ((material == "") || (material == null)) {
+                    var texto =
+                        '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Selecione o material</label></br>';
+                    contadorErros++;
+                }
+            @endif
+            
+            @if( request()->query('metodo') == 'devolucao')
+            quemdevolveu = $('#quemdevolveu').val();
+                //Verifica se o quemdevolveu foi informado
+                if ((quemdevolveu == "") || (quemdevolveu == null)) {
+                    var texto =
+                        '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe quem devolveu</label></br>';
+                    contadorErros++;
+                }
+            @endif
+
         @endif
 
         //Verifica se o código de barras foi informado
@@ -92,6 +113,14 @@
             if ((portadorsaida == "") || (portadorsaida == null)) {
                 var texto =
                     '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe quem retirou (portador)</label></br>';
+                contadorErros++;
+            }
+            qtdeSaida   = $('#qtdeSaida').val();
+            maxQuantity = $('#codbarras option:selected').data('max-quantity'); // Read data-max-quantity from the selected option
+            //Verifica a quantidade de saída
+            if (qtdeSaida > maxQuantity) {
+                texto = texto +
+                    '<span class="badge badge-warning">Verificar</span><label class="fontenormal pl-2">A quantidade de saída informada excede o limite no estoque!</label></br>';
                 contadorErros++;
             }
         @endif

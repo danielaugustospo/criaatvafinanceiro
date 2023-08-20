@@ -1,20 +1,11 @@
 <div class="form-group row">
-    <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
-    <div class="col-sm-7">
-        <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
-        value="{{ $propriedadesEntradas->estoque->codbarras ?? $novaEntrada }}" readonly>
-    </div>
-</div>
-
-<div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label labelEvidenciada">Material</label>
     <div class="col-sm-5">
         <select class="selecionaComInput form-control" style="height: 200px !important" name="idbenspatrimoniais"
             id="descricaoMaterial" @if (isset($propriedadesEntradas)) disabled @endif onchange="handlePorcionavel()">
-            <option value="">Selecione...</option>
             @foreach ($listaBensPatrimoniais as $bensPatrimoniais)
                 <option value="{{ $bensPatrimoniais->id }}"
-                    @if (isset($propriedadesEntradas)) @if ($propriedadesEntradas->estoque->bensPatrimoniais->id == $bensPatrimoniais->id) selected @endif @endif>
+                    @if (isset($propriedadesEntradas)) @if ($propriedadesEntradas->idbenspatrimoniais == $bensPatrimoniais->id) selected @endif @endif>
                     {{ $bensPatrimoniais->nomeBensPatrimoniais }}
                 </option>
             @endforeach
@@ -31,8 +22,6 @@
     @endif
 </div>
 
-@if ($tipoEntrada == 'novo' && (Route::currentRouteName() === 'entradas.create'))
-    
 <div class="form-group row">
     <label class="col-sm-2 col-form-label">É porcionável?</label>
     <div class="col-sm-7">
@@ -63,17 +52,6 @@
         </div>
     </div>
 </div>
-@endif
-@isset($propriedadesEntradas->id)
-    
-<div class="form-group row">
-    <label for="quantidadeShow" class="col-sm-2 col-form-label">Quantidade</label>
-    <div class="col-sm-1">
-        <input type="text" class="form-control" name="quantidadeShow" placeholder="Quantidade" maxlength="100"
-            @if (isset($propriedadesEntradas)) value="{{ $propriedadesEntradas->quantidade_entrada }}" readonly @endif>
-    </div>
-</div>
-@endisset
 
 <div class="form-group row">
     <label for="descricaoentrada" class="col-sm-2 col-form-label">Descrição</label>
@@ -88,6 +66,9 @@
     'class' => 'form-control',
     'maxlength' => '100',
 ]) !!}
+
+
+
 
 <script>
     function handlePorcionavel() {

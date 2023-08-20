@@ -1,7 +1,7 @@
 <?php
 $intervaloCelulas = 'A1:H1';
 $rotaapi = '/api/apientrada';
-$titulo = 'Estoque - Consulta Entradas';
+$titulo = 'Estoque - HISTÓRICO DE Entradas';
 $relatorioKendoGrid = true;
 $campodata = 'created_at';
 
@@ -157,6 +157,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 codbarras: {
                                     type: "string"
                                 },
+                                quantidade_entrada: {
+                                    type: "number"
+                                },
                                 nomematerial: {
                                     type: "string"
                                 },
@@ -170,6 +173,21 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         },
                     },
 
+
+                    group: {
+                        field: "nomeBensPatrimoniais", 
+                        aggregates: [
+                                {
+                                    field: "nomeBensPatrimoniais",
+                                    aggregate: "count"
+                                },
+                            ]
+                    },
+                    aggregate: [                          {
+                            field: "nomeBensPatrimoniais",
+                            aggregate: "count"
+                        },
+                    ],
 
                 },
 
@@ -190,6 +208,14 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         title: "Nome Material",
                         filterable: true,
                         width: '20%'
+                    },
+                    {
+                        field: "quantidade_entrada",
+                        title: "Quantidade",
+                        aggregates: ["sum"],
+                        groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
+                        filterable: true,
+                        autowidth: true
                     },
                     {
                         field: "descricaoentrada",

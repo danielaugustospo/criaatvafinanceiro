@@ -3,16 +3,15 @@
 
 namespace App\Http\Controllers;
 
-
+use App\BensPatrimoniais;
 use App\Entradas;
+use App\Enums\StatusEnumBensPatrimoniais;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use DataTables;
-use Illuminate\Support\Str;
-use App\Providers\FormatacoesServiceProvider;
 use App\Estoque;
+use App\Saidas;
+use App\Enums\StatusEnumSaidas;
 
 
 class EntradasController extends Controller
@@ -29,6 +28,7 @@ class EntradasController extends Controller
         $this->middleware('permission:entradas-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:entradas-delete', ['only' => ['destroy']]);
 
+        $this->listaBensPatrimoniais = BensPatrimoniais::where('statusbenspatrimoniais', StatusEnumBensPatrimoniais::VISIVEL_PARA_TODOS)->get();
     }
     /**
      * Display a listing of the resource.
@@ -43,7 +43,7 @@ class EntradasController extends Controller
             settype($identrada, "integer");
             $this->show($identrada);
 
-            $despesas = Entradas::where('id', $identrada)->where('excluidoentrada', 0)->get();
+            $despesas = Entradas::where('id', $identrada)->get();
             if (count($despesas) == 1) {
                 header("Location: entradas/$identrada");
                 exit();
@@ -78,16 +78,17 @@ class EntradasController extends Controller
 
         $descricao = $this->montaFiltrosConsulta($request);
         // $descricao = '';
-        $listaDespesas = DB::select('SELECT e.*, b.nomeBensPatrimoniais, 
+        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais, es.codbarras,
         CASE
         WHEN e.dtdevolucao IS NULL THEN "NOVO"
         ELSE "DEVOLUÇÃO"
         END as tipo
             FROM  entradas e 
-            LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id
+            LEFT JOIN estoque es on e.id_estoque = es.id
+            LEFT JOIN benspatrimoniais b on es.idbenspatrimoniais = b.id
             WHERE e.deleted_at IS NULL' . $descricao);
 
-        return $listaDespesas;
+        return $listaEntradas;
     }
 
     private function montaFiltrosConsulta($request)
@@ -95,7 +96,7 @@ class EntradasController extends Controller
         $descricao = "";
         $verificaInputCampos = 0;
 
-        if ($request->codbarras) :              $descricao .= " AND e.codbarras like  '%$request->codbarras%'";
+        if ($request->codbarras) :              $descricao .= " AND es.codbarras like  '%$request->codbarras%'";
             $verificaInputCampos++;
         endif;
         if ($request->nomeBensPatrimoniais) :   $descricao .= " AND b.nomeBensPatrimoniais like  '%$request->nomeBensPatrimoniais%'";
@@ -169,17 +170,18 @@ class EntradasController extends Controller
      */
     public function create(Request $request)
     {
-        $listaInventarioaDevolver = Estoque::select('estoque.id', 'estoque.codbarras', 'b.nomeBensPatrimoniais as nomematerial')
-        ->where('ativadoestoque', 0)
-        ->where('excluidoestoque', 0)
-        ->join('benspatrimoniais as b', 'idbenspatrimoniais', 'b.id')
-        ->get();
-        
+        $listaInventarioaDevolver = Saidas::where('status', StatusEnumSaidas::NA_RUA)
+            ->whereNotNull('datapararetorno')
+            ->with('estoque.bensPatrimoniais')
+            ->get();
+    
+        $listaBensPatrimoniais = $this->listaBensPatrimoniais;
+
         $tipoEntrada = $request->metodo;
         $ultimoId    = Estoque::max('id');
         $novaEntrada = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
 
-        return view('entradas.create', compact('tipoEntrada', 'novaEntrada', 'listaInventarioaDevolver'));
+        return view('entradas.create', compact('listaBensPatrimoniais', 'tipoEntrada', 'novaEntrada', 'listaInventarioaDevolver'));
     }
 
 
@@ -210,44 +212,56 @@ class EntradasController extends Controller
                 'idbenspatrimoniais'    => $request->input('idbenspatrimoniais'),
                 'descricao'             => $request->input('descricaoentrada'),
                 'quantidade'            => $qtdeEntrada,
-                'ativadoestoque'        => 1,
-                'excluidoestoque'       => 0,
+                'ativadoestoque'        => 1
             ]);
             
             $salvaEntradas = Entradas::create([
                 'descricaoentrada'      => $request->input('descricaoentrada'),
                 'id_estoque'            => $salvaEstoque->id,
                 'quantidade_entrada'    => $qtdeEntrada,
-                'idbenspatrimoniais'    => $request->input('idbenspatrimoniais'),
             ]);
         } elseif ($tipoEntrada == 'devolucao') {
 
-            $mensagemExito = 'Devolução lançada com êxito.';
-            $metodo = 'devolucao';
+            $mensagemExito  = 'Devolução lançada com êxito.';
+            $metodo         = 'devolucao';
 
             $request->validate([
                 'codbarras'      => 'required',
             ]);
-            $codigobarras = Estoque::where('id', $request->codbarras)->first();
-            $codigobarras = $codigobarras->codbarras;
 
-            $salvaEntradas = Entradas::create([
-                'codbarras'                 => $codigobarras,
-                'descricaoentrada'          => $request->descricaoentrada,
-                'qtdeEntrada'               => 0,
-                'idbenspatrimoniais'        => $request->idbenspatrimoniais,
-                // 'valorunitarioentrada'      => $request->valorunitarioentrada,
-                'dtdevolucao'               => $request->dtdevolucao,
-                'quemdevolveu'              => $request->quemdevolveu,
-                'ocorrenciadevolucao'       => $request->ocorrenciadevolucao,
-                'excluidoentrada'           => 0
-            ]);
+            $itemEstoque = Estoque::find($request->codbarras);
 
-            $lancaEstoque = DB::table('estoque')
-                ->where('id', $request->codbarras)
-                ->where('ativadoestoque', 0)
-                ->where('excluidoestoque', 0)
-                ->update(['ativadoestoque' => 1]);
+            if ($itemEstoque) {
+                $codigobarras = $itemEstoque->codbarras;
+            
+                $mudaStatusSaida = Saidas::where('id_estoque', $itemEstoque->id)
+                    ->where('status', StatusEnumSaidas::NA_RUA)
+                    ->get();
+            
+                foreach ($mudaStatusSaida as $saida) {
+                    $quantidadeSaida = $saida->quantidade_saida;
+            
+                    $saida->update([
+                        'status' => StatusEnumSaidas::DEVOLVIDO
+                    ]);
+            
+                    $salvaEntradas = Entradas::create([
+                        'descricaoentrada'    => $request->descricaoentrada,
+                        'id_estoque'          => $itemEstoque->id,
+                        'quantidade_entrada'  => $quantidadeSaida,
+                        'dtdevolucao'         => $request->dtdevolucao,
+                        'quemdevolveu'        => $request->quemdevolveu,
+                        'ocorrenciadevolucao' => $request->ocorrenciadevolucao,
+                    ]);
+
+                    $lancaEstoque = DB::table('estoque')
+                        ->where('id', $itemEstoque->id)
+                        ->update([
+                            'quantidade' => \DB::raw("quantidade + $quantidadeSaida")
+                    ]);
+                }
+            }
+            
         }
 
         $id = $salvaEntradas->id;
@@ -276,10 +290,11 @@ class EntradasController extends Controller
                 $tipoEntrada = 'novo';
             }
 
+            $listaBensPatrimoniais = $this->listaBensPatrimoniais;
 
-            $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $propriedadesEntradas->id . ' desc');
+            $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where statusbenspatrimoniais = 1 order by id =' . $propriedadesEntradas->id . ' desc');
 
-            return view('entradas.show', compact('propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
+            return view('entradas.show', compact('listaBensPatrimoniais', 'propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
         } elseif ($visualiza == 0) {
             return redirect()->route($rotaRetorno, compact("metodo", 'tipoEntrada'))->with('success', $mensagemExito);
         } else {
@@ -296,7 +311,9 @@ class EntradasController extends Controller
      */
     public function show($id)
     {
-        $propriedadesEntradas = Entradas::where('id', $id)->with('estoque')->first();
+        $listaBensPatrimoniais = $this->listaBensPatrimoniais;
+
+        $propriedadesEntradas = Entradas::where('id', $id)->with('estoque.bensPatrimoniais')->first();
     
         if (isset($propriedadesEntradas->dtdevolucao)) {
             $tipoEntrada = 'devolucao';
@@ -304,9 +321,9 @@ class EntradasController extends Controller
             $tipoEntrada = 'novo';
         }
     
-        $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where ativadobenspatrimoniais = 1 order by id');
+        $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where statusbenspatrimoniais = 1 order by id');
     
-        return view('entradas.show', compact('propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
+        return view('entradas.show', compact('listaBensPatrimoniais', 'propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
     }
     
 
@@ -320,7 +337,7 @@ class EntradasController extends Controller
     public function edit($id)
     {
         $entradas = Entradas::find($id);
-        $selectBensPatrimoniais = DB::select('SELECT * FROM bensPatrimoniais where ativadobenspatrimoniais = 1 order by id =' . $entradas->idbenspatrimoniais . ' desc');
+        $selectBensPatrimoniais = DB::select('SELECT * FROM bensPatrimoniais where statusbenspatrimoniais = 1 order by id =' . $entradas->idbenspatrimoniais . ' desc');
 
         return view('entradas.edit', compact('entradas', 'selectBensPatrimoniais'));
     }
@@ -337,18 +354,14 @@ class EntradasController extends Controller
     {
         request()->validate([
             'descricaoentrada'      => 'required|min:3',
-            'idbenspatrimoniais'    => 'required',
             'qtdeEntrada'           => 'required',
             // 'ativoentrada'          => 'required',
-            'excluidoentrada'       => 'required'
         ]);
 
         $entradas = Entradas::find($id);
         $entradas->descricaoentrada         = $request->input('descricaoentrada');
-        $entradas->idbenspatrimoniais       = $request->input('idbenspatrimoniais');
         $entradas->qtdeEntrada              = $request->input('qtdeEntrada');
         // $entradas->ativoentrada             = $request->input('ativoentrada');
-        $entradas->excluidoentrada          = $request->input('excluidoentrada');
         $entradas->save();
 
         // $entradas->update($request->all());

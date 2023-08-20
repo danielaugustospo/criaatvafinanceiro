@@ -33,8 +33,9 @@ class Entradas extends Model
 
         public function listaEntradas()
         {
-            return $this->select('entradas.*', 'benspatrimoniais.nomeBensPatrimoniais')
-                ->leftJoin('benspatrimoniais', 'entradas.idbenspatrimoniais', '=', 'benspatrimoniais.id')
+            return $this->select('entradas.*', 'benspatrimoniais.nomeBensPatrimoniais', 'estoque.codbarras')
+                ->leftJoin('estoque', 'entradas.id_estoque', '=', 'estoque.id')
+                ->leftJoin('benspatrimoniais', 'estoque.idbenspatrimoniais', '=', 'benspatrimoniais.id')
                 ->whereNull('entradas.deleted_at')
                 ->addSelect(\DB::raw('CASE WHEN entradas.dtdevolucao IS NULL THEN "NOVO" ELSE "DEVOLUÇÃO" END as tipo'));
         }

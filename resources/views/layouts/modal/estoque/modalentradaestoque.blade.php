@@ -85,9 +85,14 @@
     @endforeach
 </datalist>
 <datalist id="datalistCodBarras">
+    @php $codbarrasArray = []; @endphp
     @foreach ($listaEntradas as $entradas)
-        <option value="{{ $entradas->codbarras }}">{{ $entradas->codbarras }}
-        </option>
+        @if (!in_array($entradas->codbarras, $codbarrasArray))
+            <option value="{{ $entradas->codbarras }}">{{ $entradas->codbarras }}</option>
+            @php
+                $codbarrasArray[] = $entradas->codbarras;
+            @endphp
+        @endif
     @endforeach
 </datalist>
 <datalist id="datalistMaterial">

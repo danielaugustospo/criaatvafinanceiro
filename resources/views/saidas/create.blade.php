@@ -20,6 +20,7 @@
 
 
 @include('layouts/helpersview/botoes/submit')
+<input type="button" class="btn btn-success" id="btnSalvareSair"        value="Salvar e Sair"       onclick="alteraRetornoCadastro(retorno = 'index');" />
 
 {!! Form::close() !!}
 
