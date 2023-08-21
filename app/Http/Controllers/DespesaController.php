@@ -58,6 +58,8 @@ class DespesaController extends Controller
             $this->variavelReadOnlyNaView = "readonly";
             $this->variavelDisabledNaView = 'disabled';
         }
+        
+        $this->listaBensPatrimoniais = BensPatrimoniais::where('statusbenspatrimoniais', StatusEnumBensPatrimoniais::VISIVEL_PARA_TODOS)->get();
     }
 
 
@@ -446,6 +448,7 @@ class DespesaController extends Controller
      */
     public function create(Request $request)
     {
+      $listaBensPatrimoniais = $this->listaBensPatrimoniais;
         $listaContas    = Conta::select('id','apelidoConta', 'nomeConta')->where('ativoConta', '1')->get();
         $codigoDespesa  = CodigoDespesa::select('c.id', 'c.despesaCodigoDespesa', 'c.idGrupoCodigoDespesa', 'g.grupoDespesa')
                           ->from('codigodespesas as c')
@@ -468,9 +471,9 @@ class DespesaController extends Controller
         $infoSelectVazio        = $this->infoSelectVazio;
         if (isset($request->paginaModal)) :
             $paginaModal = true;
-            return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
+            return view('despesas.create', compact('listaBensPatrimoniais', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
         endif;
-        return view('despesas.create', compact('listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
+        return view('despesas.create', compact('listaBensPatrimoniais','listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
 
@@ -910,6 +913,7 @@ class DespesaController extends Controller
      */
     public function edit($id)
     {
+        $listaBensPatrimoniais = $this->listaBensPatrimoniais;
 
         $despesa = null;
         $listaContas = null;
@@ -930,7 +934,7 @@ class DespesaController extends Controller
 
         $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView, $infoSelectVazio);
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
+        return view('despesas.edit', compact('listaBensPatrimoniais', 'despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -940,6 +944,8 @@ class DespesaController extends Controller
      */
     public function editamodal($id)
     {
+        $listaBensPatrimoniais = $this->listaBensPatrimoniais;
+
         $despesa = null;
         $listaContas = null;
         $codigoDespesa = null;
@@ -964,7 +970,7 @@ class DespesaController extends Controller
         $variavelDisabledNaView = "";
         $infoSelectVazio        = $this->infoSelectVazio;
 
-        return view('despesas.edit', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
+        return view('despesas.edit', compact('listaBensPatrimoniais', 'despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'paginaModal'));
     }
 
 
