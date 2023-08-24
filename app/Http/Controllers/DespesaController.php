@@ -872,6 +872,7 @@ class DespesaController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $listaBensPatrimoniais = $this->listaBensPatrimoniais;
         $despesa = Despesa::find($id);
 
         if (!isset($despesa)) {
@@ -901,7 +902,7 @@ class DespesaController extends Controller
 
         $this->dadosDespesaEdicaoVisualizacao($id, $despesa, $listaContas, $codigoDespesa, $listaForncedores, $formapagamento, $todasOSAtivas, $todosOSBancos, $valorDespesa, $valorVale, $precoReal, $vale, $valorInput, $valorSemCadastro, $variavelReadOnlyNaView, $variavelDisabledNaView, $infoSelectVazio);
 
-        return view('despesas.show', compact('despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
+        return view('despesas.show', compact('listaBensPatrimoniais', 'despesa', 'listaContas', 'codigoDespesa', 'listaForncedores', 'formapagamento', 'todasOSAtivas', 'todosOSBancos', 'precoReal', 'vale', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
 
