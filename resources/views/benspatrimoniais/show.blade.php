@@ -43,5 +43,18 @@
 
 </div>
 
+<div class="form-group row">
+    <label for="estante" class="col-sm-2 col-form-label">Estante</label>
+    <div class="col-sm-6">
+        {!! Form::text('estante', $benspatrimoniais->estante, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
+    </div>
+</div>
+<div class="form-group row">
+    <label for="unidademedida" class="col-sm-2 col-form-label">Prateleira</label>
+    <div class="col-sm-6">
+        {!! Form::text('prateleira', $benspatrimoniais->prateleira, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100', 'readonly']) !!}
+    </div>
+</div>
+
 
 @endsection

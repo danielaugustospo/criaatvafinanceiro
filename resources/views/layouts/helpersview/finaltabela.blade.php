@@ -26,6 +26,11 @@ dataBound: function (e) {
             }
         }
     }
+
+    var filteredData = this.dataSource.view();
+
+    // Atualiza o gráfico com os dados filtrados
+    updateChart(filteredData);
 },
 columnHide: function (e) {
     // hide column in all other detail Grids

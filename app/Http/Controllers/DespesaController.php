@@ -172,6 +172,7 @@ class DespesaController extends Controller
         $controleconsumomaterial = '';
         $controleConsumoMaterialLeftJoin = '';
         $groupByControleConsumo = '';
+        $whereControleConsumo = '';
 
         if (isset($request->rel) && ($request->rel ==  'controleconsumomaterial')){
             $controleconsumomaterial = "
@@ -185,6 +186,7 @@ class DespesaController extends Controller
             LEFT JOIN unidademedida 	AS un		ON bp.unidademedida = un.id";
 
             $groupByControleConsumo = " group by bp.nomeBensPatrimoniais ";
+            $whereControleConsumo   = ' and d.ehcompra = 1 and d.descricaoDespesa = bp.id ';
         }
 
         $listaDespesas = DB::select('SELECT distinct d.id, 
@@ -245,9 +247,13 @@ class DespesaController extends Controller
         LEFT JOIN users             AS u        ON d.idAutor = u.id
         ' . $controleConsumoMaterialLeftJoin . '
      
-        WHERE d.excluidoDespesa = 0 ' . $visaoLimitada . $descricao . $groupByControleConsumo);
+        WHERE d.excluidoDespesa = 0 ' . $visaoLimitada . $descricao . $whereControleConsumo . $groupByControleConsumo);
+
 
         return $listaDespesas;
+
+
+        
     }
 
     private function montaFiltrosConsulta($request)

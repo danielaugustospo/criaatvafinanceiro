@@ -5,6 +5,7 @@
 
 {{-- Jquery --}}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 {{-- TODO: Alterar a forma que o kendo grid é carregado --}}
 

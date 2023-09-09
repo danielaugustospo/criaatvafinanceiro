@@ -19,6 +19,17 @@
     @include('layouts/scripts')
     @include('layouts/estilo')
 
+    <style>
+        /* Estilos personalizados para a tabela e o gráfico */
+        #grid {
+            margin: 20px;
+        }
+
+        #chart {
+            margin: 20px;
+        }
+    </style>
+
 </head>
 
 

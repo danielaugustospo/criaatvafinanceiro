@@ -137,6 +137,7 @@
 
 
 <script type="x/kendo-template" id="page-template"><div class="page-template">
+    
       <div class="header row">
         <div style="float: right">Página #: pageNum # de #: totalPages #</div>
         <img src="{{ env('ASSET_URL') }}img/logoPRETO-criaatvaPRETOWHITE.png" width="80" alt="" srcset="">
@@ -148,4 +149,6 @@
         Página #: pageNum # de #: totalPages #
       </div> --}}
     </div>
+
+
 </script>

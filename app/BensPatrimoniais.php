@@ -22,6 +22,8 @@ class BensPatrimoniais extends Model
         'excluidoBensPatrimoniais',
         'statusbenspatrimoniais',
         'qtdestoqueminimo',
-        'unidademedida'
+        'unidademedida',
+        'estante',
+        'prateleira'
         ];
 }
