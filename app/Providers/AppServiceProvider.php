@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         $listaOrgaosRG = DB::select('SELECT * FROM orgaorg where ativoOrgaoRG = 1');
         view()->share('listaOrgaosRG', $listaOrgaosRG);
 
-        $listaFormaPG = DB::select('SELECT * FROM formapagamento where ativoFormaPagamento = 1');
+        $listaFormaPG = DB::select('SELECT * FROM formapagamento where ativoFormaPagamento = 1 order by nomeFormaPagamento  asc');
         view()->share('listaFormaPG', $listaFormaPG);
 
         $listaTiposBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
