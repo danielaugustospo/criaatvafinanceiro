@@ -75,18 +75,6 @@
             <td data-th="QUANTIDADE">
                 {!! Form::text('quantidadeTabela[]', $valorInput, ['placeholder' => 'Preencha este campo', 'class' =>
                 'form-control valoresoperacao quantidadeTabela', 'max' => '2999-12-31', 'id' => 'quantidadeTabela', $variavelReadOnlyNaView]) !!}
-
-                {{-- <input list="tipoUnidade" name="quantidadeTabela[]" id="browser" value="">
-
-                <datalist id="tipoUnidade">
-                <option value="Metro">
-                <option value="Galão">
-                <option value="Vidro">
-                <option value="Litro">
-                <option value="Saco">
-                <option value="Pote"> --}}
-
-
                 </datalist>
 
             </td>

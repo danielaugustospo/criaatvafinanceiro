@@ -210,6 +210,7 @@ class RelatorioController extends Controller
         ->from('ordemdeservico as os')
         ->leftJoin('despesas', 'os.id', 'despesas.idOS')
         ->leftJoin('fornecedores', 'os.vendedor', 'fornecedores.id')
+        ->where('despesas.excluidoDespesa', '0')
         ->groupBy('os.id')
         ->get();
         

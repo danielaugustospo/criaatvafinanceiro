@@ -100,12 +100,6 @@
 
         @endif
 
-        //Verifica se o código de barras foi informado
-        if ((codbarras == "") || (codbarras == null)) {
-            var texto =
-                '<span class="badge badge-warning">Selecionar</span><label class="fontenormal pl-2">Informe o código de barras</label></br>';
-            contadorErros++;
-        }
 
         @if (Request::path() == 'saidas/create')
             portadorsaida = $('#portadorsaida').val();

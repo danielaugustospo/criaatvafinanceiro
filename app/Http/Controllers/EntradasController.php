@@ -179,9 +179,9 @@ class EntradasController extends Controller
 
         $tipoEntrada = $request->metodo;
         $ultimoId    = Estoque::max('id');
-        $novaEntrada = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
+        // $novaEntrada = "CRIAATVA" . str_pad(($ultimoId !== null ? ++$ultimoId : 1), 5, "0", STR_PAD_LEFT);
 
-        return view('entradas.create', compact('listaBensPatrimoniais', 'tipoEntrada', 'novaEntrada', 'listaInventarioaDevolver'));
+        return view('entradas.create', compact('listaBensPatrimoniais', 'tipoEntrada', 'listaInventarioaDevolver'));
     }
 
 
@@ -203,12 +203,12 @@ class EntradasController extends Controller
             $metodo         = 'novo';
 
             $request->validate([
-                'codbarras'             => 'required | unique:estoque',
+                // 'codbarras'             => 'required | unique:estoque',
                 'idbenspatrimoniais'    => 'required',
             ]);
             $salvaEstoque  = Estoque::create([
                 // 'nomematerial'          => $request->input('nomematerial'),
-                'codbarras'             => $request->input('codbarras'),
+                // 'codbarras'             => $request->input('codbarras'),
                 'idbenspatrimoniais'    => $request->input('idbenspatrimoniais'),
                 'descricao'             => $request->input('descricaoentrada'),
                 'quantidade'            => $qtdeEntrada,
@@ -226,13 +226,16 @@ class EntradasController extends Controller
             $metodo         = 'devolucao';
 
             $request->validate([
-                'codbarras'      => 'required',
+                'id_estoque'      => 'required',
             ]);
 
-            $itemEstoque = Estoque::find($request->codbarras);
+
+
+
+            $itemEstoque = Estoque::find($request->id_estoque);
 
             if ($itemEstoque) {
-                $codigobarras = $itemEstoque->codbarras;
+                // $codigobarras = $itemEstoque->codbarras;
             
                 $mudaStatusSaida = Saidas::where('id_estoque', $itemEstoque->id)
                     ->where('status', StatusEnumSaidas::NA_RUA)

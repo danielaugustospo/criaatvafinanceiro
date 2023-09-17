@@ -1,12 +1,4 @@
 <div class="form-group row">
-    <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
-    <div class="col-sm-7">
-        <input type="text" class="form-control inputAumentado codbarras" name="codbarras" id="codbarras" placeholder="Código de Barras" 
-        value="{{ $propriedadesEntradas->estoque->codbarras ?? $novaEntrada }}" readonly>
-    </div>
-</div>
-
-<div class="form-group row">
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label labelEvidenciada">Material</label>
     <div class="col-sm-5">
         <select class="selecionaComInput form-control" style="height: 200px !important" name="idbenspatrimoniais"

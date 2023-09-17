@@ -131,7 +131,9 @@
       },
       columns: [
         { field: "id", title: "ID", filterable: true, width: '10%' },
-        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '70%' },
+        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '40%' },
+        { field: "estante", title: "Estante", filterable: true, width: '20%' },
+        { field: "prateleira", title: "Prateleira", filterable: true, width: '20%' },
         { field: "qtdestoqueminimo", title: "Estoque Mín.", filterable: true, width: '10%' },
 
         {
