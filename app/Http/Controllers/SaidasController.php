@@ -242,41 +242,84 @@ class SaidasController extends Controller
         ]);
             $request->quantidade_saida = ($request->quantidade_saida == null) ? 1 :  $request->quantidade_saida;
 
-            $salvaSaidas = Saidas::create([
-                'status'                => StatusEnumSaidas::NA_RUA,
-                'id_estoque'            => $request->id_estoque,
-                'descricaosaida'        => $request->descricaosaida,
-                'quantidade_saida'      => $request->quantidade_saida,
-                'portador'              => $request->portadorsaida,
-                'ordemdeservico'        => $request->ordemdeservico,
-                'datapararetirada'      => $request->datapararetiradasaida,
-                'dataretirada'          => $request->dataretiradasaida,
-                'datapararetorno'       => $request->dataretornoretiradasaida,
-                'ocorrencia'            => $request->ocorrencia
-            ]);
-            if($salvaSaidas){
-                Estoque::where('id', $request->id_estoque)
-                    ->where('ativadoestoque', '1')
-                    ->update([
-                        'quantidade' => \DB::raw("quantidade - $request->quantidade_saida")
-                    ]);
+
+            $estoqueItens = Estoque::where('idbenspatrimoniais', $request->idbenspatrimoniais)
+            ->where('ativadoestoque', '1')
+            ->get();
+        
+        if ($estoqueItens->isEmpty()) {
+            return redirect()->route('saidas.index')->with('error', 'Estoque não encontrado');
+        }
+        
+        $quantidadeSaida = $request->quantidade_saida;
+        
+        foreach ($estoqueItens as $estoque) {
+            if ($quantidadeSaida > 0 && $estoque->quantidade > 0) {
+                $quantidadeRemovida = min($quantidadeSaida, $estoque->quantidade);
+        
+                $salvaSaidas = Saidas::create([
+                    'status' => StatusEnumSaidas::NA_RUA,
+                    'id_estoque' => $estoque->id,
+                    'descricaosaida' => $request->descricaosaida,
+                    'quantidade_saida' => $quantidadeRemovida,
+                    'portador' => $request->portadorsaida,
+                    'ordemdeservico' => $request->ordemdeservico,
+                    'datapararetirada' => $request->datapararetiradasaida,
+                    'dataretirada' => $request->dataretiradasaida,
+                    'datapararetorno' => $request->dataretornoretiradasaida,
+                    'ocorrencia' => $request->ocorrencia
+                ]);
+        
+                $estoque->update([
+                    'quantidade' => \DB::raw("quantidade - $quantidadeRemovida")
+                ]);
+        
+                $quantidadeSaida -= $quantidadeRemovida;
             }
-            else{
-                return redirect()->route('saidas.index')->with('error', 'Saída criada com êxito, mas item não foi retirado do estoque');
-            }
-            $id = $salvaSaidas->id;
+        }
+        
+        if ($quantidadeSaida > 0) {
+            return redirect()->route('saidas.index')->with('error', 'Não há estoque suficiente');
+        }
+
+            // $salvaSaidas = Saidas::create([
+            //     'status'                => StatusEnumSaidas::NA_RUA,
+            //     'id_estoque'            => $request->idbenspatrimoniais,
+            //     'descricaosaida'        => $request->descricaosaida,
+            //     'quantidade_saida'      => $request->quantidade_saida,
+            //     'portador'              => $request->portadorsaida,
+            //     'ordemdeservico'        => $request->ordemdeservico,
+            //     'datapararetirada'      => $request->datapararetiradasaida,
+            //     'dataretirada'          => $request->dataretiradasaida,
+            //     'datapararetorno'       => $request->dataretornoretiradasaida,
+            //     'ocorrencia'            => $request->ocorrencia
+            // ]);
+            // if($salvaSaidas){
+            //     Estoque::where('id', $request->id_estoque)
+            //         ->where('ativadoestoque', '1')
+            //         ->update([
+            //             'quantidade' => \DB::raw("quantidade - $request->quantidade_saida")
+            //         ]);
+            // }
+            // else{
+            //     return redirect()->route('saidas.index')->with('error', 'Saída criada com êxito, mas item não foi retirado do estoque');
+            // }
             $mensagemExito = 'Saída de material lançada com êxito.';
-
-            if($request->tpRetorno == 'visualiza'){
-                $rotaRetorno = 'saidas.show';
-                $saidas = Saidas::where('id', $id)->with('estoque.bensPatrimoniais')->first();
-                return view('saidas.show', compact('saidas'));
-
+            if( $salvaSaidas){
+                
+                $id = $salvaSaidas->id;
+                if($request->tpRetorno == 'visualiza'){
+                    $rotaRetorno = 'saidas.show';
+                    $saidas = Saidas::where('id', $id)->with('estoque.bensPatrimoniais')->first();
+                    return view('saidas.show', compact('saidas'));
+    
+                }
+                elseif($request->tpRetorno == 'novo'){  
+                    $rotaRetorno = 'saidas.create';
+                    return redirect()->route($rotaRetorno)->with('success', $mensagemExito);
+                }
             }
-            elseif($request->tpRetorno == 'novo'){  
-                $rotaRetorno = 'saidas.create';
-                return redirect()->route($rotaRetorno)->with('success', $mensagemExito);
-            }
+
             else{
                 $rotaRetorno = 'saidas.index';
                 return redirect()->route($rotaRetorno)->with('success', $mensagemExito);

@@ -2,13 +2,13 @@
     <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
     <div class="col-sm-7">
         @if (isset($saidas))
-        <input type="text" class="form-control inputAumentado" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $saidas->estoque->codbarras }}" readonly>
+        <input type="text" class="form-control inputAumentado" name="idbenspatrimoniais" placeholder="Cod Barras" maxlength="100" value="{{ $saidas->estoque->codbarras }}" readonly>
         @else
-        <select class="selecionaComInput form-control" style="height: 200px !important" name="id_estoque" id="codbarras">
+        <select class="selecionaComInput form-control" style="height: 200px !important" name="idbenspatrimoniais" id="codbarras">
             <option value="" data-max-quantity="">Selecione...</option>
             @foreach ($listaInventario as $itensestoque)
-            <option value="{{ $itensestoque->id }}" data-max-quantity="{{ $itensestoque->quantidade }}">
-                {{ $itensestoque->codbarras }} &nbsp; | &nbsp; {{ $itensestoque->nomeBensPatrimoniais }}
+            <option value="{{ $itensestoque->idbenspatrimoniais }}" data-max-quantity="{{ $itensestoque->quantidade }}">
+                {{ $itensestoque->nomeBensPatrimoniais }} &nbsp; | TOTAL NO ESTOQUE: &nbsp; {{ $itensestoque->quantidade }}
             </option>
             @endforeach
         </select>

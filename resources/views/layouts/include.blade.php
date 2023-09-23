@@ -9,7 +9,8 @@
 
 {{-- TODO: Alterar a forma que o kendo grid é carregado --}}
 
-@if(!isset($paginaModal) || isset($relatorioKendoGrid))
+@if(isset($relatorioKendoGrid) && !isset($paginaModal))
+
         <script src="{{ asset('js/kendogrid/kendo.all.min.js') }}"></script>
         <script src="{{ asset('js/kendogrid/messages.pt-BR.min.js') }}"></script>
         <!-- Carrega Pako ZLIB library para habilitar a compressão PDF -->

@@ -1,14 +1,11 @@
-@if (!isset($paginaModal) || isset($relatorioKendoGrid))
+@if(isset($relatorioKendoGrid) && !isset($paginaModal))
 <link rel="stylesheet" href="{{ asset('css/kendogrid/kendo.default-v2.css') }}" />
-{{-- 
-<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.common.min.css" />
-<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1119/styles/kendo.default.min.css" /> --}}
+
 <link rel="stylesheet" href="https://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.min.css" />
 <link rel="stylesheet" href="https://cdn.kendostatic.com/2014.3.1119/styles/kendo.dataviz.default.min.css" />
 @endif
 
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" /> --}}
-    {{-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> --}}
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 

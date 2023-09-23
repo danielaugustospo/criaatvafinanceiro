@@ -63,12 +63,14 @@ class Saidas extends Model
 
     public function disponivelEmEstoque()
     {
-        $listaInventario = Estoque::select('estoque.*', 'benspatrimoniais.nomeBensPatrimoniais')
+        $listaInventario = Estoque::select('estoque.id', 'estoque.idbenspatrimoniais', \DB::raw('SUM(estoque.quantidade) as quantidade'), 'estoque.descricao', 'benspatrimoniais.nomeBensPatrimoniais')
             ->leftJoin('benspatrimoniais', 'estoque.idbenspatrimoniais', '=', 'benspatrimoniais.id')
             ->where('estoque.quantidade', '>', 0)
             ->where('ativadoestoque', 1)
-            ->where('excluidoestoque', 0)
+            ->whereNull('estoque.deleted_at')
+            ->groupBy('estoque.idbenspatrimoniais')
             ->get();
+
 
         return $listaInventario;
     }
