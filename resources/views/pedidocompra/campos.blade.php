@@ -311,3 +311,15 @@
     ]) !!}
 
 </div>
+<div class="row mt-2 mb-2">
+    <label class="col-sm-2 mr-2 mt-2" for="">Observações</label>
+    {!! Form::text('observacoes_solicitante', old('observacoes_solicitante'), [
+        'class' => 'col-sm-8 form-control',
+        'id' => 'observacoes_solicitante',
+        'maxlength' => '100',
+        'style' => 'color: red; font-weight: bold;',
+        $variavelReadOnlyNaView,
+    ]) !!}
+    
+
+</div>

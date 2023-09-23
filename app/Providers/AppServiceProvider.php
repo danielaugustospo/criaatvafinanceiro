@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('excluidoDespesa', 0)
                 ->where('ativoDespesa', 1)
                 ->orderBy('id')
+                ->limit(5)
                 ->get();
         });
         

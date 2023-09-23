@@ -50,6 +50,7 @@ class PedidoCompra extends Model
         'ped_periodofaturado',
         'ped_reembolsado',
         'ped_cpfcnpj',
+        'observacoes_solicitante',
     ];
 
 
@@ -116,6 +117,7 @@ class PedidoCompra extends Model
         ped_exigaprov                   = '$pedido->ped_exigaprov', 
         ped_excluidopedido              = '$pedido->ped_excluidopedido', 
         ped_novanotificacao             = '$pedido->ped_novanotificacao', 
+        observacoes_solicitante         = '$pedido->observacoes_solicitante', 
         updated_at                      = '$pedido->data'
         WHERE id                        = '$pedido->id'";
 

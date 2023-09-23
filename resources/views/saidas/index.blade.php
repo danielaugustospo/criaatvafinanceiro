@@ -153,9 +153,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 nomeBensPatrimoniais: {
                                     type: "string"
                                 },
-                                codbarras: {
-                                    type: "string"
-                                },
                                 quantidade_saida: {
                                     type: "number"
                                 },
@@ -197,12 +194,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         title: "ID",
                         filterable: true,
                         width: "5%"
-                    },
-                    {
-                        field: "codbarras",
-                        title: "Cod Barras",
-                        filterable: true,
-                        width: "10%"
                     },
                     {
                         field: "nomeBensPatrimoniais",

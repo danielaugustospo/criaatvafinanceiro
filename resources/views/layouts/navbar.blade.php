@@ -118,11 +118,12 @@
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @can('pedidocompra-analise')
-                                    @if (AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado > 0)
+                                    @if (AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov > 0)
                                         <span class="badge badge-warning mt-0"
-                                            style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacao()[0]->aguardaprov }}</span>
+                                            style="font-size: 12; background-color:#7731b7 !important; color:white;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
                                     @endif
                                 @endcan
+
                                 @can('pedidocompra-list')
                                     @if (AppServiceProvider::pegaCountPedidoNaoAprovado(Auth::id())[0]->countpedidonaoaprovado > 0)
                                         <span class="badge badge-danger"

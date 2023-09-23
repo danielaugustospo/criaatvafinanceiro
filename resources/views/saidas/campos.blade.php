@@ -1,5 +1,5 @@
 <div class="form-group row">
-    <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Código de Barras</label>
+    <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Material</label>
     <div class="col-sm-7">
         @if (isset($saidas))
         <input type="text" class="form-control inputAumentado" name="idbenspatrimoniais" placeholder="Cod Barras" maxlength="100" value="{{ $saidas->estoque->codbarras }}" readonly>

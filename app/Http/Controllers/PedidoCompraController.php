@@ -142,6 +142,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_qtd                    = $request->get('ped_qtd');
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
+        $pedido->observacoes_solicitante    = $request->get('observacoes_solicitante');
         $pedido->ped_aprovado               = '3';
         $pedido->ped_contaaprovada          = '';
         $pedido->ped_exigaprov              = '';
@@ -195,6 +196,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_vzscartao              = $request->get('ped_vzscartao');
         $pedido->ped_precounit              = $request->get('ped_precounit');
         $pedido->ped_qtd                    = $request->get('ped_qtd');
+        $pedido->observacoes_solicitante    = $request->get('observacoes_solicitante');
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
 
@@ -380,6 +382,9 @@ class PedidoCompraController extends Controller
         
         if($request->get('ped_formapag') == 'avista'){
             $pedido->ped_pix                    = $request->get('ped_pix');
+            if(!is_null($pedido->ped_pix)){
+                return $pedido;
+            }
             $pedido->ped_banco                  = $request->get('ped_banco');
             $pedido->ped_conta                  = $request->get('ped_conta');
             $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');   
@@ -462,6 +467,9 @@ class PedidoCompraController extends Controller
         $validator = null;
     
         if($request->get('ped_formapag') == 'avista'){
+            if(!is_null($request->ped_pix)){
+                return $request;
+            }
             $validator = Validator::make($request->all(), [
                 // 'ped_pix'           => 'required',
                 'ped_banco'         => 'required',

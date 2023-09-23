@@ -41,12 +41,14 @@
                             @include('pedidocompra/analise')
                         @endcan
                         <form action="{{ route('pedidocompra.destroy', $pedido->id) }}" method="POST">
-                            <a class="btn btn-primary" href="{{ route('pedidocompra.index') }}"> Voltar</a>
+                            <a class="btn btn-danger" href="{{ route('pedidocompra.index') }}"> Voltar</a>
 
                             @if (Gate::check('pedidocompra-analise'))
                             @else
                                 @can('pedidocompra-edit')
-                                    <a class="btn btn-primary" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
+                                    @if($pedido->ped_aprovado != 1)
+                                        <a class="btn btn-primary" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
+                                    @endif
                                 @endcan
                             @endif
 
@@ -65,7 +67,9 @@
 
             @include('pedidocompra/campos')
             {!! Form::close() !!}
-
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPedidoCompra">
+                <i class="fa fa-check" aria-hidden="true"></i><i class="fa fa-ban" aria-hidden="true"></i> Análise
+            </button>
             <div style="background-color: rgb(0, 0, 0);" class="p-2">
                 <h1 class="text-center" style="color: white;">Avaliação do pedido</h1>
                 <div class="row mt-5 mb-2">

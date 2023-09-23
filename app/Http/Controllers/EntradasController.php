@@ -221,51 +221,47 @@ class EntradasController extends Controller
                 'quantidade_entrada'    => $qtdeEntrada,
             ]);
         } elseif ($tipoEntrada == 'devolucao') {
-
-            $mensagemExito  = 'Devolução lançada com êxito.';
-            $metodo         = 'devolucao';
-
+            $mensagemExito = 'Devolução lançada com êxito.';
+            $metodo = 'devolucao';
+    
             $request->validate([
-                'id_estoque'      => 'required',
+                'idbenspatrimoniais' => 'required',
             ]);
-
-
-
-
-            $itemEstoque = Estoque::find($request->id_estoque);
-
+    
+            $itemEstoque = Estoque::find($request->idbenspatrimoniais);
+    
             if ($itemEstoque) {
-                // $codigobarras = $itemEstoque->codbarras;
-            
                 $mudaStatusSaida = Saidas::where('id_estoque', $itemEstoque->id)
                     ->where('status', StatusEnumSaidas::NA_RUA)
                     ->get();
-            
+    
                 foreach ($mudaStatusSaida as $saida) {
                     $quantidadeSaida = $saida->quantidade_saida;
-            
+    
                     $saida->update([
                         'status' => StatusEnumSaidas::DEVOLVIDO
                     ]);
-            
+    
                     $salvaEntradas = Entradas::create([
-                        'descricaoentrada'    => $request->descricaoentrada,
-                        'id_estoque'          => $itemEstoque->id,
-                        'quantidade_entrada'  => $quantidadeSaida,
-                        'dtdevolucao'         => $request->dtdevolucao,
-                        'quemdevolveu'        => $request->quemdevolveu,
+                        'descricaoentrada' => $request->descricaoentrada,
+                        'id_estoque' => $itemEstoque->id,
+                        'quantidade_entrada' => $quantidadeSaida,
+                        'dtdevolucao' => $request->dtdevolucao,
+                        'quemdevolveu' => $request->quemdevolveu,
                         'ocorrenciadevolucao' => $request->ocorrenciadevolucao,
                     ]);
-
+    
                     $lancaEstoque = DB::table('estoque')
                         ->where('id', $itemEstoque->id)
                         ->update([
                             'quantidade' => \DB::raw("quantidade + $quantidadeSaida")
-                    ]);
+                        ]);
                 }
+            } else {
+                return redirect()->route('saidas.index')->with('error', 'Estoque não encontrado');
             }
-            
         }
+    
 
         $id = $salvaEntradas->id;
 
