@@ -28,8 +28,8 @@
 
         {{ Form::label('quantidadeLabel', 'Quantidade', ['class' => 'col-sm-2 col-form-label']) }}
         <div class="col-sm-4">
-            {{ Form::text('quantidade_saida', isset($saidas->quantidade_saida) ? $saidas->quantidade_saida : null, [
-                'id' => 'quantidade_saida', // Adiciona um id para manipulação via JavaScript
+            {{ Form::text('quantidade_retorno', isset($saidas->quantidade_retorno) ? $saidas->quantidade_retorno : null, [
+                'id' => 'quantidade_retorno', // Adiciona um id para manipulação via JavaScript
                 'maxlength' => 7,
                 'step' => 1,
                 'class' => 'form-control col-sm-5',

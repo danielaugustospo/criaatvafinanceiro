@@ -1,8 +1,9 @@
 <div class="form-group row">
     <label for="codbarras" class="col-sm-2 col-form-label labelEvidenciada">Material</label>
     <div class="col-sm-7">
+        
         @if (isset($saidas))
-        <input type="text" class="form-control inputAumentado" name="idbenspatrimoniais" placeholder="Cod Barras" maxlength="100" value="{{ $saidas->estoque->codbarras }}" readonly>
+        <input type="text" class="form-control inputAumentado" name="idbenspatrimoniais" placeholder="Material" maxlength="100" value="{{ $saidas->estoque->bensPatrimoniais->nomeBensPatrimoniais }}" readonly>
         @else
         <select class="selecionaComInput form-control" style="height: 200px !important" name="idbenspatrimoniais" id="codbarras">
             <option value="" data-max-quantity="">Selecione...</option>

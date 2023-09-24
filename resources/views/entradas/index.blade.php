@@ -154,9 +154,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 nomeBensPatrimoniais: {
                                     type: "string"
                                 },
-                                codbarras: {
-                                    type: "string"
-                                },
                                 quantidade_entrada: {
                                     type: "number"
                                 },
@@ -198,12 +195,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         width: '10%'
                     },
                     {
-                        field: "codbarras",
-                        title: "Cod Barras",
-                        filterable: true,
-                        width: '15%'
-                    },
-                    {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
@@ -215,13 +206,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         aggregates: ["sum"],
                         groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
                         filterable: true,
-                        autowidth: true
+                        width: '10%'
                     },
                     {
                         field: "descricaoentrada",
                         title: "Descrição",
                         filterable: true,
-                        width: '10%'
+                        width: '20%'
                     },
                     {
                         field: "tipo",

@@ -12,6 +12,7 @@ use DB;
 use Hash;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr as Arr;
 
 
 class UserController extends Controller
@@ -187,7 +188,7 @@ class UserController extends Controller
         if(!empty($input['password'])){
             $input['password'] = Hash::make($input['password']);
         }else{
-            $input = array_except($input,array('password'));
+            $input = Arr::except($input,array('password'));
         }
 
 

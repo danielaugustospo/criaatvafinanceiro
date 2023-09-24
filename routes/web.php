@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -157,9 +159,32 @@ Route::middleware('auth')->group(function () {
     Route::resource('relatorio','RelatorioController');
     Route::resource('sandbox','SandboxController');
     
-    Route::get('/renovaSessao', function () { 
-        return response()->json('Renovado');
-    });
+    Route::get('/renovaSessao', function () {
+        // Obtenha o ID do usuário autenticado
+        $userId = Auth::id();
+    
+        // Use o método session() para acessar os dados da sessão
+        $sessionData = session()->all(); // Isso irá recuperar todos os dados da sessão
+    
+        // Verifique se o usuário está autenticado e se a sessão contém os dados necessários
+        if (Auth::check() && isset($sessionData['lastActivityTime'])) {
+            // Calcule o tempo restante com base no último horário de atividade
+            $lastActivityTime = $sessionData['lastActivityTime'];
+            $sessionLifetime = config('session.lifetime'); // Obtém o tempo de vida da sessão das configurações
+            $currentTime = now()->timestamp;
+            $timeRemaining = $lastActivityTime + $sessionLifetime - $currentTime;
+    
+            // Certifique-se de que o tempo restante seja positivo
+            $timeRemaining = max(0, $timeRemaining);
+    
+            // Retorne os dados em JSON
+            return response()->json(['timeRemaining' => $timeRemaining]);
+        } else {
+            // Se o usuário não estiver autenticado ou se os dados da sessão estiverem ausentes, retorne um erro
+            return response()->json(['error' => 'Usuário não autenticado ou dados de sessão ausentes'], 401);
+        }
+    })->middleware('auth');
+     // Middleware de autenticação
     
     Route::get('/despesas/{despesa}', 'DespesaController@show')->name('despesas.show');
 

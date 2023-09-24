@@ -156,9 +156,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 id: {
                                     type: "string"
                                 },
-                                codbarras: {
-                                    type: "string"
-                                },
                                 quantidade: {
                                     type: "number"
                                 },
@@ -199,12 +196,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         autowidth: true
                     },
                     {
-                        field: "codbarras",
-                        title: "Cod Barras",
-                        filterable: true,
-                        autowidth: true
-                    },
-                    {
                         field: "quantidade",
                         title: "Quantidade",
                         aggregates: ["sum"],
@@ -225,12 +216,6 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         filterable: true,
                         autowidth: true
                     },
-                    // {
-                    //     field: "idbensPatrimoniais",
-                    //     title: "Id Material",
-                    //     filterable: true,
-                    //     width: 200
-                    // },
                     {
                         command: [{
                             name: "Visualizar",

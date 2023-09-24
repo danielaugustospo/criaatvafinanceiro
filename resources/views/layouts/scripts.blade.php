@@ -3,7 +3,7 @@
     $(document).ready(function() {
         @if(Auth::user())
                     // var renovaSessao = setTimeout(avisoRenovaSessao, 1500000); //25min
-                    var renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 25); // renova a sessão a cada 25 minutos
+                    var renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 20); // renova a sessão a cada 20 minutos
                     timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
 
                     function avisoRenovaSessao() {
@@ -20,13 +20,13 @@
                                     if (data != null || data != undefined) {
                                         clearTimeout(timeout);
                                         // clearTimeout(renovaSessao);
-                                        renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 25);
+                                        renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 20);
                                         timeout = setTimeout(encerraSessaoSozinho, 1800600);
                                         playNotification(nome = 'success');
                                         Swal.fire({
                                             icon:   'success',
                                             title:  'Sessão restabelecida!',
-                                            text:   'Seu tempo de sessão foi renovado. A partir de agora, você tem mais 30 minutos para executar as operações dentro sistema sem necessidade de sair da página. Quando faltarem 5 minutos para finalizar a sua sessão avisaremos novamente.',
+                                            text:   'Seu tempo de sessão foi renovado. A partir de agora, você tem mais 20 minutos para executar as operações dentro sistema sem necessidade de sair da página. Quando faltarem 5 minutos para finalizar a sua sessão avisaremos novamente.',
                                             timer:  60000
                                         })
                                     }
