@@ -237,11 +237,9 @@ class SaidasController extends Controller
     {
 
         $request->validate([
-
             'portadorsaida'             => 'required',
         ]);
             $request->quantidade_saida = ($request->quantidade_saida == null) ? 1 :  $request->quantidade_saida;
-
 
             $estoqueItens = Estoque::where('idbenspatrimoniais', $request->idbenspatrimoniais)
             ->where('ativadoestoque', '1')

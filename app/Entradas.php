@@ -22,7 +22,8 @@ class Entradas extends Model
         'dtdevolucao',
         'excluidoentrada',
         'quemdevolveu',
-        'ocorrenciadevolucao'
+        'ocorrenciadevolucao',
+        'id_saida'
         ];
 
 

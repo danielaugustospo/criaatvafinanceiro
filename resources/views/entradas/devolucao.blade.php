@@ -3,20 +3,29 @@
     <div class="col-sm-7">
 
                 @if (isset($propriedadesEntradas)) 
-                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->estoque->codbarras }}" readonly>
+
+
+                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->descricaoentrada }}" readonly>
                 @else
                     <select class="selecionaComInput  form-control" style="height: 200px !important" name="idbenspatrimoniais" id="codbarras"> 
                         <option value="">Selecione...</option>
 
                         @foreach ($listaInventarioaDevolver->groupBy('estoque.idbenspatrimoniais') as $idEstoque => $itensadevolverGrouped)
                             @php
-                                $totalQuantidade = $itensadevolverGrouped->sum('quantidade_saida');
+
+                                if(is_null($itensadevolverGrouped->sum('total_devolvido'))){
+                                    $totalQuantidade = $itensadevolverGrouped->sum('quantidade_saida');
+                                }else {
+                                    $totalQuantidade = (($itensadevolverGrouped->sum('quantidade_saida')) - ($itensadevolverGrouped->sum('total_devolvido')));
+                                }
                             @endphp
                             <option value="{{ $itensadevolverGrouped[0]->estoque->idbenspatrimoniais }}" data-max-quantity="{{ $totalQuantidade }}">
                                 {{ $itensadevolverGrouped[0]->estoque->bensPatrimoniais->nomeBensPatrimoniais }} (Total na rua: {{ $totalQuantidade }})
                             </option>
                         @endforeach
+                
                     </select>
+
                 @endif
     </div>
 </div>
@@ -28,17 +37,17 @@
 
         {{ Form::label('quantidadeLabel', 'Quantidade', ['class' => 'col-sm-2 col-form-label']) }}
         <div class="col-sm-4">
-            {{ Form::text('quantidade_retorno', isset($saidas->quantidade_retorno) ? $saidas->quantidade_retorno : null, [
+            {{ Form::text('quantidade_retorno', isset($propriedadesEntradas->quantidade_entrada) ? $propriedadesEntradas->quantidade_entrada : null, [
                 'id' => 'quantidade_retorno', // Adiciona um id para manipulação via JavaScript
                 'maxlength' => 7,
                 'step' => 1,
                 'class' => 'form-control col-sm-5',
                 'onfocusout' => 'javascript: if (this.value < 1) this.value = 1; if (this.value.length >= 7) this.value = 1000000;',
                 'oninput' => 'javascript: this.value = this.value.replace(/[^0-9]/g, "");',
-                (isset($saidas) ? 'readonly' : '') // Adiciona 'readonly' se $saidas estiver definido
+                (isset($propriedadesEntradas->id) ? 'readonly' : '') // Adiciona 'readonly' se $saidas estiver definido
             ]) }}
             
-        @if(!isset($saidas))<span class="text-danger">TOTAL NA RUA: <span id="maxQuantity"></span></span>@endif
+        @if(!isset($propriedadesEntradas))<span class="text-danger">TOTAL NA RUA: <span id="maxQuantity"></span></span>@endif
         </div>
 
     </div>

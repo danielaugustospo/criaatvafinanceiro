@@ -35,6 +35,11 @@ class Saidas extends Model
         return $this->belongsTo('App\Estoque', 'id_estoque');
     }
 
+    public function entradas()
+    {
+        return $this->belongsTo('App\Entradas', 'id_saida');
+    }
+
     public function listaSaidas($id = null)
     {
         $query = $this->select([
