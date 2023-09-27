@@ -117,6 +117,7 @@
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+
                                 @can('pedidocompra-analise')
                                     @if (AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov > 0)
                                         <span class="badge badge-warning mt-0"
@@ -143,8 +144,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 @can('pedidocompra-create')
-                                    @if (Gate::check('pedidocompra-analise'))
-                                    @else
+
                                         <a class="dropdown-item"
                                             href="{{ route('pedidocompra.index') }}?aprovado=0&notificado=0">
                                             <span class="badge badge-danger" style="font-size: 20;">
@@ -163,7 +163,6 @@
                                                 class="badge badge-success"
                                                 style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado }}</span>
                                             pedido(s) aprovado(s)</a>
-                                    @endif
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('pedidocompra.index') }}">Listar todos</a>
                                 @can('pedidocompra-analise')
@@ -171,7 +170,7 @@
                                     <a class="dropdown-item"
                                         href="{{ route('pedidocompra.index') }}?aprovado=3&notificado=1">Avaliador - <span
                                             class="badge badge-warning mt-0"
-                                            style="font-size: 20;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
+                                            style="font-size: 20; background-color:#7731b7 !important; color:white;">{{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
                                         pedido(s) para aprovar</a>
                                 @endcan
                             </div>

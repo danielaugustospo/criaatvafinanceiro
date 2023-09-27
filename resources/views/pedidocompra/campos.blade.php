@@ -140,7 +140,8 @@
 <div class="row mt-2 mb-2">
     <label class="col-sm-2 mr-2 mt-2" for="ped_precounit">Preço Unitário</label>
     {!! Form::text('ped_precounit', old('ped_precounit'), [
-        'class' => 'campo-moeda form-control col-sm-3 mr-2',
+        'class' => 'campo-moeda form-control col-sm-3 mr-2 ped_precounit',
+        'id' => 'ped_precounit',
         'maxlength' => '100',
         $variavelReadOnlyNaView,
     ]) !!}
@@ -148,7 +149,8 @@
 
     <label class="col-sm-2 mt-2" for="ped_qtd">Quantidade</label>
     {!! Form::text('ped_qtd', old('ped_qtd'), [
-        'class' => 'col-sm-1 form-control',
+        'class' => 'col-sm-1 form-control ped_qtd',
+        'id' => 'ped_qtd',
         'maxlength' => '10',
         $variavelReadOnlyNaView,
     ]) !!}
@@ -158,7 +160,8 @@
 <div class="row mt-2 mb-2">
     <label class="col-sm-2 mr-2 mt-2" for="ped_valortotal">Valor Total</label>
     {!! Form::text('ped_valortotal', old('ped_valortotal'), [
-        'class' => 'campo-moeda form-control col-sm-3',
+        'class' => 'campo-moeda form-control col-sm-3 ped_valortotal',
+        'id' => 'ped_valortotal',
         'maxlength' => '100',
         $variavelReadOnlyNaView,
     ]) !!}

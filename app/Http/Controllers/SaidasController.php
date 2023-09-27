@@ -316,6 +316,10 @@ class SaidasController extends Controller
                     $rotaRetorno = 'saidas.create';
                     return redirect()->route($rotaRetorno)->with('success', $mensagemExito);
                 }
+                elseif($request->tpRetorno == 'index'){  
+                    $rotaRetorno = 'saidas.index';
+                    return redirect()->route($rotaRetorno)->with('success', $mensagemExito);
+                }
             }
 
             else{

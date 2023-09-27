@@ -55,6 +55,7 @@ class Relatorio extends Model
                         -- and (os.id = r.idosreceita)
 
                         -- GROUP BY os.id 
+                        WHERE r.ativoreceita = 1 
                         " . $param;                
 
         return $stringQuery;

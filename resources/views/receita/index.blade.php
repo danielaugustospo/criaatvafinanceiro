@@ -244,6 +244,12 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     width: 80
                 },
                 {
+                    field: "nfreceita",
+                    title: "NF",
+                    filterable: true,
+                    width: 80
+                },
+                {
                         command: [{
                             name: "Ver",
                             iconClass:"k-icon k-i-eye",

@@ -253,4 +253,31 @@
     function clicaCheckboxId() {
         document.getElementById("faturado").click(); // Click on the checkbox
     }
+
+
+    $(document).ready(function() {
+            // Função para calcular o valor total
+            function calcularValorTotal() {
+                var precoUnitario = parseFloat($(".ped_precounit").val().replace(',', '.'));
+                var quantidade = parseFloat($(".ped_qtd").val().replace(',', '.'));
+
+                // Verificar se o preço unitário e a quantidade são números válidos
+                if (!isNaN(precoUnitario) && !isNaN(quantidade)) {
+                    var valorTotal = precoUnitario * quantidade;
+                    $(".ped_valortotal").val(valorTotal.toFixed(2).replace('.', ','));
+                }
+            }
+
+            // Adicionar eventos input para calcular automaticamente
+            $(".ped_precounit, .ped_qtd").on('input', calcularValorTotal);
+
+            // Validar os campos "Preço Unitário" e "Quantidade" para aceitar apenas números e vírgula
+            $(".ped_precounit, .ped_qtd").on('input', function () {
+                var value = $(this).val().replace(/[^0-9,]/g, ''); // Aceita apenas números e vírgula
+                $(this).val(value);
+
+                // Após alterar o valor de um dos campos, chame a função de cálculo
+                calcularValorTotal();
+            });
+        });
 </script>
