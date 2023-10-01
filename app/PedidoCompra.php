@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Enums\StatusEnumPedidoCompra;
 
 class PedidoCompra extends Model
 {
@@ -32,6 +33,8 @@ class PedidoCompra extends Model
         'ped_cartaodecredito',
         'ped_formapag',
         'ped_pix',
+        'ped_favorecido',
+        'ped_boleto',
         'ped_banco',
         'ped_conta',
         'ped_agenciaconta',
@@ -56,15 +59,14 @@ class PedidoCompra extends Model
 
     public function listaPedidos($id, $aprovado, $notificado)
     {
-
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
         f.razaosocialFornecedor, u.name as solicitante, 
         ped_contaaprovada, ped_nomecomprador,
         comprador.nomecomp,
         CASE 
-        WHEN ped_aprovado = 0  THEN 'Não'
-        WHEN ped_aprovado = 1  THEN 'Sim'
-        WHEN ped_aprovado = 3  THEN 'Aguard. Avaliação'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO . " THEN 'Não'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_APROVADO . " THEN 'Sim'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . " THEN 'Aguard. Avaliação'
         ELSE 'Indefinido' END as status 
         
         FROM pedidocompra p, fornecedores f, users u,
@@ -72,22 +74,21 @@ class PedidoCompra extends Model
                
         WHERE f.id = ped_fornecedor and u.id = ped_usrsolicitante and comprador.idcomp = ped_nomecomprador";
 
+
         if ($id) {
             $stringQuery .= " AND u.id = " . $id;
         }
-        if (($aprovado == '0') || ($aprovado == '1') || ($aprovado == '3')) {
+
+        if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ))) {
             $stringQuery .= " AND ped_aprovado = " . $aprovado;
         }
-        if (($notificado == '0') || ($notificado == '1')) {
+        if ((!is_null($notificado)) && (($notificado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($notificado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ))) {
             $stringQuery .= " AND ped_novanotificacao = " . $notificado;
         }
 
-
-        // var_dump($stringQuery);
-        // exit;
-
         return $stringQuery;
     }
+
     public function atualizaPedidos($pedido)
     {
         $stringQuery = "UPDATE pedidocompra
@@ -102,6 +103,8 @@ class PedidoCompra extends Model
         ped_reembolsado                 = '$pedido->ped_reembolsado', 
         ped_formapag                    = '$pedido->ped_formapag', 
         ped_pix                         = '$pedido->ped_pix', 
+        ped_favorecido                  = '$pedido->ped_favorecido', 
+        ped_boleto                      = '$pedido->ped_boleto', 
         ped_banco                       = '$pedido->ped_banco', 
         ped_conta                       = '$pedido->ped_conta', 
         ped_agenciaconta                = '$pedido->ped_agenciaconta', 

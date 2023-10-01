@@ -52,7 +52,7 @@
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "{{ route('apipedidocompra') }}?id={{ $idusuariologado }}@if(@isset($aprovado))&aprovado={{ $aprovado }}@endif @if(@isset($notificado))&notificado={{ $notificado }}@endif" @if(Gate::check('pedidocompra-analise'))+"&permissao=199"@endif,
+                url: "{{ route('apipedidocompra') }}?id={{ $idusuariologado }}@if(@isset($aprovado))&aprovado={{ $aprovado }}@endif @if(isset($notificado))&notificado={{ $notificado }}@endif" @if(Gate::check('pedidocompra-analise'))+"&permissao=199"@endif @if(isset($listarTodos))+"&listarTodos={{ $listarTodos }}"@endif,
                 dataType: "json"
             },
         },
@@ -149,7 +149,7 @@
                     { field: "nomecomp", title: "Comprador", filterable: true, width: 100 },
                     { field: "ped_descprod", title: "Despesa", filterable: true, width: 100 },
                     { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
-                    { field: "ped_data", title: "Data", filterable: true, width: 160, format: "{0:dd/MM/yyyy}",
+                    { field: "ped_data", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}",
 
                     filterable: {
                                 cell: {
@@ -162,19 +162,21 @@
                     @endif
                 @if(Gate::check('pedidocompra-analise'))
                     
-                {
-                    command: [{
-                        name: "Analisar",
-                        click: function (e) {
-                            e.preventDefault();
-                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
-                            var data = this.dataItem(tr);
-                            window.location.href = "{{ route('pedidocompra.index') }}" + '/' + data.id;
-                        }
-                    }],
-                    width: 100,
-                    exportable: false,
-                },
+                    {
+                        filterable: true,
+
+                        template: function(dataItem) {
+                            console.log(dataItem.status);
+                            if (dataItem.status == 'Sim' || dataItem.status == 'Não') {
+                                return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-secondary  text-white">Visualizar</a>';
+                            } else {
+                                return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-primary text-white">Analisar</a>';
+                            }
+                        },
+
+                        width: 100,
+                        exportable: false,
+                    },
 
                 @endif
                 @can('pedidocompra-list')
@@ -204,20 +206,23 @@
                 @if(Gate::check('pedidocompra-analise'))
                 
                 @else
-
-                {
-                    command: [{
-                        name: "Editar",
-                        click: function (e) {
-                            e.preventDefault();
-                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
-                            var data = this.dataItem(tr);
-                            window.location.href = "{{ route('pedidocompra.index') }}" + '/' + data.id + '/edit';
-                        }
-                    }],
-                    width: 100,
-                    exportable: false,
-                },
+                    @if(isset($aprovado)) 
+                        @if($aprovado != '1')
+                        {
+                            command: [{
+                                name: "Editar",
+                                click: function (e) {
+                                    e.preventDefault();
+                                    var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                                    var data = this.dataItem(tr);
+                                    window.location.href = "{{ route('pedidocompra.index') }}" + '/' + data.id + '/edit';
+                                }
+                            }],
+                            width: 100,
+                            exportable: false,
+                        },
+                        @endif
+                    @endif
                 @endif
                 @endcan
             ],

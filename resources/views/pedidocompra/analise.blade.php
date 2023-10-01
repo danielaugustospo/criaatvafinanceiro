@@ -23,10 +23,11 @@
                         <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Aprovado</label>
   
                         <select class="col-sm-5 form-control" name="ped_aprovado" id="statuspedido" required>
-                            <option>Selecione...</option>
+                            <option disabled>Selecione...</option>
                             <option @if($pedido->ped_aprovado == '1') selected @endif value="1">SIM</option>
                             <option @if($pedido->ped_aprovado == '0') selected @endif value="0">NÃO</option>
                         </select>
+                        
                     </div>
 
                     <div class="row mt-2 mb-2" id="contaaprovada">
@@ -96,6 +97,14 @@ $( "#statuspedido" ).change(function() {
     }
 });
 
+$("form").submit(function() {
+    var selectedValue = $("#statuspedido").val();
+    if (selectedValue === "Selecione...") {
+        alert("Por favor, selecione uma opção válida.");
+        return false; // Impede o envio do formulário
+    }
+    return true; // Permite o envio do formulário
+});
 // $("#statuspedido").click(function() {
 //     if ($( "#statuspedido" ).val() = '1') {
 //         $("#contaaprovada").show();

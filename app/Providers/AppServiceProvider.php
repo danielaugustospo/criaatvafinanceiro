@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use App\Sandbox;
 use Illuminate\Support\Facades\Cache;
+use App\Enums\StatusEnumPedidoCompra;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -116,14 +117,14 @@ class AppServiceProvider extends ServiceProvider
     {
         $countpedidoaprovado = DB::select("SELECT count(id) as countpedidoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	
         and ped_excluidopedido = 0 
-        and ped_aprovado = 1
+        and ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_APROVADO . "'
         and ped_novanotificacao = 1");
         return $countpedidoaprovado;
     }
 
     public static function pegaCountPedidoNaoAprovado($id)
     {
-        $countpedidonaoaprovado = DB::select("SELECT count(id) as countpedidonaoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	and ped_excluidopedido = 0 and p.ped_aprovado = 0");
+        $countpedidonaoaprovado = DB::select("SELECT count(id) as countpedidonaoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	and ped_excluidopedido = 0 and p.ped_aprovado = '". StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ."'");
         return $countpedidonaoaprovado;
     }
 
@@ -131,12 +132,12 @@ class AppServiceProvider extends ServiceProvider
     {
 
         $whereId = (is_null($id)) ? ' ' : ' and ped_usrsolicitante = '. $id;
-        $countpedidoaguardandoaprov = DB::select('SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = 3'. $whereId);
+        $countpedidoaguardandoaprov = DB::select("SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = '". StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . "'". $whereId);
         return $countpedidoaguardandoaprov;
     }
     public static function pegaCountPedidoAguardandoAprovacaoAvaliador()
     {
-        $countpedidoaguardandoaprov = DB::select('SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = 3');
+        $countpedidoaguardandoaprov = DB::select("SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = '". StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . "'");
         return $countpedidoaguardandoaprov;
     }
     public static function getOptionDefault()

@@ -18,9 +18,8 @@
 
                 <div class="alert alert-success" role="alert">
                     <h4 class="alert-heading">Pedido Aprovado!</h4>
-                    <p>Por padrão, esta mensagem permanece ativa para você até que seja marcada como lida. Ao fazer isso, você
-                        deixa de
-                        ver essa notificação aqui, bem como na barra de navegação superior.</p>
+                    <p>Por padrão, esta mensagem permanece ativa para você até que seja marcada como lida. 
+                        Ao fazer isso, você deixa de ver essa notificação aqui, bem como na barra de navegação superior.</p>
                     <hr>
                     <p class="mb-0">O aviso acima refere-se <b>exclusivamente para este pedido de compra.</b></p>
                     <button type="submit" class="btn btn-success">Marcar como lido</button>

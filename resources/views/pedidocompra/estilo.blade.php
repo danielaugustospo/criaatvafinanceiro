@@ -203,4 +203,8 @@
         border-radius: 7%;
         padding: 3%;
     }
+
+    #divFaturado label {
+        margin-bottom: 10px; /* Ajuste a quantidade de espaço vertical conforme necessário */
+    }
 </style>

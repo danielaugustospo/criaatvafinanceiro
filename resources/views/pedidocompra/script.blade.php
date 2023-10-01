@@ -43,7 +43,7 @@
         } 
         else if(document.getElementById('faturado').checked) {
             $("#divDadosCartao").hide();
-            $("#divDadosBancarios").hide();
+            $("#divDadosBancarios").show();
             $("#divFaturado").show();
             $("#telaReembolsado").hide();
             resetaParcelamento();
@@ -141,7 +141,7 @@
         $("#faturado").click(function() {
             if ($(this).is(":checked")) {
                 $("#divDadosCartao").hide();
-                $("#divDadosBancarios").hide();
+                $("#divDadosBancarios").show();
                 $("#divFaturado").show();
                 $("#telaReembolsado").hide();
 
@@ -197,6 +197,7 @@
 
     function resetaDadosBancarios() {
         document.getElementById("ped_pix").value = "";
+        document.getElementById("ped_favorecido").value = "";
         document.getElementById("ped_banco").value = "";
         document.getElementById("ped_agenciaconta").value = "";
         document.getElementById("ped_conta").value = "";
@@ -204,6 +205,7 @@
 
     function resetaFaturado() {
         document.getElementById("ped_periodofaturado").value = "";
+        document.getElementById("ped_boleto").value = "";
     }
 
     function resetaReembolsado() {

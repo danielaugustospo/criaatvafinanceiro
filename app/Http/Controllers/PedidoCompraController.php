@@ -3,23 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-
-
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Route;
-use App\Providers\AppServiceProvider;
 use App\Providers\FormatacoesServiceProvider;
-use Illuminate\Support\Facades\App;
 use App\Classes\Logger;
 use App\PedidoCompra;
 use Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Enums\StatusEnumPedidoCompra;
 
 
 class PedidoCompraController extends Controller
@@ -46,7 +38,7 @@ class PedidoCompraController extends Controller
         $this->acao =  request()->segment(count(request()->segments()));
         $this->valorInput = null;
         $this->valorSemCadastro = null;
-
+        $this->infoSelectVazio  = '<option value="" selected> -- NENHUM -- </option>';
 
         if ($this->acao == 'create') {
             $this->valorInput = " ";
@@ -65,18 +57,16 @@ class PedidoCompraController extends Controller
     {
 
         $idusuariologado = Auth::id();
-        // $idusuariologado = base64_encode($idusuariologado);
+        $listarTodos = json_decode($request->post('listarTodos'));
 
         if($request->post('aprovado') != null){
             $aprovado = json_decode($request->post('aprovado'));
             $notificado = json_decode($request->post('notificado'));
 
-            // if($aprovado == 'waiting'): $aprovado = null; $notificado = ''; endif;
-
-            return view('pedidocompra.index', compact('idusuariologado', 'aprovado', 'notificado'));
+            return view('pedidocompra.index', compact('idusuariologado', 'aprovado', 'notificado', 'listarTodos'));
         }
 
-        return view('pedidocompra.index', compact('idusuariologado'));
+        return view('pedidocompra.index', compact('idusuariologado','listarTodos'));
 
     }
 
@@ -87,7 +77,9 @@ class PedidoCompraController extends Controller
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
-        return view('pedidocompra.create', compact('valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        $infoSelectVazio        = $this->infoSelectVazio;
+
+        return view('pedidocompra.create', compact('valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
     public function store(Request $request)
@@ -143,7 +135,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
         $pedido->observacoes_solicitante    = $request->get('observacoes_solicitante');
-        $pedido->ped_aprovado               = '3';
+        $pedido->ped_aprovado               = StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
         $pedido->ped_contaaprovada          = '';
         $pedido->ped_exigaprov              = '';
         $pedido->ped_excluidopedido         = '0';
@@ -173,7 +165,7 @@ class PedidoCompraController extends Controller
         }
 
 
-        $pedido->id                     = $request->get('id');
+        $pedido->id                         = $request->get('id');
 
 
         $pedido->ped_data                   = $request->get('ped_data');
@@ -187,6 +179,8 @@ class PedidoCompraController extends Controller
         $pedido->ped_formapag               = $request->get('ped_formapag');
         $pedido->ped_periodofaturado        = $request->get('ped_periodofaturado');
         $pedido->ped_pix                    = $request->get('ped_pix');
+        $pedido->ped_favorecido             = $request->get('ped_favorecido');
+        $pedido->ped_boleto                 = $request->get('ped_boleto');
         $pedido->ped_banco                  = $request->get('ped_banco');
         $pedido->ped_conta                  = $request->get('ped_conta');
         $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');
@@ -200,7 +194,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
 
-        $pedido->ped_aprovado           = '3';
+        $pedido->ped_aprovado           =  StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
         $pedido->ped_contaaprovada      = '';
         $pedido->ped_exigaprov          = '';
         $pedido->ped_excluidopedido     = '0';
@@ -248,14 +242,14 @@ class PedidoCompraController extends Controller
                 ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
         }
 
-        if ($request->ped_aprovado == '1') {
+        if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
             $this->logValidaPedidoCompra($request);
 
             return redirect()->route('pedidocompra.index')
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi aprovado, já notificamos ao solicitante.');
         }
 
-        if ($request->ped_aprovado == '0') {
+        if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) {
             $this->logInvalidaPedidoCompra($request);
 
             return redirect()->route('pedidocompra.index')
@@ -289,27 +283,23 @@ class PedidoCompraController extends Controller
     public function apipedidocompra(Request $request)
     {
 
-        $aprovado = json_decode($request->post('aprovado'));
-        $notificado = json_decode($request->post('notificado'));
-        
+        $aprovado       = json_decode($request->post('aprovado'));
+        $notificado     = json_decode($request->post('notificado'));
+        $listarTodos    = json_decode($request->post('listarTodos'));
+
         // $idusuariologado = json_decode($request->post('id'));
-        $idusuariologado = $request->post('id');
-        $permissao = json_decode($request->post('permissao'));
-        if($permissao == '199'){
+        $idusuariologado    = $request->post('id');
+        $permissao          = json_decode($request->post('permissao'));
+        if($permissao == '199' && (!is_null($listarTodos))){
             $idusuariologado = null;
         }
-
-        // if ($request->post('aprovado')) = null){
-        //     $aprovado = json_decode($request->post('aprovado'));
+        // if($permissao == '199'){
+        //     $idusuariologado = null;
         // }
-        // else{
-        //     $aprovado = null;
-        // }
-        
 
-        $pedidocompra = new PedidoCompra();
+        $pedidocompra   = new PedidoCompra();
         $stringConsulta = $pedidocompra->listaPedidos($idusuariologado, $aprovado, $notificado);
-        $dadosConsulta = DB::select($stringConsulta);
+        $dadosConsulta  = DB::select($stringConsulta);
         return $dadosConsulta;
     }
 
@@ -322,8 +312,10 @@ class PedidoCompraController extends Controller
         $valorSemCadastro = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $infoSelectVazio        = $this->infoSelectVazio;
 
-        return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+
+        return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
     public function edit($id)
@@ -331,11 +323,16 @@ class PedidoCompraController extends Controller
         $pedido = PedidoCompra::find($id);
 
         $valorInput = $this->valorInput;
-        $valorSemCadastro = $this->valorSemCadastro;
+        $valorSemCadastro       = $this->valorSemCadastro;
         $variavelReadOnlyNaView = $this->variavelReadOnlyNaView;
         $variavelDisabledNaView = $this->variavelDisabledNaView;
+        $infoSelectVazio        = $this->infoSelectVazio;
 
-        return view('pedidocompra.edit', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
+        if($pedido->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO){
+            return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
+        }
+
+        return view('pedidocompra.edit', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
     }
 
     public function destroy($id)
@@ -382,6 +379,7 @@ class PedidoCompraController extends Controller
         
         if($request->get('ped_formapag') == 'avista'){
             $pedido->ped_pix                    = $request->get('ped_pix');
+            $pedido->ped_favorecido             = $request->get('ped_favorecido');
             if(!is_null($pedido->ped_pix)){
                 return $pedido;
             }
@@ -401,13 +399,11 @@ class PedidoCompraController extends Controller
             return $pedido;
 
             $request->validate([
-                // 'ped_pix'           => 'required',
                 'ped_banco'         => 'required',
                 'ped_conta'         => 'required',
                 'ped_agenciaconta'  => 'required',
             ],
             [
-                // 'ped_pix.required'          => 'A chave pix é obrigatória', 
                 'ped_banco.required'        => 'Nome do Banco é obrigatório', 
                 'ped_conta.required'        => 'Informe a conta', 
                 'ped_agenciaconta.required' => 'Informe a agência',     
@@ -424,7 +420,14 @@ class PedidoCompraController extends Controller
 
         }
         if($request->get('ped_formapag') == 'faturado'){
+            $pedido->ped_pix                    = $request->get('ped_pix');
+            $pedido->ped_favorecido             = $request->get('ped_favorecido');
             $pedido->ped_periodofaturado        = $request->get('ped_periodofaturado');
+            $pedido->ped_boleto                 = $request->get('ped_boleto');
+            $pedido->ped_banco                  = $request->get('ped_banco');
+            $pedido->ped_conta                  = $request->get('ped_conta');
+            $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');   
+            $pedido->ped_cpfcnpj                = $request->get('ped_cpfcnpj');   
             return $pedido;
 
             $request->validate([ 'ped_periodofaturado'  => 'required'] , [ 'ped_periodofaturado.required'=> 'O período faturado é obrigatório']);
@@ -471,13 +474,11 @@ class PedidoCompraController extends Controller
                 return $request;
             }
             $validator = Validator::make($request->all(), [
-                // 'ped_pix'           => 'required',
                 'ped_banco'         => 'required',
                 'ped_conta'         => 'required',
                 'ped_agenciaconta'  => 'required',
             ],
             [
-                // 'ped_pix.required'          => 'A chave pix é obrigatória', 
                 'ped_banco.required'        => 'Nome do Banco é obrigatório', 
                 'ped_conta.required'        => 'Informe a conta', 
                 'ped_agenciaconta.required' => 'Informe a agência',     
@@ -493,14 +494,55 @@ class PedidoCompraController extends Controller
                 'ped_vzscartao.required'=> 'O número de parcelas no cartão é obrigatório'
             ]);
         }
-        elseif($request->get('ped_formapag') == 'faturado'){
-            $validator = Validator::make($request->all(), [
-                'ped_periodofaturado'  => 'required'
-            ],
-            [
-                'ped_periodofaturado.required'=> 'O período faturado é obrigatório'
-            ]);
+        elseif ($request->get('ped_formapag') == 'faturado') {
+            $rules = [];
+            $messages = [];
+        
+            if (is_null($request->ped_periodofaturado)) {
+                $rules['ped_periodofaturado'] = 'required';
+        
+                $messages = array_merge($messages, [
+                    'ped_periodofaturado.required' => 'O período faturado é obrigatório',
+                ]);
+            }else{
+
+                
+                if (is_null($request->ped_boleto) && is_null($request->ped_pix)) {
+                    $rules['ped_boleto'] = 'required';
+                    $rules['ped_pix'] = 'required';
+                    
+                    $messages = array_merge($messages, [
+                        'ped_boleto.required' => 'Informe o boleto',
+                        'ped_pix.required' => 'Informe o pix',
+                    ]);
+                }else{
+                    return $request;
+                }
+                
+                if (is_null($request->ped_banco) || is_null($request->ped_conta) || is_null($request->ped_agenciaconta)) {
+                    $rules['ped_banco'] = 'required';
+                    $rules['ped_conta'] = 'required';
+                    $rules['ped_agenciaconta'] = 'required';
+                    
+                    $messages = array_merge($messages, [
+                        'ped_banco.required' => 'Nome do Banco é obrigatório',
+                        'ped_conta.required' => 'Informe a conta',
+                        'ped_agenciaconta.required' => 'Informe a agência',
+                    ]);
+                }else{
+                    return $request;
+                }
+            }
+        
+        
+            $validator = Validator::make($request->all(), $rules, $messages);
+        
+            if ($validator->fails()) {
+                throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
+            }
+                return $request;           
         }
+        
         elseif($request->get('ped_formapag') == 'reembolsado'){
             $validator = Validator::make($request->all(), [
                 'ped_reembolsado'  => 'required',

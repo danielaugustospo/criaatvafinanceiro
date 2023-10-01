@@ -48,7 +48,7 @@ Route::get('/apientradareceitarecebidas', 'RelatorioController@apiEntradaReceita
 Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServicoRecebidas')->name('apiordemdeservicorecebidas');
 Route::get('/apiControleDeOrcamento', 'RelatorioController@apiControleDeOrcamento')->name('apiControleDeOrcamento');
 Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('apiareceber');
-Route::get('/apiareceita', 'RelatorioController@consultaIndexReceita')->name('apireceita');
+Route::get('/apiareceita', 'RelatorioController@consultaIndexReceita')->name('apireceitaNovo');
 Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('apicontasareceber');
 Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('apiconsultaprolabore');
 Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('apidespesasfixavariavel');
