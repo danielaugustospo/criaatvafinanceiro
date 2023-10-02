@@ -245,14 +245,14 @@ class PedidoCompraController extends Controller
         if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
             $this->logValidaPedidoCompra($request);
 
-            return redirect()->route('pedidocompra.index')
+            return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi aprovado, já notificamos ao solicitante.');
         }
 
         if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) {
             $this->logInvalidaPedidoCompra($request);
 
-            return redirect()->route('pedidocompra.index')
+            return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi reprovado, já notificamos ao solicitante.');
         }
     }
@@ -435,19 +435,21 @@ class PedidoCompraController extends Controller
         }
         if($request->get('ped_formapag') == 'reembolsado'){
             $pedido->ped_reembolsado            = $request->get('ped_reembolsado');
+            $pedido->ped_pix                    = $request->get('ped_pix');
             $pedido->ped_banco                  = $request->get('ped_banco');
             $pedido->ped_conta                  = $request->get('ped_conta');
             $pedido->ped_agenciaconta           = $request->get('ped_agenciaconta');   
             $pedido->ped_cpfcnpj                = $request->get('ped_cpfcnpj');   
 
             // Se o Banco for diferente de Itau, validar o CPF/CNPJ
-            if($pedido->ped_banco != '180'){
+            if($pedido->ped_banco != '180' && is_null($pedido->ped_pix)){
                 $request->validate([
                     'ped_cpfcnpj'          => 'required|cpf_cnpj' ],
                 [   'ped_cpfcnpj.required' => 'CPF/CNPJ obrigatório']);
 
+            }else{
+                return $pedido;
             }
-            return $pedido;
 
             $request->validate([ 
                 'ped_reembolsado'   => 'required',
@@ -544,6 +546,9 @@ class PedidoCompraController extends Controller
         }
         
         elseif($request->get('ped_formapag') == 'reembolsado'){
+            if($request->ped_banco == '180' || !is_null($request->ped_pix)){
+                return $request;
+            }
             $validator = Validator::make($request->all(), [
                 'ped_reembolsado'  => 'required',
                 'ped_banco'         => 'required',
