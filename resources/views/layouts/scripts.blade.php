@@ -3,7 +3,7 @@
     $(document).ready(function() {
         @if(Auth::user())
                     // var renovaSessao = setTimeout(avisoRenovaSessao, 1500000); //25min
-                    var renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 20); // renova a sessão a cada 20 minutos
+                    var renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 10); // renova a sessão a cada 10 minutos
                     timeout = setTimeout(encerraSessaoSozinho, 1800600); //30min e 01 seg
 
                     function avisoRenovaSessao() {
@@ -20,7 +20,7 @@
                                     if (data != null || data != undefined) {
                                         clearTimeout(timeout);
                                         // clearTimeout(renovaSessao);
-                                        renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 20);
+                                        renovaSessao = setInterval(avisoRenovaSessao, 1000 * 60 * 10);
                                         timeout = setTimeout(encerraSessaoSozinho, 1800600);
                                         playNotification(nome = 'success');
                                         Swal.fire({

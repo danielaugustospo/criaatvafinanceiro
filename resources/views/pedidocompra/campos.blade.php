@@ -191,7 +191,7 @@
     <div id="divDadosCartao" class="form-row col-sm-12">
 
 
-        <label class="col-sm-2 mr-2 mt-2" for="ped_numcartao">Últimos 4 Dígitos</label>
+        <label class="col-sm-2 mr-2 mt-2" for="ped_numcartao">Cartão - 4 Dígitos Finais</label>
 
         {!! Form::text('ped_numcartao', old('ped_numcartao'), [
             'class' => 'col-sm-3 form-control',
@@ -203,7 +203,7 @@
 
         <label class="col-sm-2 mr-2 ml-3 mt-2" for="">Parcelamento em x</label>
 
-        <select name="ped_vzscartao" class="selecionaComInput col-sm-3" id="ped_vzscartao"
+        <select name="ped_vzscartao" class="selecionaComInput col-sm-1" id="ped_vzscartao"
             {{ $variavelDisabledNaView }}>
             @if (!isset($pedido))
                 <option disabled selected>Selecione...</option>
@@ -245,7 +245,7 @@
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="ped_boleto">Boleto</label>
         {!! Form::text('ped_boleto', old('ped_boleto'), [
-            'class' => 'col-sm-3 form-control',
+            'class' => 'col-sm-4 form-control',
             'maxlength' => '100',
             $variavelReadOnlyNaView,
         ]) !!}
@@ -254,7 +254,7 @@
 
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="">Faturado em x</label>
-        <select name="ped_periodofaturado" class="selecionaComInput col-sm-3 form-control" id="ped_periodofaturado"
+        <select name="ped_periodofaturado" class="selecionaComInput col-sm-2 form-control" id="ped_periodofaturado"
             {{ $variavelDisabledNaView }}>
             @if (!isset($pedido))
                 <option disabled selected>Selecione...</option>

@@ -36,8 +36,8 @@ class AppServiceProvider extends ServiceProvider
                 ->select('id', 'descricaoDespesa', 'precoReal', 'vencimento', 'despesaCodigoDespesas', 'nRegistro', 'idOS', 'notaFiscal', 'valorparcela', 'idAutor')
                 ->where('excluidoDespesa', 0)
                 ->where('ativoDespesa', 1)
-                ->orderBy('id')
-                ->limit(5)
+                ->orderByDesc('id')
+                ->limit(5000)
                 ->get();
         });
         

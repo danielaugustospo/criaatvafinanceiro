@@ -126,7 +126,9 @@
             sortable: true,
     resizable: true,
     responsible: true,
-    // scrollable: true,
+    groupable: true,
+
+    scrollable: true,
     reorderable: true,
     width: 'auto',
     columnMenu: true,
