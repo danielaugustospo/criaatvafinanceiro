@@ -79,13 +79,13 @@ $.LoadingOverlay("show", {
                 allPages: true,
                 avoidLinks: true,
                 paperSize: "A4",
-                margin: { top: "3.5cm", left: "1cm", right: "1cm", bottom: "0.5cm" },
+                margin: { top: "3.5cm", left: "0.15cm", right: "0.15cm", bottom: "0.5cm" },
                 
                 @if(isset($orientacao)) landscape: true, @else landscape: true, @endif
                 
                 repeatHeaders: false,
                 template: $("#page-template").html(),
-                scale: 0.8
+                scale: 0.7
             },
             filterable: {
                 extra: false,
