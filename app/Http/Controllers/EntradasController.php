@@ -230,12 +230,10 @@ class EntradasController extends Controller
                 'quantidade_entrada'    => $qtdeEntrada,
             ]);
         } elseif ($tipoEntrada == 'devolucao') {
-            $mensagemExito = 'Devolução lançada com êxito.';
-            $metodo = 'devolucao';
+            $mensagemExito  = 'Devolução lançada com êxito.';
+            $metodo         = 'devolucao';
     
-            $request->validate([
-                'idbenspatrimoniais' => 'required',
-            ]);
+            $request->validate(['idbenspatrimoniais' => 'required']);
     
             $itemEstoque = Estoque::where('idbenspatrimoniais', $request->idbenspatrimoniais)->where('quantidade', '>', 0)->get();
             if ($itemEstoque->isEmpty()) {
@@ -244,18 +242,22 @@ class EntradasController extends Controller
             $quantidadeRetorno = (!is_null($request->quantidade_retorno)) ? $request->quantidade_retorno : 1 ;
 
             $mudaStatusSaida = Saidas::with('estoque')
-                ->whereHas('estoque', function ($query) use ($request) {
-                    $query->where('idbenspatrimoniais', $request->idbenspatrimoniais);
-                })
-                ->where('status', StatusEnumSaidas::NA_RUA)
-                ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL)
-                ->whereNotNull('datapararetorno')
-                ->get();
+            ->whereHas('estoque', function ($query) use ($request) {
+                $query->where('idbenspatrimoniais', $request->idbenspatrimoniais);
+            })
+            ->where(function ($query) {
+                $query->where('status', StatusEnumSaidas::NA_RUA)
+                    ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL);
+            })
+            ->whereNotNull('datapararetorno')
+            ->get();
+        
 
                 foreach ($itemEstoque as $item) {
                     if ($quantidadeRetorno > 0 && $item->quantidade > 0) {
                         $quantidadeRemovida = min($quantidadeRetorno, $item->quantidade);
-
+                        
+                        
                         foreach ($mudaStatusSaida as $saida) {
                             
                             $salvaEntradas = Entradas::create([

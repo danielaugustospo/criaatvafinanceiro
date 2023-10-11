@@ -43,6 +43,7 @@
                 schema: {
                     model: {
                         fields: {
+                            idOS: { type: "number" },
                             valorOrdemdeServico: { type: "number" },
                             custo: { type: "number" },
                             lucro: { type: "number" },

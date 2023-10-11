@@ -89,7 +89,14 @@
             @endif
             
             @if( request()->query('metodo') == 'devolucao')
-            quemdevolveu = $('#quemdevolveu').val();
+                material = $('#codbarras').val();
+                //Verifica se o material foi informado
+                if ((material == "") || (material == null)) {
+                    var texto =
+                        '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe o Material</label></br>';
+                    contadorErros++;
+                }
+                quemdevolveu = $('#quemdevolveu').val();
                 //Verifica se o quemdevolveu foi informado
                 if ((quemdevolveu == "") || (quemdevolveu == null)) {
                     var texto =
