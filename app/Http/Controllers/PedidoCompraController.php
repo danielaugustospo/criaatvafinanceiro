@@ -381,7 +381,13 @@ class PedidoCompraController extends Controller
             $pedido->ped_pix                    = $request->get('ped_pix');
             $pedido->ped_favorecido             = $request->get('ped_favorecido');
             if(!is_null($pedido->ped_pix)){
-                return $pedido;
+                if(!is_null($pedido->ped_favorecido)){
+                    return $pedido;
+                }else{
+                    $request->validate([
+                        'ped_favorecido'                 => 'required' ],
+                    [   'ped_favorecido.required'        => 'Preencha o favorecido da chave pix informada']);
+                }
             }
             $pedido->ped_banco                  = $request->get('ped_banco');
             $pedido->ped_conta                  = $request->get('ped_conta');
@@ -473,7 +479,13 @@ class PedidoCompraController extends Controller
     
         if($request->get('ped_formapag') == 'avista'){
             if(!is_null($request->ped_pix)){
-                return $request;
+                if(!is_null($request->ped_favorecido)){
+                    return $request;
+                }else{
+                    $validator = Validator::make($request->all(), 
+                    [   'ped_favorecido'            => 'required' ],
+                    [   'ped_favorecido.required'   => 'Preencha o favorecido da chave pix informada'  ]);
+                }
             }
             $validator = Validator::make($request->all(), [
                 'ped_banco'         => 'required',

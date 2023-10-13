@@ -17,6 +17,7 @@ class Estoque extends Model
         'codbarras',
         'nomematerial',
         'descricao',
+        'quantidadeinicial',
         'quantidade',
         'idbenspatrimoniais',
         'ativadoestoque',

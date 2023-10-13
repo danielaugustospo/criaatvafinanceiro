@@ -174,14 +174,14 @@ class EntradasController extends Controller
             ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL)
             ->where(function ($query) {
                 $query->whereNotNull('datapararetorno');
-        })
-        ->leftJoin('entradas', 'entradas.id_saida', '=', 'saidas.id')
-        ->join('estoque', 'estoque.id', '=', 'saidas.id_estoque')
-        ->select('saidas.*', \DB::raw('SUM(entradas.quantidade_entrada) as total_devolvido'))
-        // ->whereNotNull('entradas.id_saida')
-        ->with('estoque.bensPatrimoniais')
-        ->groupBy('saidas.id')
-        ->get();
+            })
+            ->leftJoin('entradas', 'entradas.id_saida', '=', 'saidas.id')
+            ->join('estoque', 'estoque.id', '=', 'saidas.id_estoque')
+            ->select('saidas.*', \DB::raw('SUM(entradas.quantidade_entrada) as total_devolvido'))
+            // ->whereNotNull('entradas.id_saida')
+            ->with('estoque.bensPatrimoniais')
+            ->groupBy('saidas.id')
+            ->get();
 
         $listaBensPatrimoniais = $this->listaBensPatrimoniais;
 
@@ -204,10 +204,9 @@ class EntradasController extends Controller
         $tipoEntrada = $request->query('metodo');
         $tipoEntrada = $request->metodo;
         $salvaEntradas = null; // Inicialize a variável fora do loop
-
         if ($tipoEntrada == 'novo') {
 
-            $qtdeEntrada    = ($request->input('porcionavel') == '0') ? 1 : $request->input('qtdeEntrada') ;
+            $qtdeEntrada    = ($request->input('porcionavel') == '0') ? 1 : $request->input('qtdeEntrada');
             $mensagemExito  = 'Item lançado no estoque com êxito.';
             $metodo         = 'novo';
 
@@ -220,10 +219,11 @@ class EntradasController extends Controller
                 // 'codbarras'             => $request->input('codbarras'),
                 'idbenspatrimoniais'    => $request->input('idbenspatrimoniais'),
                 'descricao'             => $request->input('descricaoentrada'),
+                'quantidadeinicial'     => $qtdeEntrada,
                 'quantidade'            => $qtdeEntrada,
                 'ativadoestoque'        => 1
             ]);
-            
+
             $salvaEntradas = Entradas::create([
                 'descricaoentrada'      => $request->input('descricaoentrada'),
                 'id_estoque'            => $salvaEstoque->id,
@@ -232,76 +232,9 @@ class EntradasController extends Controller
         } elseif ($tipoEntrada == 'devolucao') {
             $mensagemExito  = 'Devolução lançada com êxito.';
             $metodo         = 'devolucao';
-    
-            $request->validate(['idbenspatrimoniais' => 'required']);
-    
-            $itemEstoque = Estoque::where('idbenspatrimoniais', $request->idbenspatrimoniais)->where('quantidade', '>', 0)->get();
-            if ($itemEstoque->isEmpty()) {
-                return redirect()->route('saidas.index')->with('error', 'Estoque não encontrado');
-            }
-            $quantidadeRetorno = (!is_null($request->quantidade_retorno)) ? $request->quantidade_retorno : 1 ;
-
-            $mudaStatusSaida = Saidas::with('estoque')
-            ->whereHas('estoque', function ($query) use ($request) {
-                $query->where('idbenspatrimoniais', $request->idbenspatrimoniais);
-            })
-            ->where(function ($query) {
-                $query->where('status', StatusEnumSaidas::NA_RUA)
-                    ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL);
-            })
-            ->whereNotNull('datapararetorno')
-            ->get();
-        
-
-                foreach ($itemEstoque as $item) {
-                    if ($quantidadeRetorno > 0 && $item->quantidade > 0) {
-                        $quantidadeRemovida = min($quantidadeRetorno, $item->quantidade);
-                        
-                        
-                        foreach ($mudaStatusSaida as $saida) {
-                            
-                            $salvaEntradas = Entradas::create([
-                                'descricaoentrada'    => $request->descricaoentrada,
-                                'id_estoque'          => $item->id,
-                                'quantidade_entrada'  => $quantidadeRemovida,
-                                'dtdevolucao'         => $request->dtdevolucao,
-                                'quemdevolveu'        => $request->quemdevolveu,
-                                'ocorrenciadevolucao' => $request->ocorrenciadevolucao,
-                                'id_saida'            => $saida->id,
-                            ]);
-
-                            $entradas = Entradas::where('id_saida', $saida->id)
-                                ->selectRaw('SUM(quantidade_entrada) as total_quantidade')
-                                ->first();
-
-                            if ($entradas) {
-                                $totalSaidasPorEntrada = $entradas->total_quantidade;
-                            } else {
-                                $totalSaidasPorEntrada = 0;
-                            }
-
-                            if(($totalSaidasPorEntrada - $saida->quantidade) < 1){
-                                $saida->update([ 'status' => StatusEnumSaidas::DEVOLVIDO ]);
-                            }else{
-                                $saida->update([ 'status' => StatusEnumSaidas::DEVOLUCAO_PARCIAL ]);
-                            }
-                            
-                            $lancaEstoque = DB::table('estoque')
-                                ->where('id', $item->id)
-                                ->update([
-                                    'quantidade' => \DB::raw("quantidade + $quantidadeRetorno")
-                                ]);
-                        }
-                    }
-                    $quantidadeRetorno -= $quantidadeRemovida;
-                }
-                            
-            if ($quantidadeRetorno > 0) {
-                return redirect()->route('saidas.index')->with('error', 'Não há estoque suficiente');
-            }
-            
+            $salvaEntradas  = $this->lancaDevolucao($request);
         }
-        if ($salvaEntradas) {
+        if (!is_null($salvaEntradas)) {
             $id = $salvaEntradas->id;
         } else {
             // Trate o caso em que $salvaEntradas não foi definido
@@ -310,10 +243,15 @@ class EntradasController extends Controller
         }
 
         if ($request->tpRetorno == 'visualiza') {
-            $rotaRetorno = 'entradas.show';
-            $visualiza = 1;
+            // $rotaRetorno = 'entradas.show';
+            // $visualiza = 1;
+            // $metodo = null;
+            // $entradas = Entradas::find($id);
+
+
+            $rotaRetorno = 'entradas.index';
+            $visualiza = null;
             $metodo = null;
-            $entradas = Entradas::find($id);
         } elseif ($request->tpRetorno == 'novo') {
             $rotaRetorno = 'entradas.create';
             $visualiza = 0;
@@ -325,7 +263,7 @@ class EntradasController extends Controller
 
         if ($visualiza == 1) {
             // return redirect()->route($rotaRetorno, ['id' => $id])->with('success', $mensagemExito);
-            $propriedadesEntradas = Entradas::where('id',$id)->with('estoque.bensPatrimoniais')->first();
+            $propriedadesEntradas = Entradas::where('id', $id)->with('estoque.bensPatrimoniais')->first();
             if ($propriedadesEntradas->dtdevolucao) {
                 $tipoEntrada = 'devolucao';
             } else {
@@ -344,6 +282,84 @@ class EntradasController extends Controller
         }
     }
 
+    public function lancaDevolucao($request)
+    {
+        $request->validate(['idbenspatrimoniais' => 'required']);
+
+        $quantidadeRetorno  = (!is_null($request->quantidade_retorno)) ? $request->quantidade_retorno : 1;
+        $dadosSaida         = Saidas::with('estoque')
+            ->whereHas('estoque', function ($query) use ($request) {
+                $query->where('idbenspatrimoniais', $request->idbenspatrimoniais);
+            })
+            ->where(function ($query) {
+                $query->where('status', StatusEnumSaidas::NA_RUA)
+                    ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL);
+            })
+            ->whereNotNull('datapararetorno')
+            ->get();
+
+        $itemEstoque = Estoque::where('idbenspatrimoniais', $request->idbenspatrimoniais)->whereRaw('quantidadeinicial > quantidade')->get();
+        if ($itemEstoque->isEmpty()) {
+            return redirect()->route('saidas.index')->with('error', 'Não há item para devolução');
+        }
+
+        foreach ($dadosSaida as $saida) {
+            foreach ($itemEstoque as $item) {
+
+                if ($quantidadeRetorno > 0) { //62
+
+                    $qtdAdevolverPorItem    = $item->quantidadeinicial - $item->quantidade;
+                    $verificaValorDeRetorno = $quantidadeRetorno - $qtdAdevolverPorItem;
+
+                    if ($verificaValorDeRetorno < 0) {
+                        $valorNegativo = abs($verificaValorDeRetorno);
+                        $qtdAdevolverPorItem = $qtdAdevolverPorItem - $valorNegativo;
+                    }
+
+                    if ($qtdAdevolverPorItem > 0) {
+
+                        $salvaEntradas = Entradas::create([
+                            'descricaoentrada'    => $request->descricaoentrada,
+                            'id_estoque'          => $item->id,
+                            'quantidade_entrada'  => $qtdAdevolverPorItem,
+                            'dtdevolucao'         => $request->dtdevolucao,
+                            'quemdevolveu'        => $request->quemdevolveu,
+                            'ocorrenciadevolucao' => $request->ocorrenciadevolucao,
+                            'id_saida'            => $saida->id,
+                        ]);
+
+                        
+                        $lancaEstoque = DB::table('estoque')
+                            ->where('id', $item->id)
+                            ->update([
+                                'quantidade' => \DB::raw("quantidade + $qtdAdevolverPorItem")
+                            ]);
+                    }
+                }
+                $quantidadeRetorno = $quantidadeRetorno - $qtdAdevolverPorItem;
+            }
+            $entradas = Entradas::where('id_saida', $saida->id)
+                ->selectRaw('SUM(quantidade_entrada) as total_quantidade')
+                ->first();
+
+            if ($entradas) {
+                $totalSaidasPorEntrada = $entradas->total_quantidade;                          
+            } else {
+                $totalSaidasPorEntrada = 0;
+            }
+
+            if (($totalSaidasPorEntrada - $saida->quantidade_saida) < 1) {
+                $saida->update(['status' => StatusEnumSaidas::DEVOLVIDO]);
+            } else {
+                $saida->update(['status' => StatusEnumSaidas::DEVOLUCAO_PARCIAL]);
+            }
+        }
+
+        if ($quantidadeRetorno > 0) {
+            return redirect()->route('saidas.index')->with('error', 'Não há estoque suficiente');
+        }
+        return $salvaEntradas;
+    }
 
     /**
      * Display the specified resource.
@@ -356,18 +372,18 @@ class EntradasController extends Controller
         $listaBensPatrimoniais = $this->listaBensPatrimoniais;
 
         $propriedadesEntradas = Entradas::where('id', $id)->with('estoque.bensPatrimoniais')->first();
-    
+
         if (isset($propriedadesEntradas->dtdevolucao)) {
             $tipoEntrada = 'devolucao';
         } else {
             $tipoEntrada = 'novo';
         }
-    
+
         $selectBensPatrimoniais = DB::select('SELECT * FROM benspatrimoniais where statusbenspatrimoniais = 1 order by id');
-    
+
         return view('entradas.show', compact('listaBensPatrimoniais', 'propriedadesEntradas', 'tipoEntrada', 'selectBensPatrimoniais'));
     }
-    
+
 
 
     /**

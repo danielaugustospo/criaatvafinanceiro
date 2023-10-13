@@ -82,24 +82,36 @@
                 material = $('#descricaoMaterial').val();
                 //Verifica se o material foi informado
                 if ((material == "") || (material == null)) {
-                    var texto =
+                   texto = texto +
                         '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Selecione o material</label></br>';
                     contadorErros++;
                 }
             @endif
             
             @if( request()->query('metodo') == 'devolucao')
-                material = $('#codbarras').val();
+            material            = $('#codbarras').val();
+            quantidade_retorno  = $('#quantidade_retorno').val();
+            maxQuantity         = $('#codbarras option:selected').data('max-quantity'); // Read data-max-quantity from the selected option
                 //Verifica se o material foi informado
                 if ((material == "") || (material == null)) {
-                    var texto =
-                        '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe o Material</label></br>';
+                   texto = texto +
+                    '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe o Material</label></br>';
+                    contadorErros++;
+                }
+                console.log(maxQuantity);
+                console.log(quantidade_retorno);
+
+                //Verifica se o quantidade_retorno foi informado
+                if (quantidade_retorno > maxQuantity) {
+                    console.log('passou');
+                   texto = texto +
+                        '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">A Quantidade deve ser igual ou menor a '+ maxQuantity +'</label></br>';
                     contadorErros++;
                 }
                 quemdevolveu = $('#quemdevolveu').val();
                 //Verifica se o quemdevolveu foi informado
                 if ((quemdevolveu == "") || (quemdevolveu == null)) {
-                    var texto =
+                   texto = texto +
                         '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe quem devolveu</label></br>';
                     contadorErros++;
                 }
@@ -112,7 +124,7 @@
             portadorsaida = $('#portadorsaida').val();
             //Verifica se o portador foi informado
             if ((portadorsaida == "") || (portadorsaida == null)) {
-                var texto =
+                texto = texto +
                     '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe quem retirou (portador)</label></br>';
                 contadorErros++;
             }
