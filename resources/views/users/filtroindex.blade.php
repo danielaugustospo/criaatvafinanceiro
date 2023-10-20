@@ -12,7 +12,7 @@
                     @endforeach
                 </select>
 
-                <label for="" class="col-sm-2">Descrição da Despesa</label>
+                <label for="" class="col-sm-2">NOME USUÁRIO</label>
                 <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaname" name="name" id="name">
                     <option value="">Listar todos</option>
                     @foreach ($listaUsuarios as $users)
@@ -23,19 +23,26 @@
 
             </div>
             <div class="group-row">
-                <label for="" class="col-sm-1">Email</label>
-                <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscaemail" name="email" id="email">
+                
+                <label for="" class="col-sm-1">STATUS USUÁRIO</label>
+                <select class="selecionaComInput form-control col-sm-2 js-example-basic-multiple buscaativoUser" name="ativoUser" id="ativoUser">
                     <option value="">Listar todos</option>
-                    @foreach ($listaUsuarios as $users)
-                    <option value="{{ $users->email }}">{{ $users->email }}</option>
-                    @endforeach
+                    {{-- @foreach ($listaUsuarios as $users) --}}
+                    <option value="0">Inativo</option>
+                    <option value="1">Ativo</option>
+                    {{-- @endforeach --}}
                 </select>
-
-                <label for="" class="col-sm-2">Código Despesas</label>
-                <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaativoUser" name="ativoUser" id="ativoUser">
+                {{-- <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaativoUser" name="ativoUser" id="ativoUser">
                     <option value="">Listar todos</option>
                     @foreach ($listaUsuarios as $users)
                     <option value="{{ $users->ativoUser }}">{{ $users->ativoUser }}</option>
+                    @endforeach
+                </select> --}}
+                <label for="" class="col-sm-2">Email</label>
+                <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscaemail" name="email" id="email">
+                    <option value="">Listar todos</option>
+                    @foreach ($listaUsuarios as $users)
+                    <option value="{{ $users->email }}">{{ $users->email }}</option>
                     @endforeach
                 </select>
                 <input class="btn btn-primary ml-2" type="button" name="pesquisar" id="pesquisar" value="Pesquisar">

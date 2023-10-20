@@ -5,25 +5,21 @@
                 @if (isset($propriedadesEntradas)) 
 
 
-                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->descricaoentrada }}" readonly>
+                    <input type="text" class="form-control" name="codbarras" placeholder="Cod Barras" maxlength="100" value="{{ $propriedadesEntradas->estoque->bensPatrimoniais->nomeBensPatrimoniais }}" readonly>
                 @else
                     <select class="selecionaComInput  form-control" style="height: 200px !important" name="idbenspatrimoniais" id="codbarras"> 
                         <option value="">Selecione...</option>
 
-                        @foreach ($listaInventarioaDevolver->groupBy('estoque.idbenspatrimoniais') as $idEstoque => $itensadevolverGrouped)
-                            @php
-
-                                if(is_null($itensadevolverGrouped->sum('total_devolvido'))){
-                                    $totalQuantidade = $itensadevolverGrouped->sum('quantidade_saida');
-                                }else {
-                                    $totalQuantidade = (($itensadevolverGrouped->sum('quantidade_saida')) - ($itensadevolverGrouped->sum('total_devolvido')));
-                                }
+                        @foreach ($listaInventarioaDevolver->groupBy('idbenspatrimoniais') as $idEstoque => $itensadevolverGrouped)
+                        @php
+                        $totalQuantidade = 0;
+                                $totalQuantidade = $totalQuantidade + $itensadevolverGrouped[0]->totalADevolver;
                             @endphp
-                            <option value="{{ $itensadevolverGrouped[0]->estoque->idbenspatrimoniais }}" data-max-quantity="{{ $totalQuantidade }}">
-                                {{ $itensadevolverGrouped[0]->estoque->bensPatrimoniais->nomeBensPatrimoniais }} (Total na rua: {{ $totalQuantidade }})
+                            <option value="{{ $itensadevolverGrouped[0]->idbenspatrimoniais }}" data-max-quantity="{{ $totalQuantidade }}">
+                                {{ $itensadevolverGrouped[0]->bensPatrimoniais->nomeBensPatrimoniais }} (Total na rua: {{ $totalQuantidade }})
                             </option>
                         @endforeach
-                
+
                     </select>
 
                 @endif
@@ -101,7 +97,7 @@
 
             // Get the data attribute "max-quantity" from the selected option
             const maxQuantity = selectedOption.element.getAttribute('data-max-quantity');
-
+            const getQuantityToCompareInSubmit = maxQuantity;
             // Update the content of the maxQuantitySpan with the retrieved max quantity
             maxQuantitySpan.text(maxQuantity);
         });

@@ -170,18 +170,28 @@ class EntradasController extends Controller
      */
     public function create(Request $request)
     {
-        $listaInventarioaDevolver = Saidas::where('status', StatusEnumSaidas::NA_RUA)
-            ->orWhere('status', StatusEnumSaidas::DEVOLUCAO_PARCIAL)
-            ->where(function ($query) {
-                $query->whereNotNull('datapararetorno');
-            })
-            ->leftJoin('entradas', 'entradas.id_saida', '=', 'saidas.id')
-            ->join('estoque', 'estoque.id', '=', 'saidas.id_estoque')
-            ->select('saidas.*', \DB::raw('SUM(entradas.quantidade_entrada) as total_devolvido'))
-            // ->whereNotNull('entradas.id_saida')
-            ->with('estoque.bensPatrimoniais')
-            ->groupBy('saidas.id')
-            ->get();
+        $listaInventarioaDevolver = Estoque::select(
+            'estoque.*',
+            \DB::raw('
+            SUM(
+                CASE
+                    WHEN (estoque.quantidadeinicial -
+                        IFNULL((SELECT SUM(quantidade_saida) FROM saidas s WHERE s.id_estoque = estoque.id AND s.datapararetorno IS not NULL), 0) -
+                        IFNULL((SELECT SUM(quantidade_entrada) FROM entradas en WHERE en.id_estoque = estoque.id), 0)) < 0
+                    THEN -1 * (estoque.quantidadeinicial -
+                        IFNULL((SELECT SUM(quantidade_saida) FROM saidas s WHERE s.id_estoque = estoque.id AND s.datapararetorno IS not NULL), 0) -
+                        IFNULL((SELECT SUM(quantidade_entrada) FROM entradas en WHERE en.id_estoque = estoque.id), 0))
+                    ELSE (estoque.quantidadeinicial -
+                        IFNULL((SELECT SUM(quantidade_saida) FROM saidas s WHERE s.id_estoque = estoque.id AND s.datapararetorno IS not NULL), 0) -
+                        IFNULL((SELECT SUM(quantidade_entrada) FROM entradas en WHERE en.id_estoque = estoque.id), 0))
+                END
+            ) AS totalADevolver'
+            )
+        )
+        ->where('ativadoestoque', 1)
+        ->with('bensPatrimoniais')
+        ->groupBy('idbenspatrimoniais')
+        ->get();
 
         $listaBensPatrimoniais = $this->listaBensPatrimoniais;
 

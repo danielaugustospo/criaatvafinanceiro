@@ -35,7 +35,7 @@
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th class="text-center">Nome Despesa</th>
+                <th class="text-center">Nome USUÁRIO</th>
                 <th class="text-center">Email</th>
                 <th class="text-center">Ativo</th>
 
@@ -128,7 +128,14 @@
             },
             {
                 data: 'ativoUser',
-                name: 'ativoUser'
+                name: 'ativoUser',
+                render: function (data, type, row) {
+                // Ensure that data is treated as an integer for sorting and display
+                if (type === 'sort' || type === 'type') {
+                    return parseInt(data, 10);
+                }
+                return data;
+                }
             },
             {
                 data: 'action',
