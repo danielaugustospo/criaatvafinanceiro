@@ -70,7 +70,7 @@
 
     <script>
             @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+            @can('rel-fatporcliente')
 
                 dataSource: {
                     data: data,

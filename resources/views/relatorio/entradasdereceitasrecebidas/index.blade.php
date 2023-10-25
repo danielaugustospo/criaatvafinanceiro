@@ -35,7 +35,7 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+    @can('rel-entradasdereceitasrecebidas')
 
             dataSource: {
                 data: data,
