@@ -35,7 +35,7 @@
 <script>
     
     @include('layouts/helpersview/iniciotabela')
-    @can('rel-contasareceber')
+    @can('rel-contasAReceber')
 
             dataSource: {
                 data: data,
