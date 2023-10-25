@@ -117,10 +117,10 @@
         href="#">               <label class="text-center fontenormal row" for="">Sintética por OS (%)          &nbsp; </label></a>            
         @endcan
         
-        {{-- @can('rel-despesassinteticaporos') --}}
+        @can('rel-controleconsumomateriais')
         <a onclick="abreModalDespesas(param= 'controleconsumomaterial');" 
         href="#">               <label class="text-center fontenormal row" for="">Controle de consumo de materiais &nbsp; </label></a>            
-        {{-- @endcan --}}
+        @endcan
     </div>
 </div>
 
