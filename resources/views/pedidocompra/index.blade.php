@@ -48,6 +48,10 @@
 <div id="grid"></div>
 
 <script>
+$.LoadingOverlay("show", {
+    image       : "",
+    progress    : true
+});
 
     var dataSource = new kendo.data.DataSource({
         transport: {
@@ -107,20 +111,21 @@
                 schema: {
                     model: {
                         fields: {
+                            id: { type: "number" },
                             razaosocialFornecedor: { type: "string" },
                             ped_data: { type: "date" },
                         }
                     },
                 },
 
-                group: {
-                    field: "razaosocialFornecedor", aggregates: [
-                        { field: "razaosocialFornecedor", aggregate: "count" },
-                    ]
-                },
-                aggregate: [{ 
-                    field: "razaosocialFornecedor", aggregate: "count" 
-                }],
+                // group: {
+                //     // field: "razaosocialFornecedor", aggregates: [
+                //     //     { field: "razaosocialFornecedor", aggregate: "count" },
+                //     // ]
+                // },
+                // aggregate: [{ 
+                //     field: "razaosocialFornecedor", aggregate: "count" 
+                // }],
 
             },
             sortable: true,
@@ -142,15 +147,16 @@
                 pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
                 numeric: false
             },
+
             columns: [
-                    { field: "id", title: "ID", filterable: true, width: 70 },
+                    { field: "id", title: "ID", filterable: true, width: 70, sortable: { initialDirection: "desc" }, },
                     { field: "ped_os", title: "OS", filterable: true, width: 70 },
                 @can('pedidocompra-analise')
                     { field: "solicitante", title: "Solicitante", filterable: true, width: 100 },
                 @endcan
                     { field: "nomecomp", title: "Comprador", filterable: true, width: 100 },
                     { field: "ped_descprod", title: "Despesa", filterable: true, width: 100 },
-                    { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100, aggregates: ["count"], footerTemplate: "QTD. Total: #=count#", groupHeaderColumnTemplate: "Qtd.: #=count#" },
+                    { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100},
                     { field: "ped_data", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}",
 
                     filterable: {
@@ -159,17 +165,33 @@
                                     }
                                 } 
                     },
+                    {
+                        field: "pago",
+                        title: "Pago",
+                        filterable: true,
+                        width: 100,
+                        template: function(dataItem) {
+                            if (dataItem.pago === "Pago") {
+                                return '<span style="color: blue;">' + dataItem.pago + '</span>';
+                            } else if (dataItem.pago === "Não Pago") {
+                                return '<span style="color: red;">' + dataItem.pago + '</span>';
+                            } else {
+                                return dataItem.pago;
+                            }
+                        }
+                    },
+                    { field: "conta", title: "Conta", filterable: true, width: 100 },
                     @if(!isset($aprovado))                  
                         { field: "status", title: "Aprovado", filterable: true, width: 100 },
                     @endif
+                    
                 @if(Gate::check('pedidocompra-analise'))
                     
                     {
                         filterable: true,
 
                         template: function(dataItem) {
-                            console.log(dataItem.status);
-                            if (dataItem.status == 'Sim' || dataItem.status == 'Não') {
+                            if (dataItem.status == 'Sim' || dataItem.status == 'Não' || dataItem.status == 'Aprovado e Finalizado') {
                                 return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-secondary  text-white">Visualizar</a>';
                             } else {
                                 return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-primary text-white">Analisar</a>';
@@ -250,6 +272,24 @@
                         }
                     }
                 }
+
+                
+                this.tbody.find("tr").each(function() {
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(this);
+                    if (dataItem.pago === "Pago") {
+                        $(this).find("td:nth-child(9)").css("color", "blue");
+                    } else if (dataItem.pago === "Não Pago") {
+                        $(this).find("td:nth-child(9)").css("color", "red");
+                    }
+                });
+                // Restaurar a visibilidade original das colunas
+                for (var field in detailColsVisibility) {
+                    if (detailColsVisibility[field]) {
+                        grid.showColumn(field);
+                    } else {
+                        grid.hideColumn(field);
+                    }
+                }
             },
             columnHide: function (e) {
                 // hide column in all other detail Grids
@@ -286,6 +326,49 @@
 
     });
     @include('layouts/filtradata')
+    $(window).on('load', function(){
+
+var $myDiv = $('#grid');
+
+if ( $myDiv.length === 1){
+
+    var count     = 0;
+    var interval  = setInterval(function(){
+    if (count >= 50) {
+        clearInterval(interval);
+
+        var verificador = document.getElementsByClassName('k-link')[0];
+    
+        if(verificador != null){
+            $('.k-link')[0].click();
+            console.log('Ordenação Por Grupo Clicado Inicialmente');
+            $.LoadingOverlay("hide");
+        }else{
+            var temporizador = setInterval(feedbackCarregamentoRelatorio, 5000);
+        }
+
+        function feedbackCarregamentoRelatorio() {
+            console.log('Funcionalidade ainda não carregada. Aguarde alguns segundos');
+            var verificador = document.getElementsByClassName('k-link')[0];
+            if(verificador != null){
+                $('.k-link')[0].click();
+                clearInterval(temporizador);
+                console.log('Ordenação Por Grupo Clicado Inicialmente');
+                $.LoadingOverlay("hide");
+            }
+        }                          
+        return;
+    }
+    count += 10;
+    $.LoadingOverlay("progress", count);
+}, 100);
+
+}
+
+
+});
+
+
 </script>
 @endif
 

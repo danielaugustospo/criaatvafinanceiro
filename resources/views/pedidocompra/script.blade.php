@@ -49,7 +49,18 @@
             resetaParcelamento();
             resetaReembolsado();
             // resetaFaturado();
-            resetaDadosBancarios();
+            if(document.getElementById('boleto_faturado').checked) {
+                $("#divDadosBancarios").hide();
+                $("#divBoleto").show();
+
+                resetaDadosBancarios();
+            }
+            if(document.getElementById('transferencia_faturado').checked) {
+                $("#divDadosBancarios").show();
+                $("#divBoleto").hide();
+
+                resetaBoleto();
+            }
         } 
         else if(document.getElementById('ped_reembolsado').checked) {
             $("#divDadosCartao").hide();
@@ -188,6 +199,31 @@
 
             }
         });
+        $("#boleto_faturado").click(function() {
+            if ($(this).is(":checked")) {
+                $("#divDadosBancarios").hide();
+                $("#divBoleto").show();
+
+                resetaDadosBancarios();
+            } else {
+                $("#divDadosBancarios").show();
+                $("#divBoleto").hide();
+                resetaBoleto();
+            }
+        });
+        $("#transferencia_faturado").click(function() {
+            if ($(this).is(":checked")) {
+                $("#divDadosBancarios").show();
+                $("#divBoleto").hide();
+
+                resetaBoleto();
+
+            } else {
+                $("#divDadosBancarios").hide();
+                $("#divBoleto").show();
+                resetaDadosBancarios();
+            }
+        });
     });
 
     function resetaParcelamento() {
@@ -198,9 +234,10 @@
     function resetaDadosBancarios() {
         document.getElementById("ped_pix").value = "";
         document.getElementById("ped_favorecido").value = "";
-        document.getElementById("ped_banco").value = "";
+        $('#ped_banco').val(null).trigger('change');
         document.getElementById("ped_agenciaconta").value = "";
         document.getElementById("ped_conta").value = "";
+        document.getElementById("ped_cpfcnpj").value = "";
     }
 
     function resetaFaturado() {
@@ -209,7 +246,12 @@
     }
 
     function resetaReembolsado() {
-        document.getElementById("ped_reembolsado").value = "";
+        $('#ped_reembolsado').val(null).trigger('change');
+
+    }
+
+    function resetaBoleto() {
+        document.getElementById("ped_boleto").value = "";
     }
 
     function recarregaFornecedorDespesa() {

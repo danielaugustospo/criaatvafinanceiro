@@ -62,30 +62,39 @@ class PedidoCompra extends Model
     public function listaPedidos($id, $aprovado, $notificado)
     {
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
-        f.razaosocialFornecedor, u.name as solicitante, 
+        f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador,
-        comprador.nomecomp,
+        comprador.razaosocialFornecedor AS nomecomp,
+        CASE 
+        WHEN ped_pago = 0 THEN 'Não Pago'
+        WHEN ped_pago = 1 THEN 'Pago'
+        ELSE 'Não Pago' END as pago, 
+    
         CASE 
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO . " THEN 'Não'
-        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_APROVADO . " THEN 'Sim'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_APROVADO . " THEN 'Aprovado'
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . " THEN 'Aguard. Avaliação'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_REVISADO . " THEN 'Aprovado e Finalizado'
         ELSE 'Indefinido' END as status 
-        
-        FROM pedidocompra p, fornecedores f, users u,
-        (select id as idcomp, razaosocialFornecedor nomecomp from fornecedores forn) as comprador
-               
-        WHERE f.id = ped_fornecedor and u.id = ped_usrsolicitante and comprador.idcomp = ped_nomecomprador";
+            
+        FROM pedidocompra p
+        LEFT JOIN fornecedores f ON p.ped_fornecedor = f.id 
+        LEFT JOIN users u ON  p.ped_usrsolicitante = u.id
+        LEFT JOIN conta c ON p.ped_contaaprovada = c.id
+        LEFT JOIN fornecedores comprador ON p.ped_nomecomprador = comprador.id
+            
+        WHERE ped_excluidopedido = 0 ";
 
 
         if ($id) {
             $stringQuery .= " AND u.id = " . $id;
         }
 
-        if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ))) {
+        if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_REVISADO ))) {
             $stringQuery .= " AND ped_aprovado = " . $aprovado;
         }
         if ((!is_null($notificado)) && (($notificado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($notificado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ))) {
-            $stringQuery .= " AND ped_novanotificacao = " . $notificado;
+            $stringQuery .= " AND ped_novanotificacao = " . $notificado . " order by p.id desc ";
         }
 
         return $stringQuery;

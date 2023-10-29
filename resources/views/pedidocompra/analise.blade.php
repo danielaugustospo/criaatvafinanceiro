@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPedidoCompra">
+<button type="button" class="btn btn-primary mr-1" data-toggle="modal" data-target="#modalPedidoCompra">
     <i class="fa fa-check" aria-hidden="true"></i><i class="fa fa-ban" aria-hidden="true"></i> Análise
 </button>
 

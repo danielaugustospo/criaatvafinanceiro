@@ -1,6 +1,6 @@
 @can('pedidocompra-revisao')
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPedidoCompraRevisao">
-        <i class="fa fa-check" aria-hidden="true"></i><i class="fa fa-ban" aria-hidden="true"></i> Revisão
+    <button type="button" class="btn btn-primary mr-1" style="background-color: #0d663d;" data-toggle="modal" data-target="#modalPedidoCompraRevisao">
+        <i class="fa fa-check" aria-hidden="true"></i><i class="fa fa-ban" aria-hidden="true"></i> FINALIZAÇÃO
     </button>
 @endcan
 
@@ -13,7 +13,7 @@
 
             {!! Form::model($pedido, ['method' => 'POST','route' => ['revisaoanalisepedido', $pedido->id]]) !!}
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Revisão do pedido n°{{ $pedido->id }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">FINALIZAÇÃO do pedido n°{{ $pedido->id }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -36,7 +36,7 @@
                         <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Conta Aprovada</label>
 
                     <select name="ped_contaaprovada" id="ped_contaaprovada" class="selecionaComInput form-control"  style="min-width: 150px !important;">
-                        <option disabled>Selecione...</option>
+                        <option>Selecione...</option>
                         @foreach ($listaContas as $contas)
                             <option value="{{ $contas->id }}" @if ($pedido->ped_contaaprovada == $contas->id) selected @endif>{{ $contas->apelidoConta }} | {{ $contas->nomeConta }}</option>
                         @endforeach
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="row mt-2 mb-2 col-sm-12">
-                        <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Observação da Revisão</label>
+                        <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Observação da FINALIZAÇÃO</label>
                         {!! Form::textarea('ped_observacao_revisao', $pedido->ped_observacao_revisao, ['class' => 'col-sm-8 form-control', 'maxlength' =>
                         '190']) !!}
 

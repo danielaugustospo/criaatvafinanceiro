@@ -281,7 +281,7 @@ class PedidoCompraController extends Controller
             $this->logRevisaPedidoCompra($request);
 
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
-                ->with('success', 'Pedido de compra n° ' . $request->id . ' foi revisado, já notificamos ao solicitante.');
+                ->with('success', 'Pedido de compra n° ' . $request->id . ' foi finalizado, já notificamos ao solicitante.');
         // }
     }
 
