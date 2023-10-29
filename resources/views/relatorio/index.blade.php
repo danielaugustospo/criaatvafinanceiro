@@ -69,7 +69,7 @@
         href="#">  <label class="text-center fontenormal row" for="">Contas Pagas Por Despesa/Grupo      &nbsp; </label></a>
         @endcan
 
-        @can('rel-contaspagasporgrupo')            
+        @can('rel-despesasfixavariavel')            
         <a onclick="abreModalDespesas(param = 'despesasfixavariavel');"
         href="#"> <label class="text-center fontenormal row" for="">Fixas/Variáveis             &nbsp; </label></a>
         @endcan

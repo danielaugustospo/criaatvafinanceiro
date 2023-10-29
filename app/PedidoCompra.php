@@ -54,6 +54,8 @@ class PedidoCompra extends Model
         'ped_reembolsado',
         'ped_cpfcnpj',
         'observacoes_solicitante',
+        'ped_pago',
+        'ped_observacao_revisao'
     ];
 
 

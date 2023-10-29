@@ -222,9 +222,6 @@ class PedidoCompraController extends Controller
             $query .= " ped_aprovado= '$request->ped_aprovado',
             ped_novanotificacao = '1'";
         }
-        if ($request->ped_contaaprovada != '') {
-            $query .= ", ped_contaaprovada= '$request->ped_contaaprovada'";
-        }
         if ($request->ped_exigaprov != '') {
             $query .= ", ped_exigaprov= '$request->ped_exigaprov'";
         }
@@ -255,6 +252,37 @@ class PedidoCompraController extends Controller
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi reprovado, já notificamos ao solicitante.');
         }
+    }
+
+    public function updateRevisao(Request $request)
+    {
+
+        try{
+        $query = "UPDATE pedidocompra SET ped_aprovado= ".StatusEnumPedidoCompra::PEDIDO_REVISADO .", ped_novanotificacao = '1'";
+
+            if ($request->ped_pago != '') {
+                $query .= ", ped_pago= '$request->ped_pago'";
+            }
+            if ($request->ped_contaaprovada != '') {
+                $query .= ", ped_contaaprovada= '$request->ped_contaaprovada'";
+            }
+            if ($request->ped_observacao_revisao != '') {
+                $query .= ", ped_observacao_revisao= '$request->ped_observacao_revisao'";
+            }
+
+            DB::update("$query WHERE id= '$request->id'");
+
+        } catch (\Throwable $th) {
+            return redirect()->route('pedidocompra.index')
+                ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
+        }
+
+        // if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
+            $this->logRevisaPedidoCompra($request);
+
+            return redirect()->route('pedidocompra.index', ['listarTodos' => true])
+                ->with('success', 'Pedido de compra n° ' . $request->id . ' foi revisado, já notificamos ao solicitante.');
+        // }
     }
 
     public function marcaComoLido(Request $request)
@@ -362,6 +390,11 @@ class PedidoCompraController extends Controller
     public function logValidaPedidoCompra($pedido = null)
     {
         $this->Logger->log('info', 'Aprovou o pedido de compra ' . $pedido->id);
+    }
+
+    public function logRevisaPedidoCompra($pedido = null)
+    {
+        $this->Logger->log('info', 'Revisou o pedido de compra ' . $pedido->id);
     }
 
     public function logInvalidaPedidoCompra($pedido = null)

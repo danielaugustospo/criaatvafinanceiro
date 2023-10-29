@@ -103,6 +103,7 @@ Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('l
 Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('listaTipoMateriais');
 
 Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
+Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
 Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
 
 

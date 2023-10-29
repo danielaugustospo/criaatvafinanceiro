@@ -29,11 +29,9 @@
                         </select>
                         
                     </div>
-
+                    {{-- 
                     <div class="row mt-2 mb-2" id="contaaprovada">
                         <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Conta Aprovada</label>
-                        {{-- {!! Form::text('ped_contaaprovada', $valorInput, ['class' => 'col-sm-5 form-control',
-                        'maxlength' => '100']) !!} --}}
 
                     <select name="ped_contaaprovada" id="ped_contaaprovada" class="selecionaComInput form-control  js-example-basic-multiple" >
                         @foreach ($listaContas as $contas)
@@ -44,9 +42,9 @@
                         @endisset  
                         <option value="{{ $contas->id }}">{{ $contas->apelidoConta }}</option>
                     @endforeach
-                    </select>
+                    </select> 
 
-                    </div>
+                    </div> --}}
 
                     <div class="row mt-2 mb-2" id="exigenciaaprovacao">
                         <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Exigência Para Aprovação</label>
@@ -77,22 +75,22 @@
 
 $( document ).ready(function() {
     if($( "#statuspedido" ).val() == '1') {
-        $("#contaaprovada").show();
+        // $("#contaaprovada").show();
         $("#exigenciaaprovacao").hide();
 
     } else {
-        $("#contaaprovada").hide();
+        // $("#contaaprovada").hide();
         $("#exigenciaaprovacao").show();
     }
 });
 
 $( "#statuspedido" ).change(function() {
     if($( "#statuspedido" ).val() == '1') {
-        $("#contaaprovada").show();
+        // $("#contaaprovada").show();
         $("#exigenciaaprovacao").hide();
 
     } else if($( "#statuspedido" ).val() == '0') {
-        $("#contaaprovada").hide();
+        // $("#contaaprovada").hide();
         $("#exigenciaaprovacao").show();
     }
 });

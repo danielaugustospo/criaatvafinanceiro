@@ -162,6 +162,7 @@ class PermissionTableSeeder extends Seeder
             // 'pedidocompra-edit',
             // 'pedidocompra-delete',
             // 'pedidocompra-analise',
+            // 'pedidocompra-revisao',
 
             // 'visualiza-contacorrente',
             // 'visualiza-relatoriogeral',

@@ -207,4 +207,86 @@
     #divFaturado label {
         margin-bottom: 10px; /* Ajuste a quantidade de espaço vertical conforme necessário */
     }
+
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+
+   body{
+
+    background-color: #eee;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+   
+
+   }
+.container{
+    
+    /* height:100vh; */
+}
+
+.progresses{
+    display: flex;
+        align-items: center;
+   }
+
+   .line-success{
+
+    width: 120px;
+    height: 6px;
+    background: #63d19e;
+   }
+   .line-error{
+
+    width: 120px;
+    height: 6px;
+    background: #b90f09;
+   }
+   .line-warning{
+
+    width: 120px;
+    height: 6px;
+    background: #fae104;
+   }
+
+   
+   .steps-success{
+
+    display: flex;
+    background-color: #63d19e;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+   }
+   .steps-error{
+
+    display: flex;
+    background-color: #b90f09;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+   }
+   .steps-warning{
+
+    display: flex;
+    background-color: #fae104;
+    color: #fff;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+   }
 </style>
