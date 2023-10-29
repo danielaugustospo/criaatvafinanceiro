@@ -112,7 +112,7 @@
                                 @foreach ($listaContas as $contas)
                                     @isset($pedido->ped_contaaprovada)
                                         @if ($pedido->ped_contaaprovada == $contas->id)
-                                            <option value="{{ $contas->id }}" selected>{{ $contas->apelidoConta }}</option>
+                                            <option value="{{ $contas->id }}" selected>{{ $contas->apelidoConta }} | {{ $contas->nomeConta }}</option>
                                         @endif
                                     @endisset
                                     <option value="">SEM CONTA</option>
