@@ -50,7 +50,7 @@ $.LoadingOverlay("show", {
     progress: true
 });
 
-@can('visualiza-relatoriogeral')
+@can('rel-despesasporos')
 var dataSource = new kendo.data.DataSource({
     @include('layouts/helpersview/transportdespesaskendogrid')
 

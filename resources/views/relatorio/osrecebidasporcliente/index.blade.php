@@ -42,7 +42,7 @@
 <script>
 
     @include('layouts/helpersview/iniciotabela')
-@can('visualiza-relatoriogeral')
+@can('rel-osrecebidasporcliente')
 
             dataSource: {
                 data: data,
