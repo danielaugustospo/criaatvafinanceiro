@@ -32,7 +32,19 @@ class DespesaController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:despesa-list|despesa-list-all|despesa-create|despesa-edit|despesa-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:despesa-list|despesa-list-all|despesa-create|despesa-edit|despesa-delete
+        |rel-contasapagarporgrupo
+        |rel-contaspagasporgrupo
+        |rel-despesasfixavariavel
+        |rel-fornecedor
+        |rel-notafiscalfornecedor
+        |rel-pclienteanalitico
+        |rel-despesaspagasporcontabancaria
+        |rel-despesasporos
+        |rel-despesasporosplanilha
+        |rel-reembolso
+        |rel-despesassinteticaporos'
+        , ['only' => ['index', 'show']]);
         $this->middleware('permission:despesa-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:despesa-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:despesa-delete', ['only' => ['destroy']]);
@@ -77,22 +89,38 @@ class DespesaController extends Controller
             $this->show($request, $iddespesa);
 
             $despesas = Despesa::where('id', $iddespesa)->where('excluidoDespesa', 0)->get();
-
+            
             if (count($despesas) == 1) {
-
+                
                 header("Location: despesas/$iddespesa");
                 exit();
             } else {
                 return redirect()->route('despesas.index')
-                    ->with('warning', 'Depesa ' . $iddespesa . ' é um dado excluído, ou uma despesa inexistente, não podendo ser acessado');
+                ->with('warning', 'Depesa ' . $iddespesa . ' é um dado excluído, ou uma despesa inexistente, não podendo ser acessado');
             }
         }
-
-        if (!Gate::allows('despesa-list') && !Gate::allows('despesa-list-all')) {
-            abort(401, 'Não Autorizado');
-        } elseif (Gate::allows('despesa-list')) {
-            $request->idUser = Auth::id();
-        }
+        if (
+            Gate::allows('despesa-list') || 
+            Gate::allows('despesa-list-all') ||
+            Gate::allows('rel-contasapagarporgrupo') ||
+            Gate::allows('rel-contaspagasporgrupo') ||
+            Gate::allows('rel-despesasfixavariavel') ||
+            Gate::allows('rel-fornecedor') ||
+            Gate::allows('rel-notafiscalfornecedor') ||
+            Gate::allows('rel-pclienteanalitico') ||
+            Gate::allows('rel-despesaspagasporcontabancaria') ||
+            Gate::allows('rel-despesasporos') ||
+            Gate::allows('rel-despesasporosplanilha') ||
+            Gate::allows('rel-reembolso') ||
+            Gate::allows('rel-despesassinteticaporos') ||
+            Gate::allows('rel-controleconsumomateriais') 
+            ) {
+                $request->idUser = Auth::id();
+            } else {
+                abort(401, 'Não Autorizado');
+            }
+            
+            
 
         $validacoesPesquisa = $this->validaPesquisa($request);
 
@@ -120,38 +148,81 @@ class DespesaController extends Controller
         return view($rota, compact('consulta', 'despesas', 'valor', 'dtinicio', 'dtfim', 'coddespesa', 'grupodespesa', 'fornecedor', 'ordemservico', 'conta', 'notafiscal', 'cliente', 'fixavariavel', 'pago', 'idSalvo', 'dtiniciolancamento', 'dtfimlancamento', 'formaPagamento'));
     }
 
+    public function validaUsuario($idUser){
+        $permissoes = [
+            'rel-contasapagarporgrupo',
+            'rel-contaspagasporgrupo',
+            'rel-despesasfixavariavel',
+            'rel-fornecedor',
+            'rel-notafiscalfornecedor',
+            'rel-pclienteanalitico',
+            'rel-despesaspagasporcontabancaria',
+            'rel-despesasporos',
+            'rel-despesasporosplanilha',
+            'rel-reembolso',
+            'rel-despesassinteticaporos',
+            'rel-controleconsumomateriais',
+        ];
+        
+        $autorizado = false; // Inicialmente, nenhum acesso é permitido
+        
+        $user = User::find($idUser);
+        
+        foreach ($permissoes as $permissao) {
+            if ($user->can($permissao)) {
+                $autorizado = true; // Se qualquer permissão for concedida, definimos $autorizado como true
+                break; // Saímos do loop assim que encontramos a primeira permissão concedida
+            }
+        }
+        
+        return $autorizado;
+        
+    }
 
     public function apidespesas(Request $request)
     {
         $permissaoTotal = 0;
-        if (isset(Auth()->user()->id)) {
-            if (User::find(Auth()->user()->id)->can('despesa-list-all')) {
+        $user = Auth()->user();
+    
+        if ($user) {
+            $autorizado = $this->validaUsuario($user->id);
+            $permRelatorio = false;
+            
+            if ($user->can('despesa-list-all')) {
                 $permissaoTotal = 1;
-            } elseif (User::find(Auth()->user()->id)->can('despesa-list')) {
-                $idUser = Auth()->user()->id;
-            }
-            else {
+            } elseif ($autorizado == true) {
+                $permRelatorio = true;
+                $idUser = $user->id;
+            } else {
                 abort(401, 'Não Autorizado');
             }
         } elseif (isset($request->idUser)) {
             $idUser = Crypt::decrypt($request->idUser);
-            if (User::find($idUser)->can('despesa-list-all')) {
+            $user = User::find($idUser);
+            $autorizado = $this->validaUsuario($user->id);
+            $permRelatorio = false;
+            
+            if ($user && $user->can('despesa-list-all')) {
                 $permissaoTotal = 1;
-            } 
-            elseif (User::find($idUser)->can('despesa-list')) {
+            } elseif ($autorizado == true) {
+                $permRelatorio = true;
+
                 $idUser = $idUser;
-            } 
-            else {
+            } else {
                 abort(401, 'Não Autorizado');
             }
-        }
-        else {
+        } else {
             abort(401, 'Não Autorizado');
         }
         // elseif (User::find($idUser)->can('despesa-create')){
 
         // }
-        $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = '$idUser' ";
+        if($permRelatorio == true){
+            $visaoLimitada = " ";
+        }else{
+
+            $permissaoTotal   == 1 ? $visaoLimitada = " " : $visaoLimitada = " AND idAutor = '$idUser' ";
+        }
 
         // TODO: Montar filtro genérico de despesas
 
