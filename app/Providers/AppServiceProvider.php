@@ -117,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $countpedidoaprovado = DB::select("SELECT count(id) as countpedidoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	
         and ped_excluidopedido = 0 
-        and ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_APROVADO . "'
+        and (ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_APROVADO . "' or ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_REVISADO . "')
         and ped_novanotificacao = 1");
         return $countpedidoaprovado;
     }

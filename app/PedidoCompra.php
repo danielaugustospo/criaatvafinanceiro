@@ -61,6 +61,10 @@ class PedidoCompra extends Model
 
     public function listaPedidos($id, $aprovado, $notificado)
     {
+        ini_set('xdebug.var_display_max_depth', 20);
+ini_set('xdebug.var_display_max_children', 512);
+ini_set('xdebug.var_display_max_data', 2048);
+
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
         f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador,
@@ -91,7 +95,11 @@ class PedidoCompra extends Model
         }
 
         if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_REVISADO ))) {
-            $stringQuery .= " AND ped_aprovado = " . $aprovado;
+            if($aprovado == '1'){
+                $stringQuery .= " AND (ped_aprovado = 4 or ped_aprovado = " . $aprovado . ") ";
+            }else{
+                $stringQuery .= " AND ped_aprovado = " . $aprovado;
+            }
         }
         if ((!is_null($notificado)) && (($notificado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($notificado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ))) {
             $stringQuery .= " AND ped_novanotificacao = " . $notificado . " order by p.id desc ";

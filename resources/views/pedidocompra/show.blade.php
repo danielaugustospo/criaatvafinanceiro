@@ -14,7 +14,7 @@
 
     @isset($pedido)
         @if ($pedido->ped_usrsolicitante == Auth::id() || Gate::check('pedidocompra-analise'))
-            @if ($pedido->ped_aprovado == '1' && $pedido->ped_novanotificacao == '1')
+            @if (($pedido->ped_aprovado == '1' || $pedido->ped_aprovado == '4') && $pedido->ped_novanotificacao == '1')
                 {!! Form::model($pedido, ['method' => 'POST', 'route' => ['marcacomolido', $pedido->id]]) !!}
 
                 <div class="alert alert-success mb-1" role="alert">
