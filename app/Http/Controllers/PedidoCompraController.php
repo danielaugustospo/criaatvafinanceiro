@@ -101,6 +101,7 @@ class PedidoCompraController extends Controller
 
         $request->validate([
             'ped_nomecomprador'  => 'required',
+            'ped_usrsolicitante' => 'required',
             'ped_fornecedor'     => 'required',
             'ped_os'             => 'required',
             'ped_descprod'       => 'required',
@@ -110,6 +111,7 @@ class PedidoCompraController extends Controller
         ],
         [
             'ped_nomecomprador.required'=> 'Nome do Comprador é obrigatório', 
+            'ped_usrsolicitante.required'   => 'Nome do Solicitante é obrigatório', 
             'ped_fornecedor.required'   => 'Nome do Fornecedor é obrigatório', 
             'ped_os.required'           => 'Informe se a compra é para a CRIAATVA ou para uma OS', 
             'ped_descprod.required'     => 'Informe a descrição', 

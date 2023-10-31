@@ -21,7 +21,7 @@
 
 @include('pedidocompra/campos')
 
-{!! Form::hidden('ped_usrsolicitante', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!}
+{{-- {!! Form::hidden('ped_usrsolicitante', Auth::user()->id, ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '5']) !!} --}}
 {!! Form::submit('Salvar', ['class' => 'btn btn-success']); !!}
 {!! Form::close() !!}
 

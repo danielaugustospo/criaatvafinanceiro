@@ -61,12 +61,9 @@ class PedidoCompra extends Model
 
     public function listaPedidos($id, $aprovado, $notificado)
     {
-        ini_set('xdebug.var_display_max_depth', 20);
-ini_set('xdebug.var_display_max_children', 512);
-ini_set('xdebug.var_display_max_data', 2048);
 
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
-        f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
+        f.razaosocialFornecedor, sol.razaosocialFornecedor as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador,
         comprador.razaosocialFornecedor AS nomecomp,
         CASE 
@@ -83,7 +80,7 @@ ini_set('xdebug.var_display_max_data', 2048);
             
         FROM pedidocompra p
         LEFT JOIN fornecedores f ON p.ped_fornecedor = f.id 
-        LEFT JOIN users u ON  p.ped_usrsolicitante = u.id
+        LEFT JOIN fornecedores sol ON  p.ped_usrsolicitante = sol.id
         LEFT JOIN conta c ON p.ped_contaaprovada = c.id
         LEFT JOIN fornecedores comprador ON p.ped_nomecomprador = comprador.id
             
@@ -91,7 +88,7 @@ ini_set('xdebug.var_display_max_data', 2048);
 
 
         if ($id) {
-            $stringQuery .= " AND u.id = " . $id;
+            $stringQuery .= " AND sol.id = " . $id;
         }
 
         if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_REVISADO ))) {

@@ -101,6 +101,26 @@
         </select>
     </div>
 
+
+    <div class="row d-flex">
+        <label class="col-sm-2 mr-2 mt-2" for="">Solicitante</label>
+        <select name="ped_usrsolicitante" class="selecionaComInput form-control col-sm-8" {{ $variavelDisabledNaView }}>
+            @if (!isset($pedido))
+                <option disabled selected>Selecione...</option>
+            @endif
+            @foreach ($listaFornecedores as $fornecedor)
+                @isset($pedido)
+                    @if ($pedido->ped_usrsolicitante == $fornecedor->id)
+                        <option value="{{ $fornecedor->id }}" selected>{{ $fornecedor->razaosocialFornecedor }}
+                        </option>
+                    @endif
+                @endisset
+                <option @if (old('ped_usrsolicitante') == $fornecedor->id) selected @endif value="{{ $fornecedor->id }}">
+                    {{ $fornecedor->razaosocialFornecedor }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="">Fornecedor</label>
         <div class="pl-0 col-sm-5">
@@ -243,6 +263,7 @@
             @endforeach
         </select>
     </div>
+
 
     <div id="divFaturado">
         <div class="row mt-2 mb-2">
