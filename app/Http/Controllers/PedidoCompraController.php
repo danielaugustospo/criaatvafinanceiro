@@ -262,7 +262,10 @@ class PedidoCompraController extends Controller
     {
 
         try{
-        $query = "UPDATE pedidocompra SET ped_aprovado= ".StatusEnumPedidoCompra::PEDIDO_REVISADO .", ped_novanotificacao = '1'";
+        $query = "UPDATE pedidocompra SET 
+            ped_aprovado= ".StatusEnumPedidoCompra::PEDIDO_REVISADO .",
+            ped_tipopedido = '1',  
+            ped_novanotificacao = '1'";
 
             if ($request->ped_pago != '') {
                 $query .= ", ped_pago= '$request->ped_pago'";
