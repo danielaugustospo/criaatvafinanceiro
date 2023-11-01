@@ -28,13 +28,28 @@
 
 
     <div class="row">
-        <label class="col-sm-2  mr-2" for="">Compra para:</label>
+        <label class="col-sm-2  mr-2 mt-2" for="">STATUS DA COMPRA:</label>
+
+        <input class="ml-2 mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '0' || old('ped_tipopedido') == '0') checked @endif
+            @isset($pedido) @if ($pedido->ped_tipopedido == '0') checked  @endif @endisset
+            name="ped_tipopedido" id="tipoPedidoAComprar" value="0" {{ $variavelDisabledNaView }}>
+            <label class="mt-2 mr-2 mr-4 col-sm-2" for="">A COMPRAR</label>
+
+            <input class="mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '1' || old('ped_tipopedido') == '1') checked @endif
+            @isset($pedido) @if ($pedido->ped_tipopedido != '0') checked @endif @endisset
+            name="ped_tipopedido" id="tipoPedidoComprado" value="1" {{ $variavelDisabledNaView }}>
+            <label class="mt-2 mr-2 mr-4" for="">ITEM JÁ COMPRADO</label>
+
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2  mr-2 mt-2" for="">Compra para:</label>
 
         <input class="ml-2 mr-2" type="radio" name="oscriaatva" @if (old('ped_os') == 'EMPRESA GERAL' || old('oscriaatva') == 'EMPRESA GERAL') checked @endif
             @isset($pedido) @if ($pedido->ped_os == 'EMPRESA GERAL') checked  @endif @endisset
             name="ped_os" id="compraCRIAATVA" value="EMPRESA GERAL" {{ $variavelDisabledNaView }}>
 
-        <label class="mt-2 mr-2 mr-4" for="">EMPRESA</label>
+        <label class="mt-2 mr-2 mr-4 col-sm-2" for="">EMPRESA</label>
         <input class="mr-2" type="radio" name="oscriaatva" @if (old('ped_os') == 'OS' || old('oscriaatva') == 'OS') checked @endif
             @isset($pedido) @if ($pedido->ped_os != 'EMPRESA GERAL') checked @endif @endisset
             name="ped_os" id="compraOS" value="OS" {{ $variavelDisabledNaView }}>
@@ -42,7 +57,7 @@
 
 
         <div id="telaOS">
-            <select name="ped_os" id="ped_os" class="selecionaComInput col-sm-9" required
+            <select name="ped_os" id="ped_os" class="selecionaComInput col-sm-7 mt-2" required
                 {{ $variavelDisabledNaView }}>
                 <option value="EMPRESA GERAL">SEM OS</option>
                 @foreach ($listaOrdemDeServicos as $listaOS)
@@ -72,14 +87,21 @@
                 'readonly',
             ]) !!}
         @else
-            {!! Form::date('ped_data', $valorInput, [
-                'class' => 'col-sm-3 form-control',
-                'maxlength' => '100',
-                $variavelReadOnlyNaView,
+        {!! Form::date('ped_data', $valorInput, [
+            'class' => 'col-sm-3 form-control',
+            'maxlength' => '100',
+            $variavelReadOnlyNaView,
             ]) !!}
         @endif
-
+        
     </div>
+
+    @isset($pedido)
+        <div class="row d-flex">
+            <label class="col-sm-2 mr-2 mt-2" for="">Perfil Solicitante</label>
+            <span class=" mt-2 text-danger">{{ $pedido->solicitante->name ?? 'Nenhum solicitante encontrado' }}</span>
+        </div>
+    @endisset
 
     <div class="row d-flex">
         <label class="col-sm-2 mr-2 mt-2" for="">Nome Comprador</label>

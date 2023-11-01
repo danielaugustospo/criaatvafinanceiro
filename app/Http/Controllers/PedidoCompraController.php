@@ -100,6 +100,7 @@ class PedidoCompraController extends Controller
 
 
         $request->validate([
+            'ped_tipopedido'     => 'required',
             'ped_nomecomprador'  => 'required',
             'ped_fornecedor'     => 'required',
             'ped_os'             => 'required',
@@ -109,6 +110,7 @@ class PedidoCompraController extends Controller
             'ped_valortotal'     => 'required',
         ],
         [
+            'ped_tipopedido.required'   => 'Informe se a compra já foi efetuada ou não', 
             'ped_nomecomprador.required'=> 'Nome do Comprador é obrigatório', 
             'ped_fornecedor.required'   => 'Nome do Fornecedor é obrigatório', 
             'ped_os.required'           => 'Informe se a compra é para a CRIAATVA ou para uma OS', 
@@ -123,6 +125,7 @@ class PedidoCompraController extends Controller
 
         
         // $pedido->ped_os                     = $request->get('ped_os');
+        $pedido->ped_tipopedido             = $request->get('ped_tipopedido');
         $pedido->ped_data                   = $request->get('ped_data');
         $pedido->ped_nomecomprador          = $request->get('ped_nomecomprador');
         $pedido->ped_usrsolicitante         = $request->get('ped_usrsolicitante');
@@ -168,6 +171,7 @@ class PedidoCompraController extends Controller
         $pedido->id                         = $request->get('id');
 
 
+        $pedido->ped_tipopedido             = $request->get('ped_tipopedido');
         $pedido->ped_data                   = $request->get('ped_data');
         $pedido->ped_nomecomprador          = $request->get('ped_nomecomprador');
         $pedido->ped_usrsolicitante         = Auth::id();
@@ -333,8 +337,7 @@ class PedidoCompraController extends Controller
 
     public function show(Request $request, $id)
     {
-
-        $pedido = PedidoCompra::find($id);
+        $pedido = PedidoCompra::with('solicitante')->find($id);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;

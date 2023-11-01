@@ -58,6 +58,10 @@ class PedidoCompra extends Model
         'ped_observacao_revisao'
     ];
 
+    public function solicitante()
+    {
+        return $this->belongsTo(User::class, 'ped_usrsolicitante', 'id');
+    }
 
     public function listaPedidos($id, $aprovado, $notificado)
     {

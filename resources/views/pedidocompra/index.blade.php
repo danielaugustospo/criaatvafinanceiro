@@ -152,7 +152,7 @@ $.LoadingOverlay("show", {
                     { field: "id", title: "ID", filterable: true, width: 70, sortable: { initialDirection: "desc" }, },
                     { field: "ped_os", title: "OS", filterable: true, width: 70 },
                 @can('pedidocompra-analise')
-                    { field: "solicitante", title: "Solicitante", filterable: true, width: 100 },
+                    { field: "solicitante", title: "Perfil Solicitante", filterable: true, width: 120 },
                 @endcan
                     { field: "nomecomp", title: "Comprador", filterable: true, width: 100 },
                     { field: "ped_descprod", title: "Despesa", filterable: true, width: 100 },
