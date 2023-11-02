@@ -303,7 +303,7 @@
                                 field: "id", title: "ID", filterable: true, width: 100,
                             },
                             {
-                                field: "apelidoConta", title: "C/C", filterable: true, width: 120,
+                                field: "nomeConta", title: "C/C", filterable: true, width: 120,
                             },
                             {
                                 field: "despesaCodigoDespesa",

@@ -249,7 +249,7 @@
                             width: 100
                         },
                         {
-                            field: "apelidoConta",
+                            field: "nomeConta",
                             title: "C/C",
                             filterable: true,
                             autowidth: true,

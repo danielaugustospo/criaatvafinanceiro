@@ -67,14 +67,14 @@ class OrdemdeServicoController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($consulta) {
 
-                $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn-sm" style="background-color:#066B4B !important;" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-thumbs-up" aria-hidden="true"></i></a>' : '';
-                
-                $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
-                    '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                    </div>';
 
-                return $grupoBtn;
-                })
+                    $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
+                    $btnEditar     = Gate::allows('ordemdeservico-edit') ? '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>' : '';
+        
+                    $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar . $btnEditar . '</div>';
+        
+                    return $grupoBtn;
+                        })
 
                 ->rawColumns(['action'])
                 ->make(true);
@@ -114,10 +114,9 @@ class OrdemdeServicoController extends Controller
         ->addColumn('action', function($consulta) {
 
             $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
-                
-            $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar .
-                '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                </div>';
+            $btnEditar     = Gate::allows('ordemdeservico-edit') ? '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>' : '';
+
+            $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar . $btnEditar . '</div>';
 
             return $grupoBtn;
         })
