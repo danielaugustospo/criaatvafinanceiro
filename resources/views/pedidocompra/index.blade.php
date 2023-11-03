@@ -171,11 +171,15 @@ $.LoadingOverlay("show", {
                         filterable: true,
                         width: 100,
                         template: function(dataItem) {
-                            if (dataItem.pago === "Pago") {
+                            if (dataItem.status == 'Cancelado') {
+                                return '<span style="color: red;">' + dataItem.status + '</span>';
+                            } 
+                            else if (dataItem.pago === "Pago" && dataItem.status != 'Cancelado') {
                                 return '<span style="color: blue;">' + dataItem.pago + '</span>';
                             } else if (dataItem.pago === "Não Pago") {
                                 return '<span style="color: red;">' + dataItem.pago + '</span>';
-                            } else {
+                            } 
+                            else {
                                 return dataItem.pago;
                             }
                         }

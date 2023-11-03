@@ -84,11 +84,6 @@
             </div>
             <span class="line-success text-center">Solicitado</span>
 
-            <div class="steps-success">
-                <span class="font-weight-bold">1</span>
-            </div>
-            <span class="line-success text-center">Solicitado</span>
-
             <div class="steps-error">
                 <span class="font-weight-bold">2</span>
             </div>

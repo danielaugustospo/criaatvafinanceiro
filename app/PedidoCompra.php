@@ -80,6 +80,8 @@ class PedidoCompra extends Model
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_APROVADO . " THEN 'Aprovado'
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . " THEN 'Aguard. Avaliação'
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_REVISADO . " THEN 'Aprovado e Finalizado'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_CANCELADO . " THEN 'Cancelado'
+
         ELSE 'Indefinido' END as status 
             
         FROM pedidocompra p
