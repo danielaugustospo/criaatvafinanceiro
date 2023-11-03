@@ -20,7 +20,17 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="id" value="{{ $pedido->id }}">
+                <input type="text" name="ped_aprovado" id="ped_aprovado" value="{{ $pedido->ped_aprovado }}">
+
+
+                <div class="row mt-5 mb-2 col-sm-12">
+                    <label class="col-sm-3 mr-2 mt-2" for="" style="color: red;">Cancelar Pedido?</label>
+
+                    <input type="checkbox" id="ped_cancelado" checked data-toggle="toggle" data-on="✅Pedido Ativo" data-off="✖️ Pedido Cancelado" data-onstyle="success" data-offstyle="danger" data-height="40" data-width="200" data-style="ios" >                        
+                </div>
+                
                 <div style="background-color: rgb(0, 0, 0);" class="p-2">
+
                     <div class="row mt-5 mb-2 col-sm-12">
                         <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Pago</label>
   

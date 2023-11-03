@@ -259,11 +259,13 @@ class PedidoCompraController extends Controller
     }
 
     public function updateRevisao(Request $request)
-    {
+    { 
+        
+        $ped_aprovado = (is_null($request->ped_aprovado)) ? StatusEnumPedidoCompra::PEDIDO_REVISADO : $request->ped_aprovado ;
 
         try{
         $query = "UPDATE pedidocompra SET 
-            ped_aprovado= ".StatusEnumPedidoCompra::PEDIDO_REVISADO .",
+            ped_aprovado= ". $ped_aprovado  .",
             ped_tipopedido = '1',  
             ped_novanotificacao = '1'";
 

@@ -1,5 +1,9 @@
 @include('pedidocompra/script')
 @include('pedidocompra/estilo')
+<style>
+    .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+    .toggle.ios .toggle-handle { border-radius: 20px; }
+  </style>
 @include('despesas/cadastrafornecedor')
 <hr>
 

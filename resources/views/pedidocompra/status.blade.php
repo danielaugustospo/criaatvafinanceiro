@@ -78,6 +78,25 @@
             <div class="steps-success">
                 <span><i class="fa fa-check"></i></span>
             </div>
+        @elseif ($pedido->ped_aprovado == '5')
+            <div class="steps-success">
+                <span class="font-weight-bold">1</span>
+            </div>
+            <span class="line-success text-center">Solicitado</span>
+
+            <div class="steps-success">
+                <span class="font-weight-bold">1</span>
+            </div>
+            <span class="line-success text-center">Solicitado</span>
+
+            <div class="steps-error">
+                <span class="font-weight-bold">2</span>
+            </div>
+            <span class="line-error">Cancelado</span>
+
+            <div class="steps-error">
+                <span class="font-weight-bold">x</span>
+            </div>
         @endif
 
     </div>

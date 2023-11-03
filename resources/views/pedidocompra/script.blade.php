@@ -324,4 +324,15 @@
                 calcularValorTotal();
             });
         });
+
+  $(function() {
+    $('#ped_cancelado').change(function() {
+      if( $(this).prop('checked') == false){
+        document.getElementById("ped_aprovado").value = "5" //Pedido Cancelado;
+      }else{
+        document.getElementById("ped_aprovado").value = null;
+      }
+    })
+  })
+
 </script>

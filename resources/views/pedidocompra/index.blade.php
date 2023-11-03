@@ -191,7 +191,7 @@ $.LoadingOverlay("show", {
                         filterable: true,
 
                         template: function(dataItem) {
-                            if (dataItem.status == 'Sim' || dataItem.status == 'Não' || dataItem.status == 'Aprovado e Finalizado') {
+                            if (dataItem.status == 'Sim' || dataItem.status == 'Não'  || dataItem.status == 'Cancelado' || dataItem.status == 'Aprovado e Finalizado') {
                                 return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-secondary  text-white">Visualizar</a>';
                             } else {
                                 return '<a href="{{ route('pedidocompra.index') }}/' + dataItem.id + '" class="btn btn-primary text-white">Analisar</a>';
@@ -278,7 +278,7 @@ $.LoadingOverlay("show", {
                     var dataItem = $("#grid").data("kendoGrid").dataItem(this);
                     if (dataItem.pago === "Pago") {
                         $(this).find("td:nth-child(9)").css("color", "blue");
-                    } else if (dataItem.pago === "Não Pago") {
+                    } else if (dataItem.pago === "Não Pago" || dataItem.pago === "Cancelado") {
                         $(this).find("td:nth-child(9)").css("color", "red");
                     }
                 });
