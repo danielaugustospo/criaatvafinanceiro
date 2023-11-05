@@ -12,7 +12,7 @@ use Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Enums\StatusEnumPedidoCompra;
-
+use Carbon\Carbon;
 
 class PedidoCompraController extends Controller
 {
@@ -218,25 +218,21 @@ class PedidoCompraController extends Controller
 
     public function updateAprovacao(Request $request)
     {
-
         try{
-        $query = "UPDATE pedidocompra SET ";
 
-        if ($request->ped_aprovado != '') {
-            $query .= " ped_aprovado= '$request->ped_aprovado',
-            ped_novanotificacao = '1'";
-        }
-        if ($request->ped_exigaprov != '') {
-            $query .= ", ped_exigaprov= '$request->ped_exigaprov'";
-        }
-        if ($request->ped_observacao != '') {
-            $query .= ", ped_observacao= '$request->ped_observacao'";
-        }
-        if ($request->ped_excluidopedido != '') {
-            $query .= ", ped_excluidopedido= '$request->ped_excluidopedido'";
-        }
-
-        DB::update("$query WHERE id= '$request->id'");
+            $idUsuarioAprovador = auth()->id();
+            
+            DB::table('pedidocompra')
+                ->where('id', $request->id)
+                ->update([
+                    'ped_usr_aprovador'     => $idUsuarioAprovador,
+                    'ped_dt_aprovacao'      => date('Y-m-d H:i:s'),
+                    'ped_aprovado'          => $request->ped_aprovado,
+                    'ped_novanotificacao'   => ($request->ped_aprovado != '') ? 1 : null,
+                    'ped_exigaprov'         => $request->ped_exigaprov,
+                    'ped_observacao'        => $request->ped_observacao,
+                    'ped_excluidopedido'    => 0,
+                ]);
 
         } catch (\Throwable $th) {
             return redirect()->route('pedidocompra.index')
@@ -261,37 +257,30 @@ class PedidoCompraController extends Controller
     public function updateRevisao(Request $request)
     { 
         
-        $ped_aprovado = (is_null($request->ped_aprovado)) ? StatusEnumPedidoCompra::PEDIDO_REVISADO : $request->ped_aprovado ;
+        $ped_aprovado       = (is_null($request->ped_aprovado) || $request->ped_aprovado != StatusEnumPedidoCompra::PEDIDO_CANCELADO) ? StatusEnumPedidoCompra::PEDIDO_REVISADO : $request->ped_aprovado;
+        $idUsuarioAprovador = auth()->id();
 
-        try{
-        $query = "UPDATE pedidocompra SET 
-            ped_aprovado= ". $ped_aprovado  .",
-            ped_tipopedido = '1',  
-            ped_novanotificacao = '1'";
-
-            if ($request->ped_pago != '') {
-                $query .= ", ped_pago= '$request->ped_pago'";
-            }
-            if ($request->ped_contaaprovada != '') {
-                $query .= ", ped_contaaprovada= '$request->ped_contaaprovada'";
-            }
-            if ($request->ped_observacao_revisao != '') {
-                $query .= ", ped_observacao_revisao= '$request->ped_observacao_revisao'";
-            }
-
-            DB::update("$query WHERE id= '$request->id'");
-
-        } catch (\Throwable $th) {
-            return redirect()->route('pedidocompra.index')
-                ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
-        }
-
-        // if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
-            $this->logRevisaPedidoCompra($request);
-
+        try {
+            $pedido = PedidoCompra::find($request->id);
+            $pedido->update([
+                    'ped_aprovado'              => $ped_aprovado,
+                    'ped_tipopedido'            => 1,
+                    'ped_novanotificacao'       => 1,
+                    'ped_pago'                  => $request->ped_pago,
+                    'ped_contaaprovada'         => $request->ped_contaaprovada,
+                    'ped_observacao_revisao'    => $request->ped_observacao_revisao,
+                    'ped_usr_finalizador'       => $idUsuarioAprovador,
+                    'ped_dt_finalizacao'        => date('Y-m-d H:i:s'),
+                ]);
+        
+                $this->logRevisaPedidoCompra($request);
+        
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi finalizado, já notificamos ao solicitante.');
-        // }
+        } catch (\Throwable $th) {
+            return redirect()->route('pedidocompra.index')
+                ->with('alert', 'Não conseguimos processar sua solicitação. Favor, tente novamente');
+        }
     }
 
     public function marcaComoLido(Request $request)
@@ -342,7 +331,7 @@ class PedidoCompraController extends Controller
 
     public function show(Request $request, $id)
     {
-        $pedido = PedidoCompra::with('solicitante')->find($id);
+        $pedido = PedidoCompra::with('solicitante','aprovador','finalizador')->find($id);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;
@@ -356,7 +345,7 @@ class PedidoCompraController extends Controller
 
     public function edit($id)
     {
-        $pedido = PedidoCompra::find($id);
+        $pedido = PedidoCompra::with('solicitante')->find($id);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro       = $this->valorSemCadastro;

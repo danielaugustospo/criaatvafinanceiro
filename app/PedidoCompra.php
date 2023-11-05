@@ -14,6 +14,11 @@ class PedidoCompra extends Model
     use Notifiable;
     use HasRoles;
 
+    protected $casts = [
+        'created_at'            => 'datetime:Y-m-d',
+        'ped_dt_aprovacao'      => 'datetime:Y-m-d h:i:s',
+        'ped_dt_finalizacao'    => 'datetime:Y-m-d h:i:s'
+     ];
 
     /**
      * The attributes that are mass assignable.
@@ -55,12 +60,26 @@ class PedidoCompra extends Model
         'ped_cpfcnpj',
         'observacoes_solicitante',
         'ped_pago',
-        'ped_observacao_revisao'
+        'ped_observacao_revisao',
+        'ped_usr_aprovador',
+        'ped_dt_aprovacao',
+        'ped_usr_finalizador',
+        'ped_dt_finalizacao'
     ];
 
     public function solicitante()
     {
         return $this->belongsTo(User::class, 'ped_usrsolicitante', 'id');
+    }
+
+    public function aprovador()
+    {
+        return $this->belongsTo(User::class, 'ped_usr_aprovador', 'id');
+    }
+
+    public function finalizador()
+    {
+        return $this->belongsTo(User::class, 'ped_usr_finalizador', 'id');
     }
 
     public function listaPedidos($id, $aprovado, $notificado)

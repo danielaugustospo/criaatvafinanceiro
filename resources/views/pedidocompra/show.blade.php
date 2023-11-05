@@ -140,6 +140,10 @@
                         ]) !!}
 
                     </div>
+                    <div class="row mt-2 mb-2 ">
+                        <label class="col-sm-2 mr-2 mt-2" for="" style="color: white;">Perfil Validador</label>
+                        <span class=" mt-2 text-success">{{(!is_null($pedido->aprovador)) ? $pedido->aprovador->name .' - Data : '. date('d/m/Y H:i:s', strtotime($pedido->ped_dt_aprovacao)) : 'Nenhum aprovador encontrado' }}</span>
+                    </div>
                 </div>
                 <hr>
                 @if ($pedido->ped_aprovado == '4')
@@ -188,6 +192,11 @@
                             ]) !!}
 
                         </div>
+                        <div class="row mt-2 mb-2 ">
+                            <label class="col-sm-2 mr-2 mt-2" for="" style="color: white;">Perfil Finalizador</label>
+                                <span class=" mt-2 text-success">{{(!is_null($pedido->finalizador)) ? $pedido->finalizador->name .' - Data : '. date('d/m/Y H:i:s', strtotime($pedido->ped_dt_finalizacao)) : 'Nenhum finalizador encontrado' }}</span>
+                        </div>
+            
                     </div>
             </div>
         @endif
