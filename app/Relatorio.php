@@ -311,7 +311,7 @@ where d.pago = 'S' ";
         os.eventoOrdemdeServico,
         r.valorreceita,	
         r.nfreceita, 
-        cc.apelidoConta as 'conta',
+        cc.nomeConta as 'conta',
         fpg.nomeFormaPagamento,
         os.dataCriacaoOrdemdeServico,
         r.descricaoreceita  
@@ -345,7 +345,7 @@ where d.pago = 'S' ";
         os.eventoOrdemdeServico,
         r.valorreceita,	
         r.nfreceita, 
-        cc.apelidoConta,
+        cc.nomeConta,
         fpg.nomeFormaPagamento,
         os.dataCriacaoOrdemdeServico,
         os.valorOrdemdeServico,

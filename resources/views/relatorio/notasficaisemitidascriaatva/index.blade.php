@@ -70,7 +70,7 @@
                 { field: "nomeFormaPagamento", title: "Forma de Pag.", filterable: true, width: 60 },
                 { field: "valorreceita", title: "Valor", filterable: true, width: 60, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "pagoreceita", title: "Pago", filterable: true, width: 40 },            
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 40 },            
+                { field: "nomeConta", title: "Conta", filterable: true, width: 40 },            
                 { field: "nfreceita", title: "NF", filterable: true, width: 40 },            
                 ],
                 @include('layouts/helpersview/finaltabela')

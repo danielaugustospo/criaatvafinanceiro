@@ -48,7 +48,7 @@
                             idosreceita: { type: "string"},
                             descricaoreceita: { type: "string"},
                             nomeFormaPagamento: { type: "string"},
-                            conta: { type: "string"},
+                            nomeConta: { type: "string"},
                         }
                     },
                 },

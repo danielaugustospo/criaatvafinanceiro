@@ -71,7 +71,7 @@
                 { field: "valorreceita", title: "Valor", filterable: true, width: 100, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "pagoreceita", title: "Pago", filterable: true, width: 60 },            
                 { field: "nfreceita", title: "Nota Fiscal", filterable: true, width: 120 },            
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },            
+                { field: "nomeConta", title: "Conta", filterable: true, width: 100 },            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')

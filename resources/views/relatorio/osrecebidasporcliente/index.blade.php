@@ -72,7 +72,7 @@
                 { field: "valorreceita", title: "Valor", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total por Conta: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 { field: "razaosocialCliente", title: "Cliente", filterable: true, width: 90, exportable:false },
                 { field: "dataCriacaoOrdemdeServico", title: "Criação da OS", filterable: true, width: 90, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
-                { field: "conta", title: "Conta", filterable: true, width: 80, exportable:false }            
+                { field: "nomeConta", title: "Conta", filterable: true, width: 80, exportable:false }            
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
