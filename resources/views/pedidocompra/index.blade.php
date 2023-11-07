@@ -151,21 +151,18 @@ $.LoadingOverlay("show", {
             columns: [
                     { field: "id", title: "ID", filterable: true, width: 70, sortable: { initialDirection: "desc" }, },
                     { field: "ped_os", title: "OS", filterable: true, width: 70 },
-                @can('pedidocompra-analise')
-                    { field: "solicitante", title: "Perfil Solicitante", filterable: true, width: 120 },
-                @endcan
                     { field: "nomecomp", title: "Comprador", filterable: true, width: 100 },
                     { field: "ped_descprod", title: "Despesa", filterable: true, width: 100 },
                     { field: "razaosocialFornecedor", title: "Fornecedor", filterable: true, width: 100},
                     { field: "ped_data", title: "Data", filterable: true, width: 100, format: "{0:dd/MM/yyyy}",
-
+                    
                     filterable: {
-                                cell: {
-                                        template: betweenFilter
-                                    }
-                                } 
-                    },
-                    {
+                        cell: {
+                            template: betweenFilter
+                        }
+                    } 
+                },
+                {
                         field: "pago",
                         title: "Pago",
                         filterable: true,
@@ -186,8 +183,11 @@ $.LoadingOverlay("show", {
                     },
                     { field: "conta", title: "Conta", filterable: true, width: 100 },
                     @if(!isset($aprovado))                  
-                        { field: "status", title: "Aprovado", filterable: true, width: 100 },
+                    { field: "status", title: "Aprovado", filterable: true, width: 100 },
                     @endif
+                    @can('pedidocompra-analise')
+                        { field: "nomeaprovador", title: "Aprovado Por", filterable: true, width: 120 },
+                    @endcan
                     
                 @if(Gate::check('pedidocompra-analise'))
                     

@@ -87,7 +87,7 @@ class PedidoCompra extends Model
 
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
         f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
-        ped_contaaprovada, ped_nomecomprador,
+        ped_contaaprovada, ped_nomecomprador, ap.name as 'nomeaprovador', fin.name as 'nomefinalizador',
         comprador.razaosocialFornecedor AS nomecomp,
         CASE 
         WHEN ped_pago = 0 THEN 'Não Pago'
@@ -108,7 +108,10 @@ class PedidoCompra extends Model
         LEFT JOIN users u ON  p.ped_usrsolicitante = u.id
         LEFT JOIN conta c ON p.ped_contaaprovada = c.id
         LEFT JOIN fornecedores comprador ON p.ped_nomecomprador = comprador.id
-            
+        LEFT JOIN users ap ON p.ped_usr_aprovador  = ap.id
+        LEFT JOIN users fin ON p.ped_usr_finalizador  = fin.id   
+
+
         WHERE ped_excluidopedido = 0 ";
 
 
@@ -128,6 +131,7 @@ class PedidoCompra extends Model
         }
 
         return $stringQuery;
+        
     }
 
     public function atualizaPedidos($pedido)
