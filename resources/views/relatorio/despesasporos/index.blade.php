@@ -156,11 +156,11 @@ dataSource.fetch().then(function() {
                     field: "dados"
                 },
                 {
-                    field: "despesaCodigoDespesa", dir: "asc"
+                    field: "grupoDespesa", dir: "asc"
                 }],
                 aggregate: [
-                    { field: "despesaCodigoDespesa", aggregate: "count" },
-                    { field: "apelidoConta", aggregate: "count" },
+                    { field: "grupoDespesa", aggregate: "count" },
+                    { field: "nomeConta", aggregate: "count" },
                     { field: "precoReal", aggregate: "sum" },
                     { field: "porcentagemOS", aggregate: "sum" }
                 ]
@@ -171,7 +171,7 @@ dataSource.fetch().then(function() {
                 { field: "vencimento", title: "Data", filterable: true, width: 150, format: "{0:dd/MM/yyyy}", filterable: { cell: { template: betweenFilter}} },
                 { field: "descricaoDespesa", title: "Despesa", filterable: true, width: 200 },
                 { field: "precoReal", title: "Valor", filterable: true, width: 150, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total : #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
-                { field: "apelidoConta", title: "Conta", filterable: true, width: 100 },
+                { field: "nomeConta", title: "Conta", filterable: true, width: 100 },
                 { 
                     field: "porcentagemOS", 
                     title: "Perc(%)",  
@@ -181,7 +181,7 @@ dataSource.fetch().then(function() {
                     groupHeaderColumnTemplate: "#= calcularPorcentagem(data, grid) #", 
                     template: template
                 },
-                { field: "despesaCodigoDespesa", title: "Grupo",  filterable: true, width: 150 },
+                { field: "grupoDespesa", title: "Grupo",  filterable: true, width: 150 },
                 { field: "idOS", title: "N° OS", filterable: true, width: 100 },
             ],
             @include('layouts/helpersview/finaltabela')
