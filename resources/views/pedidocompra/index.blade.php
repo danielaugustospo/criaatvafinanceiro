@@ -80,7 +80,7 @@ $.LoadingOverlay("show", {
 
                 var sheet = e.workbook.sheets[0];
                 sheet.frozenRows = 1;
-                sheet.mergedCells = ["A1:H1"];
+                sheet.mergedCells = ["A1:K1"];
                 sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
 
                 var myHeaders = [{
@@ -103,7 +103,7 @@ $.LoadingOverlay("show", {
                 landscape: true,
                 repeatHeaders: true,
                 template: $("#page-template").html(),
-                scale: 0.8
+                scale: 0.6
             },
             dataSource: {
                 data: data,
