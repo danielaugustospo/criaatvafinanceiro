@@ -183,7 +183,7 @@ $.LoadingOverlay("show", {
                     },
                     { field: "conta", title: "Conta", filterable: true, width: 100 },
                     @if(!isset($aprovado))                  
-                    { field: "status", title: "Aprovado", filterable: true, width: 100 },
+                    { field: "status", title: "Status", filterable: true, width: 100 },
                     @endif
                     @can('pedidocompra-analise')
                         { field: "nomeaprovador", title: "Aprovado Por", filterable: true, width: 120 },
