@@ -186,7 +186,7 @@ $.LoadingOverlay("show", {
                     { field: "status", title: "Aprovado", filterable: true, width: 100 },
                     @endif
                     @can('pedidocompra-analise')
-                        { field: "nomeaprovador", title: "Aprovado Por", filterable: true, width: 100 },
+                        { field: "nomeaprovador", title: "Aprovado Por", filterable: true, width: 120 },
                         { field: "nomefinalizador", title: "Finalizado Por", filterable: true, width: 100 },
                     @endcan
                     
