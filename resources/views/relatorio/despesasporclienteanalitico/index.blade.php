@@ -53,7 +53,7 @@ $idUser = Crypt::encrypt(auth()->user()->id);
             progress: true
         });
 
-        @can('visualiza-relatoriogeral')
+        @can('rel-pclienteanalitico')
         var dataSource = new kendo.data.DataSource({
             @include('layouts/helpersview/transportdespesaskendogrid')
 

@@ -268,6 +268,11 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 dataBound: function(e) {
                     var grid = this;
                     var columns = grid.columns;
+
+                    //Exibe itens agrupados fechados
+                    $(".k-grouping-row").each(function (e) {
+                        grid.collapseGroup(this);
+                    });
                     // populate initial columns list if the detailColsVisibility object is empty
                     if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
                         for (var i = 0; i < columns.length; i++) {

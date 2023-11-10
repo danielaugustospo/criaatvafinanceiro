@@ -14,7 +14,7 @@
                         @php
                         $totalQuantidade = 0;
                                 $totalQuantidade = $totalQuantidade + $itensadevolverGrouped[0]->totalADevolver;
-                            @endphp
+                        @endphp
                             <option value="{{ $itensadevolverGrouped[0]->idbenspatrimoniais }}" data-max-quantity="{{ $totalQuantidade }}">
                                 {{ $itensadevolverGrouped[0]->bensPatrimoniais->nomeBensPatrimoniais }} (Total na rua: {{ $totalQuantidade }})
                             </option>

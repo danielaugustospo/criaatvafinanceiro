@@ -49,8 +49,9 @@
 		        <div class="form-group">
 		            <strong>Ativo (Exibido na consulta):</strong>
                     <select name="ativotipobenspatrimoniais" id="ativotipobenspatrimoniais" style="padding:4px;" class="selecionaComInput form-control">
-                        <option value="1" {{$product->ativotipobenspatrimoniais == 'S'?' selected':''}}>Sim</option>
-                        <option value="0" {{$product->ativotipobenspatrimoniais == 'N'?' selected':''}}>Não</option>
+                        <option value="">Selecione ...</option>
+                        <option value="1" {{$product->ativotipobenspatrimoniais == '1'?' selected':''}}>Sim</option>
+                        <option value="0" {{$product->ativotipobenspatrimoniais == '0'?' selected':''}}>Não</option>
                     </select>
             
                 </div>

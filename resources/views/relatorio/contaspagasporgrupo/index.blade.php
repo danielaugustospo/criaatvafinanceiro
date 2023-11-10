@@ -52,7 +52,7 @@ $idUser = Crypt::encrypt(auth()->user()->id);
             image: "",
             progress: true
         });
-        @can('visualiza-relatoriogeral')    
+        @can('rel-contaspagasporgrupo')    
         
     var dataSource = new kendo.data.DataSource({
         @include('layouts/helpersview/transportdespesaskendogrid')

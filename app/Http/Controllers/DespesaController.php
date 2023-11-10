@@ -32,18 +32,8 @@ class DespesaController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:despesa-list|despesa-list-all|despesa-create|despesa-edit|despesa-delete
-        |rel-contasapagarporgrupo
-        |rel-contaspagasporgrupo
-        |rel-despesasfixavariavel
-        |rel-fornecedor
-        |rel-notafiscalfornecedor
-        |rel-pclienteanalitico
-        |rel-despesaspagasporcontabancaria
-        |rel-despesasporos
-        |rel-despesasporosplanilha
-        |rel-reembolso
-        |rel-despesassinteticaporos'
+
+        $this->middleware('permission:despesa-list|despesa-list-all|despesa-create|despesa-edit|despesa-delete|rel-contasapagarporgrupo|rel-contaspagasporgrupo|rel-despesasfixavariavel|rel-fornecedor|rel-notafiscalfornecedor|rel-pclienteanalitico|rel-despesaspagasporcontabancaria|rel-despesasporos|rel-despesasporosplanilha|rel-reembolso|rel-despesassinteticaporos'
         , ['only' => ['index', 'show']]);
         $this->middleware('permission:despesa-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:despesa-edit', ['only' => ['edit', 'update']]);

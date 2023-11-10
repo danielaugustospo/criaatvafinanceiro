@@ -178,7 +178,7 @@ class EntradasController extends Controller
                     WHEN (estoque.quantidadeinicial -
                         IFNULL((SELECT SUM(quantidade_saida) FROM saidas s WHERE s.id_estoque = estoque.id AND s.datapararetorno IS not NULL), 0) -
                         IFNULL((SELECT SUM(quantidade_entrada) FROM entradas en WHERE en.id_estoque = estoque.id), 0)) < 0
-                    THEN -1 * (estoque.quantidadeinicial -
+                    THEN  (estoque.quantidadeinicial +
                         IFNULL((SELECT SUM(quantidade_saida) FROM saidas s WHERE s.id_estoque = estoque.id AND s.datapararetorno IS not NULL), 0) -
                         IFNULL((SELECT SUM(quantidade_entrada) FROM entradas en WHERE en.id_estoque = estoque.id), 0))
                     ELSE (estoque.quantidadeinicial -
@@ -216,7 +216,7 @@ class EntradasController extends Controller
         $salvaEntradas = null; // Inicialize a variável fora do loop
         if ($tipoEntrada == 'novo') {
 
-            $qtdeEntrada    = ($request->input('porcionavel') == '0') ? 1 : $request->input('qtdeEntrada');
+            $qtdeEntrada    = ($request->input('porcionavel') == '0' || $request->input('qtdeEntrada') == null) ? 1 : $request->input('qtdeEntrada');
             $mensagemExito  = 'Item lançado no estoque com êxito.';
             $metodo         = 'novo';
 

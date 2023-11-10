@@ -1,6 +1,6 @@
 <div id="informacoes" class="d-flex justify-content-center">
 
-    @if ($codbarras == '' && $nomeBensPatrimoniais == '' && $descricaoentrada == '' && $dtinicio == '' && $dtfim == '')
+    @if ($codbarras == '' && $nomeBensPatrimoniais == '' && $descricaoentrada == '' && $tipoEntrada == '' &&  $dtinicio == '' && $dtfim == '')
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
         <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
