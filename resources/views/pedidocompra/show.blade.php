@@ -18,7 +18,12 @@
                 {!! Form::model($pedido, ['method' => 'POST', 'route' => ['marcacomolido', $pedido->id]]) !!}
 
                 <div class="alert alert-success mb-1" role="alert">
-                    <h4 class="alert-heading">Pedido Aprovado!</h4>
+                    @if ($pedido->ped_aprovado == '1')
+                        <h4 class="alert-heading">Pedido Aprovado!</h4>                         
+                    @endif
+                    @if ($pedido->ped_aprovado == '4')
+                        <h4 class="alert-heading">Pedido Finalizado!</h4>                         
+                    @endif
                     <p>Por padrão, esta mensagem permanece ativa para você até que seja marcada como lida.
                         Ao fazer isso, você deixa de ver essa notificação aqui, bem como na barra de navegação superior.</p>
                     <hr>
@@ -52,7 +57,7 @@
                             @if (Gate::check('pedidocompra-analise'))
                             @else
                                 @can('pedidocompra-edit')
-                                    @if ($pedido->ped_aprovado != 1)
+                                    @if ($pedido->ped_aprovado != 1 && $pedido->ped_aprovado != 4)
                                         <a class="btn btn-primary" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
                                     @endif
                                 @endcan
@@ -152,7 +157,7 @@
                         <div class="row mt-2 mb-2 ">
 
                             
-                            <label class="col-sm-2 mr-2 mt-2" for="" style="color: white;">Pago</label>
+                            <label class="col-sm-2 mr-2 mt-2" for="" style="color: white;">Lançado</label>
                             @if ($pedido->ped_pago == '1')
                                 <h4 for="" style="color: rgb(151, 243, 151);">SIM</h4>
                             @elseif($pedido->ped_pago == '0')

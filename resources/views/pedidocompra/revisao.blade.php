@@ -30,7 +30,7 @@
                 <div style="background-color: rgb(0, 0, 0);" class="p-2">
 
                     <div class="row mt-5 mb-2 col-sm-12">
-                        <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Pago</label>
+                        <label class="col-sm-3 mr-2 mt-2" for="" style="color: white;">Lançado</label>
   
                         <select class="col-sm-2 form-control" name="ped_pago" id="statuspedido" required>
                             <option disabled>Selecione...</option>

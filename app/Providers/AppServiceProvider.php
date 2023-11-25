@@ -117,7 +117,16 @@ class AppServiceProvider extends ServiceProvider
     {
         $countpedidoaprovado = DB::select("SELECT count(id) as countpedidoaprovado FROM pedidocompra p where p.ped_usrsolicitante = $id	
         and ped_excluidopedido = 0 
-        and (ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_APROVADO . "' or ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_REVISADO . "')
+        and (ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_APROVADO . "')
+        and ped_novanotificacao = 1");
+        return $countpedidoaprovado;
+    }
+
+    public static function pegaCountPedidoFinalizado($id)
+    {
+        $countpedidoaprovado = DB::select("SELECT count(id) as countpedidofinalizado FROM pedidocompra p where p.ped_usrsolicitante = $id	
+        and ped_excluidopedido = 0 
+        and (ped_aprovado = '" . StatusEnumPedidoCompra::PEDIDO_REVISADO . "')
         and ped_novanotificacao = 1");
         return $countpedidoaprovado;
     }
@@ -133,6 +142,14 @@ class AppServiceProvider extends ServiceProvider
 
         $whereId = (is_null($id)) ? ' ' : ' and ped_usrsolicitante = '. $id;
         $countpedidoaguardandoaprov = DB::select("SELECT count(id) as aguardaprov FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = '". StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . "'". $whereId);
+        return $countpedidoaguardandoaprov;
+    }
+
+    public static function pegaCountPedidoAguardandoFinalizacao($id = null)
+    {
+
+        $whereId = (is_null($id)) ? ' ' : ' and ped_usrsolicitante = '. $id;
+        $countpedidoaguardandoaprov = DB::select("SELECT count(id) as aguardfinalizacao FROM pedidocompra p where  ped_excluidopedido = 0 and ped_aprovado = '". StatusEnumPedidoCompra::PEDIDO_APROVADO . "'". $whereId);
         return $countpedidoaguardandoaprov;
     }
     public static function pegaCountPedidoAguardandoAprovacaoAvaliador()

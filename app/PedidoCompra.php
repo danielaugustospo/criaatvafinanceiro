@@ -84,15 +84,14 @@ class PedidoCompra extends Model
 
     public function listaPedidos($id, $aprovado, $notificado)
     {
-
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
         f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador, ap.name as 'nomeaprovador', fin.name as 'nomefinalizador',
         comprador.razaosocialFornecedor AS nomecomp,
         CASE 
-        WHEN ped_pago = 0 THEN 'Não Pago'
-        WHEN ped_pago = 1 THEN 'Pago'
-        ELSE 'Não Pago' END as pago, 
+        WHEN ped_pago = 0 THEN 'A Lançar'
+        WHEN ped_pago = 1 THEN 'Lançado'
+        ELSE 'A Lançar' END as pago, 
     
         CASE 
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO . " THEN 'Não'
@@ -119,17 +118,18 @@ class PedidoCompra extends Model
             $stringQuery .= " AND u.id = " . $id;
         }
 
+        
         if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_REVISADO ))) {
-            if($aprovado == '1'){
-                $stringQuery .= " AND (ped_aprovado = 4 or ped_aprovado = " . $aprovado . ") ";
-            }else{
-                $stringQuery .= " AND ped_aprovado = " . $aprovado;
-            }
+            // if($aprovado == '1'){
+                //     $stringQuery .= " AND (ped_aprovado = 4 or ped_aprovado = " . $aprovado . ") ";
+                // }else{
+                    $stringQuery .= " AND ped_aprovado = " . $aprovado;
+            // }
         }
         if ((!is_null($notificado)) && (($notificado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($notificado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ))) {
             $stringQuery .= " AND ped_novanotificacao = " . $notificado . " order by p.id desc ";
         }
-
+        
         return $stringQuery;
         
     }

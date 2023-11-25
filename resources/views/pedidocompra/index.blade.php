@@ -15,11 +15,13 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2 class="text-center">Consulta de Pedidos de Compra 
+            <h2 class="text-center">Pedidos de Compra 
                 @isset($aprovado)
                     @if($aprovado == '0')  {{"Não Aprovados"}}  
-                    @elseif($aprovado == '1')  {{ "Aprovados" }}  
+                    @elseif($aprovado == '1')  {{ "Aprovados - Aguardando Finalização" }}  
                     @elseif($aprovado == '3')  {{ "Aguardando Aprovação" }}  
+                    @elseif($aprovado == '4')  {{ "Finalizados" }}  
+                    @else  {{ " - Consulta" }}  
                     @endif
                 @endisset    
             </h2>
@@ -164,16 +166,16 @@ $.LoadingOverlay("show", {
                 },
                 {
                         field: "pago",
-                        title: "Pago",
+                        title: "Lançado",
                         filterable: true,
                         width: 100,
                         template: function(dataItem) {
                             if (dataItem.status == 'Cancelado') {
                                 return '<span style="color: red;">' + dataItem.status + '</span>';
                             } 
-                            else if (dataItem.pago === "Pago" && dataItem.status != 'Cancelado') {
+                            else if (dataItem.pago === "Lançado" && dataItem.status != 'Cancelado') {
                                 return '<span style="color: blue;">' + dataItem.pago + '</span>';
-                            } else if (dataItem.pago === "Não Pago") {
+                            } else if (dataItem.pago === "A Lançar") {
                                 return '<span style="color: red;">' + dataItem.pago + '</span>';
                             } 
                             else {
@@ -281,9 +283,9 @@ $.LoadingOverlay("show", {
                 
                 this.tbody.find("tr").each(function() {
                     var dataItem = $("#grid").data("kendoGrid").dataItem(this);
-                    if (dataItem.pago === "Pago") {
+                    if (dataItem.pago === "Lançado") {
                         $(this).find("td:nth-child(9)").css("color", "blue");
-                    } else if (dataItem.pago === "Não Pago" || dataItem.pago === "Cancelado") {
+                    } else if (dataItem.pago === "A Lançar" || dataItem.pago === "Cancelado") {
                         $(this).find("td:nth-child(9)").css("color", "red");
                     }
                 });

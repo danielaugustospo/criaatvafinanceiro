@@ -7,10 +7,23 @@
         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" v-pre>
 
+
+            @can('pedidocompra-revisao')
+                @if (AppServiceProvider::pegaCountPedidoAguardandoFinalizacao()[0]->aguardfinalizacao > 0)
+                    <span class="badge badge-warning mt-0"
+                        style="font-size: 12; background-color:#7731b7 !important; color:white;">F 
+                        {{ AppServiceProvider::pegaCountPedidoAguardandoFinalizacao()[0]->aguardfinalizacao }}
+                    </span>
+                @endif
+            @endcan
+
             @can('pedidocompra-analise')
                 @if (AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov > 0)
                     <span class="badge badge-warning mt-0"
-                        style="font-size: 12; background-color:#7731b7 !important; color:white;">
+                        style="font-size: 12; background-color:#7731b7 !important; color:white;"> 
+                        @can('pedidocompra-revisao')
+                            A
+                        @endcan
                         {{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}
                     </span>
                 @endif
@@ -29,7 +42,12 @@
                 @endif
                 @if (AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado > 0)
                     <span class="badge badge-success"
-                        style="font-size: 12;">{{ AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado }}
+                        style="font-size: 12;">A{{ AppServiceProvider::pegaCountPedidoAprovado(Auth::id())[0]->countpedidoaprovado }}
+                    </span>
+                @endif
+                @if (AppServiceProvider::pegaCountPedidoFinalizado(Auth::id())[0]->countpedidofinalizado > 0)
+                    <span class="badge badge-success"
+                        style="font-size: 12;">F{{ AppServiceProvider::pegaCountPedidoFinalizado(Auth::id())[0]->countpedidofinalizado }}
                     </span>
                 @endif
             @endcan
@@ -63,6 +81,13 @@
                     </span>
                     pedido(s) aprovado(s)
                 </a>
+
+                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=4&notificado=1">
+                    <span class="badge badge-success" style="font-size: 20;">
+                        {{ AppServiceProvider::pegaCountPedidoFinalizado(Auth::id())[0]->countpedidofinalizado }}
+                    </span>
+                    pedido(s) finalizado(s)
+                </a>
             @endcan
 
             <a class="dropdown-item" href="{{ route('pedidocompra.index') }}">
@@ -82,9 +107,22 @@
                         {{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
                     pedido(s) para aprovar
                 </a>
-                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?listarTodos=true"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; Listar Todos</a>
-
             @endcan
+            @can('pedidocompra-revisao')
+
+                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=1&listarTodos=true">
+                    <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+                    FINALIZAÇÃO - 
+                    <span class="badge badge-warning mt-0" style="font-size: 20; background-color:#7731b7 !important; color:white;">
+                        {{ AppServiceProvider::pegaCountPedidoAguardandoFinalizacao()[0]->aguardfinalizacao }}</span>
+                    pedido(s) para finalizar
+                </a>
+            @endcan
+            @can('pedidocompra-analise')
+                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?listarTodos=true"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; Listar Todos</a>
+            @endcan
+
+
         </div>
     </li>
 @endcan
