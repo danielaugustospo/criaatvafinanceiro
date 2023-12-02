@@ -1,6 +1,6 @@
 <div id="informacoes" class="d-flex justify-content-center">
 
-    @if ($codbarras == '' && $descricaosaida == '' && $nomeBensPatrimoniais == '' && $portador == '' && $ordemdeservico == '' && $dataretiradainicial == '' && $dataretiradafinal == '' && $datapararetornoinicial == '' && $datapararetornofinal == '')
+    @if ($codbarras == '' && $descricaosaida == '' && $nomeBensPatrimoniais == '' && $portador == '' && $ordemdeservico == '' && $dataretiradainicial == '' && $dataretiradafinal == '' && $datapararetornoinicial == '' && $datapararetornofinal == ''  && $dataprevistaretornoinicial == '' && $dataprevistaretornofinal == '')
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
         <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
@@ -33,6 +33,12 @@
     @endif
     @if ($datapararetornofinal != '')
         <label class="fontenormal"><b>Data P/ Retorno Final:</b> {{ date('d/m/Y', strtotime($datapararetornofinal)) }} &nbsp; </label>
+    @endif
+    @if ($dataprevistaretornoinicial != '')
+        <label class="fontenormal"><b>Data Prevista P/ Retorno Inicial:</b> {{ date('d/m/Y', strtotime($dataprevistaretornoinicial)) }} &nbsp; </label>
+    @endif
+    @if ($dataprevistaretornofinal != '')
+        <label class="fontenormal"><b>Data Prevista P/ Retorno Final:</b> {{ date('d/m/Y', strtotime($dataprevistaretornofinal)) }} &nbsp; </label>
     @endif
 
 

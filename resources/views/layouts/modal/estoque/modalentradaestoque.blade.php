@@ -14,31 +14,35 @@
                             </button>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-sm-6">
+                            <div class="col-9 col-sm-7">
                                 <div class="modal-body">
                                     <div class="row ml-2 mr-2">
-                                        <label for="">Id Entrada</label>
-                                        <input class="form-control" list="datalistIdEntradaEstoque" id="id"
-                                            name="id" placeholder="Digite ou selecione...">
+                                        <label for="">Material</label>
+                                        <input class="form-control" list="datalistMaterial" id="nomeBensPatrimoniais" name="nomeBensPatrimoniais"
+                                            placeholder="Digite ou selecione...">
                                     </div>
                                     <hr>
-                                    <div class="row ml-2 mr-2">
-                                        <label for="">Cód Barras</label>
-                                        <input class="form-control" list="datalistCodBarras" id="codbarras"
-                                            name="codbarras" placeholder="Digite ou selecione...">
 
+                                    <div class="row ml-2 mr-2 mt-1">
+                                        <label class="pr-2 mt-1" for="">Entrada</label>
+    
+                                        <input class="form-control col-sm-2 mr-1" type="date" name="dtinicio"
+                                            id="dtinicio">
+                                        <input class="form-control col-sm-2" type="date" name="dtfim" id="dtfim">
+    
                                     </div>
-
                                 </div>
 
 
                             </div>
-                            <div class="col-4 col-sm-6">
+                            <div class="col-3 col-sm-5">
                                 {{-- Segunda Coluna --}}
                                 <div class="row mt-2 ml-2 mr-2">
-                                    <label for="">Material</label>
-                                    <input class="form-control" list="datalistMaterial" id="nomeBensPatrimoniais" name="nomeBensPatrimoniais"
-                                        placeholder="Digite ou selecione...">
+
+
+                                        <label for="">Id Entrada</label>
+                                        <input class="form-control" list="datalistIdEntradaEstoque" id="id"
+                                            name="id" placeholder="Digite ou selecione...">
                                 </div>
                                 <div class="row ml-2 mr-2">
                                     <label for="">Descrição</label>
@@ -46,20 +50,13 @@
                                         name="descricaoentrada" placeholder="Digite ou selecione...">
 
                                 </div>
-                                <div class="row ml-2 mr-2 mt-1">
-                                    <label class="pr-2 mt-1" for="">Entrada</label>
 
-                                    <input class="form-control col-sm-5 mr-1" type="date" name="dtinicio"
-                                        id="dtinicio">
-                                    <input class="form-control col-sm-5" type="date" name="dtfim" id="dtfim">
-
-                                </div>
                             </div>
 
 
                         </div>
                         <div class="row ml-2 mr-2 mt-1">
-                            <label for="ocorrenciadevolucao" class="col-sm-2 col-form-label">TIPO DE ENTRADA</label>
+                            <label for="ocorrenciadevolucao" class="col-sm-3 col-form-label">TIPO DE ENTRADA</label>
                             <select class="selecionaComInput form-control" name="tipoEntrada" id="tipoEntrada">
                                 <option value="">NENHUMA</option>
                                 <option value="NOVO">NOVO</option>

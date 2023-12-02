@@ -11,14 +11,14 @@
                     <option value="{{ $entradas->id }}">{{ $entradas->id }}</option>
                     @endforeach
                 </select>
-
+{{-- 
                 <label for="" class="col-sm-2">Cod Barras</label>
                 <select class="selecionaComInput form-control col-sm-4 js-example-basic-multiple buscadescricaoentrada" name="descricaoentrada" id="descricaoentrada">
                     <option value="">Listar todos</option>
                     @foreach ($listaEntradas as $entradas)
                     <option value="{{ $entradas->codbarras }}">{{ $entradas->codbarras }}</option>
                     @endforeach
-                </select>
+                </select> --}}
 
             </div>
             <div class="group-row">

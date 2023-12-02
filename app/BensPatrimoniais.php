@@ -26,4 +26,15 @@ class BensPatrimoniais extends Model
         'estante',
         'prateleira'
         ];
+
+
+    public function tipo()
+    {
+        return $this->belongsTo(Product::class, 'idTipoBensPatrimoniais', 'id');
+    }
+
+    public function unidademedida()
+    {
+        return $this->belongsTo(UnidadeMedida::class, 'unidademedida', 'id');
+    }
 }

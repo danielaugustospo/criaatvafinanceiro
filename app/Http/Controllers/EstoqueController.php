@@ -98,7 +98,7 @@ class EstoqueController extends Controller
      */
     public function show($id)
     {
-        $estoque = Estoque::find($id);
+        $estoque = Estoque::with('bensPatrimoniais')->find($id);
         $bempatrimonial = DB::select('SELECT * from benspatrimoniais where ativadobenspatrimoniais = 1 order by id = ' . $estoque->idbenspatrimoniais . ' desc');
         return view('estoque.show', compact('estoque', 'bempatrimonial'));
     }

@@ -9,7 +9,7 @@
 </div>
 @endif
 @if ($message = Session::get('error'))
-<div class="alert alert-error">
+<div class="alert alert-error pr-2">
     <p>{{ $message }}</p>
 </div>
 @endif

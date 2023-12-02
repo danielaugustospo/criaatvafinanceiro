@@ -128,12 +128,12 @@
                     '<span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Informe quem retirou (portador)</label></br>';
                 contadorErros++;
             }
-            qtdeSaida   = $('#qtdeSaida').val();
+            qtdeSaida   = $('#quantidade_saida').val();
             maxQuantity = $('#codbarras option:selected').data('max-quantity'); // Read data-max-quantity from the selected option
             //Verifica a quantidade de saída
             if (qtdeSaida > maxQuantity) {
                 texto = texto +
-                    '<span class="badge badge-warning">Verificar</span><label class="fontenormal pl-2">A quantidade de saída informada excede o limite no estoque!</label></br>';
+                    '<span class="badge badge-danger">Alterar</span><label class="fontenormal pl-2">A quantidade de saída deve ser maior ou igual a ' + maxQuantity +'</label></br>';
                 contadorErros++;
             }
         @endif

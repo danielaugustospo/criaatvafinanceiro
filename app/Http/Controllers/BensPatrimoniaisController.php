@@ -35,7 +35,7 @@ class BensPatrimoniaisController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = BensPatrimoniais::latest()->get();
+            $data = BensPatrimoniais::latest()->with('unidademedida', 'tipo')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -108,7 +108,7 @@ class BensPatrimoniaisController extends Controller
 
 public function apibenspatrimoniais(Request $request)
 {
-    $data = BensPatrimoniais::all();
+    $data = BensPatrimoniais::with('unidademedida', 'tipo')->get();
     return $data;
 }
 

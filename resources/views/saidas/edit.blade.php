@@ -66,9 +66,9 @@
     <div class="col-sm-2">
         {!! Form::date('datapararetiradasaida', null, ['placeholder' => 'Data Para Retirada', 'class' => 'form-control', 'id' => 'datapararetiradasaida']) !!}
     </div>
-    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data da Retirada Saída</label>
+    <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data Efetiva da Retirada</label>
     <div class="col-sm-2">
-        {!! Form::date('dataretiradasaida', null, ['placeholder' => 'Data da Retirada Saída', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'portadorsaida']) !!}
+        {!! Form::date('dataretiradasaida', null, ['placeholder' => 'Data Efetiva da Retirada', 'class' => 'form-control', 'maxlength' => '50', 'id' => 'portadorsaida']) !!}
     </div>
     <label for="idbenspatrimoniais" class="col-sm-2 col-form-label">Data de Retorno Saída</label>
     <div class="col-sm-2">

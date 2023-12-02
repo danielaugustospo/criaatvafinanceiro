@@ -56,7 +56,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: "{{ $rotaapi }}?codbarras={{ $codbarras }}&nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&descricaoentrada={{ $descricaoentrada }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&tipoEntrada={{ $tipoEntrada }}",
+                    url: "{{ $rotaapi }}?nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&descricaoentrada={{ $descricaoentrada }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&tipoEntrada={{ $tipoEntrada }}",
                     dataType: "json"
                 },
             },

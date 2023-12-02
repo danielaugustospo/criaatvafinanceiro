@@ -54,12 +54,12 @@ class EntradasController extends Controller
         }
         $validacoesPesquisa     = $this->validaPesquisa($request);
 
-        $codbarras              = $validacoesPesquisa[0];
-        $nomeBensPatrimoniais   = $validacoesPesquisa[1];
-        $descricaoentrada       = $validacoesPesquisa[2];
-        $dtinicio               = $validacoesPesquisa[3];
-        $dtfim                  = $validacoesPesquisa[4];
-        $tipoEntrada            = $validacoesPesquisa[5];
+        // $codbarras              = $validacoesPesquisa[0];
+        $nomeBensPatrimoniais   = $validacoesPesquisa[0];
+        $descricaoentrada       = $validacoesPesquisa[1];
+        $dtinicio               = $validacoesPesquisa[2];
+        $dtfim                  = $validacoesPesquisa[3];
+        $tipoEntrada            = $validacoesPesquisa[4];
 
         $rota = $this->verificaRelatorio($request);
 
@@ -68,7 +68,7 @@ class EntradasController extends Controller
         $listaEntradas = $entradas->listaEntradas()->get();
 
 
-        return view($rota, compact('codbarras', 'listaEntradas', 'nomeBensPatrimoniais', 'descricaoentrada', 'dtinicio', 'dtfim', 'tipoEntrada'));
+        return view($rota, compact('listaEntradas', 'nomeBensPatrimoniais', 'descricaoentrada', 'dtinicio', 'dtfim', 'tipoEntrada'));
     }
 
 
@@ -78,7 +78,7 @@ class EntradasController extends Controller
 
         $descricao = $this->montaFiltrosConsulta($request);
         // $descricao = '';
-        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais, es.codbarras,
+        $listaEntradas = DB::select('SELECT e.*, b.nomeBensPatrimoniais, 
         CASE
         WHEN e.dtdevolucao IS NULL THEN "NOVO"
         ELSE "DEVOLUÇÃO"
@@ -96,9 +96,9 @@ class EntradasController extends Controller
         $descricao = "";
         $verificaInputCampos = 0;
 
-        if ($request->codbarras) :              $descricao .= " AND es.codbarras like  '%$request->codbarras%'";
-            $verificaInputCampos++;
-        endif;
+        // if ($request->codbarras) :              $descricao .= " AND es.codbarras like  '%$request->codbarras%'";
+        //     $verificaInputCampos++;
+        // endif;
         if ($request->nomeBensPatrimoniais) :   $descricao .= " AND b.nomeBensPatrimoniais like  '%$request->nomeBensPatrimoniais%'";
             $verificaInputCampos++;
         endif;
@@ -129,9 +129,9 @@ class EntradasController extends Controller
     private function validaPesquisa($request)
     {
 
-        if ($request->get('codbarras')) :     $codbarras = $request->get('codbarras');
-        else : $codbarras = '';
-        endif;
+        // if ($request->get('codbarras')) :     $codbarras = $request->get('codbarras');
+        // else : $codbarras = '';
+        // endif;
         if ($request->get('nomeBensPatrimoniais')) :     $nomeBensPatrimoniais = $request->get('nomeBensPatrimoniais');
         else : $nomeBensPatrimoniais = '';
         endif;
@@ -148,7 +148,7 @@ class EntradasController extends Controller
         else : $tipoEntrada = '';
         endif;
 
-        $solicitacaoArray = array($codbarras, $nomeBensPatrimoniais, $descricaoentrada, $dtinicio, $dtfim, $tipoEntrada);
+        $solicitacaoArray = array($nomeBensPatrimoniais, $descricaoentrada, $dtinicio, $dtfim, $tipoEntrada);
         return $solicitacaoArray;
     }
 

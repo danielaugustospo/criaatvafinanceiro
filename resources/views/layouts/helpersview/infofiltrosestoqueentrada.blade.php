@@ -1,14 +1,11 @@
 <div id="informacoes" class="d-flex justify-content-center">
 
-    @if ($codbarras == '' && $nomeBensPatrimoniais == '' && $descricaoentrada == '' && $tipoEntrada == '' &&  $dtinicio == '' && $dtfim == '')
+    @if ($nomeBensPatrimoniais == '' && $descricaoentrada == '' && $tipoEntrada == '' &&  $dtinicio == '' && $dtfim == '')
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
         <label class="pr-2" style="color: red;"><b>Filtros:</b></label>
     @endif
 
-    @if ($codbarras != '')
-        <label class="fontenormal"><b>Cód Barras:</b> {{ $codbarras }} &nbsp; </label>
-    @endif
     @if ($nomeBensPatrimoniais != '')
         <label class="fontenormal"><b>Material:</b> {{ $nomeBensPatrimoniais }} &nbsp; </label>
     @endif

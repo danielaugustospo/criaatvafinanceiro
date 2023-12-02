@@ -48,23 +48,25 @@ class SaidasController extends Controller
         }
         $validacoesPesquisa = $this->validaPesquisa($request);
 
-        $codbarras               = $validacoesPesquisa[0];
-        $descricaosaida          = $validacoesPesquisa[1];
-        $nomeBensPatrimoniais    = $validacoesPesquisa[2];
-        $portador                = $validacoesPesquisa[3];
-        $ordemdeservico          = $validacoesPesquisa[4];
-        $dataretiradainicial     = $validacoesPesquisa[5];
-        $dataretiradafinal       = $validacoesPesquisa[6];
-        $datapararetornoinicial  = $validacoesPesquisa[7];
-        $datapararetornofinal    = $validacoesPesquisa[8];
+        $codbarras                      = $validacoesPesquisa[0];
+        $descricaosaida                 = $validacoesPesquisa[1];
+        $nomeBensPatrimoniais           = $validacoesPesquisa[2];
+        $portador                       = $validacoesPesquisa[3];
+        $ordemdeservico                 = $validacoesPesquisa[4];
+        $dataretiradainicial            = $validacoesPesquisa[5];
+        $dataretiradafinal              = $validacoesPesquisa[6];
+        $datapararetornoinicial         = $validacoesPesquisa[7];
+        $datapararetornofinal           = $validacoesPesquisa[8];
+        $dataprevistaretornoinicial     = $validacoesPesquisa[9];
+        $dataprevistaretornofinal       = $validacoesPesquisa[10];
 
-        $saidas         = new Saidas();
-        $listaSaidas    = $saidas->listaSaidas()->get();
-        $listaInventario = DB::select('SELECT e.*,b.nomeBensPatrimoniais FROM estoque e LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id where ativadoestoque = 1  and  deleted_at IS NULL');
+        $saidas             = new Saidas();
+        $listaSaidas        = $saidas->listaSaidas()->get();
+        $listaInventario    = DB::select('SELECT e.*,b.nomeBensPatrimoniais FROM estoque e LEFT JOIN benspatrimoniais b on e.idbenspatrimoniais = b.id where ativadoestoque = 1  and  deleted_at IS NULL');
 
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('codbarras', 'descricaosaida', 'nomeBensPatrimoniais', 'portador', 'ordemdeservico', 'dataretiradainicial', 'dataretiradafinal', 'datapararetornoinicial', 'datapararetornofinal', 'listaSaidas', 'listaInventario'));
+        return view($rota, compact('codbarras', 'descricaosaida', 'nomeBensPatrimoniais', 'portador', 'ordemdeservico', 'dataretiradainicial', 'dataretiradafinal', 'datapararetornoinicial', 'datapararetornofinal', 'dataprevistaretornoinicial', 'dataprevistaretornofinal', 'listaSaidas', 'listaInventario'));
     }
 
 
@@ -116,6 +118,15 @@ class SaidasController extends Controller
                 }
                 return $query->whereBetween('saidas.datapararetorno', [$datapararetornoinicial, $datapararetornofinal]);
             })
+            ->when($request->dataprevistaretornofinal, function ($query, $dataprevistaretornofinal) use ($request) {
+                if (!$request->dataprevistaretornoinicial) {
+                    $dataprevistaretornoinicial = date('Y-m') . '-01';
+                } else {
+                    $dataprevistaretornoinicial = $request->dataprevistaretornoinicial;
+                }
+                return $query->whereBetween('saidas.datapararetirada', [$dataprevistaretornoinicial, $dataprevistaretornofinal]);
+            })
+
             ->get();
     
         return $listaSaidas;
@@ -197,8 +208,14 @@ class SaidasController extends Controller
         if ($request->get('datapararetornofinal')) :        $datapararetornofinal = $request->get('datapararetornofinal');
         else : $datapararetornofinal = '';
         endif;
+        if ($request->get('dataprevistaretornoinicial')) :     $dataprevistaretornoinicial = $request->get('dataprevistaretornoinicial');
+        else : $dataprevistaretornoinicial = '';
+        endif;
+        if ($request->get('dataprevistaretornofinal')) :        $dataprevistaretornofinal = $request->get('dataprevistaretornofinal');
+        else : $dataprevistaretornofinal = '';
+        endif;
 
-        $solicitacaoArray = array($codbarras, $descricaosaida, $nomeBensPatrimoniais, $portador, $ordemdeservico, $dataretiradainicial, $dataretiradafinal, $datapararetornoinicial, $datapararetornofinal);
+        $solicitacaoArray = array($codbarras, $descricaosaida, $nomeBensPatrimoniais, $portador, $ordemdeservico, $dataretiradainicial, $dataretiradafinal, $datapararetornoinicial, $datapararetornofinal, $dataprevistaretornoinicial, $dataprevistaretornofinal);
         return $solicitacaoArray;
     }
 
@@ -386,7 +403,7 @@ class SaidasController extends Controller
             'descricaosaida'            => 'required',
             'idbenspatrimoniais'        => 'required',
             'portadorsaida'             => 'required',
-            'ordemdeservico'             => 'required',
+            'ordemdeservico'            => 'required',
             'datapararetiradasaida'     => 'required',
             // 'dataretiradasaida'         => 'required', 
             'dataretornoretiradasaida'  => 'required',
@@ -399,7 +416,7 @@ class SaidasController extends Controller
         $saidas->descricaosaida             = $request->input('descricaosaida');
         $saidas->idbenspatrimoniais         = $request->input('idbenspatrimoniais');
         $saidas->portadorsaida              = $request->input('portadorsaida');
-        $saidas->ordemdeservico              = $request->input('ordemdeservico');
+        $saidas->ordemdeservico             = $request->input('ordemdeservico');
         $saidas->datapararetiradasaida      = $request->input('datapararetiradasaida');
         $saidas->dataretiradasaida          = $request->input('dataretiradasaida');
         $saidas->dataretornoretiradasaida   = $request->input('dataretornoretiradasaida');

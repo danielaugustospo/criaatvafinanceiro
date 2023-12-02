@@ -81,7 +81,7 @@
 
             {{-- {!! Form::date('datapararetiradasaida',  date("Y-m-d"), ['placeholder' => 'Data Para Retirada', 'class' => 'form-control', 'id' => 'datapararetiradasaida']) !!} --}}
         </div>
-        <label for="dataretiradasaida" class="col-sm-2 col-form-label">Data da Retirada</label>
+        <label for="dataretiradasaida" class="col-sm-2 col-form-label">Data Efetiva da Retirada</label>
         <div class="col-sm-2">
             <input type="date" class="form-control" name="dataretiradasaida" id="dataretiradasaida" placeholder="Data da Retirada Saída" maxlength="20" @if (isset($saidas)) value="{{ $saidas->dataretirada }}" readonly @else value="{{ date('Y-m-d') }}" @endif>
 

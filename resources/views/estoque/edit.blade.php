@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2> Dados do Item <b>{{ $estoque->codbarras }}</b></h2>
+            <h2> Dados do Item <b>{{ $estoque->bensPatrimoniais->nomeBensPatrimoniais }}</b></h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('estoque.index') }}"> Voltar</a>

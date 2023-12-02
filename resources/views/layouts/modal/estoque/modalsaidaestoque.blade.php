@@ -34,7 +34,7 @@
                                             name="portador" placeholder="Digite ou selecione...">
                                     </div>
                                     <div class="row ml-2 mr-2">
-                                        <label for="">Data da Retirada</label>
+                                        <label for="">Data Efetiva da Retirada</label>
                                         <div class="row  ml-1 mr-2">
                                         <input class="form-control col-sm-5 mr-1" type="date"
                                         name="dataretiradainicial" id="dataretiradainicial">
@@ -72,6 +72,16 @@
                                         name="datapararetornoinicial" id="datapararetornoinicial">
                                     <input class="form-control col-sm-4" type="date" name="datapararetornofinal"
                                         id="datapararetornofinal">
+                                    </div>
+                                </div>
+                                <div class="row ml-2 mr-2 mt-1">
+                                    <label class="pr-2 mt-1" for="">Data Prevista para Retorno</label>
+                                    <div class="row ml-2 mr-2">
+
+                                    <input class="form-control col-sm-4 mr-1" type="date"
+                                        name="dataprevistaretornoinicial" id="dataprevistaretornoinicial">
+                                    <input class="form-control col-sm-4" type="date" name="dataprevistaretornofinal"
+                                        id="dataprevistaretornofinal">
                                     </div>
                                 </div>
                             </div>

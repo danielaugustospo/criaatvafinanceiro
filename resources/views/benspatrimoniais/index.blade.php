@@ -79,19 +79,29 @@
       },
       excelExport: function(e){
 
-      var sheet = e.workbook.sheets[0];
-      sheet.frozenRows = 1;
-      sheet.mergedCells = ["A1:C1"];
-      sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
+        var sheet = e.workbook.sheets[0];
+        for (var rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+          var row = sheet.rows[rowIndex];
+          for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex ++) {              
+            var cell =row.cells[cellIndex];
+            if(cell.value && cell.value.toString().indexOf("<br />") >= 0){
+              cell.value = cell.value.replace("<br />", " ");   
+              cell.wrap = true;
+            }
+          }
+        }        
+        sheet.frozenRows = 2;
+        sheet.mergedCells = ["A1:G1"];
+        sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
 
-      var myHeaders = [{
-        value:"Relatório de " + document.title,
-        textAlign: "center",
-        background:"black",
-        color:"#ffffff"
-      }];
+        var myHeaders = [{
+          value:"Relatório de " + document.title,
+          textAlign: "center",
+          background:"black",
+          color:"#ffffff"
+        }];
 
-      sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 70});
+        sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 30});
       },
 
       pdf: {
@@ -100,11 +110,11 @@
         allPages: true,
         avoidLinks: true,
         paperSize: "A4",
-        margin: { top: "2cm", left: "1cm", right: "1cm", bottom: "1cm" },
+        margin: { top: "3cm", left: "1cm", right: "1cm", bottom: "1cm" },
         landscape: true,
         repeatHeaders: true,
         template: $("#page-template").html(),
-        scale: 0.8
+        scale: 0.6
       },
       
       dataSource: {
@@ -130,11 +140,20 @@
           numeric: false
       },
       columns: [
-        { field: "id", title: "ID", filterable: true, width: '10%' },
-        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '40%' },
-        { field: "estante", title: "Estante", filterable: true, width: '20%' },
-        { field: "prateleira", title: "Prateleira", filterable: true, width: '20%' },
-        { field: "qtdestoqueminimo", title: "Estoque Mín.", filterable: true, width: '10%' },
+        { field: "id", title: "ID", filterable: true, width: '130' },
+        { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '270' },
+        { field: "estante", title: "Estante", filterable: true, width: '150' },
+        { field: "prateleira", title: "Prateleira", filterable: true, width: '150' },
+        { field: "qtdestoqueminimo", title: "Estoque<br />Mínimo", filterable: true, width: '150' },
+        { field: "tipo.name", title: "Tipo", filterable: true, width: '150' },
+        {
+            field: "unidademedida.nomeunidade",
+            title: "Unidade",
+            filterable: true,
+            width: '150',
+            template: "#= unidademedida && unidademedida.nomeunidade ? unidademedida.nomeunidade : '' #"
+        },
+
 
         {
           command: [{
@@ -146,7 +165,7 @@
               window.location.href = location.href + '/' + data.id;
             }
           }],
-          width: '10%',
+          width: '100',
           exportable: false,
         },
         {
@@ -159,7 +178,7 @@
               window.location.href = location.href + '/' + data.id + '/edit';
             }
           }],
-          width: '10%',
+          width: '100',
           exportable: false,
         },
       ],
