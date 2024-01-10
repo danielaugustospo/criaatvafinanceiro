@@ -250,7 +250,7 @@ class DespesaController extends Controller
             $whereControleConsumo   = ' and d.ehcompra = 1 and d.descricaoDespesa = bp.id ';
         }
 
-        $listaDespesas = DB::select('SELECT distinct d.id, 
+        $listaDespesas = DB::select('SELECT distinct d.id, d.id  copy_id, 
         c.despesaCodigoDespesa,
         g.grupoDespesa,' . $controleconsumomaterial .'
         CASE
@@ -1239,7 +1239,51 @@ class DespesaController extends Controller
         }
     }
 
+    public function apiUpdateDespesas(Request $request)
+    {
+        $models = json_decode($request->models, true);
 
+        $successCount = 0;
+
+        foreach ($models as $modelData) {
+            // Verifica se 'copy_id' está definido antes de acessá-lo
+            if (isset($modelData['copy_id'])) {
+                $despesa = Despesa::find($modelData['copy_id']);
+
+                if($modelData['pago'] != 'S' && $modelData['pago'] != 's' && $modelData['pago'] != 'N' && $modelData['pago'] != 'n'){
+                    $modelData['pago'] = $despesa->pago;
+                }
+
+                if ($despesa) {
+                    $result = $despesa
+                        ->where('id', $despesa->id)
+                        ->where('excluidoDespesa', '0')
+                        ->update([
+                            'pago'                  => strtoupper($modelData['pago']),
+                            'precoReal'             => $modelData['precoReal'],
+                            'vencimento'            => date("Y-m-d", strtotime($modelData['vencimento'])),
+                            'idAlteracaoUsuario'    => auth()->user()->id
+                        ]);
+
+                    if ($result) {
+                        $successCount++;
+                    } else {
+                        // Se uma atualização falhar, retorna uma resposta de erro
+                        return response()->json(['error' => 'Erro ao atualizar a despesa'], 500);
+                    }
+                } else {
+                    // Se a despesa não for encontrada, retorna uma resposta de erro
+                    return response()->json(['error' => 'Despesa não encontrada'], 404);
+                }
+            } else {
+                // Se 'copy_id' não está definido, retorna uma resposta de erro
+                return response()->json(['error' => 'ID não definido em um dos modelos'], 400);
+            }
+        }
+
+        // Se todas as atualizações foram bem-sucedidas, retorna uma resposta de sucesso
+        return response()->json(['success' => $successCount . ' registros atualizados com sucesso'], 200);
+    }
 
     /**
      * Remove the specified resource from storage.

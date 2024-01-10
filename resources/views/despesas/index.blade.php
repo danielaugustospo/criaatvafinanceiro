@@ -63,6 +63,24 @@
 
                     model: {
                         fields: {
+                            id: {
+                                editable: false,
+                            },
+                            nomeConta: {
+                                editable: false,
+                            },
+                            despesaCodigoDespesa: {
+                                editable: false,
+                            },
+                            idOS: {
+                                editable: false,
+                            },
+                            descricaoDespesa: {
+                                editable: false,
+                            },
+                            nomeFuncionario: {
+                                editable: false,
+                            },
                             precoReal: {
                                 type: "number"
                             },
@@ -73,7 +91,8 @@
                                 type: "number"
                             },
                             razaosocialFornecedor: {
-                                type: "string"
+                                type: "string",
+                                editable: false,
                             },
                             vencimento: {
                                 type: "date"
@@ -82,8 +101,10 @@
                                 type: "date"
                             },
                             created_at: {
-                                    type: "date"
-                                },
+                                type: "date",
+                                editable: false,
+                            },
+                            
                         }
                     },
                 },
@@ -203,11 +224,17 @@
                     reorderable: true,
                     width: 'auto',
                     height: 550,
-
+                    toolbar: ["save", "cancel"],
                     pageable: {
-                        pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                        pageSizes: [5, 10, 15, 20, 50, 100, 200],
                         numeric: false,
 
+                    },
+                    messages: {
+                        commands: {
+                            save: "Salvar Alterações", // tradução para "save"
+                            cancel: "Cancelar Mudanças" // tradução para "cancel"
+                        }
                     },
                     dataSource: dataSource,
                     columns: [{
@@ -342,7 +369,7 @@
 
                         
                     ],
-
+                    editable: true,
                     groupExpand: function(e) {
                         for (let i = 0; i < e.group.items.length; i++) {
                             var expanded = e.group.items[i].value
@@ -404,6 +431,7 @@
                 }
 
             });
+
 
             $(window).on('load', function() {
 

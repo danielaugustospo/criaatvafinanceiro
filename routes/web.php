@@ -113,6 +113,8 @@ Route::post('/cadastrotipomateriais', 'ProductController@salvarmodal')->name('ca
 Route::post('/cadastrocodigodespesa', 'CodigoDespesaController@salvarmodal')->name('cadastrocodigodespesa');
 Route::post('/cadastrofornecedor', 'FornecedorController@salvarmodal')->name('cadastrofornecedor');
 
+Route::post('/apiupdatedespesas', 'DespesaController@apiUpdateDespesas')->name('apiupdatedespesas');
+
 //View
 Route::get('/replacegrupodespesa', function () { 
     if(Gate::allows('grupodespesa-edit')){
