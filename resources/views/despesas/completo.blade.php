@@ -312,6 +312,12 @@
                                 width: 120,
                             },
                             {
+                                field: "grupoDespesa",
+                                title: "Grupo.<br>Despesa",
+                                filterable: true,
+                                width: 120,
+                            },
+                            {
                                 field: "idOS",
                                 title: "OS",
                                 filterable: true,

@@ -326,7 +326,7 @@ class DespesaController extends Controller
 
         if (isset($request->coddespesa))    $descricao .= " AND c.despesaCodigoDespesa like  '%$request->coddespesa%'"; $verificaInputCampos++;
 
-        if (isset($request->grupodespesa))  $descricao .= " AND g.grupoDespesa like  '%$request->grupodespesa%'"; $verificaInputCampos++;
+        if (isset($request->grupodespesa))  $descricao .= " AND g.grupoDespesa = '$request->grupodespesa'"; $verificaInputCampos++;
         
         if (isset($request->fornecedor))    $descricao .= " AND f.razaosocialFornecedor like  '%$request->fornecedor%'"; $verificaInputCampos++;
         
