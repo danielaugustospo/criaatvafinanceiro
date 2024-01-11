@@ -51,6 +51,7 @@
             @include('layouts/helpersview/infofiltrosdepesa')
         </div>
         <script>
+            
             $.LoadingOverlay("show", {
                 image: "",
                 progress: true
@@ -233,7 +234,8 @@
                     messages: {
                         commands: {
                             save: "Salvar Alterações", // tradução para "save"
-                            cancel: "Cancelar Mudanças" // tradução para "cancel"
+                            cancel: "Cancelar Mudanças", // tradução para "cancel"
+                            required: "Este campo é de preenchimento obrigatório"
                         }
                     },
                     dataSource: dataSource,
@@ -347,7 +349,19 @@
                             field: "pago",
                             title: "Pago",
                             filterable: true,
-                            width: 90
+                            width: 90,
+                            editor: function(container, options) {
+                                // Create a dropdown with 'S' and 'N' options
+                                $('<input name="' + options.field + '" required />')
+                                    .appendTo(container)
+                                    .kendoDropDownList({
+                                        dataSource: ['S', 'N'],
+                                        optionLabel: "Selecione..."
+                                    });
+                            },
+                            validation: {
+                                required: "Este campo é de preenchimento obrigatório"
+                            }
                         },
                         {
                             field: "nomeFuncionario",
@@ -396,6 +410,7 @@
                                 }
                             }
                         }
+
                     },
                     columnHide: function(e) {
                         // hide column in all other detail Grids
@@ -411,7 +426,7 @@
                     }
                 });
 
-               
+
 
 
                 function showHideAll(show, field, element) {

@@ -21,14 +21,30 @@ transport: {
             dataType: "jsonp",
             type: "POST",
             beforeSend: function (xhr) {
+                
                 // Adicione o token CSRF aos cabeçalhos da requisição
                 xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+
             },
-            complete: function (e) {
+            complete: function(e) {
                 // Lógica a ser executada após a atualização
                 if (e.status === 200) {
                     // Se o status for 200, realiza o refresh da tabela
                     dataSource.read();
+                    
+                    // Show SweetAlert modal for success
+                    Swal.fire({
+                        title: 'Sucesso',
+                        text: 'Atualização realizada com sucesso!',
+                        icon: 'success'
+                    });
+                } else {
+                    // Show SweetAlert modal for error
+                    Swal.fire({
+                        title: 'Erro',
+                        text: 'Ocorreu um erro durante a atualização.',
+                        icon: 'error'
+                    });
                 }
             },
             data: function (data) {

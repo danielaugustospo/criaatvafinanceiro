@@ -39,10 +39,7 @@ class AppServiceProvider extends ServiceProvider
                 ->orderByDesc('id')
                 ->limit(5000)
                 ->get();
-        });
-        
-        view()->share('listaDespesas', $listaDespesas);
-        
+        });      
         
         view()->share('listaDespesas', $listaDespesas);
 
@@ -96,17 +93,8 @@ class AppServiceProvider extends ServiceProvider
         $listaClientes =  DB::select('SELECT * from clientes where ativoCliente = 1');
         view()->share('listaClientes', $listaClientes);
 
-        $nomeclientes =  DB::select('SELECT id, razaosocialCliente from clientes where ativoCliente = 1');
-        view()->share('nomeclientes', $nomeclientes);
-
         $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
         view()->share('listaFuncionarios', $listaFuncionarios);
-
-        $consultaNotasRecibosProvider = DB::select('SELECT distinct * from view_notasrecibos order by Emissao ASC');
-        view()->share('consultaNotasRecibosProvider', $consultaNotasRecibosProvider);
-
-        $consultaAliquotasProvider = DB::select('SELECT * from aliquotamensal');
-        view()->share('consultaAliquotasProvider', $consultaAliquotasProvider);
                
         $modoSandbox = Sandbox::first();
         view()->share('modoSandbox', $modoSandbox);
