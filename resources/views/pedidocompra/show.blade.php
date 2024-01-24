@@ -58,7 +58,7 @@
                             @else
                                 @can('pedidocompra-edit')
                                     @if ($pedido->ped_aprovado != 1 && $pedido->ped_aprovado != 4)
-                                        <a class="btn btn-primary" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
+                                        <a class="btn btn-primary mt-3" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
                                     @endif
                                 @endcan
                             @endif

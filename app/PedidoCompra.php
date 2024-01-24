@@ -64,7 +64,8 @@ class PedidoCompra extends Model
         'ped_usr_aprovador',
         'ped_dt_aprovacao',
         'ped_usr_finalizador',
-        'ped_dt_finalizacao'
+        'ped_dt_finalizacao',
+        'nf_exigencia'
     ];
 
     public function solicitante()
@@ -166,7 +167,8 @@ class PedidoCompra extends Model
         ped_excluidopedido              = '$pedido->ped_excluidopedido', 
         ped_novanotificacao             = '$pedido->ped_novanotificacao', 
         observacoes_solicitante         = '$pedido->observacoes_solicitante', 
-        updated_at                      = '$pedido->data'
+        updated_at                      = '$pedido->data',
+        nf_exigencia                    = '$pedido->nf_exigencia'
         WHERE id                        = '$pedido->id'";
 
         return $stringQuery;

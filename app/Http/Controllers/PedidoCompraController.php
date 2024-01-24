@@ -97,8 +97,6 @@ class PedidoCompraController extends Controller
             $pedido->ped_os                     = $request->get('ped_os');
         }
 
-
-
         $request->validate([
             'ped_tipopedido'     => 'required',
             'ped_nomecomprador'  => 'required',
@@ -108,6 +106,7 @@ class PedidoCompraController extends Controller
             'ped_precounit'      => 'required',
             'ped_qtd'            => 'required',
             'ped_valortotal'     => 'required',
+            'nf_exigencia'       => 'required',
         ],
         [
             'ped_tipopedido.required'   => 'Informe se a compra já foi efetuada ou não', 
@@ -118,12 +117,24 @@ class PedidoCompraController extends Controller
             'ped_precounit.required'    => 'Informe o valor unitário', 
             'ped_qtd.required'          => 'Informe a quantidade', 
             'ped_valortotal.required'   => 'Informe o valor total', 
+            'nf_exigencia.required'     => 'Informe o campo: "Há Nota Fiscal?"', 
 
          ]);
+
+         if($request->get('nf_exigencia') == 'S' ){
+            if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
+                $request->validate([ 
+                    'ped_notafiscal'   => 'required',
+                ], 
+                [ 
+                    'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
+                ]);
+            }
+        }
+
          $this->pegaDados($request, $pedido);
          $this->validaDados($request);
-
-        
+         
         // $pedido->ped_os                     = $request->get('ped_os');
         $pedido->ped_tipopedido             = $request->get('ped_tipopedido');
         $pedido->ped_data                   = $request->get('ped_data');
@@ -143,6 +154,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_exigaprov              = '';
         $pedido->ped_excluidopedido         = '0';
         $pedido->ped_novanotificacao        = '1';
+        $pedido->nf_exigencia               = $request->get('nf_exigencia');
 
 
         $pedido->save();
@@ -167,6 +179,18 @@ class PedidoCompraController extends Controller
             $pedido->ped_os                     = $request->get('ped_os');
         }
 
+
+
+        if($request->get('nf_exigencia') == 'S' ){
+            if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
+                $request->validate([ 
+                    'ped_notafiscal'   => 'required',
+                ], 
+                [ 
+                    'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
+                ]);
+            }
+        }
 
         $pedido->id                         = $request->get('id');
 
@@ -197,6 +221,7 @@ class PedidoCompraController extends Controller
         $pedido->observacoes_solicitante    = $request->get('observacoes_solicitante');
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
+        $pedido->nf_exigencia               = $request->get('nf_exigencia');
 
         $pedido->ped_aprovado           =  StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
         $pedido->ped_contaaprovada      = '';
@@ -406,7 +431,19 @@ class PedidoCompraController extends Controller
 
     public function pegaDados($request, $pedido)
     {
-        
+
+        if($request->get('nf_exigencia') == 'S' ){
+            if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
+
+                $request->validate([ 
+                    'ped_notafiscal'   => 'required',
+                ], 
+                [ 
+                    'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
+                ]);
+            }
+        }
+
         if($request->get('ped_formapag') == 'avista'){
             $pedido->ped_pix                    = $request->get('ped_pix');
             $pedido->ped_favorecido             = $request->get('ped_favorecido');
@@ -500,6 +537,7 @@ class PedidoCompraController extends Controller
                 'ped_agenciaconta.required' => 'Informe a agência', 
             ]);
         }
+
     }
 
     
@@ -507,6 +545,18 @@ class PedidoCompraController extends Controller
     {
         $validator = null;
     
+
+        if($request->get('nf_exigencia') == 'S' ){
+            if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
+                $validator = Validator::make($request->all(), [ 
+                    'ped_notafiscal'   => 'required',
+                ], 
+                [ 
+                    'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
+                ]);
+            }
+        }
+
         if($request->get('ped_formapag') == 'avista'){
             if(!is_null($request->ped_pix)){
                 if(!is_null($request->ped_favorecido)){
@@ -612,6 +662,7 @@ class PedidoCompraController extends Controller
                 'ped_formapag.required'=> 'Informe o tipo da compra',
             ]);
         }
+
     
         if ($validator->fails()) {
             throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
