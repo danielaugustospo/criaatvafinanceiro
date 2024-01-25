@@ -108,7 +108,7 @@ class BensPatrimoniaisController extends Controller
 
 public function apibenspatrimoniais(Request $request)
 {
-    $data = BensPatrimoniais::with('unidademedida', 'tipo')->get();
+    $data = BensPatrimoniais::with('unidademedida', 'tipo')->where('statusbenspatrimoniais',1)->get();
     return $data;
 }
 
