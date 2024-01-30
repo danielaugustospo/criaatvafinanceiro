@@ -423,8 +423,8 @@
                     @if (!isset($despesa->pago) || $despesa->pago == null || $despesa->pago == '' || $despesa->pago == 0)
                         {!! $infoSelectVazio !!}
                     @endif
-                    <option value="S" {{ $despesa->pago == 'S' ? ' selected' : '' }}>Sim</option>
-                    <option value="N" {{ $despesa->pago == 'N' ? ' selected' : '' }}>Não</option>
+                    <option value="S" {{ $despesa->pago == 'S' || $despesa->pago == 's' ? ' selected' : '' }}>Sim</option>
+                    <option value="N" {{ $despesa->pago == 'N' || $despesa->pago == 'n' ? ' selected' : '' }}>Não</option>
                 @endif
             </select>
         </div>
