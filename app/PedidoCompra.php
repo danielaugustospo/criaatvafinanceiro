@@ -65,7 +65,7 @@ class PedidoCompra extends Model
         'ped_dt_aprovacao',
         'ped_usr_finalizador',
         'ped_dt_finalizacao',
-        'nf_exigencia'
+        'nf_exigencia',
     ];
 
     public function solicitante()
@@ -85,7 +85,7 @@ class PedidoCompra extends Model
 
     public function listaPedidos($id, $aprovado, $notificado)
     {
-        $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod, 
+        $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod,
         f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador, ap.name as 'nomeaprovador', fin.name as 'nomefinalizador',
         comprador.razaosocialFornecedor AS nomecomp,
@@ -173,4 +173,17 @@ class PedidoCompra extends Model
 
         return $stringQuery;
     }
+
+
+    // Relacionamento com os documentos anexados
+    // public function documentosAnexados()
+    // {
+    //     return $this->hasMany(DocumentoAnexado::class);
+    // }
+
+    public function documentosAnexados()
+    {
+        return $this->hasMany(DocumentoAnexado::class, 'id_entidade', 'id');
+    }
+
 }

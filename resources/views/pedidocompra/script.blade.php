@@ -298,6 +298,32 @@
         document.getElementById("faturado").click(); // Click on the checkbox
     }
 
+    function removerDocumento(pedidoId, documentoId) {
+        // Confirme se o usuário deseja realmente remover o documento
+        if (confirm("Tem certeza de que deseja remover este documento?")) {
+            // Obtenha o token CSRF
+            var token = $('meta[name="csrf-token"]').attr('content');
+            
+            // Faça a requisição AJAX para o método no controlador
+            $.ajax({
+                url: '/remover-documento-pedido-compra/' + pedidoId + '/' + documentoId, // URL do método no controlador
+                type: 'DELETE', // Método HTTP DELETE para remover o documento
+                headers: {
+                    'X-CSRF-TOKEN': token // Adicione o token CSRF ao cabeçalho da solicitação
+                },
+                success: function(response) {
+                    // Remova o item de documento da interface após a exclusão bem-sucedida
+                    $('#d'+documentoId).remove();
+                    alert("Documento removido com sucesso!");
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Erro ao remover o documento. Por favor, tente novamente.");
+                }
+            });
+        }
+    }
+
 
     $(document).ready(function() {
             // Função para calcular o valor total

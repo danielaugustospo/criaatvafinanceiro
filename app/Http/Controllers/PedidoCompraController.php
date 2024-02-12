@@ -12,7 +12,9 @@ use Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Enums\StatusEnumPedidoCompra;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use App\DocumentoAnexado;
+use App\Enums\EnumEntidades;
 
 class PedidoCompraController extends Controller
 {
@@ -155,13 +157,62 @@ class PedidoCompraController extends Controller
         $pedido->ped_excluidopedido         = '0';
         $pedido->ped_novanotificacao        = '1';
         $pedido->nf_exigencia               = $request->get('nf_exigencia');
-
-
         $pedido->save();
+        
+        // Lógica para armazenar os arquivos
+        if ($request->hasFile('documentoAnexadoPedido')) {
+            $this->uploadAnexos($request, $pedido);
+        }
+
         $this->logAlteraPedidoCompra($pedido);
 
         return redirect()->route('pedidocompra.index')
             ->with('success', 'Pedido de compra n° ' . $pedido->id . ' realizado.');
+    }
+
+    public function uploadAnexos(Request $request, &$pedido){
+        foreach ($request->file('documentoAnexadoPedido') as $documento) {
+            try {
+                $name = uniqid(date('HisYmd'));
+                $extension = $documento->extension();
+                $nameFile = "{$name}.{$extension}";
+                $upload = $documento->storeAs("pedidoCompra/p_$pedido->id", $nameFile, 'public');
+
+                if ($upload) {               
+                    $documentoAnexado = $pedido->documentosAnexados()->create(['documento_anexado' => $nameFile]);
+                    // Defina os valores adicionais após a criação do modelo
+                    $documentoAnexado->update([
+                        'enum_entidade' => EnumEntidades::PEDIDO_COMPRA,
+                        'id_entidade' => $pedido->id
+                    ]);
+                } else {
+                    return redirect()->back()
+                        ->with('error', 'Falha ao fazer upload')
+                        ->withInput();
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with('error', 'Falha ao fazer upload: ' . $e->getMessage())
+                    ->withInput();
+            }
+        }
+    }
+
+    // Lógica para remover arquivo específico
+    public function removerDocumento($pedidoId, $documentoId) {
+        $documento = DocumentoAnexado::where('id_entidade', $pedidoId)
+                                    ->where('enum_entidade', EnumEntidades::PEDIDO_COMPRA)
+                                    ->where('id', $documentoId)
+                                    ->firstOrFail(); // Obtém o documento
+
+        // Remove o arquivo do armazenamento
+        Storage::disk('public')->delete("pedidoCompra/p_$pedidoId/" . $documento->documento_anexado);
+
+        // Remove o registro do documento do banco de dados
+        $documento->delete();
+
+        // Retorne uma resposta JSON bem-sucedida
+        return response()->json(['message' => 'Documento removido com sucesso'], 200);
     }
 
     public function update(Request $request)
@@ -233,6 +284,11 @@ class PedidoCompraController extends Controller
 
         $stringConsulta = $pedido->atualizaPedidos($pedido);
         $dadosAtualizacao = DB::update($stringConsulta);
+
+        // Lógica para armazenar os arquivos
+        if ($request->hasFile('documentoAnexadoPedido')) {
+            $this->uploadAnexos($request, $pedido);
+        }
 
 
         $this->logAlteraPedidoCompra($pedido);
@@ -356,7 +412,7 @@ class PedidoCompraController extends Controller
 
     public function show(Request $request, $id)
     {
-        $pedido = PedidoCompra::with('solicitante','aprovador','finalizador')->find($id);
+        $pedido = PedidoCompra::with('solicitante','aprovador','finalizador', 'documentosAnexados')->find($id);
 
         $valorInput = $this->valorInput;
         $valorSemCadastro = $this->valorSemCadastro;

@@ -17,7 +17,7 @@
 @include('layouts/helpersview/mensagemRetorno')
 
 
-{!! Form::open(array('route' => 'pedidocompra.store','method'=>'POST')) !!}
+{!! Form::open(array('route' => 'pedidocompra.store','method'=>'POST',  'enctype'=>'multipart/form-data')) !!}
 
 @include('pedidocompra/campos')
 

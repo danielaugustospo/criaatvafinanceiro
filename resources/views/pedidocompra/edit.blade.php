@@ -20,8 +20,8 @@
 
         @include('layouts/helpersview/mensagemRetorno')
 
-        {!! Form::model($pedido, ['method' => 'PATCH','route' => ['pedidocompra.update', $pedido->id]]) !!}
-        
+        {!! Form::model($pedido, ['method' => 'PATCH','route' => ['pedidocompra.update', $pedido->id],  'enctype'=>'multipart/form-data']) !!}
+
         @include('pedidocompra/campos')
 
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">

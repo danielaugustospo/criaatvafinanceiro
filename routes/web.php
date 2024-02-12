@@ -105,6 +105,8 @@ Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name(
 Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
 Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
 Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
+Route::delete('/remover-documento-pedido-compra/{pedidoId}/{documentoId}', 'PedidoCompraController@removerDocumento')->name('remover-documento-pedido-compra');
+
 
 
 Route::post('/salvarmodalgrupodespesa', 'GrupoDespesaController@salvarmodalgrupodespesa')->name('salvarmodalgrupodespesa');

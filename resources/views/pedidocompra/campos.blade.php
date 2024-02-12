@@ -410,13 +410,125 @@
     </div>
 
     <div class="row mt-2 mb-2">
+        <label class="col-sm-2 mr-2 mt-2" for="documentoAnexadoPedido">Anexar Documento</label>
+        <input type="file" class="form-control-file btn btn-secondary col-sm-6" name="documentoAnexadoPedido[]" multiple  {{ $variavelDisabledNaView }}>
+    </div>
+    <div class="row mt-2 mb-2">
+        @isset($pedido)
+            <label class="col-sm-2 mr-2 mt-2" for="documentoAnexadoPedido">Documentos Anexados</label>
+            <table class="p-2" style="background-color:white;">
+                @foreach($pedido->documentosAnexados as $documento)
+                <div class="mt-2">
+                    <tr id="d{{$documento->id}}">
+                        <th>
+                            <a href="/public/pedidoCompra/p_{{$pedido->id}}/{{$documento->documento_anexado}}" target="_blank">{{$documento->documento_anexado}}</a>
+                        </th>
+                        <th>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerDocumento('{{$pedido->id}}', '{{$documento->id}}')" {{ $variavelDisabledNaView }}>Remover</button>
+                        </th>
+                    </tr>
+                </div>
+                <br> <!-- Adiciona uma quebra de linha após cada bloco de div -->
+                @endforeach
+            </table>
+        @endisset
+    </div>
+    
+    
+
+    <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="">Observações</label>
         {!! Form::textarea('observacoes_solicitante', old('observacoes_solicitante'), [
-            'class' => 'col-sm-8 form-control',
+            'class' => 'col-sm-12 form-control',
             'id' => 'observacoes_solicitante',
-            'maxlength' => '1000',
             'style' => 'color: red; font-weight: bold;',
             $variavelReadOnlyNaView,
         ]) !!}
     </div>
+    <div id="contador_caracteres_restantes"></div>
+    
+    <script src="https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('observacoes_solicitante', {
+            height: 400,
+            width: 1275,
+            extraPlugins: 'mentions',
+            mentions: [{
+                feed: dataFeed,
+                itemTemplate:
+                    '<li data-id="{id}">' +
+                    '<strong class="username">{username}</strong>' +
+                    '<span class="fullname">{fullname}</span>' +
+                    '</li>',
+                outputTemplate:
+                    '<a href="mailto:{username}@example.com">@{username}</a><span>&nbsp;</span>',
+                minChars: 0
+            }]
+        });
+    
+        // Função para atualizar o contador de caracteres restantes
+        function atualizarContadorCaracteresRestantes() {
+            var editor = CKEDITOR.instances.observacoes_solicitante;
+            var maxLength = 1000;
+            var texto = editor.getData();
+            var caracteresRestantes = maxLength - texto.length;
+            if(caracteresRestantes < 0){
+                caracteresRestantes = 0;
+            }
+            var contadorElemento = document.getElementById('contador_caracteres_restantes');
+            contadorElemento.textContent = "Caracteres restantes: " + caracteresRestantes;
+        }
+    
+        // Atualiza o contador quando o conteúdo do editor muda
+        CKEDITOR.instances.observacoes_solicitante.on('change', function () {
+            atualizarContadorCaracteresRestantes();
+        });
+    
+        // Limita o número máximo de caracteres
+        CKEDITOR.instances.observacoes_solicitante.on('key', function (evt) {
+            var editor = evt.editor;
+            var texto = editor.getData();
+            var maxLength = 1003;
+            var keyCode = evt.data.keyCode;
+            var deleteKeys = [8, 46];
+    
+            // Permite as teclas de exclusão
+            if (deleteKeys.includes(keyCode)) return;
+    
+            // Impede a entrada de texto se o limite for atingido
+            if (texto.length >= maxLength && !deleteKeys.includes(keyCode)) {
+                evt.cancel();
+                alert("Você atingiu o limite máximo de caracteres.");
+                var textoTruncado = texto.substring(0, maxLength);
+                editor.setData(textoTruncado);
+            }
+
+        });
+    
+        function dataFeed(opts, callback) {
+            var matchProperty = 'username',
+                data = users.filter(function (item) {
+                    return item[matchProperty].indexOf(opts.query.toLowerCase()) == 0;
+                });
+    
+            data = data.sort(function (a, b) {
+                return a[matchProperty].localeCompare(b[matchProperty], undefined, {
+                    sensitivity: 'accent'
+                });
+            });
+    
+            callback(data);
+        }
+    
+        // Atualiza o contador quando a página é carregada
+        window.onload = function () {
+            atualizarContadorCaracteresRestantes();
+        };
+    </script>
+    
+    
+    
+    </div>
+
+    
 </div>
