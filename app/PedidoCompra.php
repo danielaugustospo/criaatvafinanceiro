@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Enums\StatusEnumPedidoCompra;
+use MongoDB\Client as MongoClient;
+use MongoDB\Driver\Query;
+use MongoDB\Collection;
 
 class PedidoCompra extends Model
 {
@@ -66,6 +69,7 @@ class PedidoCompra extends Model
         'ped_usr_finalizador',
         'ped_dt_finalizacao',
         'nf_exigencia',
+        'info_financeira'
     ];
 
     public function solicitante()
@@ -168,22 +172,40 @@ class PedidoCompra extends Model
         ped_novanotificacao             = '$pedido->ped_novanotificacao', 
         observacoes_solicitante         = '$pedido->observacoes_solicitante', 
         updated_at                      = '$pedido->data',
-        nf_exigencia                    = '$pedido->nf_exigencia'
+        nf_exigencia                    = '$pedido->nf_exigencia',
+        info_financeira                 = '$pedido->info_financeira'
         WHERE id                        = '$pedido->id'";
 
         return $stringQuery;
     }
 
-
-    // Relacionamento com os documentos anexados
-    // public function documentosAnexados()
-    // {
-    //     return $this->hasMany(DocumentoAnexado::class);
-    // }
-
     public function documentosAnexados()
     {
         return $this->hasMany(DocumentoAnexado::class, 'id_entidade', 'id');
     }
+
+
+    public static function getAuditLogs($id): array
+    {
+        $mongoClient = new MongoClient("mongodb://" . env('MONGODB_USERNAME') . ":" . env('MONGODB_PASSWORD') . "@" . env('MONGODB_HOST') . ":" . env('MONGODB_PORT'));
+        
+        $db = $mongoClient->selectDatabase('audit_log');
+        $collection = $db->selectCollection('audit_logs');
+        
+        $filter = ['id' => $id];
+        $options = [
+            'sort' => ['created_at' => -1]
+        ];
+        
+        $cursor = $collection->find($filter, $options);
+        
+        $auditLogs = [];
+        foreach ($cursor as $document) {
+            $auditLogs[] = $document;
+        }
+        
+        return $auditLogs;
+    }
+    
 
 }

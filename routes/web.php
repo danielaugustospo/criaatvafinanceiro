@@ -102,11 +102,10 @@ Route::get('/listaClientes', 'ClientesController@listaClientes')->name('listaCli
 Route::get('/listaFornecedores', 'DespesaController@listaFornecedores')->name('listaFornecedores');
 Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('listaTipoMateriais');
 
-Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
-Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
-Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
-Route::delete('/remover-documento-pedido-compra/{pedidoId}/{documentoId}', 'PedidoCompraController@removerDocumento')->name('remover-documento-pedido-compra');
-
+// Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
+// Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
+// Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
+// Route::delete('/remover-documento-pedido-compra/{pedidoId}/{documentoId}', 'PedidoCompraController@removerDocumento')->name('remover-documento-pedido-compra');
 
 
 Route::post('/salvarmodalgrupodespesa', 'GrupoDespesaController@salvarmodalgrupodespesa')->name('salvarmodalgrupodespesa');
@@ -136,6 +135,15 @@ Route::get('/replacecodigodespesa', function () {
 Route::post('/replacecodigodespesa', 'CodigoDespesaController@replaceCodigoDespesa')->name('replacecodigodespesa');
 
 
+Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
+Route::delete('/remover-documento-pedido-compra/{pedidoId}/{documentoId}', 'PedidoCompraController@removerDocumento')->name('remover-documento-pedido-compra');
+
+Route::middleware(['auth', 'auditlog'])->group(function () {
+    Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
+    Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
+    Route::resource('pedidocompra','PedidoCompraController');
+});
+
 Route::middleware('auth')->group(function () {
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
@@ -160,7 +168,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('grupodespesas','GrupoDespesaController');
     Route::resource('notasrecibos','NotasRecibosController');
     Route::resource('aliquotamensal','AliquotaMensalController');
-    Route::resource('pedidocompra','PedidoCompraController');
     Route::resource('relatorio','RelatorioController');
     Route::resource('sandbox','SandboxController');
     

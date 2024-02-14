@@ -224,6 +224,27 @@
                 resetaDadosBancarios();
             }
         });
+
+            // Função para verificar quando o checkbox é marcado ou desmarcado
+        $('#info_financeira').change(function(){
+            // Se o checkbox estiver marcado e o campo hidden estiver com valor "false", definir o valor como "true"
+            if($(this).is(":checked") && $('#info_financeira_hidden').val() === "false") {
+                $('#info_financeira_hidden').val("true");
+            }
+
+            // Se o checkbox estiver marcado, ocultar as divs
+            if($(this).is(":checked")) {
+                $('#telaFormaPagamento, #telaReembolsado, #divFaturado, #divDadosBancarios').hide();
+            } else {
+                // Se o checkbox estiver desmarcado, exibir as divs
+                $('#telaFormaPagamento, #telaReembolsado, #divFaturado, #divDadosBancarios').show();
+            }
+        });
+
+        // Verificar se $pedido->info_financeira é igual a 'N' ao carregar a página
+        @if(isset($pedido) && $pedido->info_financeira === "N" ||  old('info_financeira_hidden') == 'true')
+            $('#info_financeira').prop('checked', true).trigger('change');
+        @endif
     });
 
     function resetaParcelamento() {

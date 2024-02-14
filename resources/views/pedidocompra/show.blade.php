@@ -42,6 +42,11 @@
                         @include('pedidocompra/status')
                         {{-- <h2> Dados do Pedido <b>{{ $pedido->id }}</b></h2> --}}
                     </div>
+                    <div class="row  d-flex justify-content-center align-items-center">
+                        
+                        @include('pedidocompra/history')
+                    </div>
+
                     <hr>
                     <div class="row  d-flex justify-content-center align-items-center">
 
@@ -54,14 +59,13 @@
                         <form action="{{ route('pedidocompra.destroy', $pedido->id) }}" method="POST">
                             <a class="btn btn-danger  mt-3" href="{{ route('pedidocompra.index') }}"> Voltar</a>
 
-                            @if (Gate::check('pedidocompra-analise'))
-                            @else
-                                @can('pedidocompra-edit')
-                                    @if ($pedido->ped_aprovado != 1 && $pedido->ped_aprovado != 4)
-                                        <a class="btn btn-primary mt-3" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
-                                    @endif
-                                @endcan
+
+                        @can('pedidocompra-edit')
+                            @if (($pedido->ped_aprovado != 1 && $pedido->ped_aprovado != 4) || (Gate::check('pedidocompra-analise')))
+                                <a class="btn btn-primary mt-3" href="{{ route('pedidocompra.edit', $pedido->id) }}">Editar</a>
                             @endif
+                        @endcan
+
 
                             @csrf
                             {{-- @method('DELETE')

@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "freshbitsweb/laratables": "^2.1",
         "geekcom/validator-docs": "^3.3",
+        "jenssegers/mongodb": "^3.8",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",

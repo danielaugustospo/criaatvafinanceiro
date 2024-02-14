@@ -15,6 +15,7 @@ use App\Enums\StatusEnumPedidoCompra;
 use Illuminate\Support\Facades\Storage;
 use App\DocumentoAnexado;
 use App\Enums\EnumEntidades;
+use App\AuditLog;
 
 class PedidoCompraController extends Controller
 {
@@ -98,51 +99,60 @@ class PedidoCompraController extends Controller
         }else{
             $pedido->ped_os                     = $request->get('ped_os');
         }
-
+        
         $request->validate([
             'ped_tipopedido'     => 'required',
-            'ped_nomecomprador'  => 'required',
-            'ped_fornecedor'     => 'required',
             'ped_os'             => 'required',
-            'ped_descprod'       => 'required',
-            'ped_precounit'      => 'required',
-            'ped_qtd'            => 'required',
-            'ped_valortotal'     => 'required',
             'nf_exigencia'       => 'required',
+            'ped_descprod'       => 'required',
         ],
         [
             'ped_tipopedido.required'   => 'Informe se a compra já foi efetuada ou não', 
-            'ped_nomecomprador.required'=> 'Nome do Comprador é obrigatório', 
-            'ped_fornecedor.required'   => 'Nome do Fornecedor é obrigatório', 
             'ped_os.required'           => 'Informe se a compra é para a CRIAATVA ou para uma OS', 
-            'ped_descprod.required'     => 'Informe a descrição', 
-            'ped_precounit.required'    => 'Informe o valor unitário', 
-            'ped_qtd.required'          => 'Informe a quantidade', 
-            'ped_valortotal.required'   => 'Informe o valor total', 
             'nf_exigencia.required'     => 'Informe o campo: "Há Nota Fiscal?"', 
+            'ped_descprod.required'     => 'Informe a descrição', 
+        ]);
 
-         ]);
-
-         if($request->get('nf_exigencia') == 'S' ){
-            if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
-                $request->validate([ 
-                    'ped_notafiscal'   => 'required',
-                ], 
-                [ 
-                    'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
-                ]);
-            }
+        if($request->get('nf_exigencia') == 'S' ){
+           if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
+               $request->validate([ 
+                   'ped_notafiscal'   => 'required',
+               ], 
+               [ 
+                   'ped_notafiscal.required'  => 'Informe a Nota Fiscal',
+               ]);
+           }
         }
-
-         $this->pegaDados($request, $pedido);
-         $this->validaDados($request);
+        
+        $pedido->info_financeira            = 'N';
+        if(!$request->info_financeira){
+            $pedido->info_financeira            = 'S';
+            $request->validate([
+                'ped_nomecomprador'  => 'required',
+                'ped_fornecedor'     => 'required',
+                'ped_precounit'      => 'required',
+                'ped_qtd'            => 'required',
+                'ped_valortotal'     => 'required',
+            ],
+            [
+                'ped_nomecomprador.required'=> 'Nome do Comprador é obrigatório', 
+                'ped_fornecedor.required'   => 'Nome do Fornecedor é obrigatório', 
+                'ped_precounit.required'    => 'Informe o valor unitário', 
+                'ped_qtd.required'          => 'Informe a quantidade', 
+                'ped_valortotal.required'   => 'Informe o valor total', 
+    
+             ]); 
+             
+             $this->pegaDados($request, $pedido);
+             $this->validaDados($request);
+        }
          
         // $pedido->ped_os                     = $request->get('ped_os');
         $pedido->ped_tipopedido             = $request->get('ped_tipopedido');
         $pedido->ped_data                   = $request->get('ped_data');
         $pedido->ped_nomecomprador          = $request->get('ped_nomecomprador');
         $pedido->ped_usrsolicitante         = $request->get('ped_usrsolicitante');
-        $pedido->ped_fornecedor             = $request->get('ped_fornecedor');
+        $pedido->ped_fornecedor             = ($request->get('ped_fornecedor') == '') ? null : $request->get('ped_fornecedor') ;
         $pedido->ped_descprod               = $request->get('ped_descprod');
         $pedido->ped_valortotal             = $request->get('ped_valortotal');
         $pedido->ped_formapag               = $request->get('ped_formapag');
@@ -164,7 +174,7 @@ class PedidoCompraController extends Controller
             $this->uploadAnexos($request, $pedido);
         }
 
-        $this->logAlteraPedidoCompra($pedido);
+        $this->logCadastraPedidoCompra($pedido);
 
         return redirect()->route('pedidocompra.index')
             ->with('success', 'Pedido de compra n° ' . $pedido->id . ' realizado.');
@@ -217,7 +227,7 @@ class PedidoCompraController extends Controller
 
     public function update(Request $request)
     {
-        $pedido = new PedidoCompra();
+        $pedido =  PedidoCompra::find($request->id);
 
         $oscriaatva = $request->get('oscriaatva');
         if(isset($oscriaatva)){
@@ -251,7 +261,8 @@ class PedidoCompraController extends Controller
         $pedido->ped_nomecomprador          = $request->get('ped_nomecomprador');
         $pedido->ped_usrsolicitante         = Auth::id();
 
-        $pedido->ped_fornecedor             = $request->get('ped_fornecedor');
+        // $pedido->ped_fornecedor             = $request->get('ped_fornecedor');
+        $pedido->ped_fornecedor             = ($request->get('ped_fornecedor') == '') ? null : $request->get('ped_fornecedor') ;
         $pedido->ped_descprod               = $request->get('ped_descprod');
         $pedido->ped_valortotal             = $request->get('ped_valortotal');
         // $pedido->ped_cartaodecredito        = $request->get('ped_cartaodecredito');
@@ -281,7 +292,32 @@ class PedidoCompraController extends Controller
         $pedido->ped_novanotificacao    = '1';
         $pedido->data = FormatacoesServiceProvider::getHorarioParaBackend();
 
+        $pedido->info_financeira            = 'N';
+        if(!$request->info_financeira){
+            //Situação do validador preenchendo todos os dados, situação do solicitante editando e preenchendo os dados
 
+            $pedido->info_financeira            = 'S';
+            $request->validate([
+                'ped_nomecomprador'  => 'required',
+                'ped_fornecedor'     => 'required',
+                'ped_precounit'      => 'required',
+                'ped_qtd'            => 'required',
+                'ped_valortotal'     => 'required',
+            ],
+            [
+                'ped_nomecomprador.required'=> 'Nome do Comprador é obrigatório', 
+                'ped_fornecedor.required'   => 'Nome do Fornecedor é obrigatório', 
+                'ped_precounit.required'    => 'Informe o valor unitário', 
+                'ped_qtd.required'          => 'Informe a quantidade', 
+                'ped_valortotal.required'   => 'Informe o valor total', 
+    
+             ]); 
+             
+             $this->pegaDados($request, $pedido);
+             $this->validaDados($request);
+        }        
+
+        $this->logAlteraPedidoCompra($pedido);
         $stringConsulta = $pedido->atualizaPedidos($pedido);
         $dadosAtualizacao = DB::update($stringConsulta);
 
@@ -291,7 +327,6 @@ class PedidoCompraController extends Controller
         }
 
 
-        $this->logAlteraPedidoCompra($pedido);
 
         return redirect()->route('pedidocompra.index')
             ->with('success', 'Pedido de compra n° ' . $pedido->id . ' atualizado.');
@@ -420,8 +455,10 @@ class PedidoCompraController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
         $infoSelectVazio        = $this->infoSelectVazio;
 
+        $auditLogs = PedidoCompra::getAuditLogs($pedido->id);
 
-        return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio'));
+
+        return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'auditLogs'));
     }
 
     public function edit($id)
@@ -457,32 +494,49 @@ class PedidoCompraController extends Controller
 
     public function logCadastraPedidoCompra($pedido = null)
     {
-        $this->Logger->log('info', 'Cadastrou o pedido de compra ' . $pedido->id);
+        $action = 'pedido_compra_criado';
+        $this->logAlteraPedidoCompra($pedido, $action);
     }
 
-    public function logAlteraPedidoCompra($pedido = null)
+    public function logAlteraPedidoCompra($pedido = null, $action = null )
     {
-        $this->Logger->log('info', 'Alterou o pedido de compra ' . $pedido->id);
+        $user   = Auth::user();
+        $action = $action ?? 'pedido_compra_alterado';
+
+        AuditLog::create([
+            'id'      => $pedido->id,
+            'user_id' => $user->id,
+            'action'  => $action,
+            'model'   => 'PedidoCompra',
+            'dirty'   => $pedido->getDirty(),
+            'before'  => $pedido->getOriginal(),
+            'after'   => $pedido->getAttributes(),
+            // adicione mais campos e detalhes conforme necessário
+        ]);
     }
 
     public function logValidaPedidoCompra($pedido = null)
     {
-        $this->Logger->log('info', 'Aprovou o pedido de compra ' . $pedido->id);
+        $action = 'pedido_compra_validado';
+        $this->logAlteraPedidoCompra($pedido, $action);
     }
 
     public function logRevisaPedidoCompra($pedido = null)
     {
-        $this->Logger->log('info', 'Revisou o pedido de compra ' . $pedido->id);
+        $action = 'pedido_compra_revisado';
+        $this->logAlteraPedidoCompra($pedido, $action);
     }
 
     public function logInvalidaPedidoCompra($pedido = null)
     {
-        $this->Logger->log('info', 'Reprovou o pedido de compra ' . $pedido->id . ' com o retorno: ' . $pedido->ped_exigaprov);
+        $action = 'pedido_compra_reprovado';
+        $this->logAlteraPedidoCompra($pedido, $action);
     }
 
     public function logExcluiPedidoCompra($pedido = null)
     {
-        $this->Logger->log('info', 'Marcou como excluído o pedido de compra ' . $pedido->id);
+        $action = 'pedido_compra_excluido';
+        $this->logAlteraPedidoCompra($pedido, $action);
     }
 
     public function pegaDados($request, $pedido)
@@ -715,7 +769,7 @@ class PedidoCompraController extends Controller
                 'ped_formapag'  => 'required',
             ],
             [
-                'ped_formapag.required'=> 'Informe o tipo da compra',
+                'ped_formapag.required'=> 'Informe a Forma de Pagamento',
             ]);
         }
 

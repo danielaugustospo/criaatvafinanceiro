@@ -32,32 +32,32 @@
 
 
     <div class="row">
-        <label class="col-sm-2  mr-2 mt-2" for="">STATUS DA COMPRA:</label>
+        <label class="col-sm-2  mr-2 mt-2 text-danger">STATUS DA COMPRA:</label>
 
         <input class="ml-2 mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '0' || old('ped_tipopedido') == '0') checked @endif
             @isset($pedido) @if ($pedido->ped_tipopedido == '0') checked  @endif @endisset
             name="ped_tipopedido" id="tipoPedidoAComprar" value="0" {{ $variavelDisabledNaView }}>
-            <label class="mt-2 mr-2 mr-4 col-sm-2" for="">A COMPRAR</label>
+            <label class="mt-2 mr-2 mr-4 col-sm-2">A COMPRAR</label>
 
             <input class="mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '1' || old('ped_tipopedido') == '1') checked @endif
             @isset($pedido) @if ($pedido->ped_tipopedido != '0') checked @endif @endisset
             name="ped_tipopedido" id="tipoPedidoComprado" value="1" {{ $variavelDisabledNaView }}>
-            <label class="mt-2 mr-2 mr-4" for="">ITEM JÁ COMPRADO</label>
+            <label class="mt-2 mr-2 mr-4">ITEM JÁ COMPRADO</label>
 
     </div>
 
     <div class="row">
-        <label class="col-sm-2  mr-2 mt-2" for="">Compra para:</label>
+        <label class="col-sm-2  mr-2 mt-2 text-danger">Compra para:</label>
 
         <input class="ml-2 mr-2" type="radio" name="oscriaatva" @if (old('ped_os') == 'EMPRESA GERAL' || old('oscriaatva') == 'EMPRESA GERAL') checked @endif
             @isset($pedido) @if ($pedido->ped_os == 'EMPRESA GERAL') checked  @endif @endisset
             name="ped_os" id="compraCRIAATVA" value="EMPRESA GERAL" {{ $variavelDisabledNaView }}>
 
-        <label class="mt-2 mr-2 mr-4 col-sm-2" for="">EMPRESA</label>
+        <label class="mt-2 mr-2 mr-4 col-sm-2">EMPRESA</label>
         <input class="mr-2" type="radio" name="oscriaatva" @if (old('ped_os') == 'OS' || old('oscriaatva') == 'OS') checked @endif
             @isset($pedido) @if ($pedido->ped_os != 'EMPRESA GERAL') checked @endif @endisset
             name="ped_os" id="compraOS" value="OS" {{ $variavelDisabledNaView }}>
-        <label class="mt-2 mr-2" for="">OS</label>
+        <label class="mt-2 mr-5">OS</label>
 
 
         <div id="telaOS">
@@ -73,44 +73,52 @@
                                 <option value="EMPRESA GERAL" selected>SEM OS</option>
                             @endif
                         @endif
-                    @endisset
-                    <option @if (old('ped_os') == $listaOS->id) selected @endif value="{{ $listaOS->id }}">
+                        @endisset
+                        <option @if (old('ped_os') == $listaOS->id) selected @endif value="{{ $listaOS->id }}">
                         {{ $listaOS->id }} | {{ $listaOS->eventoOrdemdeServico }}</option>
                 @endforeach
             </select>
         </div>
-
-
-        <label class="col-sm-2 mt-2" for="">Há Nota Fiscal?</label>
-
-
-        <select name="nf_exigencia" class="mt-2 selecionaComInput col-sm-1" {{ $variavelDisabledNaView }}>
-            @if (!isset($pedido))
-                <option disabled selected>Selecione...</option>
-            @endif
-            @if (Request::path() == 'pedidocompra/create')
-                <option value="N" {{ old('nf_exigencia') == 'N' ? ' selected' : '' }}>Não</option>
-                <option value="S" {{ old('nf_exigencia') == 'S' ? ' selected' : '' }}>Sim</option>
-            @else
-                @if (!isset($pedido->nf_exigencia) || $pedido->nf_exigencia == null || $pedido->nf_exigencia == '' || $pedido->nf_exigencia == 0)
-                    {!! $infoSelectVazio !!}
-                @endif
-                <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim</option>
-                <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'N' ? ' selected' : '' }}>Não</option>
-            @endif
-        </select>
         
     </div>
-
     <div class="row mt-2 mb-2">
-        <label class="col-sm-2 mr-2 mt-1" for="">Data</label>
+        <label class="col-sm-2  mr-2 text-danger">Há Nota Fiscal?</label>
+        
+        
+        <select name="nf_exigencia" class="mt-2 selecionaComInput col-sm-1" {{ $variavelDisabledNaView }}>
+            @if (!isset($pedido))
+            <option disabled selected>Selecione...</option>
+                @endif
+            @if (Request::path() == 'pedidocompra/create')
+            <option value="N" {{ old('nf_exigencia') == 'N' ? ' selected' : '' }}>Não</option>
+            <option value="S" {{ old('nf_exigencia') == 'S' ? ' selected' : '' }}>Sim</option>
+            @else
+            @if (!isset($pedido->nf_exigencia) || $pedido->nf_exigencia == null || $pedido->nf_exigencia == '' || $pedido->nf_exigencia == 0)
+            {!! $infoSelectVazio !!}
+            @endif
+            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim</option>
+            <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'N' ? ' selected' : '' }}>Não</option>
+            @endif
+        </select>
 
+        <label class="col-sm-1 mr-2 mt-2" for="ped_notafiscal">Nota Fiscal</label>
+        {!! Form::text('ped_notafiscal', old('ped_notafiscal'), [
+            'class' => 'col-sm-3 form-control',
+            'maxlength' => '100',
+            $variavelReadOnlyNaView,
+        ]) !!}
+    
+    </div>
+    
+    <div class="row mt-2 mb-2">
+        <label class="col-sm-2 mr-2 mt-1">Data</label>
+        
         @if (Request::path() == 'pedidocompra/create')
-            {!! Form::date('ped_data', new \DateTime(), [
-                'class' => 'col-sm-3 form-control',
+        {!! Form::date('ped_data', new \DateTime(), [
+            'class' => 'col-sm-3 form-control',
                 'maxlength' => '100',
                 'readonly',
-            ]) !!}
+                ]) !!}
         @else
         {!! Form::date('ped_data', $valorInput, [
             'class' => 'col-sm-3 form-control',
@@ -120,43 +128,43 @@
         @endif
         
     </div>
-
+    
     @isset($pedido)
         <div class="row d-flex">
-            <label class="col-sm-2 mr-2 mt-2" for="">Perfil Solicitante</label>
+            <label class="col-sm-2 mr-2 mt-2">Perfil Solicitante</label>
             <span class=" mt-2 text-danger">{{ $pedido->solicitante->name ?? 'Nenhum solicitante encontrado' }}</span>
         </div>
     @endisset
 
     <div class="row d-flex">
         <label class="col-sm-2 mr-2 mt-2" for="">Nome Comprador</label>
-
+        
         <select name="ped_nomecomprador" class="selecionaComInput col-sm-8" {{ $variavelDisabledNaView }}>
-            @if (!isset($pedido))
-                <option disabled selected>Selecione...</option>
+            @if (!isset($pedido) || is_null($pedido->ped_nomecomprador) || empty($pedido->ped_nomecomprador))
+            <option disabled selected>Selecione...</option>
             @endif
             @foreach ($listaFornecedores as $fornecedor)
-                @isset($pedido)
-                    @if ($pedido->ped_nomecomprador == $fornecedor->id)
-                        <option @if (old('ped_nomecomprador') == $fornecedor->id) selected @endif value="{{ $fornecedor->id }}" selected>
-                            {{ $fornecedor->razaosocialFornecedor }}</option>
-                    @endif
+            @isset($pedido)
+            @if ($pedido->ped_nomecomprador == $fornecedor->id)
+            <option @if (old('ped_nomecomprador') == $fornecedor->id) selected @endif value="{{ $fornecedor->id }}" selected>
+                {{ $fornecedor->razaosocialFornecedor }}</option>
+                @endif
                 @endisset
                 <option @if (old('ped_nomecomprador') == $fornecedor->id) selected @endif value="{{ $fornecedor->id }}">
                     {{ $fornecedor->razaosocialFornecedor }}</option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="row mt-2 mb-2">
-        <label class="col-sm-2 mr-2 mt-2" for="">Fornecedor</label>
-        <div class="pl-0 col-sm-5">
-            <select name="ped_fornecedor" id="selecionaFornecedor"
-                class="selecionaComInput selecionaFornecedor  form-control" {{ $variavelDisabledNaView }}>
-                @if (!isset($pedido))
-                    <option disabled selected>Selecione...</option>
-                @endif
-                @foreach ($listaFornecedores as $fornecedor)
+                    @endforeach
+                </select>
+            </div>
+            
+            <div class="row mt-2 mb-2">
+                <label class="col-sm-2 mr-2 mt-2" for="">Fornecedor</label>
+                <div class="pl-0 col-sm-5">
+                    <select name="ped_fornecedor" id="selecionaFornecedor"
+                    class="selecionaComInput selecionaFornecedor  form-control" {{ $variavelDisabledNaView }}>
+                    @if (!isset($pedido) || is_null($pedido->ped_fornecedor)  || empty($pedido->ped_fornecedor) )
+                        <option selected value="">Selecione...</option>
+                    @endif
+                    @foreach ($listaFornecedores as $fornecedor)
                     @isset($pedido)
                         @if ($pedido->ped_fornecedor == $fornecedor->id)
                             <option value="{{ $fornecedor->id }}" selected>{{ $fornecedor->razaosocialFornecedor }}
@@ -164,28 +172,27 @@
                         @endif
                     @endisset
                     <option @if (old('ped_fornecedor') == $fornecedor->id) selected @endif value="{{ $fornecedor->id }}">
-                        {{ $fornecedor->razaosocialFornecedor }}</option>
-                @endforeach
-            </select>
-        </div>
-
+                                {{ $fornecedor->razaosocialFornecedor }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
         <div class="col-sm-4">
             <button type="button" onclick="recarregaFornecedor()" class="btn btn-dark"
                 {{ $variavelDisabledNaView }}><i class="fas fa-sync"></i></i></button>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".fornecedor"
-                {{ $variavelDisabledNaView }}><i class="fas fa-industry pr-1"></i>Cadastrar Fornecedor</button>
+            {{ $variavelDisabledNaView }}><i class="fas fa-industry pr-1"></i>Cadastrar Fornecedor</button>
         </div>
     </div>
-
+    
     <div class="row mt-2 mb-2">
-        <label class="col-sm-2 mr-2 mt-2" for="ped_descprod">Descrição/Produto</label>
+        <label class="col-sm-2 mr-2 mt-2 text-danger" for="ped_descprod">Descrição/Produto</label>
         {!! Form::text('ped_descprod', old('ped_descprod'), [
             'class' => 'col-sm-8 form-control',
             'maxlength' => '100',
             $variavelReadOnlyNaView,
-        ]) !!}
+            ]) !!}
     </div>
-
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="ped_precounit">Preço Unitário</label>
         {!! Form::text('ped_precounit', old('ped_precounit'), [
@@ -193,16 +200,16 @@
             'id' => 'ped_precounit',
             'maxlength' => '100',
             $variavelReadOnlyNaView,
-        ]) !!}
+            ]) !!}
 
 
-        <label class="col-sm-2 mt-2" for="ped_qtd">Quantidade</label>
-        {!! Form::text('ped_qtd', old('ped_qtd'), [
+<label class="col-sm-2 mt-2" for="ped_qtd">Quantidade</label>
+{!! Form::text('ped_qtd', old('ped_qtd'), [
             'class' => 'col-sm-1 form-control ped_qtd',
             'id' => 'ped_qtd',
             'maxlength' => '10',
             $variavelReadOnlyNaView,
-        ]) !!}
+            ]) !!}
     </div>
 
     <div class="row mt-2 mb-2">
@@ -212,10 +219,40 @@
             'id' => 'ped_valortotal',
             'maxlength' => '100',
             $variavelReadOnlyNaView,
-        ]) !!}
+            ]) !!}
     </div>
 
-    <div class="form-row mt-2 mb-2">
+    @can('pedidocompra-edit')
+        @if(Gate::check('pedidocompra-analise'))
+            @isset($pedido) 
+                @if ($pedido->info_financeira == 'N')        
+                    <h4 class="col-sm-12 mr-2 mt-2 text-danger text-center" for="ped_descprod">
+                        O solicitante não disponibilizou as informações financeiras. Para finalizar o pedido, será necessário preenchê-las. 
+                    </h4>
+                @endif 
+            @endisset
+        @else
+            
+            <div class="row mt-2 mb-2">
+                <label class="col-sm-2 mr-2 mt-2 text-danger" for="ped_descprod">Não tenho informações financeiras</label>
+
+                    <!-- Campo hidden para enviar o estado do checkbox -->
+                    {!! Form::hidden('info_financeira_hidden', 'false') !!}
+
+                    <!-- Checkbox -->
+                    <?php echo Form::checkbox('info_financeira', 'true', (old('info_financeira_hidden') == 'false' || (isset($pedido) && $pedido->info_financeira == 'N')), [
+                        'class' => 'col-sm-1 form-control',
+                        'id' => 'info_financeira',
+                        'style' => 'margin-left: -03.1%;',
+                        $variavelDisabledNaView
+                    ]); ?>
+                
+            </div>
+        @endif
+    @endcan
+
+
+    <div id="telaFormaPagamento" class="form-row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="">FORMA DE PAGAMENTO</label>
 
         <label for="ped_formapag" class="ml-2"> <input type="radio" value="avista"
@@ -255,7 +292,7 @@
 
             <select name="ped_vzscartao" class="selecionaComInput col-sm-1" id="ped_vzscartao"
                 {{ $variavelDisabledNaView }}>
-                @if (!isset($pedido))
+                @if (!isset($pedido) || is_null($pedido->ped_vzscartao) || empty($pedido->ped_vzscartao))
                     <option disabled selected>Selecione...</option>
                 @endif
                 @for ($i = 1; $i <= 48; $i++)
@@ -275,7 +312,7 @@
     <div id="telaReembolsado" class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="">Reembolsado p/</label>
         <select name="ped_reembolsado" class="selecionaComInput form-control col-sm-3" {{ $variavelDisabledNaView }}>
-            @if (!isset($pedido))
+            @if (!isset($pedido) || is_null($pedido->ped_reembolsado)  || empty($pedido->ped_reembolsado))
                 <option disabled selected>Selecione...</option>
             @endif
             @foreach ($listaFornecedores as $fornecedor)
@@ -323,9 +360,10 @@
             <label class="col-sm-2 mr-2 mt-2" for="">Faturado em x</label>
             <select name="ped_periodofaturado" class="selecionaComInput col-sm-2 form-control"
                 id="ped_periodofaturado" {{ $variavelDisabledNaView }}>
-                @if (!isset($pedido))
+                @if (!isset($pedido) || is_null($pedido->ped_periodofaturado)  || empty($pedido->ped_periodofaturado))
                     <option disabled selected>Selecione...</option>
                 @endif
+
                 @for ($i = 1; $i <= 48; $i++)
                     @isset($pedido)
                         @if ($pedido->ped_periodofaturado == $i)
@@ -396,18 +434,9 @@
                 {{ $variavelReadOnlyNaView }}
                 value="@isset($pedido->ped_cpfcnpj)  {{ $pedido->ped_cpfcnpj }} @else {{ old('ped_cpfcnpj') }} @endisset">
         </div>
+        <hr>
     </div>
 
-    <hr>
-    <div class="row mt-2 mb-2">
-        <label class="col-sm-2 mr-2 mt-2" for="ped_notafiscal">Nota Fiscal</label>
-        {!! Form::text('ped_notafiscal', old('ped_notafiscal'), [
-            'class' => 'col-sm-3 form-control',
-            'maxlength' => '100',
-            $variavelReadOnlyNaView,
-        ]) !!}
-
-    </div>
 
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="documentoAnexadoPedido">Anexar Documento</label>
