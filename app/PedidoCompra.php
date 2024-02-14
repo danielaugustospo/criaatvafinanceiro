@@ -189,7 +189,7 @@ class PedidoCompra extends Model
     {
         $mongoClient = new MongoClient("mongodb://" . env('MONGODB_USERNAME') . ":" . env('MONGODB_PASSWORD') . "@" . env('MONGODB_HOST') . ":" . env('MONGODB_PORT'));
         
-        $db = $mongoClient->selectDatabase('audit_log');
+        $db = $mongoClient->selectDatabase(env('MONGODB_DATABASE'));
         $collection = $db->selectCollection('audit_logs');
         
         $filter = ['id' => $id];
