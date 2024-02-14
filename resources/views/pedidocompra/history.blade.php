@@ -1,132 +1,60 @@
 @isset($auditLogs)
-<!-- Botão para abrir a modal -->
-<button class="btn" id="openModalBtn">Exibir Histórico</button>
+    <button type="button" class="btn btn-primary mr-1" data-toggle="modal" data-target="#modalHistoricoPedidoCompra">
+        <i class="fa fa-history" aria-hidden="true"></i> Histórico
+    </button>
 
-<!-- A modal -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <h4 class="text-center">Pedido de Compra - Audit Log</h4>
-    <span class="close">&times;</span>
-    <table>
-        <tr>
-          <th>Ação</th>
-          <th>Dados Modificados</th>
-          <th>Horário</th>
-          <th>Usuário</th>
-        </tr>
-        @foreach($auditLogs as $log)
-        <tr>
-          <td>{{ $log['action'] }}</td>
-          <td>
-            @if (empty($log['dirty']))
-              {!! str_replace(',', ',<br>', strip_tags(json_encode($log['dirty']))) !!}
-            @else
-              {!! str_replace(',', ',<br>', strip_tags(json_encode($log['before']))) !!}
-            @endif
-          </td>
-          <td>{{ date('d-m-Y H:i:s', substr($log['updated_at'], 0, 10)) }}</td>
-          <td>
-            @php
-              $user = App\User::find($log['user_id']);
-              $userName = $user ? $user->name : 'Usuário não encontrado';
-              echo $userName;
-            @endphp
-          </td>
-        </tr>
-        @endforeach
-      </table>
-      
-      
-  </div>
-</div>
+    <div class="modal fade" id="modalHistoricoPedidoCompra" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document" style="max-width: 200vh;">
+            <div class="modal-content">
 
-<style>
-    /* CSS para a modal */
-    .modal {
-      display: none; /* Esconder a modal por padrão */
-      position: fixed; /* Ficar em cima de tudo */
-      z-index: 1; /* Deixar a modal no topo */
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto; /* Habilitar o scroll se necessário */
-      background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo escura */
-    }
-  
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-    }
-  
-    .modal-content table {
-      margin: 0 auto; /* Centralizar a tabela horizontalmente */
-      /* width: 100%; */
-      border-collapse: collapse;
-      background-color: aliceblue;
-    }
-  
-    .modal-content th,
-    .modal-content td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-  
-    .modal-content th {
-      background-color: #f2f2f2;
-    }
-  
-    .modal-content tr:hover {
-      background-color: #f5f5f5;
-    }
-  
-    .modal-content tbody {
-      text-align: center; /* Alinhar conteúdo do tbody ao centro */
-    }
-  
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-  
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-  </style>
-  
-  
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Histórico do pedido n°{{ $pedido->id }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th  scope="col">Ação</th>
+                            <th  scope="col">Dados Modificados</th>
+                            <th  scope="col">Antes</th>
+                            <th  scope="col">Depois</th>
+                            <th  scope="col">Horário</th>
+                            <th  scope="col">Usuário</th>
+                        </tr>
+                        @foreach ($auditLogs as $log)
+                            <tr>
+                                <td>{{ $log['action'] }}</td>
+                                <td>
+                                    {!! str_replace(',', ',<br>', strip_tags(json_encode($log['dirty']))) !!}
+                                </td>
+                                <td>
+                                    {!! str_replace(',', ',<br>', strip_tags(json_encode($log['after']))) !!}
+                                </td>
+                                <td>
+                                    {!! str_replace(',', ',<br>', strip_tags(json_encode($log['before']))) !!}
+                                </td>
+                                <td>{{ date('d-m-Y H:i:s', substr($log['updated_at'], 0, 10)) }}</td>
+                                <td>
+                                    @php
+                                        $user = App\User::find($log['user_id']);
+                                        $userName = $user ? $user->name : 'Usuário não encontrado';
+                                        echo $userName;
+                                    @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
 
-<script>
-  // Obter referências aos elementos
-  var modal = document.getElementById("myModal");
-  var btn = document.getElementById("openModalBtn");
-  var span = document.getElementsByClassName("close")[0];
+            </div>
+        </div>
+    </div>
 
-  // Abrir a modal quando o botão for clicado
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
-
-  // Fechar a modal quando o usuário clicar no "x"
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  // Fechar a modal quando o usuário clicar fora dela
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
 
 @endisset

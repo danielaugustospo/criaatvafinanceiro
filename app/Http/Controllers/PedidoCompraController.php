@@ -355,15 +355,16 @@ class PedidoCompraController extends Controller
                 ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
         }
 
+        $pedido = PedidoCompra::find($request->id);
         if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
-            $this->logValidaPedidoCompra($request);
+            $this->logValidaPedidoCompra($pedido);
 
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi aprovado, já notificamos ao solicitante.');
         }
 
         if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) {
-            $this->logInvalidaPedidoCompra($request);
+            $this->logInvalidaPedidoCompra($pedido);
 
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi reprovado, já notificamos ao solicitante.');
@@ -388,8 +389,8 @@ class PedidoCompraController extends Controller
                     'ped_usr_finalizador'       => $idUsuarioAprovador,
                     'ped_dt_finalizacao'        => date('Y-m-d H:i:s'),
                 ]);
-        
-                $this->logRevisaPedidoCompra($request);
+                
+                $this->logRevisaPedidoCompra($pedido->id);
         
             return redirect()->route('pedidocompra.index', ['listarTodos' => true])
                 ->with('success', 'Pedido de compra n° ' . $request->id . ' foi finalizado, já notificamos ao solicitante.');
