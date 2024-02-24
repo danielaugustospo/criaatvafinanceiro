@@ -167,6 +167,8 @@ class PedidoCompraController extends Controller
         $pedido->ped_excluidopedido         = '0';
         $pedido->ped_novanotificacao        = '1';
         $pedido->nf_exigencia               = $request->get('nf_exigencia');
+        $pedido->local_entrega              = $request->get('local_entrega');
+        $pedido->prazo_entrega_limite       = $request->get('prazo_entrega_limite');
         $pedido->save();
         
         // Lógica para armazenar os arquivos
@@ -284,6 +286,9 @@ class PedidoCompraController extends Controller
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
         $pedido->nf_exigencia               = $request->get('nf_exigencia');
+        $pedido->local_entrega              = $request->get('local_entrega');
+        $pedido->prazo_entrega_limite       = $request->get('prazo_entrega_limite');
+
 
         $pedido->ped_aprovado           =  StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
         $pedido->ped_contaaprovada      = '';

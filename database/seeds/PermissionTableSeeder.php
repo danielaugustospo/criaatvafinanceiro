@@ -163,6 +163,7 @@ class PermissionTableSeeder extends Seeder
             // 'pedidocompra-delete',
             // 'pedidocompra-analise',
             // 'pedidocompra-revisao',
+            'pedidocompra-expedicao',
 
             // 'visualiza-contacorrente',
             // 'visualiza-relatoriogeral',
@@ -190,10 +191,10 @@ class PermissionTableSeeder extends Seeder
             // 'rel-despesasporosplanilha',
             // 'rel-reembolso',
             // 'rel-despesassinteticaporos',
-            'rel-controleconsumomaterial',
+            // 'rel-controleconsumomaterial',
             // 'rel-fechamentofinal',
             // 'configuracoes',
-            // 'rel-controleorcamento'
+            // 'rel-controleorcamento',
 
         ];
 

@@ -193,6 +193,24 @@
             $variavelReadOnlyNaView,
             ]) !!}
     </div>
+    
+    <div class="row mt-2 mb-2">
+        <label class="col-sm-2 mr-2 mt-2" for="local_entrega">Local de Entrega</label>
+        {!! Form::text('local_entrega', old('local_entrega'), [
+            'class' => 'col-sm-8 form-control',
+            'maxlength' => '100',
+            $variavelReadOnlyNaView,
+            ]) !!}
+    </div>
+    
+    <div class="row mt-2 mb-2">
+        <label class="col-sm-2 mr-2 mt-2" for="prazo_entrega_limite">Prazo de Entrega Limite</label>
+        {!! Form::text('prazo_entrega_limite', old('prazo_entrega_limite'), [
+            'class' => 'col-sm-8 form-control',
+            'maxlength' => '15',
+            $variavelReadOnlyNaView,
+            ]) !!}
+    </div>
     <div class="row mt-2 mb-2">
         <label class="col-sm-2 mr-2 mt-2" for="ped_precounit">Preço Unitário</label>
         {!! Form::text('ped_precounit', old('ped_precounit'), [

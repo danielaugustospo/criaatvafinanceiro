@@ -69,7 +69,9 @@ class PedidoCompra extends Model
         'ped_usr_finalizador',
         'ped_dt_finalizacao',
         'nf_exigencia',
-        'info_financeira'
+        'info_financeira',
+        'local_entrega',
+        'prazo_entrega_limite',
     ];
 
     public function solicitante()
@@ -173,7 +175,9 @@ class PedidoCompra extends Model
         observacoes_solicitante         = '$pedido->observacoes_solicitante', 
         updated_at                      = '$pedido->data',
         nf_exigencia                    = '$pedido->nf_exigencia',
-        info_financeira                 = '$pedido->info_financeira'
+        info_financeira                 = '$pedido->info_financeira',
+        local_entrega                   = '$pedido->local_entrega',
+        prazo_entrega_limite            = '$pedido->prazo_entrega_limite'
         WHERE id                        = '$pedido->id'";
 
         return $stringQuery;
