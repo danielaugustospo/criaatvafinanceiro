@@ -22,6 +22,9 @@
                 method: "GET",
                 dataType: "json",
                 url: "{{ route('sandbox.index') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                },
                 beforeSend: function(xhr) {
                     xhr.overrideMimeType("text/plain; charset=x-user-defined");
                 },

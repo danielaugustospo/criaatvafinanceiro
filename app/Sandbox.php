@@ -12,7 +12,8 @@ class Sandbox extends Model
     protected $fillable = [
 
         'id',
-        'ativo'
+        'ativo',
+        'idUser'
 
     ];
 

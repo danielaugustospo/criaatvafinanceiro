@@ -96,8 +96,8 @@ class AppServiceProvider extends ServiceProvider
         $listaFuncionarios =  DB::select('SELECT * from funcionarios where ativoFuncionario = 1');
         view()->share('listaFuncionarios', $listaFuncionarios);
                
-        $modoSandbox = Sandbox::first();
-        view()->share('modoSandbox', $modoSandbox);
+        // $modoSandbox = Sandbox::first();
+        // view()->share('modoSandbox', $modoSandbox);
 
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sandbox;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SandboxController extends Controller
 {
@@ -19,7 +20,7 @@ class SandboxController extends Controller
 
     public function index()
     {
-        $sandbox = Sandbox::first();
+        $sandbox = Sandbox::where('idUser', Auth::id())->first();
         return json_encode($sandbox);
     }
 
@@ -30,17 +31,28 @@ class SandboxController extends Controller
      */
     public function store(Request $request)
     {
-        $sandbox = Sandbox::updateOrCreate(
-            ['id' => 1],
-            ['ativo' => $request->ativo]
-        );
-        if ($sandbox) {
+        try {
+            // Busca pelo registro no sandbox
+            $sandbox = Sandbox::where('idUser', Auth::id())->first();
+    
+            // Se encontrou um registro, atualiza; senão, cria um novo
+            if ($sandbox) {
+                $sandbox->update(['ativo' => $request->ativo]);
+            } else {
+                $sandbox = Sandbox::create([
+                    'idUser' => Auth::id(),
+                    'ativo' => $request->ativo
+                ]);
+            }
+    
+            // Retorna a resposta bem-sucedida
             return response($sandbox, 200);
-        }else {
-            return response($sandbox, 422);
+        } catch (\Exception $e) {
+            // Retorna a resposta de erro
+            return response()->json(['error' => $e->getMessage()], 422);
         }
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *

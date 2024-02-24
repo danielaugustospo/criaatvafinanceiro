@@ -138,13 +138,13 @@ Route::post('/replacecodigodespesa', 'CodigoDespesaController@replaceCodigoDespe
 Route::post('/marcacomolido', 'PedidoCompraController@marcaComoLido')->name('marcacomolido');
 Route::delete('/remover-documento-pedido-compra/{pedidoId}/{documentoId}', 'PedidoCompraController@removerDocumento')->name('remover-documento-pedido-compra');
 
-Route::middleware(['auth', 'auditlog'])->group(function () {
+Route::middleware(['auth', 'auditlog', 'sandbox'])->group(function () {
     Route::post('/retornoanalisepedido', 'PedidoCompraController@updateAprovacao')->name('retornoanalisepedido');
     Route::post('/revisaoanalisepedido', 'PedidoCompraController@updateRevisao')->name('revisaoanalisepedido');
     Route::resource('pedidocompra','PedidoCompraController');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'sandbox'])->group(function () {
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
     Route::resource('products','ProductController');

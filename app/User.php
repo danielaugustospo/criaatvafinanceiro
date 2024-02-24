@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','ativoUser', 'excluidoUser',
+       'id', 'name', 'email', 'password','ativoUser', 'excluidoUser',
     ];
 
     /**
@@ -42,6 +42,13 @@ class User extends Authenticatable
     public static function laratablesCustomAction($usersmodel)
     {
         return view('users.action', compact('usersmodel'))->render();
+    }
+
+
+   
+    public function sandBox()
+    {
+        return $this->hasOne('App\Sandbox', 'idUser', 'id');
     }
 
 }
