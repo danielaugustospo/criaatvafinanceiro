@@ -21,6 +21,12 @@ class SandboxController extends Controller
     public function index()
     {
         $sandbox = Sandbox::where('idUser', Auth::id())->first();
+        if (!$sandbox){
+            $sandbox = Sandbox::create([
+                'idUser' => Auth::id(),
+                'ativo' => 0
+            ]);
+        }        
         return json_encode($sandbox);
     }
 
