@@ -13,7 +13,7 @@
 
 
     @isset($pedido)
-        @if ($pedido->ped_usrsolicitante == Auth::id() || Gate::check('pedidocompra-analise'))
+        @if (($pedido->ped_usrsolicitante == Auth::id()) || (Gate::check('pedidocompra-analise'))  || (Gate::check('pedidocompra-revisao'))  || (Gate::check('pedidocompra-expedicao') && $pedido->ped_aprovado == '6'))
             @if (($pedido->ped_aprovado == '1' || $pedido->ped_aprovado == '4') && $pedido->ped_novanotificacao == '1')
                 {!! Form::model($pedido, ['method' => 'POST', 'route' => ['marcacomolido', $pedido->id]]) !!}
 
@@ -50,9 +50,21 @@
                     <hr>
                     <div class="row  d-flex justify-content-center align-items-center">
 
-                        @can('pedidocompra-analise')
-                            @include('pedidocompra/analise')
+                        @php $included = false; @endphp
+                    
+                        @can('pedidocompra-expedicao')
+                            @include('pedidocompra.analise')
+                            @php
+                                $included = true;
+                            @endphp
                         @endcan
+                        
+                        @can('pedidocompra-analise')
+                            @unless($included)
+                                @include('pedidocompra.analise')
+                            @endunless
+                        @endcan
+                    
                         @can('pedidocompra-revisao')
                             @include('pedidocompra/revisao')
                         @endcan
@@ -207,8 +219,8 @@
                         </div>
             
                     </div>
+                @endif
             </div>
-        @endif
     @else
         <h1 class="text-center mt-5">NÃO AUTORIZADO. <br> CONTATE O ADMINISTRADOR DO SISTEMA</h1>
         @endif

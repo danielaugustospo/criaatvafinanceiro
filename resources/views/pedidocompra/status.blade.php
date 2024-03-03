@@ -40,16 +40,32 @@
             <div class="steps-warning">
                 <span><i class="fa fa-check"></i></span>
             </div>
-        @elseif ($pedido->ped_aprovado == '3')
+        @elseif (($pedido->ped_aprovado == '3') || ($pedido->ped_aprovado == '6') || ($pedido->ped_aprovado == '7'))
             <div class="steps-success">
                 <span class="font-weight-bold">1</span>
             </div>
             <span class="line-success text-center">Solicitado</span>
 
-            <div class="steps-warning">
+            <div                 
+                @if($pedido->ped_aprovado == '7') class="steps-warning-orange"  
+                @elseif($pedido->ped_aprovado == '6') class="steps-warning"  
+                @elseif($pedido->ped_aprovado == '3') class="steps-warning-lime" 
+                @endif >
                 <span class="font-weight-bold">2</span>
             </div>
-            <span class="line-warning">Aguardando Aprovação</span>
+            
+            <span 
+                @if($pedido->ped_aprovado == '7') class="line-warning-orange"  
+                @elseif($pedido->ped_aprovado == '6') class="line-warning"  
+                @elseif($pedido->ped_aprovado == '3') class="line-warning-lime" 
+                @endif 
+            >
+
+                @if($pedido->ped_aprovado == '7') {{ 'Aguardando Compra' }}   
+                @elseif($pedido->ped_aprovado == '6') {{ 'Aguardando Expedição' }}   
+                @elseif($pedido->ped_aprovado == '3') {{ 'Aguardando Aprovação' }}   
+                @endif
+            </span>
 
             <div class="steps-warning">
                 <span class="font-weight-bold">3</span>

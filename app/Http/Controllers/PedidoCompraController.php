@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Providers\FormatacoesServiceProvider;
 use App\Classes\Logger;
 use App\PedidoCompra;
-use Auth;
+// use Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Enums\StatusEnumPedidoCompra;
@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use App\DocumentoAnexado;
 use App\Enums\EnumEntidades;
 use App\AuditLog;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoCompraController extends Controller
 {
@@ -31,7 +32,7 @@ class PedidoCompraController extends Controller
     {
         $this->middleware('permission:pedidocompra-list|pedidocompra-create|pedidocompra-edit|pedidocompra-delete', ['only' => ['index', 'show']]);
         $this->middleware('permission:pedidocompra-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:pedidocompra-edit', ['only' => ['edit', 'update', 'updateAprovacao']]);
+        $this->middleware('permission:pedidocompra-edit|pedidocompra-expedicao', ['only' => ['edit', 'update', 'updateAprovacao']]);
         $this->middleware('permission:pedidocompra-delete', ['only' => ['destroy']]);
         $this->middleware('permission:pedidocompra-analise', ['only' => ['analise']]);
 
@@ -161,7 +162,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_observacao             = $request->get('ped_observacao');
         $pedido->ped_notafiscal             = $request->get('ped_notafiscal');
         $pedido->observacoes_solicitante    = $request->get('observacoes_solicitante');
-        $pedido->ped_aprovado               = StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
+        $pedido->ped_aprovado               = StatusEnumPedidoCompra::AGUARNDANDO_COMPRA;
         $pedido->ped_contaaprovada          = '';
         $pedido->ped_exigaprov              = '';
         $pedido->ped_excluidopedido         = '0';
@@ -290,7 +291,7 @@ class PedidoCompraController extends Controller
         $pedido->prazo_entrega_limite       = $request->get('prazo_entrega_limite');
 
 
-        $pedido->ped_aprovado           =  StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO;
+        $pedido->ped_aprovado           =  StatusEnumPedidoCompra::AGUARNDANDO_COMPRA;
         $pedido->ped_contaaprovada      = '';
         $pedido->ped_exigaprov          = '';
         $pedido->ped_excluidopedido     = '0';
@@ -339,13 +340,15 @@ class PedidoCompraController extends Controller
 
     public function updateAprovacao(Request $request)
     {
+        $pedido = PedidoCompra::find($request->id);
+        $msgSuccess = '';
         try{
-
+            
             $idUsuarioAprovador = auth()->id();
             
             DB::table('pedidocompra')
-                ->where('id', $request->id)
-                ->update([
+            ->where('id', $request->id)
+            ->update([
                     'ped_usr_aprovador'     => $idUsuarioAprovador,
                     'ped_dt_aprovacao'      => date('Y-m-d H:i:s'),
                     'ped_aprovado'          => $request->ped_aprovado,
@@ -354,26 +357,34 @@ class PedidoCompraController extends Controller
                     'ped_observacao'        => $request->ped_observacao,
                     'ped_excluidopedido'    => 0,
                 ]);
-
-        } catch (\Throwable $th) {
-            return redirect()->route('pedidocompra.index')
-                ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
-        }
-
-        $pedido = PedidoCompra::find($request->id);
-        if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
+                
             $this->logValidaPedidoCompra($pedido);
-
-            return redirect()->route('pedidocompra.index', ['listarTodos' => true])
-                ->with('success', 'Pedido de compra n° ' . $request->id . ' foi aprovado, já notificamos ao solicitante.');
+            
+            if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) {
+                $msgSuccess =  'Pedido de compra n° ' . $request->id . ' foi encaminhado para a área de aprovação, já notificamos ao setor responsável.';
+            }
+            
+            if ($request->ped_aprovado == StatusEnumPedidoCompra::LIBERADO_PARA_EXPEDICAO ) {
+                $msgSuccess =  'Pedido de compra n° ' . $request->id . ' foi encaminhado para a expedição, já notificamos ao setor.';
+            }
+            
+            if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_APROVADO ) {
+                $msgSuccess =   'Pedido de compra n° ' . $request->id . ' foi aprovado, já notificamos ao solicitante.';
+            }
+            
+            if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) {
+                $msgSuccess =   'Pedido de compra n° ' . $request->id . ' foi reprovado, já notificamos ao solicitante.';
+            }
+        } 
+        catch (\Throwable $th) {
+            return redirect()->route('pedidocompra.index')
+            ->with('alert', 'Não conseguimos processar sua solicitação. Favor, Tente novamente');
         }
 
-        if ($request->ped_aprovado == StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) {
-            $this->logInvalidaPedidoCompra($pedido);
 
-            return redirect()->route('pedidocompra.index', ['listarTodos' => true])
-                ->with('success', 'Pedido de compra n° ' . $request->id . ' foi reprovado, já notificamos ao solicitante.');
-        }
+        return redirect()->route('pedidocompra.index', ['listarTodos' => true])
+        ->with('success', $msgSuccess);
+
     }
 
     public function updateRevisao(Request $request)
@@ -431,6 +442,8 @@ class PedidoCompraController extends Controller
     public function apipedidocompra(Request $request)
     {
 
+        // $user = auth()->user();
+        // dd($user->id);
         $aprovado       = json_decode($request->post('aprovado'));
         $notificado     = json_decode($request->post('notificado'));
         $listarTodos    = json_decode($request->post('listarTodos'));

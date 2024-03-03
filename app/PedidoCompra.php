@@ -106,6 +106,8 @@ class PedidoCompra extends Model
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO . " THEN 'Aguard. Avaliação'
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_REVISADO . " THEN 'Aprovado e Finalizado'
         WHEN ped_aprovado = " . StatusEnumPedidoCompra::PEDIDO_CANCELADO . " THEN 'Cancelado'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::LIBERADO_PARA_EXPEDICAO . " THEN 'Enviado Para Expedição'
+        WHEN ped_aprovado = " . StatusEnumPedidoCompra::AGUARNDANDO_COMPRA . " THEN 'Aguardando Compra'
 
         ELSE 'Indefinido' END as status 
             
@@ -126,7 +128,7 @@ class PedidoCompra extends Model
         }
 
         
-        if ((!is_null($aprovado)) &&  (($aprovado ==  StatusEnumPedidoCompra::PEDIDO_NAO_APROVADO ) || ($aprovado ==  StatusEnumPedidoCompra::PEDIDO_APROVADO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_AGUARDANDO_APROVACAO ) || ($aprovado == StatusEnumPedidoCompra::PEDIDO_REVISADO ))) {
+        if (!is_null($aprovado)) {
             // if($aprovado == '1'){
                 //     $stringQuery .= " AND (ped_aprovado = 4 or ped_aprovado = " . $aprovado . ") ";
                 // }else{

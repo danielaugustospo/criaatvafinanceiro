@@ -269,6 +269,32 @@
 
     color:black;
    }
+.line-warning-lime{
+    
+    /* width: 120px; */
+    height: 6px;
+    background: #a89f4f;
+    padding-bottom: 22px;
+    padding-left: 22px;
+    padding-right: 22px;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    color:black;
+   }
+.line-warning-orange{
+    
+    /* width: 120px; */
+    height: 6px;
+    background: #cf8a08;
+    padding-bottom: 22px;
+    padding-left: 22px;
+    padding-right: 22px;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    color:black;
+   }
 
    
    .steps-success{
@@ -301,6 +327,34 @@
 
     display: flex;
     background-color: #fae104;
+    color: black;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+   }
+
+   .steps-warning-orange{
+
+    display: flex;
+    background-color: #cf8a08;
+    color: black;
+    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+   }
+
+   .steps-warning-lime{
+
+    display: flex;
+    background-color: #a89f4f;
     color: black;
     font-size: 14px;
     width: 40px;

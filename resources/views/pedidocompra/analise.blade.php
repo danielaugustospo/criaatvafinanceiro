@@ -24,8 +24,33 @@
   
                         <select class="col-sm-5 form-control" name="ped_aprovado" id="statuspedido" required>
                             <option disabled>Selecione...</option>
-                            <option @if($pedido->ped_aprovado == '1') selected @endif value="1">SIM</option>
-                            <option @if($pedido->ped_aprovado == '0') selected @endif value="0">NÃO</option>
+                            @if ($pedido->ped_aprovado == '7') 
+                            @can('pedidocompra-analise')
+
+                            {{-- AGUARNDANDO_COMPRA - fase Pamela--}}
+                                <option value="6">ENVIAR P/ EXPEDIÇÃO</option>
+                                <option value="0">REPROVAR PEDIDO</option>    
+                            @endcan                            
+                            @endif
+                            @if ($pedido->ped_aprovado == '6') 
+                            @can('pedidocompra-expedicao')
+
+                            {{-- LIBERADO_PARA_EXPEDICAO - fase expedicao--}}
+                                <option value="3">SIM</option>
+                                <option value="7">NÃO</option>     
+                            @endcan                           
+                            @endif
+                            @if ($pedido->ped_aprovado == '3')
+                            @can('pedidocompra-analise')
+
+                            {{-- AGUARNDANDO_COMPRA - FASE PAMELA --}}
+                                <option value="1">APROVAR PEDIDO</option>
+                                <option value="0">NÃO</option>     
+                            @endcan                           
+                            @endif
+                            @if (($pedido->ped_aprovado == '1')  ||  ($pedido->ped_aprovado == '4'))
+                                <option value="{{$pedido->ped_aprovado}}" selected>SIM</option>
+                            @endif
                         </select>
                         
                     </div>

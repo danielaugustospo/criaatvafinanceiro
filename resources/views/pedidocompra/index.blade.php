@@ -21,6 +21,8 @@
                     @elseif($aprovado == '1')  {{ "Aprovados - Aguardando Finalização" }}  
                     @elseif($aprovado == '3')  {{ "Aguardando Aprovação" }}  
                     @elseif($aprovado == '4')  {{ "Finalizados" }}  
+                    @elseif($aprovado == '6')  {{ "Aguardando Expedição" }}  
+                    @elseif($aprovado == '7')  {{ "Aguardando Compra" }}  
                     @else  {{ " - Consulta" }}  
                     @endif
                 @endisset    
@@ -58,8 +60,15 @@ $.LoadingOverlay("show", {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "{{ route('apipedidocompra') }}?id={{ $idusuariologado }}@if(@isset($aprovado))&aprovado={{ $aprovado }}@endif @if(isset($notificado))&notificado={{ $notificado }}@endif" @if(Gate::check('pedidocompra-analise'))+"&permissao=199"@endif @if(isset($listarTodos))+"&listarTodos={{ $listarTodos }}"@endif,
+                url: "{{ route('apipedidocompra') }}?_token={{ csrf_token() }}&&id={{ $idusuariologado }}@if(@isset($aprovado))&aprovado={{ $aprovado }}@endif @if(isset($notificado))&notificado={{ $notificado }}@endif" @if(Gate::check('pedidocompra-analise') || Gate::check('pedidocompra-revisao') || Gate::check('pedidocompra-expedicao'))+"&permissao=199"@endif @if(isset($listarTodos))+"&listarTodos={{ $listarTodos }}"@endif,
                 dataType: "json"
+            },
+
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
             },
         },
     });

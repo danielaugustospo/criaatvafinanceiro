@@ -21,11 +21,27 @@
                 @if (AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov > 0)
                     <span class="badge badge-warning mt-0"
                         style="font-size: 12; background-color:#7731b7 !important; color:white;"> 
-                        @can('pedidocompra-revisao')
                             A
-                        @endcan
-                        {{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}
-                    </span>
+                            {{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}
+                        </span>
+                @endif
+                @if (AppServiceProvider::pegaCountPedidoAguardandoCompraAvaliador()[0]->aguardcompra > 0)
+                    <span class="badge badge-warning mt-0"
+                        style="font-size: 12; background-color:#7731b7 !important; color:white;"> 
+                            C
+                            {{ AppServiceProvider::pegaCountPedidoAguardandoCompraAvaliador()[0]->aguardcompra }}
+                        </span>
+                @endif
+            @endcan
+
+            @can('pedidocompra-expedicao')
+
+                @if (AppServiceProvider::pegaCountPedidoAguardandoExpedicao()[0]->aguardexpedicao > 0)
+                    <span class="badge badge-warning mt-0"
+                        style="font-size: 12; background-color:#7731b7 !important; color:white;"> 
+                            E
+                            {{ AppServiceProvider::pegaCountPedidoAguardandoExpedicao()[0]->aguardexpedicao }}
+                        </span>
                 @endif
             @endcan
 
@@ -100,12 +116,30 @@
                 <hr>
                 <label style="background-color:black;" class="col-sm-12 text-white">PEDIDOS GERAIS:</label>
 
+                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=7&notificado=1&listarTodos=true">
+                    <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;
+                    Avaliador - 
+                    <span class="badge badge-warning mt-0" style="font-size: 20; background-color:#7731b7 !important; color:white;">
+                        {{ AppServiceProvider::pegaCountPedidoAguardandoCompraAvaliador()[0]->aguardcompra }}</span>
+                    pedido(s) para Comprar
+                </a>
+
                 <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=3&notificado=1&listarTodos=true">
                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>&nbsp;
                     Avaliador - 
                     <span class="badge badge-warning mt-0" style="font-size: 20; background-color:#7731b7 !important; color:white;">
                         {{ AppServiceProvider::pegaCountPedidoAguardandoAprovacaoAvaliador()[0]->aguardaprov }}</span>
                     pedido(s) para aprovar
+                </a>
+            @endcan
+            @can('pedidocompra-expedicao')
+
+                <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=6&listarTodos=true">
+                    <i class="fa fa-arrows-alt" aria-hidden="true"></i>&nbsp;
+                    EXPEDIÇÃO - 
+                    <span class="badge badge-warning mt-0" style="font-size: 20; background-color:#7731b7 !important; color:white;">
+                        {{ AppServiceProvider::pegaCountPedidoAguardandoExpedicao()[0]->aguardexpedicao }}</span>
+                    pedido(s) para validar
                 </a>
             @endcan
             @can('pedidocompra-revisao')

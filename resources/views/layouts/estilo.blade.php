@@ -218,6 +218,20 @@
             src: url("https://kendo.cdn.telerik.com/2017.2.621/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf") format("truetype");
         }
         @endif
+
+        .navbar-laravel {
+            background-color: black;
+            box-shadow: 0 2px 4px rgba(0,0,0,.04)
+        }
+
+        .trTituloTabela {
+            background-color: black;
+        }
+
+        .thTituloTabela {
+            color: white;
+        }
+
     </style>
 
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
