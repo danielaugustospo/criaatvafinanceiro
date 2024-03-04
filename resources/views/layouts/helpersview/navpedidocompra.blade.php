@@ -142,8 +142,7 @@
                     pedido(s) para validar
                 </a>
             @endcan
-            @can('pedidocompra-revisao')
-
+            @if(Gate::check('pedidocompra-analise') || Gate::check('pedidocompra-revisao'))
                 <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?aprovado=1&listarTodos=true">
                     <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
                     FINALIZAÇÃO - 
@@ -151,7 +150,8 @@
                         {{ AppServiceProvider::pegaCountPedidoAguardandoFinalizacao()[0]->aguardfinalizacao }}</span>
                     pedido(s) para finalizar
                 </a>
-            @endcan
+            
+            @endif
             @can('pedidocompra-analise')
                 <a class="dropdown-item" href="{{ route('pedidocompra.index') }}?listarTodos=true"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; Listar Todos</a>
             @endcan
