@@ -7,7 +7,7 @@
     && ($ordemservico == '')
     && ($contareceita == '')
     && ($nfreceita == '')
-    && ($cliente == '')
+    && ($clienteExibicao == '')
     && ($pagoreceita == ''))
         <label class="pr-2" style="color: red;"><b>Não há filtros previamente selecionados</b></label>
     @else
@@ -36,8 +36,8 @@
     @if ($nfreceita != '')
         <label class="fontenormal"><b>Nota Fiscal:</b> {{ $nfreceita }} &nbsp; </label>
     @endif
-    @if ($cliente != '')
-        <label class="fontenormal"><b>Cliente:</b> {{ $cliente }} &nbsp; </label>
+    @if ($clienteExibicao != '')
+        <label class="fontenormal"><b>Cliente:</b> {{ $clienteExibicao }} &nbsp; </label>
     @endif
     @if ($pagoreceita != '')
         <label class="fontenormal"><b>Pago:</b> {{ $pagoreceita }} &nbsp; </label>

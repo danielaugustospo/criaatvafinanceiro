@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
 use App\Providers\FormatacoesServiceProvider;
+use App\Clientes;
 
 
 class ReceitaController extends Controller
@@ -82,11 +83,12 @@ class ReceitaController extends Controller
         $contareceita   = $validacoesPesquisa[5];
         $nfreceita      = $validacoesPesquisa[6];
         $cliente        = $validacoesPesquisa[7];
+        $clienteExibicao= Clientes::find($validacoesPesquisa[7])->razaosocialCliente;
         $pagoreceita    = $validacoesPesquisa[8];
 
         $rota = $this->verificaRelatorio($request);
 
-        return view($rota, compact('consulta', 'receita', 'valorreceita', 'dtinicio', 'dtfim', 'ordemservico', 'contareceita', 'nfreceita', 'cliente',  'pagoreceita'));
+        return view($rota, compact('consulta', 'receita', 'valorreceita', 'dtinicio', 'dtfim', 'ordemservico', 'contareceita', 'nfreceita', 'cliente', 'clienteExibicao',  'pagoreceita'));
     }
 
 
