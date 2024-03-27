@@ -40,9 +40,14 @@
             <label class="mt-2 mr-2 mr-4 col-sm-2">A COMPRAR</label>
 
             <input class="mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '1' || old('ped_tipopedido') == '1') checked @endif
-            @isset($pedido) @if ($pedido->ped_tipopedido != '0') checked @endif @endisset
+            @isset($pedido) @if ($pedido->ped_tipopedido == '1') checked @endif @endisset
             name="ped_tipopedido" id="tipoPedidoComprado" value="1" {{ $variavelDisabledNaView }}>
             <label class="mt-2 mr-2 mr-4">ITEM JÁ COMPRADO</label>
+
+            <input class="mr-2" type="radio" name="ped_tipopedido" @if (old('ped_tipopedido') == '2' || old('ped_tipopedido') == '2') checked @endif
+            @isset($pedido) @if ($pedido->ped_tipopedido == '2') checked @endif @endisset
+            name="ped_tipopedido" id="tipoPedidoComprado" value="2" {{ $variavelDisabledNaView }}>
+            <label class="mt-2 mr-2 mr-4">SOLICITAÇÃO DE PAGAMENTO (NÃO É UMA COMPRA)</label>
 
     </div>
 

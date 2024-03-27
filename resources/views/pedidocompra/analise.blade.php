@@ -28,6 +28,11 @@
                             @can('pedidocompra-analise')
 
                             {{-- AGUARNDANDO_COMPRA - fase Pamela--}}
+                                @if ($pedido->ped_tipopedido == '2') 
+                                    {{-- PEDIDO DE PAGAMENTO --}}
+                                    
+                                    <option value="1">APROVAR PEDIDO</option>
+                                @endif
                                 <option value="6">ENVIAR P/ EXPEDIÇÃO</option>
                                 <option value="0">REPROVAR PEDIDO</option>    
                             @endcan                            
