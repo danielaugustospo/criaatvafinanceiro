@@ -83,7 +83,14 @@ class ReceitaController extends Controller
         $contareceita   = $validacoesPesquisa[5];
         $nfreceita      = $validacoesPesquisa[6];
         $cliente        = $validacoesPesquisa[7];
-        $clienteExibicao= Clientes::find($validacoesPesquisa[7])->razaosocialCliente;
+
+        $clienteObject      = Clientes::find($validacoesPesquisa[7]);
+        $clienteExibicao    = null;
+        
+        if ($clienteObject) {
+            $clienteExibicao = $clienteObject->razaosocialCliente;
+        }        
+
         $pagoreceita    = $validacoesPesquisa[8];
 
         $rota = $this->verificaRelatorio($request);
