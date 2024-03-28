@@ -262,7 +262,7 @@ class PedidoCompraController extends Controller
         $pedido->ped_tipopedido             = $request->get('ped_tipopedido');
         $pedido->ped_data                   = $request->get('ped_data');
         $pedido->ped_nomecomprador          = $request->get('ped_nomecomprador');
-        $pedido->ped_usrsolicitante         = Auth::id();
+        // $pedido->ped_usrsolicitante         = Auth::id();
 
         // $pedido->ped_fornecedor             = $request->get('ped_fornecedor');
         $pedido->ped_fornecedor             = ($request->get('ped_fornecedor') == '') ? null : $request->get('ped_fornecedor') ;
