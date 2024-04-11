@@ -3,6 +3,20 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// Rotas de autenticação
+Route::post('/login', 'AuthController@login');
+Route::post('/logout', 'AuthController@logout');
+
+// Outras rotas protegidas
+Route::middleware('auth:api')->group(function () {
+    // Rotas que requerem autenticação
+    // Por exemplo:
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

@@ -111,7 +111,18 @@
                 allowNegative: false,
                 thousands: '.',
                 decimal: ',',
-                affixesStay: false
+                affixesStay: false,
+            });
+
+        jQuery('.campo-moeda-com-zero')
+            .maskMoney({
+                prefix: 'R$ ',
+                allowNegative: false,
+                thousands: '.',
+                decimal: ',',
+                affixesStay: false,
+                allowZero: true,
+                defaultZero: false
             });
 
         $(".campo-aliquota").inputmask('currency', {

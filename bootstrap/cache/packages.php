@@ -20,11 +20,33 @@
       0 => 'Freshbitsweb\\Laratables\\LaratablesServiceProvider',
     ),
   ),
+  'fruitcake/laravel-cors' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Fruitcake\\Cors\\CorsServiceProvider',
+    ),
+  ),
   'geekcom/validator-docs' => 
   array (
     'providers' => 
     array (
       0 => 'geekcom\\ValidatorDocs\\ValidatorProvider',
+    ),
+  ),
+  'jenssegers/mongodb' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Mongodb\\MongodbServiceProvider',
+      1 => 'Jenssegers\\Mongodb\\MongodbQueueServiceProvider',
+    ),
+  ),
+  'laravel/passport' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Passport\\PassportServiceProvider',
     ),
   ),
   'laravel/tinker' => 

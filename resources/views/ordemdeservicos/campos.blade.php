@@ -36,7 +36,7 @@
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrdemdeServico', $valorInput, [
-            'class' => 'campo-moeda form-control',
+            'class' => 'campo-moeda-com-zero form-control',
             'step' => 'any',
             'id' => 'campo-moeda',
         ]) !!}
@@ -63,7 +63,7 @@
     {{ Form::label('percentual', 'Percentual Permitido', ['class' => 'col-sm-2 col-form-label']) }}
     <div class="col-sm-6">
         <div class="input-group">
-            {{ Form::text('percentualPermitido', null, ['maxlength' => 3, 'step' => 1, 'class' => 'form-control col-sm-1', 'onfocusout' => "javascript: if (this.value < 40) this.value = 40; if (this.value.length >= 3) this.value = 100;"]) }}
+            {{ Form::text('percentualPermitido', null, ['maxlength' => 3, 'step' => 1, 'class' => 'form-control col-sm-1', 'onfocusout' => "javascript: if (this.value < -1) this.value = 0; if (this.value.length >= 3) this.value = 100;"]) }}
             <div class="input-group-append">
                 <span class="input-group-text">%</span>
             </div>
@@ -72,7 +72,7 @@
     <label for="valorOrcamento" class="col-sm-2 col-form-label">Valor do Orçamento</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrcamento', $valorInput, [
-            'class' => 'campo-moeda form-control',
+            'class' => 'campo-moeda-com-zero form-control',
             'step' => 'any',
             'id' => 'campo-moeda',
             ]) !!}
@@ -463,7 +463,7 @@
             
             if ((vencimento == '') || (vencimento == null) || (vencimento == undefined)) {
                 texto = texto +
-                '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2" style="font-size: 80%;">Data Pagamento na linha: '+
+                '<div class="badge-left mb-1"><span class="badge badge-warning">Informar</span><label class="fontenormal pl-2">Data Pagamento na linha: '+
                     sum([i, 1])  +'</label></div>';
                 contadorErros++;
             }else{
