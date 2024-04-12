@@ -241,6 +241,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'MongoDB'   => Jenssegers\Mongodb\MongodbServiceProvider::class,
+        'Helper' => App\Helpers\MathHelper::class,
     ],
 
 ];

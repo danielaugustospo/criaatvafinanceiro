@@ -70,3 +70,5 @@ Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name(
 Route::get('/apidadosfechamentofinal', 'RelatorioController@apidadosFechamentoFinal')->name('apidadosfechamentofinal');
 Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral')->name('apiprojecaotrimestral');
 
+
+Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('calculatePercent');

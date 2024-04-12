@@ -36,9 +36,9 @@
     <label for="valorOrdemdeServico" class="col-sm-2 col-form-label">Valor do Projeto</label>
     <div class="col-sm-2">
         {!! Form::text('valorOrdemdeServico', $valorInput, [
-            'class' => 'campo-moeda-com-zero form-control',
+            'class' => 'campo-moeda-com-zero form-control valorOrdemdeServico',
             'step' => 'any',
-            'id' => 'campo-moeda',
+            'id' => 'valorOrdemdeServico',
         ]) !!}
     </div>
 </div>
@@ -63,7 +63,7 @@
     {{ Form::label('percentual', 'Percentual Permitido', ['class' => 'col-sm-2 col-form-label']) }}
     <div class="col-sm-6">
         <div class="input-group">
-            {{ Form::text('percentualPermitido', null, ['maxlength' => 3, 'step' => 1, 'class' => 'form-control col-sm-1', 'onfocusout' => "javascript: if (this.value < -1) this.value = 0; if (this.value.length >= 3) this.value = 100;"]) }}
+            {{ Form::text('percentualPermitido', null, ['maxlength' => 3, 'step' => 1, 'class' => 'form-control col-sm-1 percentualPermitido', 'onfocusout' => "javascript: if (this.value < -1) this.value = 0; if (this.value.length >= 3) this.value = 100;"]) }}
             <div class="input-group-append">
                 <span class="input-group-text">%</span>
             </div>
@@ -71,10 +71,11 @@
     </div>
     <label for="valorOrcamento" class="col-sm-2 col-form-label">Valor do Orçamento</label>
     <div class="col-sm-2">
+
         {!! Form::text('valorOrcamento', $valorInput, [
-            'class' => 'campo-moeda-com-zero form-control',
+            'class' => 'campo-moeda-com-zero form-control valorOrcamento',
             'step' => 'any',
-            'id' => 'campo-moeda',
+            'id' => 'valorOrcamento',
             ]) !!}
     </div>
 </div>
@@ -235,6 +236,54 @@
 
 
 <script>
+    $(document).ready(function() {
+
+        // Função para remover pontos de milhar e substituir vírgula por ponto
+        function parseCurrencyValue(value) {
+            return parseFloat(value.replace(/\./g, '').replace(',', '.'));
+        }
+
+        // Validar os campos "Valor do Projeto" e "Percentual Permitido" para aceitar apenas números e vírgula
+        $(".valorOrdemdeServico, .percentualPermitido").on('change', function () {
+            var value = $(this).val().replace(/[^0-9,]/g, ''); // Aceita apenas números e vírgula
+            $(this).val(value);
+
+            // Após alterar o valor de um dos campos, chame a função de cálculo
+            calcularValorTotal();
+        });
+        
+        
+         // Função para calcular o valor total
+        function calcularValorTotal() {
+            // Capturar os valores dos campos
+            var valorOrdemdeServico = parseCurrencyValue($(".valorOrdemdeServico").val());
+            var percentualPermitido = parseCurrencyValue($(".percentualPermitido").val());
+
+            // Verificar se os valores são números válidos
+            if (!isNaN(valorOrdemdeServico) && !isNaN(percentualPermitido)) {
+                // Construir os parâmetros da requisição
+                var formData = new FormData();
+                formData.append('value1', valorOrdemdeServico);
+                formData.append('percent', percentualPermitido);
+
+                // Configurações da requisição AJAX
+                var settings = {
+                    "url": "/api/calculatePercent",
+                    "method": "POST",
+                    "data": formData,
+                    "contentType": false,
+                    "processData": false
+                };
+
+                // Enviar requisição AJAX
+                $.ajax(settings).done(function (response) {
+                    $(".valorOrcamento").val(response); // Atualizar o campo com o valor calculado
+                });
+            }
+        }
+
+    });
+
     function recarregaComboCliente() {
         $('#idClienteOrdemdeServico').select2('destroy');
 
