@@ -85,7 +85,7 @@ class Conta extends Model
             
             where `despesas`.`excluidoDespesa` = 0)) as x 
             
-            where (pagoreceita = 'S' or pagoreceita = 'n' or pagoreceita = '1') 
+            where (pagoreceita = 'S' or pagoreceita = 's' or pagoreceita = '1') 
             and historico != ''". $conta ."  
             order by dtoperacao) as selecionageral " .$complemento ;
 
