@@ -50,6 +50,8 @@
         <select name="contareceita" id="contaReceita"
             class="selecionaComInput col-sm-14 form-control js-example-basic-multiple" required
             {{ $variavelDisabledNaView }}>
+            <option value="">SEM CONTA</option>
+
             @foreach ($listaContas as $contas)
                 <option value="{{ $contas->id }}"
                     @if (@isset($receita->contareceita)) @if ($receita->contareceita == $contas->id) selected @endif @endif >

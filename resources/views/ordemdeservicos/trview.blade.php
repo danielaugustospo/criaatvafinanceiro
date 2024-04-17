@@ -32,6 +32,7 @@
     </td>
     <td data-label="Conta">
         <select name="contareceita[]" id="contaReceita" class="col-lg-12 selecionaComInput form-control" style="padding:0px; width:100%;" {{ $disabledOrNo }}>
+                    <option value="">SEM CONTA</option>
             @foreach ($listaContas as $contas)
                 @if ($contas->id == $dadosreceita->contareceita)            
                     <option value="{{ $contas->id }}" selected>{{ $contas->apelidoConta }}</option>
