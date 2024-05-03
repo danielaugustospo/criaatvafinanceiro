@@ -474,7 +474,7 @@ class PedidoCompraController extends Controller
         $variavelDisabledNaView = $this->variavelDisabledNaView;
         $infoSelectVazio        = $this->infoSelectVazio;
 
-        $auditLogs = PedidoCompra::getAuditLogs($pedido->id);
+        $auditLogs = PedidoCompra::getAuditLogs($id);
 
 
         return view('pedidocompra.show', compact('pedido', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView', 'infoSelectVazio', 'auditLogs'));
