@@ -1,7 +1,7 @@
 <?php 
     $intervaloCelulas = "A1:F1"; 
     $rotaapi = "apientradareceitarecebidas";
-    $titulo  = "Entrada de Receitas Recebidas";
+    $titulo  = "Receitas Recebidas Diversas";
     $campodata = 'datapagamentoreceita';
     $relatorioKendoGrid = true;
 

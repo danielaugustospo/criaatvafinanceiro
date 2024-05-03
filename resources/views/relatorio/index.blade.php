@@ -32,10 +32,10 @@
             <a href="contasAReceber">               <label class="text-center fontenormal row" for="">Contas a Receber &nbsp;</label></a>
         @endcan
         @can('rel-entradasdereceitasrecebidas')
-            <a href="entradasdereceitasrecebidas">  <label class="text-center fontenormal row" for="">Entradas de Receitas Recebidas  &nbsp;</label></a>    
+            <a href="entradasdereceitasrecebidas">  <label class="text-center fontenormal row" for="">Receitas Recebidas Diversas &nbsp;</label></a>    
         @endcan
         @can('rel-entradaporcontabancaria')
-            <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Entradas por Conta Bancária/NF&nbsp;</label></a>
+            <a href="entradaporcontabancaria">      <label class="text-center fontenormal row" for="">Faturamento Mensal/NF&nbsp;</label></a>
         @endcan
         @can('rel-fatporcliente')
             <a href="fatporcliente?p=s">            <label class="text-center fontenormal row" for="">Faturamento por Cliente &nbsp;</label></a>

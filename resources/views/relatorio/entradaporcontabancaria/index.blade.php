@@ -3,7 +3,7 @@
     // $rotaapi = "apiordemdeservicorecebidas";
     $rotaapi = "apientradaporcontabancaria";
     
-    $titulo  = "Entrada Por Conta Bancária/NF";
+    $titulo  = "Faturamento Mensal/NF";
     $campodata = 'datapagamentoreceita';
     $relatorioKendoGrid = true;
 
