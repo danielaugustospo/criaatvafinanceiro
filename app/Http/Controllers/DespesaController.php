@@ -1326,7 +1326,12 @@ class DespesaController extends Controller
     public function listaTipoMateriais()
     {
         $listaBensPatrimoniais = DB::select('SELECT * FROM products where ativotipobenspatrimoniais = 1');
-        echo json_encode($listaBensPatrimoniais);
+        // echo json_encode($listaBensPatrimoniais);
+        return response()->json($listaBensPatrimoniais)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+    
     }
 
     public function listaFornecedores()

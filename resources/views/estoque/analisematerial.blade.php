@@ -1,9 +1,9 @@
 <?php
-$intervaloCelulas = 'A1:H1';
-$rotaapi = '/api/apientrada';
-$titulo = 'Estoque - HISTÓRICO DE Entradas';
+$intervaloCelulas = 'A1:D1';
+$rotaapi = 'api/apianaliseMaterial';
+$titulo = 'Análise de Material';
+
 $relatorioKendoGrid = true;
-$campodata = 'created_at';
 
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
@@ -19,24 +19,16 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2 class="text-center">{{ $titulo }}</h2>
+                <h2 class="text-center">Consulta de {{ $titulo }}</h2>
                 <div class="form-row d-flex justify-content-center">
-
-                    @can('entradas-create')
-                        <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=novo">Lançar Entrada
-                        </a>
-                    @endcan    
-                    <a class="btn btn-primary d-flex justify-content-center" onclick="$('.modalentradasestoque').modal('show');"
-                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
-                    @can('entradas-create')
-                        <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=devolucao">Lançar Devolução
-                        </a>
-                    @endcan
-                    
+                    <a href="{{ route('entradas.create') }}?metodo=novo" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> ENTRADA</a>
+                    <a href="{{ route('entradas.create') }}?metodo=devolucao" class="btn btn-primary"><i class="fa fa-retweet" aria-hidden="true"></i> DEVOLUÇÃO</a>
+                    <a href="{{ route('saidas.create') }}" class="btn btn-danger"><i class="fa fa-minus-circle" aria-hidden="true"></i> SAÍDA</a>
                 </div>
             </div>
         </div>
     </div>
+    @include('estoque/estilo')
     @include('layouts/helpersview/mensagemRetorno')
 
     <hr>
@@ -44,10 +36,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div id="filter-menu"></div>
     <br /><br />
     <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
-        @include('layouts/helpersview/infofiltrosestoqueentrada')
     </div>
     <script>
-        
         $.LoadingOverlay("show", {
             image: "",
             progress: true
@@ -56,7 +46,11 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: "{{ $rotaapi }}?nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&descricaoentrada={{ $descricaoentrada }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&tipoEntrada={{ $tipoEntrada }}",
+                    @if (isset($despesas))
+                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
+                    @else
+                        url: "{{ $rotaapi }}",
+                    @endif
                     dataType: "json"
                 },
             },
@@ -81,7 +75,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var sheet = e.workbook.sheets[0];
 
                     sheet.frozenRows = 1;
-                    sheet.mergedCells = ["A1:G1"];
+                    sheet.mergedCells = ["A1:E1"];
                     sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
 
                     var myHeaders = [{
@@ -148,40 +142,39 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                         model: {
                             fields: {
-                                id: {
-                                    type: "string"
-                                },
-                                nomeBensPatrimoniais: {
-                                    type: "string"
+                                created_at: {
+                                    type: "date"
                                 },
                                 quantidade_entrada: {
                                     type: "number"
                                 },
-                                nomematerial: {
-                                    type: "string"
+                                quantidade_saida: {
+                                    type: "number"
                                 },
-                                descricao: {
-                                    type: "string"
-                                },
-                                created_at: {
-                                    type: "date"
-                                }
+
                             }
                         },
                     },
 
-
                     group: {
-                        field: "nomeBensPatrimoniais", 
-                        aggregates: [
-                                {
-                                    field: "nomeBensPatrimoniais",
-                                    aggregate: "count"
-                                },
-                            ]
+                        field: "nomeBensPatrimoniais",
+                        aggregates: [{
+                                field: "quantidade_entrada",
+                                aggregate: "count"
+                            },
+                            {
+                                field: "quantidade_saida",
+                                aggregate: "count"
+                            },
+                        ]
                     },
-                    aggregate: [                          {
-                            field: "nomeBensPatrimoniais",
+                    aggregate: [
+                        {
+                            field: "quantidade_entrada",
+                            aggregate: "count"
+                        },
+                        {
+                            field: "quantidade_saida",
                             aggregate: "count"
                         },
                     ],
@@ -189,74 +182,44 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                 },
 
                 columns: [{
-                        field: "id",
-                        title: "ID",
-                        filterable: true,
-                        width: '150'
-                    },
-                    {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
-                        width: '150'
-                    },
-                    {
-                        field: "quantidade_entrada",
-                        title: "Quantidade",
-                        aggregates: ["sum"],
-                        groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
-                        filterable: true,
-                        width: '100'
-                    },
-                    {
-                        field: "descricaoentrada",
-                        title: "Descrição",
-                        filterable: true,
-                        width: '150'
-                    },
-                    {
-                        field: "tipo",
-                        title: "Tipo Entrada",
-                        filterable: true,
-                        width: '150'
+                        autowidth: true
                     },
                     {
                         field: "created_at",
-                        title: "Data Entrada",
-                        format: "{0:dd/MM/yyyy}",
+                        title: "Data",
                         filterable: true,
-                        width: '100'
+                        width: 150,
+                        format: "{0:dd/MM/yyyy}",
+                        filterable: {
+                            cell: {
+                                    template: betweenFilter
+                                }
+                            }
+                        },
+                    {
+                        field: "quantidade_entrada",
+                        title: "Entrada",
+                        filterable: true,
+                        autowidth: true,
+                        aggregates: ["sum"], 
+                        groupHeaderColumnTemplate: "Entradas: #: kendo.toString(sum, 'pt-BR') #", 
                     },
                     {
-                        command: [{
-                            name: "Visualizar",
-                            click: function(e) {
-                                e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
-                                var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                                    data.id;
-                            }
-                        }],
-                        width: '100',
-                        exportable: false,
+                        field: "quantidade_saida",
+                        title: "Saída",
+                        filterable: true,
+                        autowidth: true,
+                        aggregates: ["sum"], 
+                        groupHeaderColumnTemplate: "Saídas: #: kendo.toString(sum, 'pt-BR') #", 
+                        groupFooterTemplate: ({ quantidade_entrada, quantidade_saida, nomeBensPatrimoniais}) => `Total: ${quantidade_entrada.sum + quantidade_saida.sum}`,
+                        attributes: {
+                            class: "group-footer"
+                        }
                     },
-                    // {
-                    //     command: [{
-                    //         name: "Editar",
-                    //         click: function(e) {
-                    //             e.preventDefault();
-                    //             var tr = $(e.target).closest(
-                    //                 "tr"); // get the current table row (tr)
-                    //             var data = this.dataItem(tr);
-                    //             window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                    //                 data.id + '/edit';
-                    //         }
-                    //     }],
-                    //     width: 130,
-                    //     exportable: false,
-                    // },
+
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {
@@ -269,10 +232,10 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var grid = this;
                     var columns = grid.columns;
 
-                    //Exibe itens agrupados fechados
-                    $(".k-grouping-row").each(function (e) {
-                        grid.collapseGroup(this);
-                    });
+                    // //Exibe itens agrupados fechados
+                    // $(".k-grouping-row").each(function (e) {
+                    //     grid.collapseGroup(this);
+                    // });
                     // populate initial columns list if the detailColsVisibility object is empty
                     if (Object.getOwnPropertyNames(detailColsVisibility).length == 0) {
                         for (var i = 0; i < columns.length; i++) {
@@ -289,6 +252,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             }
                         }
                     }
+
                 },
                 columnHide: function(e) {
                     // hide column in all other detail Grids
@@ -325,34 +289,42 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
         $(window).on('load', function() {
 
-                    var $myDiv = $('#grid');
+            var $myDiv = $('#grid');
 
-                    if ($myDiv.length === 1) {
+            if ($myDiv.length === 1) {
 
-                        var count = 0;
-                        var interval = setInterval(function() {
-                                @if (isset($despesas))
-                                    if (count >= 20) {
-                                    @else
-                                        if (count >= 50) {
-                                        @endif
-                                        clearInterval(interval);
-                                        $('.k-link')[0].click();
-                                        console.log('Ordenação Por Grupo Clicado Inicialmente');
-                                        $.LoadingOverlay("hide");
-                                        return;
-                                    }
-                                    count += 10;
-                                    $.LoadingOverlay("progress", count);
-                                }, 300);
+                var count = 0;
+                var interval = setInterval(function() {
 
-                        }
+                    if (count >= 50) {
 
-                    });
+                        clearInterval(interval);
+                        $('.k-link')[0].click();
+                        console.log('Ordenação Por Grupo Clicado Inicialmente');
+                        $.LoadingOverlay("hide");
+                        return;
+                    }
+                    count += 10;
+                    $.LoadingOverlay("progress", count);
+                }, 300);
+            }
 
+        });
+
+        @include('layouts/filtradata')
+        function calcularPorcentagem(data, grid) {
+                var group = data.aggregates.quantidade_entrada.sum;
+                var precoRealSum = group || 0; // Definir como zero se a soma for nula
+                
+                var grid  = $('#grid').data('kendoGrid');
+                var total = grid.dataSource.aggregates().precoReal.sum; 
+
+                if (precoRealSum !== 0) {
+                    porcentagem = (precoRealSum  * 100) / total; // Calcula a porcentagem com base no valor de precoReal já somado
+                }
+
+            return "Total: R$" + kendo.toString(precoRealSum, "n2") + " (" + kendo.toString(porcentagem, "n2") + "%)";
+}
     </script>
-
-@include('layouts/modal/estoque/modalentradaestoque')
-
+ 
 @endsection
-

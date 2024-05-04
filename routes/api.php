@@ -72,3 +72,11 @@ Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral'
 
 
 Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('calculatePercent');
+
+Route::middleware('auth:api')->put('/update-profile', 'UserController@updateProfile')->name('update-profile');
+Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('apilistaTipoMateriais');
+Route::get('/listaUnidadeMedida', 'BensPatrimoniaisController@listaUnidadeMedida')->name('apilistaUnidadeMedida');
+
+Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodalApi')->name('apicadastromateriais');
+Route::post('/cadastrotipomateriais', 'ProductController@salvarmodalApi')->name('apicadastrotipomateriais');
+Route::get('/apianaliseMaterial', 'EstoqueController@apianaliseMaterial')->name('apianaliseMaterial');

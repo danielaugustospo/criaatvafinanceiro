@@ -1,9 +1,9 @@
 <?php
-$intervaloCelulas = 'A1:H1';
-$rotaapi = '/api/apientrada';
-$titulo = 'Estoque - HISTÓRICO DE Entradas';
+$intervaloCelulas = 'A1:D1';
+$rotaapi = 'api/apiestoque';
+$titulo = 'Inventário x Compras';
+
 $relatorioKendoGrid = true;
-$campodata = 'created_at';
 
 $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 ?>
@@ -19,20 +19,11 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2 class="text-center">{{ $titulo }}</h2>
+                <h2 class="text-center">Consulta de {{ $titulo }}</h2>
                 <div class="form-row d-flex justify-content-center">
-
-                    @can('entradas-create')
-                        <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=novo">Lançar Entrada
-                        </a>
-                    @endcan    
-                    <a class="btn btn-primary d-flex justify-content-center" onclick="$('.modalentradasestoque').modal('show');"
-                        style="cursor: pointer; color: white;"><i class="fas fa-sync"></i>Nova Consulta</a>
-                    @can('entradas-create')
-                        <a class="btn btn-dark d-flex justify-content-center" href="{{ route('entradas.create') }}?metodo=devolucao">Lançar Devolução
-                        </a>
-                    @endcan
-                    
+                    <a href="{{ route('entradas.create') }}?metodo=novo" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> ENTRADA</a>
+                    <a href="{{ route('entradas.create') }}?metodo=devolucao" class="btn btn-primary"><i class="fa fa-retweet" aria-hidden="true"></i> DEVOLUÇÃO</a>
+                    <a href="{{ route('saidas.create') }}" class="btn btn-danger"><i class="fa fa-minus-circle" aria-hidden="true"></i> SAÍDA</a>
                 </div>
             </div>
         </div>
@@ -44,10 +35,8 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
     <div id="filter-menu"></div>
     <br /><br />
     <div id="grid" class="shadowDiv mb-5 p-2 rounded" style="background-color: white !important;">
-        @include('layouts/helpersview/infofiltrosestoqueentrada')
     </div>
     <script>
-        
         $.LoadingOverlay("show", {
             image: "",
             progress: true
@@ -56,7 +45,11 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: "{{ $rotaapi }}?nomeBensPatrimoniais={{ $nomeBensPatrimoniais }}&descricaoentrada={{ $descricaoentrada }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&tipoEntrada={{ $tipoEntrada }}",
+                    @if (isset($despesas))
+                        url: "{{ $rotaapi }}?despesas={{ $despesas }}&valor={{ $valor }}&dtinicio={{ $dtinicio }}&dtfim={{ $dtfim }}&coddespesa={{ $coddespesa }}&fornecedor={{ $fornecedor }}&ordemservico={{ $ordemservico }}&conta={{ $conta }}&notafiscal={{ $notafiscal }}&cliente={{ $cliente }}&fixavariavel={{ $fixavariavel }}&pago={{ $pago }}",
+                    @else
+                        url: "{{ $rotaapi }}",
+                    @endif
                     dataType: "json"
                 },
             },
@@ -81,7 +74,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var sheet = e.workbook.sheets[0];
 
                     sheet.frozenRows = 1;
-                    sheet.mergedCells = ["A1:G1"];
+                    sheet.mergedCells = ["A1:D1"];
                     sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
 
                     var myHeaders = [{
@@ -148,115 +141,52 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
                         model: {
                             fields: {
-                                id: {
-                                    type: "string"
-                                },
+
                                 nomeBensPatrimoniais: {
                                     type: "string"
                                 },
-                                quantidade_entrada: {
+                                quantidade: {
                                     type: "number"
                                 },
-                                nomematerial: {
-                                    type: "string"
+                                qtdestoqueminimo: {
+                                    type: "number"
                                 },
-                                descricao: {
-                                    type: "string"
-                                },
-                                created_at: {
-                                    type: "date"
+                                compra: {
+                                    type: "number"
                                 }
                             }
                         },
                     },
 
 
-                    group: {
-                        field: "nomeBensPatrimoniais", 
-                        aggregates: [
-                                {
-                                    field: "nomeBensPatrimoniais",
-                                    aggregate: "count"
-                                },
-                            ]
-                    },
-                    aggregate: [                          {
-                            field: "nomeBensPatrimoniais",
-                            aggregate: "count"
-                        },
-                    ],
-
                 },
 
                 columns: [{
-                        field: "id",
-                        title: "ID",
-                        filterable: true,
-                        width: '150'
-                    },
-                    {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
-                        width: '150'
+                        autowidth: true
                     },
                     {
-                        field: "quantidade_entrada",
-                        title: "Quantidade",
-                        aggregates: ["sum"],
-                        groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
+                        field: "quantidade",
+                        title: "Estoque",
                         filterable: true,
-                        width: '100'
+                        autowidth: true
                     },
                     {
-                        field: "descricaoentrada",
-                        title: "Descrição",
+                        field: "qtdestoqueminimo",
+                        title: "Qtd Mínima",
                         filterable: true,
-                        width: '150'
+                        autowidth: true
                     },
                     {
-                        field: "tipo",
-                        title: "Tipo Entrada",
+                        field: "compra",
+                        title: "Compra",
                         filterable: true,
-                        width: '150'
+                        autowidth: true,
+                        // template: "#= compra < 0 ? 0 : compra #"
                     },
-                    {
-                        field: "created_at",
-                        title: "Data Entrada",
-                        format: "{0:dd/MM/yyyy}",
-                        filterable: true,
-                        width: '100'
-                    },
-                    {
-                        command: [{
-                            name: "Visualizar",
-                            click: function(e) {
-                                e.preventDefault();
-                                var tr = $(e.target).closest(
-                                    "tr"); // get the current table row (tr)
-                                var data = this.dataItem(tr);
-                                window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                                    data.id;
-                            }
-                        }],
-                        width: '100',
-                        exportable: false,
-                    },
-                    // {
-                    //     command: [{
-                    //         name: "Editar",
-                    //         click: function(e) {
-                    //             e.preventDefault();
-                    //             var tr = $(e.target).closest(
-                    //                 "tr"); // get the current table row (tr)
-                    //             var data = this.dataItem(tr);
-                    //             window.location.href = "@php echo env('APP_URL'); @endphp" + "/entradas/" +
-                    //                 data.id + '/edit';
-                    //         }
-                    //     }],
-                    //     width: 130,
-                    //     exportable: false,
-                    // },
+
                 ],
                 groupExpand: function(e) {
                     for (let i = 0; i < e.group.items.length; i++) {
@@ -269,6 +199,18 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var grid = this;
                     var columns = grid.columns;
 
+                    // percorra cada linha da grade
+                    grid.tbody.find("tr").each(function() {
+                        var dataItem = grid.dataItem(this);
+                        var quantidade = dataItem.quantidade;
+                        var qtdestoqueminimo = dataItem.qtdestoqueminimo;
+
+                        // verifique se a quantidade em estoque é menor que o estoque mínimo
+                        if (quantidade < qtdestoqueminimo) {
+                            // adicione uma classe CSS para destacar a célula em vermelho
+                            $(this).find("td:nth-child(2)").addClass("estoque-baixo");
+                        }
+                    });
                     //Exibe itens agrupados fechados
                     $(".k-grouping-row").each(function (e) {
                         grid.collapseGroup(this);
@@ -289,6 +231,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                             }
                         }
                     }
+
                 },
                 columnHide: function(e) {
                     // hide column in all other detail Grids
@@ -325,34 +268,29 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
 
         $(window).on('load', function() {
 
-                    var $myDiv = $('#grid');
+            var $myDiv = $('#grid');
 
-                    if ($myDiv.length === 1) {
+            if ($myDiv.length === 1) {
 
-                        var count = 0;
-                        var interval = setInterval(function() {
-                                @if (isset($despesas))
-                                    if (count >= 20) {
-                                    @else
-                                        if (count >= 50) {
-                                        @endif
-                                        clearInterval(interval);
-                                        $('.k-link')[0].click();
-                                        console.log('Ordenação Por Grupo Clicado Inicialmente');
-                                        $.LoadingOverlay("hide");
-                                        return;
-                                    }
-                                    count += 10;
-                                    $.LoadingOverlay("progress", count);
-                                }, 300);
+                var count = 0;
+                var interval = setInterval(function() {
 
-                        }
+                    if (count >= 50) {
 
-                    });
+                        clearInterval(interval);
+                        $('.k-link')[0].click();
+                        console.log('Ordenação Por Grupo Clicado Inicialmente');
+                        $.LoadingOverlay("hide");
+                        return;
+                    }
+                    count += 10;
+                    $.LoadingOverlay("progress", count);
+                }, 300);
+            }
 
+        });
+
+        @include('layouts/filtradata')
     </script>
-
-@include('layouts/modal/estoque/modalentradaestoque')
-
+ 
 @endsection
-

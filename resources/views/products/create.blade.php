@@ -47,7 +47,7 @@
 
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Estante:</strong>
+                    <strong>Setor:</strong>
 
                     {!! Form::text('estante', null, [
                         'placeholder' => 'Preencha este campo',
@@ -58,7 +58,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Prateleira:</strong>
+                    <strong>Local:</strong>
 
                     {!! Form::text('prateleira', null, [
                         'placeholder' => 'Preencha este campo',

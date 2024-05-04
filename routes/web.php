@@ -203,5 +203,7 @@ Route::middleware(['auth', 'sandbox'])->group(function () {
 
     Route::get('/get-time-remaining', 'HomeController@getTimeRemaining');
     
+    Route::get('/inventarioCompras', 'EstoqueController@inventarioCompras');
 
+    Route::get('/analiseMaterial', 'EstoqueController@analiseMaterial');
 });

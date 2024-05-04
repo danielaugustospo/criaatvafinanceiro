@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\BensPatrimoniais;
 use App\Estoque;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
+use stdClass;
 
 class EstoqueController extends Controller
 {
@@ -21,7 +22,7 @@ class EstoqueController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:estoque-list|estoque-create|estoque-edit|estoque-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:estoque-list|estoque-create|estoque-edit|estoque-delete', ['only' => ['index', 'show', 'analiseMaterial', 'inventarioCompras']]);
         $this->middleware('permission:estoque-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:estoque-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:estoque-delete', ['only' => ['destroy']]);
@@ -39,21 +40,135 @@ class EstoqueController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function inventarioCompras(Request $request)
+    {
+
+        $data = Estoque::orderBy('id', 'DESC')->paginate(5);
+        return view('estoque.inventario_compras', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function analiseMaterial(Request $request)
+    {
+        $data = Estoque::orderBy('id', 'DESC')->paginate(5);
+        return view('estoque.analisematerial', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
 
     public function apiestoque()
     {
-                            $estoque = Estoque::select('estoque.id', 'estoque.idbenspatrimoniais', 
-                            \DB::raw('SUM(estoque.quantidade) as quantidade'), 'estoque.descricao', 'benspatrimoniais.nomeBensPatrimoniais')
-                            ->leftJoin('benspatrimoniais', 'estoque.idbenspatrimoniais', '=', 'benspatrimoniais.id')
-                            ->where('estoque.quantidade', '>', 0)
-                            ->where('ativadoestoque', 1)
-                            ->whereNull('estoque.deleted_at')
-                            ->groupBy('estoque.idbenspatrimoniais')
-                            ->get();
+        $estoque = Estoque::select('estoque.id', 'estoque.idbenspatrimoniais', 'benspatrimoniais.qtdestoqueminimo', 
+        \DB::raw('benspatrimoniais.qtdestoqueminimo - (SUM(estoque.quantidade)) as compra'), 
+        \DB::raw('SUM(estoque.quantidade) as quantidade'), 'estoque.descricao', 'benspatrimoniais.nomeBensPatrimoniais')
+        ->leftJoin('benspatrimoniais', 'estoque.idbenspatrimoniais', '=', 'benspatrimoniais.id')
+        ->where('estoque.quantidade', '>', 0)
+        ->where('ativadoestoque', 1)
+        ->whereNull('estoque.deleted_at')
+        ->groupBy('estoque.idbenspatrimoniais')
+        ->get();
 
         return $estoque;
     }
 
+    public function apianaliseMaterial()
+    {
+        $entradas = DB::select('SELECT 
+            SUM(x.quantidade_entrada) as quantidade_entrada, x.id_estoque, 
+            DATE(COALESCE(dtdevolucao, x.created_at)) AS created_at, b.nomeBensPatrimoniais
+                FROM entradas x
+            LEFT JOIN estoque AS e ON e.id = x.id_estoque
+            LEFT JOIN benspatrimoniais AS b ON b.id = e.idbenspatrimoniais
+                GROUP BY id_estoque, DATE(COALESCE(dtdevolucao, x.created_at))
+                ORDER BY x.id_estoque;
+            ');
+
+        $saidas = DB::select('SELECT 
+            SUM(quantidade_saida) as quantidade_saida, x.id_estoque, DATE(x.dataretirada) AS dataretirada, b.nomeBensPatrimoniais
+            FROM saidas x
+                
+            LEFT JOIN estoque AS e ON e.id = x.id_estoque
+            LEFT JOIN benspatrimoniais AS b ON b.id = e.idbenspatrimoniais
+            GROUP BY id_estoque, DATE(x.dataretirada)
+            ORDER BY id_estoque');
+    
+        // Combinação das entradas e saídas
+        $merged = [];
+        foreach ($entradas as $entrada) {
+            $id_estoque = $entrada->id_estoque;
+            $created_at = $entrada->created_at;
+    
+            if (!isset($merged[$id_estoque][$created_at])) {
+                $obj = new stdClass();
+                $obj->id_estoque = $id_estoque;
+                $obj->created_at = $created_at;
+                $obj->quantidade_entrada = $entrada->quantidade_entrada;
+                $merged[$id_estoque][$created_at] = $obj;
+                $obj->nomeBensPatrimoniais = $entrada->nomeBensPatrimoniais ;
+
+            }
+        }
+    
+        foreach ($saidas as $saida) {
+            $id_estoque = $saida->id_estoque;
+            $dataretirada = $saida->dataretirada;
+    
+            if (!isset($merged[$id_estoque][$dataretirada])) {
+                $obj = new stdClass();
+                $obj->id_estoque = $id_estoque;
+                $obj->created_at = $dataretirada;
+                $obj->quantidade_saida = $saida->quantidade_saida;
+                $obj->nomeBensPatrimoniais = $saida->nomeBensPatrimoniais ;
+                $merged[$id_estoque][$dataretirada] = $obj;
+            }else{
+                $obj = new stdClass();
+                $merged[$id_estoque][$dataretirada]->quantidade_saida = $saida->quantidade_saida;
+            }
+        }
+    
+
+        // Transforma a matriz combinada em uma lista de objetos
+        $result = [];
+        foreach ($merged as $id_estoque => $dates) {
+            foreach ($dates as $created_at => $obj) {
+                // Verifica se a propriedade quantidade_entrada está definida no objeto
+                if (property_exists($obj, 'quantidade_entrada') && property_exists($obj, 'quantidade_saida')) {
+                    // Verifica se a quantidade de entrada ou saída é maior que zero
+                    if ($obj->quantidade_entrada > 0 || $obj->quantidade_saida > 0) {
+                        $result[] = $obj;
+                    }
+                } elseif (property_exists($obj, 'quantidade_entrada')) {
+                    // Se a propriedade quantidade_saida não estiver definida, define como zero
+                    $obj->quantidade_saida = 0;
+                    // Verifica se a quantidade de entrada é maior que zero
+                    if ($obj->quantidade_entrada > 0) {
+                        $result[] = $obj;
+                    }
+                } elseif (property_exists($obj, 'quantidade_saida')) {
+                    // Se a propriedade quantidade_entrada não estiver definida, define como zero
+                    $obj->quantidade_entrada = 0;
+                    // Verifica se a quantidade de saída é maior que zero
+                    if ($obj->quantidade_saida > 0) {
+                        $result[] = $obj;
+                    }
+                }
+            }
+        }
+    
+        return $result;
+    }
+    
+    
     /**
      * Show the form for creating a new resource.
      *

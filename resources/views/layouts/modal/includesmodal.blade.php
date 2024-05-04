@@ -42,6 +42,6 @@
 }
 </style>
 
-<button class="btn btn-green" name="btnatualizar" onclick="location.reload();">
+<button class="btn btn-green" name="btnatualizar" onclick="location.reload();" style="width: 54px; height: 50px;">
     <img class="icon" src="../public/img/reload-6x-white.png"> 
 </button>

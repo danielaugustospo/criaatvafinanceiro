@@ -172,6 +172,23 @@ public function apibenspatrimoniais(Request $request)
                         ->with('mensagem','Material cadastrado com êxito.');                        
     }
 
+    public function salvarmodalApi(Request $request)
+    {
+
+        $request->validate([
+            'nomeBensPatrimoniais'      => 'required|min:3',
+            'idTipoBensPatrimoniais'    => 'required',
+            'qtdestoqueminimo'          => 'required',
+        ]);
+        $benspatrimoniais = BensPatrimoniais::create($request->all());
+
+        return response()->json($benspatrimoniais)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+                          
+    }
+
 
     /**
      * Display the specified resource.
@@ -256,5 +273,15 @@ public function apibenspatrimoniais(Request $request)
 
         return redirect()->route('benspatrimoniais.index')
                         ->with('success','Bem Patrimonial excluído com êxito!');
+    }
+
+
+    public function listaUnidadeMedida() {
+        $listaUnidadeMedida = DB::select('SELECT * FROM unidademedida');
+
+        return response()->json($listaUnidadeMedida)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
     }
 }

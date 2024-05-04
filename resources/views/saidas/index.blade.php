@@ -80,7 +80,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var sheet = e.workbook.sheets[0];
 
                     sheet.frozenRows = 1;
-                    sheet.mergedCells = ["A1:F1"];
+                    sheet.mergedCells = ["A1:K1"];
                     sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
 
                     var myHeaders = [{
@@ -193,13 +193,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "id",
                         title: "ID",
                         filterable: true,
-                        width: "5%"
+                        width: "150"
                     },
                     {
                         field: "nomeBensPatrimoniais",
                         title: "Nome Material",
                         filterable: true,
-                        width: "10%"
+                        width: "200"
                     },
                     {
                         field: "quantidade_saida",
@@ -207,31 +207,31 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         aggregates: ["sum"],
                         groupHeaderColumnTemplate: "QUANTIDADE: #=sum#",
                         filterable: true,
-                        width: "10%"
+                        width: "100"
                     },
                     {
                         field: "portador",
                         title: "Quem Pegou",
                         filterable: true,
-                        width: "10%"
+                        width: "150"
                     },
                     {
                         field: "descricaosaida",
                         title: "Descrição",
                         filterable: true,
-                        width: "10%"
+                        width: "200"
                     },
                     {
                         field: "ordemdeservico",
                         title: "OS",
                         filterable: true,
-                        width: "10%"
+                        width: "100"
                     },
                     {
                         field: "dataretirada",
                         title: "Data Retirada",
                         filterable: true,
-                        width: "10%",
+                        width: "100",
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -243,19 +243,19 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         field: "qtddiasemprestado",
                         title: "Dias Emprestados",
                         filterable: true,
-                        width: "5%",
+                        width: "50",
                     },
                     {
                         field: "qtddiaspararetorno",
                         title: "Dias Restantes",
                         filterable: true,
-                        width: "10%",
+                        width: "150",
                     },
                     {
                         field: "datapararetorno",
                         title: "Data Retorno",
                         filterable: true,
-                        width: "10%",
+                        width: "100",
                         format: "{0:dd/MM/yyyy}",
                         filterable: {
                             cell: {
@@ -276,7 +276,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                     data.id;
                             }
                         }],
-                        width: "10%",
+                        width: "100",
                         exportable: false,
                     },
                     // {

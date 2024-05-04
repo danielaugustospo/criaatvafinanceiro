@@ -42,3 +42,6 @@ storage/framework/cache/*
 
 storage/logs/*
 .gitignore
+bootstrap/cache/*
+public/img/homolog.jpeg
+storage/logs/acoes.log

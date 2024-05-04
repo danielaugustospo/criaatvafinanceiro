@@ -93,6 +93,7 @@
                         </div>
                     </li>
 
+                    {{-- <a href="{{ url('https://v2devcriaatva.danieltecnologia.com/#/relatorios') }}">Relatórios V2</a> --}}
                     <li class="nav-item ">
                         @can('relatorio-list')
                             <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
@@ -248,6 +249,8 @@
 
                                 @can('estoque-list')
                                     <a class="dropdown-item" href="{{ route('estoque.index') }}">Estoque (Inventário) </a>
+                                    <a class="dropdown-item" href="{{ url('inventarioCompras') }}">Inventário x Compras </a>
+                                    <a class="dropdown-item" href="{{ url('analiseMaterial') }}">Análise Material </a>
                                 @endcan
                             </div>
                         </li>

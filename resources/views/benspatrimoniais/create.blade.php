@@ -60,13 +60,13 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="estante" class="col-sm-2 col-form-label">Estante</label>
+        <label for="estante" class="col-sm-2 col-form-label">Setor</label>
         <div class="col-sm-6">
             {!! Form::text('estante', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
         </div>
     </div>
     <div class="form-group row">
-        <label for="prateleira" class="col-sm-2 col-form-label">Prateleira</label>
+        <label for="prateleira" class="col-sm-2 col-form-label">Local</label>
         <div class="col-sm-6">
             {!! Form::text('prateleira', '', ['placeholder' => 'Preencha este campo', 'class' => 'form-control', 'maxlength' => '100']) !!}
         </div>

@@ -128,6 +128,20 @@ class ProductController extends Controller
         ->with('mensagem','Tipo de Material cadastrado com êxito.');
     }
 
+    public function salvarmodalApi(Request $request)
+    {
+        request()->validate([
+            'name' => 'required',
+            // 'detail' => 'required',
+        ]);
+
+        $product = Product::create($request->all());
+        return response()->json($product)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+    }
+
 
     /**
      * Display the specified resource.

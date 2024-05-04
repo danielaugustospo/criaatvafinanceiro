@@ -30,9 +30,30 @@
 
       <div class="form-row d-flex justify-content-center">
         
-        <a href="{{ route('benspatrimoniais.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> CATALOGAR MATERIAL</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cadastroModal">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>Cadastro de Materiais (MODAL)
+        </button>
         <a href="{{ route('estoque.index') }}"  class="btn btn-secondary"><i class="fa fa-list" aria-hidden="true"></i> Estoque (Inventário) </a>
+        <a href="{{ route('benspatrimoniais.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> CADASTRO DE MATERIAIS (ANTIGO)</a>
 
+      
+      <!-- Modal -->
+      <div class="modal fade" id="cadastroModal" tabindex="-1" role="dialog" aria-labelledby="cadastroModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content ">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="cadastroModalLabel">Cadastro de Materiais</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <iframe src="https://v2{{$_SERVER['SERVER_NAME']}}/#/catalogoFrame" frameborder="0" width="100%" height="600px"></iframe>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
 
     </div>
 
@@ -122,7 +143,7 @@
         pageSize: 100,
 
       },
-      height: '65%',
+      height: '500px',
       filterable: {
           extra: false,
           mode: "row"
@@ -142,10 +163,15 @@
       columns: [
         { field: "id", title: "ID", filterable: true, width: '130' },
         { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '270' },
-        { field: "estante", title: "Estante", filterable: true, width: '150' },
-        { field: "prateleira", title: "Prateleira", filterable: true, width: '150' },
+        { field: "estante", title: "Setor", filterable: true, width: '150' },
+        { field: "prateleira", title: "Local", filterable: true, width: '150' },
         { field: "qtdestoqueminimo", title: "Estoque<br />Mínimo", filterable: true, width: '150' },
-        { field: "tipo.name", title: "Tipo", filterable: true, width: '150' },
+        { field: "tipo.name", 
+          title: "Tipo", 
+          filterable: true, 
+          width: '150',
+          template: "#= tipo && tipo.name ? tipo.name : '' #" 
+        },
         {
             field: "unidademedida.nomeunidade",
             title: "Unidade",
