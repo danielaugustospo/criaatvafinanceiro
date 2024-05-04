@@ -214,7 +214,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         autowidth: true,
                         aggregates: ["sum"], 
                         groupHeaderColumnTemplate: "Saídas: #: kendo.toString(sum, 'pt-BR') #", 
-                        groupFooterTemplate: ({ quantidade_entrada, quantidade_saida, nomeBensPatrimoniais}) => `Total: ${quantidade_entrada.sum + quantidade_saida.sum}`,
+                        groupFooterTemplate: ({ quantidade_entrada, quantidade_saida}) => `Total: ${quantidade_entrada.sum - quantidade_saida.sum}`,
                         attributes: {
                             class: "group-footer"
                         }
