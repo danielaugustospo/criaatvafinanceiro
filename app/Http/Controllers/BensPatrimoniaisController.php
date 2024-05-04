@@ -158,7 +158,7 @@ public function apibenspatrimoniais(Request $request)
     {
 
         $request->validate([
-            'nomeBensPatrimoniais'      => 'required|min:3',
+            'nomeBensPatrimoniais'      => 'required|min:2',
             'idTipoBensPatrimoniais'    => 'required',
             'qtdestoqueminimo'          => 'required',
             'descricaoBensPatrimoniais' => 'required',
@@ -176,7 +176,7 @@ public function apibenspatrimoniais(Request $request)
     {
 
         $request->validate([
-            'nomeBensPatrimoniais'      => 'required|min:3',
+            'nomeBensPatrimoniais'      => 'required|min:2',
             'idTipoBensPatrimoniais'    => 'required',
             'qtdestoqueminimo'          => 'required',
         ]);
