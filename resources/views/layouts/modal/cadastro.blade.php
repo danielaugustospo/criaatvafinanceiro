@@ -17,7 +17,6 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="recarrega();" data-dismiss="modal">Fechar</button>
         </div>
-        </div>
       </div>
     </div>
 </div>
