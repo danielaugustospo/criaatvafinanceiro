@@ -1,5 +1,5 @@
 <?php 
-    $intervaloCelulas = "A1:H1"; 
+    $intervaloCelulas = "A1:I1"; 
     $rotaapi    = "apiControleDeOrcamento";
     $titulo     = "Controle de Orçamento";
     $campodata  = 'dataCriacaoOrdemdeServico';
@@ -36,7 +36,7 @@
 
 
     @include('layouts/helpersview/iniciotabela')
-    @can('visualiza-relatoriogeral')
+    @can('rel-controleorcamento')
 
             dataSource: {
                 data: data,
@@ -50,6 +50,8 @@
                             saldo: { type: "number" },
                             percentualPermitido: { type: "number" },
                             percentual: { type: "number" },
+                            status: { type: "string" },
+
                         }
                     },
                 },
@@ -64,7 +66,7 @@
             columns: [
                 { field: "id", title: "N° OS", filterable: true, width: 80 },
                 { field: "vendedor", title: "Vendedor", filterable: true, width: 80 },
-                { field: "dataCriacaoOrdemdeServico", title: "Data Abertura", filterable: true, width: 70, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
+                { field: "dataCriacaoOrdemdeServico", title: "Data Abertura", filterable: true, width: 60, format: "{0:dd/MM/yyyy}" , filterable: { cell: { template: betweenFilter}} },
                 { field: "valorOrcamento", title: "Valor Orçamento", filterable: true, width: 80, decimals: 2, aggregates: ["sum"], groupHeaderColumnTemplate: "Total: #: kendo.toString(sum, 'c', 'pt-BR') #", footerTemplate: "Total Geral: #: kendo.toString(sum, 'c', 'pt-BR') #", format: '{0:0.00}' },
                 {
                     field: "percentualPermitido",
@@ -98,15 +100,17 @@
                     title: "Status",
                     filterable: true,
                     width: 60,
-
                     template: function(dataItem) {
                         if (dataItem.percentual !== null && dataItem.percentual > 100) {
-                        return '<span style="color: red;">Estorou</span>';
+                            dataItem.status = 'Estorou';
+                            return '<span style="color: #FF0000;">Estorou</span>'; // Vermelho
                         } else {
-                        return 'Abaixo';
+                            dataItem.status = 'Abaixo';
+                            return '<span style="color: #008000;">Abaixo</span>'; // Verde
                         }
                     }
                 }
+
                 ],
                 @include('layouts/helpersview/finaltabela')
                 @include('layouts/filtradata')
