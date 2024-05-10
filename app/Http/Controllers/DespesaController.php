@@ -175,35 +175,28 @@ class DespesaController extends Controller
         $user = Auth()->user();
     
         if ($user) {
-            $autorizado = $this->validaUsuario($user->id);
-            $permRelatorio = false;
-            
-            if ($user->can('despesa-list-all')) {
-                $permissaoTotal = 1;
-            } elseif ($autorizado == true) {
-                $permRelatorio = true;
-                $idUser = $user->id;
-            } else {
-                abort(401, 'Não Autorizado');
-            }
+            $idUser = $user->id;
         } elseif (isset($request->idUser)) {
             $idUser = Crypt::decrypt($request->idUser);
             $user = User::find($idUser);
-            $autorizado = $this->validaUsuario($user->id);
-            $permRelatorio = false;
-            
-            if ($user && $user->can('despesa-list-all')) {
-                $permissaoTotal = 1;
-            } elseif ($autorizado == true) {
-                $permRelatorio = true;
-
-                $idUser = $idUser;
-            } else {
+            if (!$user) {
                 abort(401, 'Não Autorizado');
             }
+        }
+
+        $autorizado = $this->validaUsuario($user->id);
+        $permRelatorio = false;
+        if ($user->can('despesa-list-all') || $user->can('despesa-edit-all') || $user->can('despesa-delete-all')) {
+            $permissaoTotal = 1;
+        }elseif ($user->can('despesa-list') || $user->can('despesa-edit') || $user->can('despesa-delete')) {
+            $permissaoTotal = 0;
+        } elseif ($autorizado == true) {
+            $permRelatorio = true;
+            $idUser = $user->id;
         } else {
             abort(401, 'Não Autorizado');
         }
+
         // elseif (User::find($idUser)->can('despesa-create')){
 
         // }
