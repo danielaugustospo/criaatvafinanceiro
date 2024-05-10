@@ -40,7 +40,7 @@
 
             dataSource: {
                 data: data,
-                pageSize: 15,
+                pageSize: 100000, //Se tirar essa trava de valor, o excel vai exportar a coluna status até a quantidade informada
                 schema: {
                     model: {
                         fields: {
