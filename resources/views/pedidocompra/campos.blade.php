@@ -90,18 +90,20 @@
         <label class="col-sm-2  mr-2 text-danger">Há Nota Fiscal?</label>
         
         
-        <select name="nf_exigencia" class="mt-2 selecionaComInput col-sm-1" {{ $variavelDisabledNaView }}>
+        <select name="nf_exigencia" class="mt-2 selecionaComInput col-sm-2" {{ $variavelDisabledNaView }}>
             @if (!isset($pedido))
             <option disabled selected>Selecione...</option>
                 @endif
             @if (Request::path() == 'pedidocompra/create')
-            <option value="N" {{ old('nf_exigencia') == 'N' ? ' selected' : '' }}>Não</option>
-            <option value="S" {{ old('nf_exigencia') == 'S' ? ' selected' : '' }}>Sim</option>
+            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
+            <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
+            <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'N' ? ' selected' : '' }}>Não</option>
             @else
             @if (!isset($pedido->nf_exigencia) || $pedido->nf_exigencia == null || $pedido->nf_exigencia == '' || $pedido->nf_exigencia == 0)
             {!! $infoSelectVazio !!}
             @endif
-            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim</option>
+            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
+            <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
             <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'N' ? ' selected' : '' }}>Não</option>
             @endif
         </select>

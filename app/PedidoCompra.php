@@ -94,7 +94,15 @@ class PedidoCompra extends Model
         $stringQuery = "SELECT p.id, ped_os, ped_data, ped_descprod,
         f.razaosocialFornecedor, u.name as solicitante, c.nomeConta as conta,
         ped_contaaprovada, ped_nomecomprador, ap.name as 'nomeaprovador', fin.name as 'nomefinalizador',
-        comprador.razaosocialFornecedor AS nomecomp,
+        comprador.razaosocialFornecedor AS nomecomp, 
+        CASE 
+        WHEN nf_exigencia = 'N'  THEN 'NÃO'
+        WHEN nf_exigencia = 'SN' THEN 'NOTA NÃO EMITIDA'
+        WHEN nf_exigencia = 'S'  THEN 'NOTA EMITIDA'
+        ELSE 'NÃO IDENTIFICADO' END as nf_exigencia_label, 
+        nf_exigencia,
+        ped_notafiscal,
+    
         CASE 
         WHEN ped_pago = 0 THEN 'A Lançar'
         WHEN ped_pago = 1 THEN 'Lançado'

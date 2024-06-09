@@ -174,24 +174,25 @@ $.LoadingOverlay("show", {
                     } 
                 },
                 {
-                        field: "pago",
-                        title: "Lançado",
+                        field: "nf_exigencia",
+                        title: "NF EMITIDA",
                         filterable: true,
                         width: 100,
                         template: function(dataItem) {
-                            if (dataItem.status == 'Cancelado') {
-                                return '<span style="color: red;">' + dataItem.status + '</span>';
+                            if (dataItem.nf_exigencia == 'NÃO') {
+                                return '<span style="color: red;">' + dataItem.nf_exigencia_label + '</span>';
                             } 
-                            else if (dataItem.pago === "Lançado" && dataItem.status != 'Cancelado') {
-                                return '<span style="color: blue;">' + dataItem.pago + '</span>';
-                            } else if (dataItem.pago === "A Lançar") {
-                                return '<span style="color: red;">' + dataItem.pago + '</span>';
+                            else if (dataItem.nf_exigencia === "S") {
+                                return '<span style="color: blue;">' + dataItem.nf_exigencia_label + '</span>';
+                            } else if (dataItem.nf_exigencia === "SN") {
+                                return '<span style="color: red;">' + dataItem.nf_exigencia_label + '</span>';
                             } 
                             else {
-                                return dataItem.pago;
+                                return dataItem.nf_exigencia_label;
                             }
                         }
                     },
+                    { field: "ped_notafiscal", title: "NF", filterable: true, width: 100 },
                     { field: "conta", title: "Conta", filterable: true, width: 100 },
                     @if(!isset($aprovado))                  
                     { field: "status", title: "Status", filterable: true, width: 100 },
@@ -290,14 +291,14 @@ $.LoadingOverlay("show", {
                 }
 
                 
-                this.tbody.find("tr").each(function() {
-                    var dataItem = $("#grid").data("kendoGrid").dataItem(this);
-                    if (dataItem.pago === "Lançado") {
-                        $(this).find("td:nth-child(9)").css("color", "blue");
-                    } else if (dataItem.pago === "A Lançar" || dataItem.pago === "Cancelado") {
-                        $(this).find("td:nth-child(9)").css("color", "red");
-                    }
-                });
+                // this.tbody.find("tr").each(function() {
+                //     var dataItem = $("#grid").data("kendoGrid").dataItem(this);
+                //     if (dataItem.pago === "Lançado") {
+                //         $(this).find("td:nth-child(9)").css("color", "blue");
+                //     } else if (dataItem.pago === "A Lançar" || dataItem.pago === "Cancelado") {
+                //         $(this).find("td:nth-child(9)").css("color", "red");
+                //     }
+                // });
                 // Restaurar a visibilidade original das colunas
                 for (var field in detailColsVisibility) {
                     if (detailColsVisibility[field]) {
