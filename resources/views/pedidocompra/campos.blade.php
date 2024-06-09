@@ -108,9 +108,9 @@
             @endif
         </select>
 
-        <label class="col-sm-1 mr-2 mt-2" for="ped_notafiscal">Nota Fiscal</label>
-        {!! Form::text('ped_notafiscal', old('ped_notafiscal'), [
-            'class' => 'col-sm-3 form-control',
+        <label class="col-sm-1 ml-5 mr-2 mt-2" for="ped_notafiscal">Nota Fiscal</label>
+        {!! Form::number('ped_notafiscal', old('ped_notafiscal'), [
+            'class' => 'col-sm-2 form-control',
             'maxlength' => '100',
             $variavelReadOnlyNaView,
         ]) !!}
