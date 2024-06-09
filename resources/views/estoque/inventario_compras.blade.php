@@ -1,5 +1,5 @@
 <?php
-$intervaloCelulas = 'A1:D1';
+$intervaloCelulas = 'A1:F1';
 $rotaapi = 'api/apiestoque';
 $titulo = 'Inventário x Compras';
 
@@ -74,7 +74,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                     var sheet = e.workbook.sheets[0];
 
                     sheet.frozenRows = 1;
-                    sheet.mergedCells = ["A1:D1"];
+                    sheet.mergedCells = ["A1:F1"];
                     sheet.name = "Relatorio_de_" + document.title + " -  CRIAATVA";
 
                     var myHeaders = [{
@@ -145,6 +145,9 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 nomeBensPatrimoniais: {
                                     type: "string"
                                 },
+                                setor: {
+                                    type: "string"
+                                },
                                 quantidade: {
                                     type: "number"
                                 },
@@ -153,7 +156,10 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                                 },
                                 compra: {
                                     type: "number"
-                                }
+                                },
+                                analise: {
+                                    type: "number"
+                                },
                             }
                         },
                     },
@@ -168,6 +174,12 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         autowidth: true
                     },
                     {
+                        field: "setor",
+                        title: "Setor",
+                        filterable: true,
+                        autowidth: true
+                    },
+                    {
                         field: "quantidade",
                         title: "Estoque",
                         filterable: true,
@@ -178,6 +190,13 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         title: "Qtd Mínima",
                         filterable: true,
                         autowidth: true
+                    },
+                    {
+                        field: "analise",
+                        title: "Analise Qtd Mínima",
+                        filterable: true,
+                        autowidth: true,
+                        // template: "#= compra < 0 ? 0 : compra #"
                     },
                     {
                         field: "compra",

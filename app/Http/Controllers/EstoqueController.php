@@ -68,8 +68,9 @@ class EstoqueController extends Controller
 
     public function apiestoque()
     {
-        $estoque = Estoque::select('estoque.id', 'estoque.idbenspatrimoniais', 'benspatrimoniais.qtdestoqueminimo', 
-        \DB::raw('benspatrimoniais.qtdestoqueminimo - (SUM(estoque.quantidade)) as compra'), 
+        $estoque = Estoque::select('estoque.id', 'estoque.idbenspatrimoniais', 'benspatrimoniais.qtdestoqueminimo', 'benspatrimoniais.estante as setor',
+        \DB::raw('(SUM(estoque.quantidade) - benspatrimoniais.qtdestoqueminimo) as analise'), 
+        \DB::raw('GREATEST(0, benspatrimoniais.qtdestoqueminimo - SUM(estoque.quantidade)) as compra'), 
         \DB::raw('SUM(estoque.quantidade) as quantidade'), 'estoque.descricao', 'benspatrimoniais.nomeBensPatrimoniais')
         ->leftJoin('benspatrimoniais', 'estoque.idbenspatrimoniais', '=', 'benspatrimoniais.id')
         ->where('estoque.quantidade', '>', 0)

@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col-lg-12 margin-tb">
     <div class="pull-left">
-      <h2 class="text-center">Bens Patrimoniais / Catálogo de Materiais</h2>
+      <h2 class="text-center">Bens Patrimoniais / Cadastro de Materiais</h2>
     </div>
       {{-- @can('benspatrimoniais-create')
       <a class="btn btn-success" href="{{ route('benspatrimoniais.create') }}"> Adicionar item</a>

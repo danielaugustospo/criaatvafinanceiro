@@ -235,7 +235,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('benspatrimoniais-list')
-                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Catálogo de
+                                    <a class="dropdown-item" href="{{ route('benspatrimoniais.index') }}">Cadastro de
                                         Materiais</a>
                                 @endcan
 
