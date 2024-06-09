@@ -364,7 +364,7 @@ $numberFormatter = new \NumberFormatter('pt-BR', \NumberFormatter::CURRENCY);
                         var count = 0;
                         var interval = setInterval(function() {
 
-                                        if (count >= 50) {
+                                        if (count >= 100) {
                                 
                                         clearInterval(interval);
                                         $('.k-link')[0].click();
