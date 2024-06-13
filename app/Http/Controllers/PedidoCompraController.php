@@ -114,7 +114,7 @@ class PedidoCompraController extends Controller
             'ped_descprod.required'     => 'Informe a descrição', 
         ]);
 
-        if($request->get('nf_exigencia') == 'S' || $request->get('nf_exigencia') == 'SN' ){
+        if($request->get('nf_exigencia') == 'S'){
             if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
                $request->validate([ 
                    'ped_notafiscal'   => 'required',
@@ -245,7 +245,7 @@ class PedidoCompraController extends Controller
 
 
 
-        if($request->get('nf_exigencia') == 'S' || $request->get('nf_exigencia') == 'SN' ){
+        if($request->get('nf_exigencia') == 'S' ){
             if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
                 $request->validate([ 
                     'ped_notafiscal'   => 'required',
@@ -561,7 +561,7 @@ class PedidoCompraController extends Controller
     public function pegaDados($request, $pedido)
     {
 
-        if($request->get('nf_exigencia') == 'S' || $request->get('nf_exigencia') == 'SN' ){
+        if($request->get('nf_exigencia') == 'S'){
             if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
 
                 $request->validate([ 
@@ -675,7 +675,7 @@ class PedidoCompraController extends Controller
         $validator = null;
     
 
-        if($request->get('nf_exigencia') == 'S' || $request->get('nf_exigencia') == 'SN' ){
+        if($request->get('nf_exigencia') == 'S'){
             if(($request->get('ped_notafiscal') == '') || ($request->get('ped_notafiscal') === null)){
                 $validator = Validator::make($request->all(), [ 
                     'ped_notafiscal'   => 'required',

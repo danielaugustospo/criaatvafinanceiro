@@ -95,15 +95,15 @@
             <option disabled selected>Selecione...</option>
                 @endif
             @if (Request::path() == 'pedidocompra/create')
-            <option value="S" {{ old('nf_exigencia')  == 'SN' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
-            <option value="N" {{ old('nf_exigencia')  == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
+            <option value="SN" {{ old('nf_exigencia')  == 'SN' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
+            <option value="S" {{ old('nf_exigencia')  == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
             <option value="N" {{ old('nf_exigencia')  == 'N' ? ' selected' : '' }}>Não</option>
             @else
             @if (!isset($pedido->nf_exigencia) || $pedido->nf_exigencia == null || $pedido->nf_exigencia == '' || $pedido->nf_exigencia == 0)
             {!! $infoSelectVazio !!}
             @endif
-            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'SN' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
-            <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
+            <option value="SN" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'SN' ? ' selected' : '' }}>Sim | Nota Não Emitida</option>
+            <option value="S" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'S' ? ' selected' : '' }}>Sim | Nota Emitida</option>
             <option value="N" {{ (old('nf_exigencia') ?? $pedido->nf_exigencia) == 'N' ? ' selected' : '' }}>Não</option>
             @endif
         </select>
