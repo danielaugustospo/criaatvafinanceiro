@@ -207,3 +207,5 @@ Route::middleware(['auth', 'sandbox'])->group(function () {
 
     Route::get('/analiseMaterial', 'EstoqueController@analiseMaterial');
 });
+
+

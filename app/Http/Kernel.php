@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
@@ -20,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
+        \App\Http\Middleware\Cors::class,
     ];
 
     /**
@@ -42,8 +44,9 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            EnsureFrontendRequestsAreStateful::class,
             'throttle:60,1',
-            'bindings',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
@@ -69,6 +72,9 @@ class Kernel extends HttpKernel
         
         'sandbox' => \App\Http\Middleware\GlobalSandboxMode::class,
         'auditlog' => \App\Http\Middleware\AuditLogMiddleware::class,
+
+        'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+        'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
     ];
 
     /**

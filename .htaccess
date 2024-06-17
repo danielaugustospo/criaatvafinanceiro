@@ -4,6 +4,7 @@
     </IfModule>
 
     RewriteEngine On
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
     RewriteCond %{REQUEST_FILENAME} -d [OR]
     RewriteCond %{REQUEST_FILENAME} -f

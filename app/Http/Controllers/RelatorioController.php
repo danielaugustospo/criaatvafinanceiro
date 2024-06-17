@@ -236,10 +236,17 @@ class RelatorioController extends Controller
 
     public function apiContasAReceber(Request $request)
     {
+        \Log::info($request->header());
+        
         $relatorio = new Relatorio();
         $stringConsulta = $relatorio->dadosContasAReceber(null, $parametros = null);
         $dadosConsulta = DB::select($stringConsulta);
-        return $dadosConsulta;
+        
+        if ($dadosConsulta) {
+            return response()->json($dadosConsulta, 201);
+        } else {
+            return response()->json(['error' => 'Ocorreu um erro.'], 400);
+        }
     }
 
     public function apiDespesasFixaVariavel(Request $request)

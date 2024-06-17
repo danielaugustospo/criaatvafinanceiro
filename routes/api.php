@@ -1,20 +1,12 @@
 <?php
 
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 // Rotas de autenticação
 Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
-
-// Outras rotas protegidas
-Route::middleware('auth:api')->group(function () {
-    // Rotas que requerem autenticação
-    // Por exemplo:
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-});
 
 
 /*
@@ -27,6 +19,9 @@ Route::middleware('auth:api')->group(function () {
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+//Rotas V1
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -63,12 +58,12 @@ Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServico
 Route::get('/apiControleDeOrcamento', 'RelatorioController@apiControleDeOrcamento')->name('apiControleDeOrcamento');
 Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('apiareceber');
 Route::get('/apiareceita', 'RelatorioController@consultaIndexReceita')->name('apireceitaNovo');
-Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('apicontasareceber');
 Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('apiconsultaprolabore');
 Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('apidespesasfixavariavel');
 Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name('apidadosreceitaos');
 Route::get('/apidadosfechamentofinal', 'RelatorioController@apidadosFechamentoFinal')->name('apidadosfechamentofinal');
 Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral')->name('apiprojecaotrimestral');
+Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('apicontasareceber');
 
 
 Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('calculatePercent');
@@ -80,3 +75,75 @@ Route::get('/listaUnidadeMedida', 'BensPatrimoniaisController@listaUnidadeMedida
 Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodalApi')->name('apicadastromateriais');
 Route::post('/cadastrotipomateriais', 'ProductController@salvarmodalApi')->name('apicadastrotipomateriais');
 Route::get('/apianaliseMaterial', 'EstoqueController@apianaliseMaterial')->name('apianaliseMaterial');
+
+Route::get('/listaContasBancarias', 'ContaController@listaContasBancariasApi')->name('listaContasBancarias');
+Route::post('/contas', 'ContaController@salvarContaApi')->name('criarConta');
+Route::put('/contas/{id}', 'ContaController@salvarContaApi')->name('alterarConta');
+Route::delete('/contas/{id}', 'ContaController@salvarContaApi')->name('deletarConta');
+
+
+
+// Routes v2
+
+Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
+    // Route::post('/login', 'AuthController@login')->name('v2login');
+    Route::post('/logout', 'AuthController@logout')->name('v2logout');
+
+    Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('v2apicontasareceber');
+    Route::get('/apibenspatrimoniais', 'BensPatrimoniaisController@apibenspatrimoniais')->name('v2apibenspatrimoniais');
+    Route::get('/apidespesas', 'DespesaController@apidespesas')->name('v2apidespesas');
+    Route::get('/apiAliquotaMensal', 'AliquotaMensalController@apiAliquotaMensal')->name('v2apiAliquotaMensal');
+    Route::get('/apiNotasRecibos', 'NotasRecibosController@apiNotasRecibos')->name('v2apiNotasRecibos');
+    // Route::post('/apicreatedespesas', 'DespesaController@apistore')->name('v2apicreatedespesas');
+    Route::get('/apireceita', 'ReceitaController@apireceita')->name('v2apireceita');
+    Route::get('/apiestoque', 'EstoqueController@apiestoque')->name('v2apiestoque');
+    Route::get('/apientrada', 'EntradasController@apientrada')->name('v2apientrada');
+    Route::get('/apisaida', 'SaidasController@apisaida')->name('v2apisaida');
+    Route::get('/apipedidocompra', 'PedidoCompraController@apipedidocompra')->name('v2apipedidocompra');
+    Route::get('duplicidadeestoque', 'EstoqueController@verificaSeExisteNoEstoque')->name('v2duplicidadeestoque');
+    Route::get('/apiextratocontarelatorio', 'RelatorioController@apiextratocontarelatorio')->name('v2apiextratocontarelatorio');
+    Route::get('/apifluxodecaixa', 'RelatorioController@apiFluxoDeCaixa')->name('v2apifluxodecaixa');
+    Route::get('/apicontaareceberporosrelatorio', 'RelatorioController@apiAReceberPorOSRelatorio')->name('v2apicontaareceberporosrelatorio');
+    Route::get('/apifaturamentoporcliente', 'RelatorioController@apiFaturamentoPorCliente')->name('v2apifaturamentoporcliente');
+    Route::get('/apientradaporcontabancaria', 'RelatorioController@apiEntradasPorContaBancaria')->name('v2apientradaporcontabancaria');
+    Route::get('/apidespesaspagasporcontabancaria', 'RelatorioController@apiDespesasPagasPorContaBancaria')->name('v2apidespesaspagasporcontabancaria');
+    Route::get('/apidespesasporos', 'RelatorioController@apiDespesasPorOS')->name('v2apidespesasporos');
+    Route::get('/apiconsultaos', 'RelatorioController@apiConsultaOS')->name('v2apiconsultaos');
+    Route::get('/apiconsultacontaspagasporgrupo', 'RelatorioController@apiConsultaContasPagasPorGrupo')->name('v2apiconsultacontaspagasporgrupo');
+    Route::get('/apiconsultacontasapagarporgrupo','RelatorioController@apiConsultaContasAPagarPorGrupo')->name('v2apiconsultacontasapagarporgrupo');
+    Route::get('/apiconsultacontasaidentificar','RelatorioController@apiConsultaContasAIdentificar')->name('v2apiconsultacontasaidentificar');
+    Route::get('/apiconsultareembolso', 'RelatorioController@apiConsultaReembolso')->name('v2apiconsultareembolso');
+    Route::get('/apientradareceitarecebidas', 'RelatorioController@apiEntradaReceitaRecebidas')->name('v2apientradareceitarecebidas');
+    Route::get('/apiordemdeservicorecebidas', 'RelatorioController@apiOrdemdeServicoRecebidas')->name('v2apiordemdeservicorecebidas');
+    Route::get('/apiControleDeOrcamento', 'RelatorioController@apiControleDeOrcamento')->name('v2apiControleDeOrcamento');
+    Route::get('/apiareceber', 'RelatorioController@apiAReceber')->name('v2apiareceber');
+    Route::get('/apiareceita', 'RelatorioController@consultaIndexReceita')->name('v2apireceitaNovo');
+    Route::get('/apiconsultaprolabore', 'RelatorioController@apiConsultaProLabore')->name('v2apiconsultaprolabore');
+    Route::get('/apidespesasfixavariavel', 'RelatorioController@apiDespesasFixaVariavel')->name('v2apidespesasfixavariavel');
+    Route::get('/apidadosreceitaos', 'RelatorioController@apidadosReceitaOS')->name('v2apidadosreceitaos');
+    Route::get('/apidadosfechamentofinal', 'RelatorioController@apidadosFechamentoFinal')->name('v2apidadosfechamentofinal');
+    Route::get('/apiprojecaotrimestral', 'RelatorioController@apiProjecaoTrimestral')->name('v2apiprojecaotrimestral');
+    Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('v2apicontasareceber');
+    Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('v2calculatePercent');
+    
+    Route::put('/update-profile', 'UserController@updateProfile')->name('v2update-profile');
+    Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('v2apilistaTipoMateriais');
+    Route::get('/listaUnidadeMedida', 'BensPatrimoniaisController@listaUnidadeMedida')->name('v2apilistaUnidadeMedida');
+
+    Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodalApi')->name('v2apicadastromateriais');
+    Route::post('/cadastrotipomateriais', 'ProductController@salvarmodalApi')->name('v2apicadastrotipomateriais');
+    Route::get('/apianaliseMaterial', 'EstoqueController@apianaliseMaterial')->name('v2apianaliseMaterial');
+
+    Route::get('/listaContasBancarias', 'ContaController@listaContasBancariasApi')->name('v2listaContasBancarias');
+    Route::post('/contas', 'ContaController@salvarContaApi')->name('v2criarConta');
+    Route::put('/contas/{id}', 'ContaController@salvarContaApi')->name('v2alterarConta');
+    Route::delete('/contas/{id}', 'ContaController@salvarContaApi')->name('v2deletarConta');
+
+    Route::get('/userpermissions', [UserController::class, 'getUserPermissions']);
+    Route::get('/roles', [RoleController::class, 'getAllRolesApi']);
+    Route::get('/roles/{id}', [RoleController::class, 'getRoleWithPermissionsApi']);
+    Route::get('/permissions', [RoleController::class, 'getAllPermissionsApi']);
+    Route::post('/roles', [RoleController::class, 'storeRoleApi']);
+    Route::put('/roles/{id}', [RoleController::class, 'updateRoleApi']);
+    Route::delete('/roles/{id}', [RoleController::class, 'deleteRoleApi']);
+});

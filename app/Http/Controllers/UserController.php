@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr as Arr;
 use App\Sandbox;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -96,6 +97,20 @@ class UserController extends Controller
         }
     }
 
+
+    public function getUserPermissions(Request $request)
+    {
+        // Obter o usuário autenticado
+        $user = Auth::user();
+
+        // Obter as permissões do usuário
+        $permissions = $user->getAllPermissions()->pluck('name');
+
+        // Retornar as permissões como uma resposta JSON
+        return response()->json([
+            'permissions' => $permissions,
+        ], 200);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -210,6 +225,16 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
             ->with('success', 'Dados de usuário atualizados com sucesso');
+    }
+
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user(); // Recupera o usuário autenticado
+        return $request->name;
+        $user->update($request->all()); // Atualiza os dados do usuário
+
+        return response()->json(['message' => 'Perfil atualizado com sucesso'], 200);
     }
 
 

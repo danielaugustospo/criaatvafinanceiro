@@ -16,7 +16,7 @@
         "geekcom/validator-docs": "^3.3",
         "jenssegers/mongodb": "^3.8",
         "laravel/framework": "^8.0",
-        "laravel/passport": "^10.4",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.2",

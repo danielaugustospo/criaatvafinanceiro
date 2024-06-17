@@ -1,11 +1,11 @@
 <?php
-// AuthController.php
+// app/Http/Controllers/AuthController.php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
-
 
 class AuthController extends Controller
 {
@@ -14,9 +14,8 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $token = Auth::user()->createToken('AuthToken')->accessToken;
-            // return response()->json(['token' => $token], 200);
             $user = Auth::user();
+            $token = $user->createToken('AuthToken')->plainTextToken;
 
             // Pegar os IDs das roles do usuário
             $roleIds = $user->roles()->pluck('id');
@@ -36,10 +35,7 @@ class AuthController extends Controller
                 $allPermissions = array_merge($allPermissions, $rolePermissions->toArray());
             }
 
-
-
             // Agora $allPermissions contém todas as permissões associadas às roles do usuário
-
 
             return response()->json([
                 'user'  => $user,
@@ -51,10 +47,10 @@ class AuthController extends Controller
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        // Revoga o token atual do usuário
-        Auth::user()->token()->revoke();
+        // Revoga todos os tokens do usuário logado
+        $request->user()->tokens()->delete();
 
         // Retorna uma resposta de sucesso
         return response()->json(['message' => 'Logout bem-sucedido'], 200);

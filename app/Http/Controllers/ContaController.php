@@ -5,15 +5,12 @@ namespace App\Http\Controllers;
 
 
 use App\Conta;
-use App\Despesa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Receita;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Illuminate\Support\Str;
-use PhpParser\Node\Stmt\Label;
+use Illuminate\Support\Facades\Validator;
 
 class ContaController extends Controller
 {
@@ -94,6 +91,73 @@ class ContaController extends Controller
             $data = Conta::orderBy('id', 'DESC')->paginate(5);
             return view('contas.index', compact('data'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
+    }
+
+    public function listaContasBancariasApi() {
+        $listaContasBancariasApi = Conta::where('ativoConta', 1)->get();
+    
+        $listaContasBancariasApi->transform(function ($conta) {
+            $conta->nomeConta = strtoupper($conta->nomeConta);
+            $conta->apelidoConta = strtoupper($conta->apelidoConta);
+            return $conta;
+        });
+    
+        return response()->json($listaContasBancariasApi);
+    }
+    
+
+    public function salvarContaApi(Request $request)
+    {
+
+        if ($request->isMethod('delete')) {
+            if ($request->id) {
+                $conta = Conta::find($request->id);
+                if ($conta) {
+                    $conta->ativoConta      = 0;
+                    $conta->excluidoConta   = 1;
+                    $conta->save();
+    
+                    return response()->json($conta, 200);
+                } else {
+                    return response()->json(['error' => 'Conta não encontrada'], 404);
+                }
+            } else {
+                return response()->json(['error' => 'ID is required for updating'], 400);
+            }
+        }
+        $validator = Validator::make($request->all(), [
+            'nomeConta'    => 'required|min:2',
+            'apelidoConta' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        if ($request->isMethod('put')) {
+            // Lógica para atualização
+            if ($request->id) {
+                $conta = Conta::find($request->id);
+                if ($conta) {
+                    $conta->nomeConta = $request->nomeConta;
+                    $conta->apelidoConta = $request->apelidoConta;
+                    $conta->save();
+    
+                    return response()->json($conta, 200);
+                } else {
+                    return response()->json(['error' => 'Conta not found'], 404);
+                }
+            } else {
+                return response()->json(['error' => 'ID is required for updating'], 400);
+            }
+        } elseif ($request->isMethod('post')) {
+            // Lógica para criação
+            $conta = Conta::create($request->all());
+    
+            return response()->json($conta, 201);
+        } else {
+            return response()->json(['error' => 'Invalid HTTP method'], 405);
         }
     }
 

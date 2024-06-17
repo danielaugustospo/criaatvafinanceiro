@@ -36,7 +36,7 @@
 
 
 
-<body style="background-image: url('{{ config('app.url') }}/img/BACKGROUND-TOP.jpg');">
+<body style="background-image: url('{{ config('app.url') }}/img/homolog.jpeg');">
     <div id="app">
 
         @isset($paginaModal)

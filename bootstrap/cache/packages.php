@@ -42,11 +42,11 @@
       1 => 'Jenssegers\\Mongodb\\MongodbQueueServiceProvider',
     ),
   ),
-  'laravel/passport' => 
+  'laravel/sanctum' => 
   array (
     'providers' => 
     array (
-      0 => 'Laravel\\Passport\\PassportServiceProvider',
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
   'laravel/tinker' => 
