@@ -98,6 +98,24 @@ class UserController extends Controller
     }
 
 
+    public function getUserRoles($id = null)
+    {
+        // Buscar usuário por ID ou autenticado
+        $user = $id ? User::find($id) : Auth::user();
+    
+        // Verificar se o usuário existe
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não autenticado ou não existe'], 401);
+        }
+    
+        // Assumindo que você está usando o Spatie Permission Package para buscar os nomes das roles
+        $roles = $user->roles()->pluck('name');
+    
+        return response()->json([
+            'roles' => $roles,
+        ], 200);
+    }
+
     public function getUserPermissions(Request $request)
     {
         // Obter o usuário autenticado
@@ -111,6 +129,83 @@ class UserController extends Controller
             'permissions' => $permissions,
         ], 200);
     }
+
+    public function getUsersApi($id = null){
+        $users = User::where('excluidoUser',0);
+        if($id){
+            $users =  $users->where('id', $id);
+        }
+
+        $users =  $users->get();
+        return response()->json([
+            'users' => $users,
+        ], 200);
+    }
+
+    public function toggleUserActive($id)
+    {
+        $user = User::findOrFail($id);
+        $user->ativoUser = !$user->ativoUser;
+        $user->save();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Status do usuário atualizado com sucesso.',
+            'active' => $user->ativoUser
+        ]);
+    }
+
+    public function updateApi(Request $request, $id = null)
+    {
+    
+        // Regras de validação
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|same:confirmPassword',
+        ];
+    
+        $this->validate($request, $rules);
+    
+        $input = $request->all();
+        if (!empty($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            $input = Arr::except($input, array('password'));
+        }
+    
+        $user = User::find($id);
+        if (!$user) {
+            $user = User::where('email', $request->email)->first();
+            
+            if (!$user) {
+                $user = User::create($input);
+                $user->assignRole($request->input('roles'));
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Dados de usuário atualizados com sucesso',
+                    'user' => $user
+                ], 200);
+                // return response()->json(['message' => 'Usuário não encontrado'], 404);
+            }
+            $id = $user->id;
+        }
+    
+        $user->update($input);
+    
+        // if ($request->input('roles')) {
+            DB::table('model_has_roles')->where('model_id', $id)->delete();
+            $user->assignRole($request->input('roles'));
+        // }
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Dados de usuário atualizados com sucesso',
+            'user' => $user
+        ], 200);
+    }
+    
+        
 
     /**
      * Show the form for creating a new resource.
@@ -226,15 +321,28 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success', 'Dados de usuário atualizados com sucesso');
     }
+    
 
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request, $id = null)
     {
         $user = Auth::user(); // Recupera o usuário autenticado
-        return $request->name;
-        $user->update($request->all()); // Atualiza os dados do usuário
+        if ($user->id == $id || is_null($id)){
+            $input = $request->all();
 
-        return response()->json(['message' => 'Perfil atualizado com sucesso'], 200);
+            if (!empty($input['password'])) {
+                $input['password'] = Hash::make($input['password']);
+            } else {
+                $input = Arr::except($input, array('password'));
+            }
+    
+            $user = User::find($id);
+            $user->update($input);
+            return response()->json(['message' => 'Perfil atualizado com sucesso'], 200);
+        }else{
+            return response()->json(['message' => 'Usuário não confere'], 403);
+        }
+
     }
 
 
@@ -250,4 +358,17 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success', 'Usuário removido!');
     }
+
+    public function destroyApi($id)
+    {
+        $user = User::findOrFail($id);
+        $user->excluidoUser = 1; // Assumindo que 1 significa inativo.
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuário excluído com sucesso'
+        ], 200);
+    }
+
 }

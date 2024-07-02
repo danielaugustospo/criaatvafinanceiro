@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
+        "barryvdh/laravel-dompdf": "^2.2",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.0",
         "freshbitsweb/laratables": "^2.1",

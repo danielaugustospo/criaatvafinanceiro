@@ -203,16 +203,20 @@ class RelatorioController extends Controller
             'os.dataCriacaoOrdemdeServico', 
             'os.valorOrcamento', 
             'os.percentualPermitido',
-            DB::raw('SUM(despesas.precoReal) AS  valorgasto'),
-            DB::raw('os.valorOrcamento -  SUM(despesas.precoReal) AS saldo'),
-            DB::raw('(((SUM(despesas.precoReal)) / os.valorOrcamento)) * 100 as percentual')
+            DB::raw('SUM(despesas.precoReal) AS valorgasto'),
+            DB::raw('os.valorOrcamento - SUM(despesas.precoReal) AS saldo'),
+            DB::raw('(((SUM(despesas.precoReal)) / os.valorOrcamento) * 100) as percentual'),
+            DB::raw('CASE 
+                        WHEN (((SUM(despesas.precoReal)) / os.valorOrcamento) * 100) > os.percentualPermitido THEN "ESTOUROU"
+                        ELSE "ABAIXO"
+                     END as status')
             )
-        ->from('ordemdeservico as os')
-        ->leftJoin('despesas', 'os.id', 'despesas.idOS')
-        ->leftJoin('fornecedores', 'os.vendedor', 'fornecedores.id')
-        ->where('despesas.excluidoDespesa', '0')
-        ->groupBy('os.id')
-        ->get();
+            ->from('ordemdeservico as os')
+            ->leftJoin('despesas', 'os.id', '=', 'despesas.idOS')
+            ->leftJoin('fornecedores', 'os.vendedor', '=', 'fornecedores.id')
+            ->where('despesas.excluidoDespesa', '0')
+            ->groupBy('os.id', 'fornecedores.razaosocialFornecedor', 'os.dataCriacaoOrdemdeServico', 'os.valorOrcamento', 'os.percentualPermitido')
+            ->get();
         
         return $dados;
 

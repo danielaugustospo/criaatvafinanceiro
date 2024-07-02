@@ -3,6 +3,7 @@
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PDFController;
 
 // Rotas de autenticação
 Route::post('/login', 'AuthController@login');
@@ -126,19 +127,20 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     Route::get('/apicontasareceber', 'RelatorioController@apiContasAReceber')->name('v2apicontasareceber');
     Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('v2calculatePercent');
     
-    Route::put('/update-profile', 'UserController@updateProfile')->name('v2update-profile');
     Route::get('/listaTipoMateriais', 'DespesaController@listaTipoMateriais')->name('v2apilistaTipoMateriais');
     Route::get('/listaUnidadeMedida', 'BensPatrimoniaisController@listaUnidadeMedida')->name('v2apilistaUnidadeMedida');
 
     Route::post('/cadastromateriais', 'BensPatrimoniaisController@salvarmodalApi')->name('v2apicadastromateriais');
     Route::post('/cadastrotipomateriais', 'ProductController@salvarmodalApi')->name('v2apicadastrotipomateriais');
     Route::get('/apianaliseMaterial', 'EstoqueController@apianaliseMaterial')->name('v2apianaliseMaterial');
-
+    
     Route::get('/listaContasBancarias', 'ContaController@listaContasBancariasApi')->name('v2listaContasBancarias');
     Route::post('/contas', 'ContaController@salvarContaApi')->name('v2criarConta');
     Route::put('/contas/{id}', 'ContaController@salvarContaApi')->name('v2alterarConta');
     Route::delete('/contas/{id}', 'ContaController@salvarContaApi')->name('v2deletarConta');
 
+    // Route::get('/userroles', [UserController::class, 'getUserRoles']);
+    Route::get('/userroles/{id?}', [UserController::class, 'getUserRoles']);
     Route::get('/userpermissions', [UserController::class, 'getUserPermissions']);
     Route::get('/roles', [RoleController::class, 'getAllRolesApi']);
     Route::get('/roles/{id}', [RoleController::class, 'getRoleWithPermissionsApi']);
@@ -146,4 +148,18 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     Route::post('/roles', [RoleController::class, 'storeRoleApi']);
     Route::put('/roles/{id}', [RoleController::class, 'updateRoleApi']);
     Route::delete('/roles/{id}', [RoleController::class, 'deleteRoleApi']);
+    
+    Route::get('/users', [UserController::class, 'getUsersApi']);
+    Route::get('/users/{id}', [UserController::class, 'getUsersApi']);
+    Route::put('/update-profile', 'UserController@updateProfile')->name('v2update-profile');
+    Route::put('/update-profile/{id}', 'UserController@updateProfile')->name('v2update-profile-id');
+
+    Route::post('/users/{id}/toggle-active', [UserController::class, 'toggleUserActive'])->middleware('permission:usuario-edit');
+    Route::put('/users/{id}', [UserController::class, 'updateApi'])->middleware('permission:usuario-edit');
+    Route::post('/users', [UserController::class, 'updateApi'])->middleware('permission:usuario-edit');
+    Route::delete('/users/{id}', [UserController::class, 'destroyApi'])->middleware('permission:usuario-delete');
+
+
+    Route::post('/generate-pdf', [PDFController::class, 'generatePDF']);
+
 });

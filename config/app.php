@@ -184,7 +184,7 @@ return [
         // PhpOffice\PhpSpreadsheet\Spreadsheet::class,
         // PhpOffice\PhpSpreadsheet\Writer\Xlsx::class,
         // PhpOffice\PhpSpreadsheet\IOFactory::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -242,6 +242,7 @@ return [
 
         'MongoDB'   => Jenssegers\Mongodb\MongodbServiceProvider::class,
         'Helper' => App\Helpers\MathHelper::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
