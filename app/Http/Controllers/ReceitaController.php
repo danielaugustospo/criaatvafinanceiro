@@ -469,20 +469,34 @@ class ReceitaController extends Controller
         // $receita->idosreceita                   = $request->get('idosreceita');
 
         DB::update(
-        "UPDATE receita
-            SET 
-            idformapagamentoreceita     = '$receita->idformapagamentoreceita', 
-            datapagamentoreceita        = '$receita->datapagamentoreceita',           
-            idclientereceita            = '$receita->idclientereceita',             
-            dataemissaoreceita          = '$receita->dataemissaoreceita',             
-            valorreceita                = '$receita->valorreceita',                   
-            pagoreceita                 = '$receita->pagoreceita',                    
-            contareceita                = '$receita->contareceita',                   
-            descricaoreceita            = '$receita->descricaoreceita',                
-            registroreceita             = '$receita->registroreceita',                
-            nfreceita                   = '$receita->nfreceita'                      
-            WHERE id                    = '$receita->id'"
+            "UPDATE receita
+                SET 
+                idformapagamentoreceita     = ?, 
+                datapagamentoreceita        = ?,           
+                idclientereceita            = ?,             
+                dataemissaoreceita          = ?,             
+                valorreceita                = ?,                   
+                pagoreceita                 = ?,                    
+                contareceita                = ?,                   
+                descricaoreceita            = ?,                
+                registroreceita             = ?,                
+                nfreceita                   = ?                      
+                WHERE id                    = ?",
+            [
+                $receita->idformapagamentoreceita,
+                $receita->datapagamentoreceita,
+                $receita->idclientereceita,
+                $receita->dataemissaoreceita,
+                $receita->valorreceita,
+                $receita->pagoreceita,
+                $receita->contareceita,
+                $receita->descricaoreceita,
+                $receita->registroreceita,
+                $receita->nfreceita,
+                $receita->id
+            ]
         );
+        
 
         return redirect()->route('receita.index')
             ->with('success', 'Receita atualizada com êxito');
