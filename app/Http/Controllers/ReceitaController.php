@@ -380,6 +380,7 @@ class ReceitaController extends Controller
     public function show($id)
     {
         $receita = Receita::find($id);
+
         $todasOSAtivas = DB::select('SELECT * FROM ordemdeservico WHERE ativoOrdemdeServico = 1 order by id = :idosreceita desc', ['idosreceita' => $receita->idosreceita]);
         $todosClientesAtivos = DB::select('SELECT * from clientes where ativoCliente = 1 order by id = :idclientereceita desc', ['idclientereceita' => $receita->idclientereceita]);
         $formapagamento = DB::select('SELECT * FROM formapagamento WHERE (ativoFormaPagamento = 1 and excluidoFormaPagamento = 0) ORDER BY id = :idFormaPagamento desc', ['idFormaPagamento' => $receita->idformapagamentoreceita]);
@@ -480,7 +481,6 @@ class ReceitaController extends Controller
             descricaoreceita            = '$receita->descricaoreceita',                
             registroreceita             = '$receita->registroreceita',                
             nfreceita                   = '$receita->nfreceita'                      
-            -- idosreceita                 = '$receita->idosreceita'                  
             WHERE id                    = '$receita->id'"
         );
 
