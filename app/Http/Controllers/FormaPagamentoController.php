@@ -201,6 +201,11 @@ class FormaPagamentoController extends Controller
             ->with('success', 'Forma de Pagamento excluída com êxito!');
     }
 
+    public function getFormadePagamentoApi() {
+        $listaFPG = FormaPagamento::select('id','nomeFormaPagamento')->where('ativoFormaPagamento', 1)->get();
+        return response()->json($listaFPG, 200);
+    }    
+
     public function logCadastraFormaPagamento($param)
     {
         $this->Logger->log('info', 'Cadastrou a Forma de Pagamento ' . $param);

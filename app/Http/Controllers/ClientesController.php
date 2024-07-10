@@ -333,4 +333,10 @@ class ClientesController extends Controller
         return redirect()->route('clientes.index')
                         ->with('success','Cliente excluído com êxito!');
     }
+
+    public function getClientesApi() {
+        $listaClientes = Clientes::select('id','razaosocialCliente')->where('ativoCliente', 1)->get();
+        return response()->json($listaClientes, 200);
+    }    
+
 }

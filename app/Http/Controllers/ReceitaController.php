@@ -13,6 +13,7 @@ use DataTables;
 use Illuminate\Support\Str;
 use App\Providers\FormatacoesServiceProvider;
 use App\Clientes;
+use Illuminate\Support\Facades\Validator;
 
 
 class ReceitaController extends Controller
@@ -144,7 +145,14 @@ class ReceitaController extends Controller
         
         WHERE r.excluidoreceita = 0 ' . $descricao);
 
-        return $listaReceita;
+        // return $listaReceita;
+        // $users =  $users->get();
+        return response()->json($listaReceita, 200);
+    }
+
+    public function apiDescricaoReceita(){
+        $listaDescricao = Receita::select('id', 'descricaoreceita')->where('ativoreceita', 1)->get();
+        return response()->json($listaDescricao, 200);
     }
 
     private function montaFiltrosConsulta($request)
@@ -177,13 +185,17 @@ class ReceitaController extends Controller
             $verificaInputCampos++;
         endif;
 
+        if ($request->id)  : $descricao .= " AND r.id = '$request->id'";
+            $verificaInputCampos++;
+        endif;
+
         if ($request->dtfim)        : $datafim    = $request->dtfim;
-        elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
+        // elseif ($verificaInputCampos == 0) : $datafim = date('Y-m-t');
         endif;
 
         if ($request->dtinicio) :     $descricao .= " AND r.datapagamentoreceita BETWEEN  '$request->dtinicio' and '$datafim'";
-        elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
-            $descricao .= " AND r.datapagamentoreceita BETWEEN  '$datainicio' and '$datafim'";
+        // elseif ($verificaInputCampos == 0) :   $datainicio = date('Y-m') . '-01';
+        //     $descricao .= " AND r.datapagamentoreceita BETWEEN  '$datainicio' and '$datafim'";
         endif;
         return $descricao;
     }
@@ -518,6 +530,80 @@ class ReceitaController extends Controller
             ->with('success', 'Receita excluída com êxito!');
     }
 
+    public function apiStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'idformapagamentoreceita' => 'required',
+            'datapagamentoreceita' => 'required',
+            'dataemissaoreceita' => 'required',
+            'valorreceita' => 'required',
+            'pagoreceita' => 'required',
+            'contareceita' => 'required',
+            'registroreceita' => 'required',
+            'nfreceita' => 'required',
+            'idosreceita' => 'required',
+            'idclientereceita' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $receita = new Receita();
+        $receita->idformapagamentoreceita = $request->get('idformapagamentoreceita');
+        $receita->datapagamentoreceita = $request->get('datapagamentoreceita');
+        $receita->dataemissaoreceita = $request->get('dataemissaoreceita');
+        $receita->valorreceita = $request->get('valorreceita');
+        $receita->pagoreceita = $request->get('pagoreceita');
+        $receita->contareceita = $request->get('contareceita');
+        $receita->descricaoreceita = $request->get('descricaoreceita');
+        $receita->registroreceita = $request->get('registroreceita');
+        $receita->nfreceita = $request->get('nfreceita');
+        $receita->idosreceita = $request->get('idosreceita');
+        $receita->idclientereceita = $request->get('idclientereceita');
+        $receita->save();
+
+        return response()->json(['message' => 'Receita criada com sucesso'], 201);
+    }
+
+    public function apiUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'idformapagamentoreceita' => 'required',
+            'datapagamentoreceita' => 'required',
+            'dataemissaoreceita' => 'required',
+            'valorreceita' => 'required',
+            'pagoreceita' => 'required',
+            'contareceita' => 'required',
+            'registroreceita' => 'required',
+            'nfreceita' => 'required',
+            'idclientereceita' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $receita = Receita::find($id);
+        if (!$receita) {
+            return response()->json(['message' => 'Receita não encontrada'], 404);
+        }
+
+        $receita->idformapagamentoreceita = $request->get('idformapagamentoreceita');
+        $receita->datapagamentoreceita = $request->get('datapagamentoreceita');
+        $receita->dataemissaoreceita = $request->get('dataemissaoreceita');
+        $receita->valorreceita = $request->get('valorreceita');
+        $receita->pagoreceita = $request->get('pagoreceita');
+        $receita->contareceita = $request->get('contareceita');
+        $receita->descricaoreceita = $request->get('descricaoreceita');
+        $receita->registroreceita = $request->get('registroreceita');
+        $receita->nfreceita = $request->get('nfreceita');
+        $receita->idclientereceita = $request->get('idclientereceita');
+        $receita->save();
+
+        return response()->json(['message' => 'Receita atualizada com sucesso'], 200);
+    }
+
     public function validaValores($valorMonetario)
     {
         $SemPonto  = str_replace('.', '', $valorMonetario);
@@ -532,4 +618,5 @@ class ReceitaController extends Controller
         $valorMonetario = $ComVirgula;
         return $valorMonetario;
     }
+    
 }
