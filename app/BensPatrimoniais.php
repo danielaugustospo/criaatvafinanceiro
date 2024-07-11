@@ -6,14 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BensPatrimoniais extends Model
 {
-
     protected $table = 'benspatrimoniais';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'nomeBensPatrimoniais',
         'idTipoBensPatrimoniais',
@@ -25,16 +19,27 @@ class BensPatrimoniais extends Model
         'unidademedida',
         'estante',
         'prateleira'
-        ];
-
+    ];
 
     public function tipo()
     {
-        return $this->belongsTo(Product::class, 'idTipoBensPatrimoniais', 'id');
+        return $this->belongsTo(Product::class, 'idTipoBensPatrimoniais', 'id')->withDefault([
+            'id' => null,
+            'name' => null,
+            'detail' => null,
+            'ativotipobenspatrimoniais' => null,
+            'excluidotipobenspatrimoniais' => null,
+            'created_at' => null,
+            'updated_at' => null
+        ]);
     }
 
     public function unidademedida()
     {
-        return $this->belongsTo(UnidadeMedida::class, 'unidademedida', 'id');
+        return $this->belongsTo(UnidadeMedida::class, 'unidademedida', 'id')->withDefault([
+            'id' => null,
+            'sigla' => null,
+            'nomeunidade' => null
+        ]);
     }
 }

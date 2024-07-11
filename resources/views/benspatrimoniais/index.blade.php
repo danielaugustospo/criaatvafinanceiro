@@ -85,207 +85,208 @@
           progress: true
       });
   @endif
+
   $(document).ready(function() {
-
-      var dataSource = new kendo.data.DataSource({
-
+    var dataSource = new kendo.data.DataSource({
         transport: {
-          read: {
-            url: "{{ route('apibenspatrimoniais') }}",
-            dataType: "json",
-            type: "GET"
-          },
-          parameterMap: function(options, operation) {
-            if (operation !== "read" && options.models) {
-                  return {
-                      models: kendo.stringify(options.models)
-                  };
-              }
-          }
+            read: {
+                url: "{{ route('apibenspatrimoniais') }}",
+                dataType: "json",
+                type: "GET"
+            },
+            parameterMap: function(options, operation) {
+                if (operation !== "read" && options.models) {
+                    return {
+                        models: kendo.stringify(options.models)
+                    };
+                }
+            }
         },
         pageSize: 30,
-
-      });
-        dataSource.fetch().then(function() {
-        var data = dataSource.data();
-        // initialize a Kendo Grid with the returned data from the server.
-        $("#grid").kendoGrid({
-          toolbar: ["excel", "pdf"],
-          excel: {
-            fileName: "Relatório de " + document.title + ".xlsx",
-          },
-          excelExport: function(e){
-
-            var sheet = e.workbook.sheets[0];
-            for (var rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
-              var row = sheet.rows[rowIndex];
-              for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex ++) {              
-                var cell =row.cells[cellIndex];
-                if(cell.value && cell.value.toString().indexOf("<br />") >= 0){
-                  cell.value = cell.value.replace("<br />", " ");   
-                  cell.wrap = true;
-                }
-              }
-            }        
-            sheet.frozenRows = 2;
-            sheet.mergedCells = ["A1:G1"];
-            sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
-
-            var myHeaders = [{
-              value:"Relatório de " + document.title,
-              textAlign: "center",
-              background:"black",
-              color:"#ffffff"
-            }];
-
-            sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 30});
-          },
-
-          pdf: {
-            fileName: "Relatório de " + document.title + ".pdf",
-
-            allPages: true,
-            avoidLinks: true,
-            paperSize: "A4",
-            margin: { top: "3cm", left: "1cm", right: "1cm", bottom: "1cm" },
-            landscape: true,
-            repeatHeaders: true,
-            template: $("#page-template").html(),
-            scale: 0.6
-          },
-          
-          dataSource: dataSource,
-
-          height: '500px',
-          filterable: {
-              extra: false,
-              mode: "row"
-          },
-          sortable: true,
-          resizable: true,
-          scrollable: true,
-          groupable: true,
-          columnMenu: true,
-          responsible: true,
-          reorderable: true,
-          width: 'auto',
-          pageable: {
-              pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
-              numeric: false
-          },
-          columns: [
-            { field: "id", title: "ID", filterable: true, width: '130' },
-            { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '270' },
-            { field: "estante", title: "Setor", filterable: true, width: '150' },
-            { field: "prateleira", title: "Local", filterable: true, width: '150' },
-            { field: "qtdestoqueminimo", title: "Estoque<br />Mínimo", filterable: true, width: '150' },
-            { field: "tipo.name", 
-              title: "Tipo", 
-              filterable: true, 
-              width: '150',
-              template: "#= tipo && tipo.name ? tipo.name : '' #" 
-            },
-            {
-                field: "unidademedida.nomeunidade",
-                title: "Unidade",
-                filterable: true,
-                width: '150',
-                template: "#= unidademedida && unidademedida.nomeunidade ? unidademedida.nomeunidade : '' #"
-            },
-
-
-            {
-              command: [{
-                name: "Visualizar",
-                click: function (e) {
-                  e.preventDefault();
-                  var tr = $(e.target).closest("tr"); // get the current table row (tr)
-                  var data = this.dataItem(tr);
-                  window.location.href = location.href + '/' + data.id;
-                }
-              }],
-              width: '100',
-              exportable: false,
-            },
-            {
-              command: [{
-                name: "Editar",
-                click: function (e) {
-                  e.preventDefault();
-                  var tr = $(e.target).closest("tr"); // get the current table row (tr)
-                  var data = this.dataItem(tr);
-                  window.location.href = location.href + '/' + data.id + '/edit';
-                }
-              }],
-              width: '100',
-              exportable: false,
-            },
-          ],
-
-
-        });
-      });
     });
 
-    @if (!isset($paginaModal))
-                $(window).on('load', function() {
-
-                        var $myDiv = $('#grid');
-
-                        if ($myDiv.length === 1) {
-
-                            var count = 0;
-                            var interval = setInterval(function() {
-                                    @if (isset($despesas))
-                                        if (count >= 80) {
-                                        @else
-                                            if (count >= 200) {
-                                            @endif
-                                            clearInterval(interval);
-                                            $('.k-link').eq(0).click();
-                                            console.log('Ordenação Por Grupo Clicado Inicialmente');
-                                            $.LoadingOverlay("hide");
-                                            return;
-                                        }
-                                        count += 10;
-                                        $.LoadingOverlay("progress", count);
-                                    }, 300);
-
-                            }
-
-                        });
-                @endif
-
-    function recarrega() {
-                    $('#grid').data('kendoGrid').dataSource.read();
-                    $('#grid').data('kendoGrid').refresh();
-
-                    let timerInterval
-                    Swal.fire({
-                        title: 'Atualizando tabela!',
-                        html: 'Fechando mensagem em <b></b> millisegundos.',
-                        timer: 1500,
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading()
-                            const b = Swal.getHtmlContainer().querySelector('b')
-                            timerInterval = setInterval(() => {
-                                b.textContent = Swal.getTimerLeft()
-                            }, 100)
-                        },
-                        willClose: () => {
-                            clearInterval(timerInterval)
+    dataSource.fetch().then(function() {
+        var data = dataSource.data();
+        $("#grid").kendoGrid({
+            toolbar: ["excel", "pdf"],
+            excel: {
+                fileName: "Relatório de " + document.title + ".xlsx",
+            },
+            excelExport: function(e) {
+                var sheet = e.workbook.sheets[0];
+                for (var rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+                    var row = sheet.rows[rowIndex];
+                    for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex ++) {              
+                        var cell = row.cells[cellIndex];
+                        if(cell.value && cell.value.toString().indexOf("<br />") >= 0){
+                            cell.value = cell.value.replace("<br />", " ");   
+                            cell.wrap = true;
                         }
-                    }).then((result) => {
-                        /* Read more about handling dismissals below */
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            console.log('Mensagem fechada pelo temporizador')
-                        }
-                    })
-                    //Atualiza iframe
-                    $('iframe').attr('src', $('iframe').attr('src'));
+                    }
+                }        
+                sheet.frozenRows = 2;
+                sheet.mergedCells = ["A1:G1"];
+                sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
+
+                var myHeaders = [{
+                    value:"Relatório de " + document.title,
+                    textAlign: "center",
+                    background:"black",
+                    color:"#ffffff"
+                }];
+
+                sheet.rows.splice(0, 0, { cells: myHeaders, type: "header", height: 30});
+            },
+            pdf: {
+                fileName: "Relatório de " + document.title + ".pdf",
+                allPages: true,
+                avoidLinks: true,
+                paperSize: "A4",
+                margin: { top: "3cm", left: "1cm", right: "1cm", bottom: "1cm" },
+                landscape: true,
+                repeatHeaders: true,
+                template: $("#page-template").html(),
+                scale: 0.6
+            },
+            dataSource: dataSource,
+            height: '500px',
+            filterable: {
+                extra: false,
+                mode: "row",
+                operators: {
+                    string: {
+                        contains: "Contém",
+                        doesnotcontain: "Não contém",
+                        eq: "Igual a",
+                        neq: "Diferente de"
+                    }
                 }
+            },
+            sortable: true,
+            resizable: true,
+            scrollable: true,
+            groupable: true,
+            columnMenu: true,
+            responsible: true,
+            reorderable: true,
+            width: 'auto',
+            pageable: {
+                pageSizes: [5, 10, 15, 20, 50, 100, 200, "Todos"],
+                numeric: false
+            },
+            columns: [
+                { field: "id", title: "ID", filterable: true, width: '130' },
+                { field: "nomeBensPatrimoniais", title: "Nome", filterable: true, width: '270' },
+                { field: "estante", title: "Setor", filterable: true, width: '150' },
+                { field: "prateleira", title: "Local", filterable: true, width: '150' },
+                { field: "qtdestoqueminimo", title: "Estoque<br />Mínimo", filterable: true, width: '150' },
+                { field: "tipo.name", 
+                  title: "Tipo", 
+                  filterable: true, 
+                  width: '150',
+                  template: "#= tipo && tipo.name ? tipo.name : '' #",
+                  filterable: {
+                      cell: {
+                          showOperators: false,
+                          operator: "contains"
+                      }
+                  }
+                },
+                {
+                    field: "unidademedida.nomeunidade",
+                    title: "Unidade",
+                    filterable: true,
+                    width: '150',
+                    template: "#= unidademedida && unidademedida.nomeunidade ? unidademedida.nomeunidade : '' #",
+                    filterable: {
+                        cell: {
+                            showOperators: false,
+                            operator: "contains"
+                        }
+                    }
+                },
+                {
+                    command: [{
+                        name: "Visualizar",
+                        click: function (e) {
+                            e.preventDefault();
+                            var tr = $(e.target).closest("tr"); 
+                            var data = this.dataItem(tr);
+                            window.location.href = location.href + '/' + data.id;
+                        }
+                    }],
+                    width: '100',
+                    exportable: false,
+                },
+                {
+                    command: [{
+                        name: "Editar",
+                        click: function (e) {
+                            e.preventDefault();
+                            var tr = $(e.target).closest("tr"); 
+                            var data = this.dataItem(tr);
+                            window.location.href = location.href + '/' + data.id + '/edit';
+                        }
+                    }],
+                    width: '100',
+                    exportable: false,
+                },
+            ],
+        });
+    });
+});
 
+@if (!isset($paginaModal))
+$(window).on('load', function() {
+    var $myDiv = $('#grid');
+    if ($myDiv.length === 1) {
+        var count = 0;
+        var interval = setInterval(function() {
+            @if (isset($despesas))
+                if (count >= 80) {
+            @else
+                if (count >= 200) {
+            @endif
+                clearInterval(interval);
+                $('.k-link').eq(0).click();
+                console.log('Ordenação Por Grupo Clicado Inicialmente');
+                $.LoadingOverlay("hide");
+                return;
+            }
+            count += 10;
+            $.LoadingOverlay("progress", count);
+        }, 300);
+    }
+});
+@endif
+
+function recarrega() {
+    $('#grid').data('kendoGrid').dataSource.read();
+    $('#grid').data('kendoGrid').refresh();
+
+    let timerInterval
+    Swal.fire({
+        title: 'Atualizando tabela!',
+        html: 'Fechando mensagem em <b></b> millisegundos.',
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+                b.textContent = Swal.getTimerLeft()
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('Mensagem fechada pelo temporizador')
+        }
+    })
+    $('iframe').attr('src', $('iframe').attr('src'));
+}
 
 
 </script>
