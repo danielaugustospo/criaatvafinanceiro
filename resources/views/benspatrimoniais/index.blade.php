@@ -48,8 +48,7 @@
                       </button>
                   </div>
                   <div class="modal-body">
-                      {{-- <iframe src="https://v2{{$_SERVER['SERVER_NAME']}}/#/catalogoFrame" frameborder="0" width="100%" height="600px"></iframe> --}}
-                      <iframe src="https://v2devcriaatva.danieltecnologia.com/#/catalogoFrame" frameborder="0" width="100%" height="600px"></iframe>
+                      <iframe src="https://v2{{$_SERVER['SERVER_NAME']}}/#/catalogoFrame" frameborder="0" width="100%" height="600px"></iframe>
                   </div>
               </div>
           </div>
