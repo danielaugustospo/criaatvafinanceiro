@@ -21,10 +21,10 @@ class BensPatrimoniaisController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:benspatrimoniais-list|benspatrimoniais-create|benspatrimoniais-edit|benspatrimoniais-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:benspatrimoniais-create', ['only' => ['create','store']]);
-         $this->middleware('permission:benspatrimoniais-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:benspatrimoniais-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:benspatrimoniais-list|benspatrimoniais-create|benspatrimoniais-edit|benspatrimoniais-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:benspatrimoniais-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:benspatrimoniais-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:benspatrimoniais-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -44,7 +44,7 @@ class BensPatrimoniaisController extends Controller
                     $descricaoBensPatrimoniais = $request->get('descricaoBensPatrimoniais');
                     $idTipoBensPatrimoniais = $request->get('idTipoBensPatrimoniais');
                     $statusbenspatrimoniais = $request->get('statusbenspatrimoniais');
- 
+
                     if (!empty($id)) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::is($row['id'], $request->get('id')) ? true : false;
@@ -70,10 +70,10 @@ class BensPatrimoniaisController extends Controller
                             return Str::is($row['statusbenspatrimoniais'], $request->get('statusbenspatrimoniais')) ? true : false;
                         });
                     }
- 
+
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
- 
+
                             if (Str::is(Str::lower($row['id']), Str::lower($request->get('search')))) {
                                 return true;
                             } else if (Str::is(Str::lower($row['nomeBensPatrimoniais']), Str::lower($request->get('search')))) {
@@ -84,33 +84,39 @@ class BensPatrimoniaisController extends Controller
                                 return true;
                             } else if (Str::is(Str::lower($row['statusbenspatrimoniais']), Str::lower($request->get('search')))) {
                                 return true;
-                            } 
+                            }
                             return false;
                         });
                     }
                 })
                 ->addColumn('action', function ($row) {
- 
+
                     $btnVisualizar = '<a href="benspatrimoniais/' . $row['id'] . '" class="edit btn btn-primary btn-sm">Visualizar</a>';
                     return $btnVisualizar;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         } else {
- 
-        $data = BensPatrimoniais::orderBy('id','DESC')->paginate(5);
-        return view('benspatrimoniais.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
 
-     }
-}
+            $data = BensPatrimoniais::orderBy('id', 'DESC')->paginate(5);
+            return view('benspatrimoniais.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
+    }
 
 
-public function apibenspatrimoniais(Request $request)
-{
-    $data = BensPatrimoniais::with('unidademedida', 'tipo')->where('statusbenspatrimoniais',1)->get();
-    return $data;
-}
+    public function apibenspatrimoniais(Request $request)
+    {
+        $data = BensPatrimoniais::with('unidademedida', 'tipo', 'estoque')
+            ->where('statusbenspatrimoniais', 1)
+            ->get()
+            ->map(function ($item) {
+                $item->quantidadeEmEstoque = $item->estoque->sum('quantidade');
+                return $item;
+            });
+        return $data;
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -152,7 +158,7 @@ public function apibenspatrimoniais(Request $request)
 
 
         return redirect()->route('benspatrimoniais.index')
-                        ->with('success','Material cadastrado com êxito.');
+            ->with('success', 'Material cadastrado com êxito.');
     }
     public function salvarmodal(Request $request)
     {
@@ -169,7 +175,7 @@ public function apibenspatrimoniais(Request $request)
         BensPatrimoniais::create($request->all());
 
         return view('benspatrimoniais.camposmodal')
-                        ->with('mensagem','Material cadastrado com êxito.');                        
+            ->with('mensagem', 'Material cadastrado com êxito.');
     }
 
     public function salvarmodalApi(Request $request)
@@ -186,7 +192,6 @@ public function apibenspatrimoniais(Request $request)
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
-                          
     }
 
 
@@ -200,7 +205,7 @@ public function apibenspatrimoniais(Request $request)
     {
         $benspatrimoniais =  BensPatrimoniais::find($id);
 
-        return view('benspatrimoniais.show',compact('benspatrimoniais'));
+        return view('benspatrimoniais.show', compact('benspatrimoniais'));
     }
 
 
@@ -215,7 +220,7 @@ public function apibenspatrimoniais(Request $request)
         $benspatrimoniais = BensPatrimoniais::find($id);
         $tipoBensPatrimoniais =  DB::select('select distinct * from products where ativotipobenspatrimoniais = 1 and excluidotipobenspatrimoniais = 0;');
 
-        return view('benspatrimoniais.edit',compact('benspatrimoniais','tipoBensPatrimoniais'));
+        return view('benspatrimoniais.edit', compact('benspatrimoniais', 'tipoBensPatrimoniais'));
 
         // return view('bensPatrimoniais.edit',compact('benspatrimoniais'));
     }
@@ -230,7 +235,7 @@ public function apibenspatrimoniais(Request $request)
      */
     public function update(Request $request, $id)
     {
-         $request->validate([
+        $request->validate([
 
             'nomeBensPatrimoniais'          => 'required',
             'idTipoBensPatrimoniais'        => 'required',
@@ -256,7 +261,7 @@ public function apibenspatrimoniais(Request $request)
 
 
         return redirect()->route('benspatrimoniais.index')
-                        ->with('success','Bem Patrimonial atualizado com sucesso');
+            ->with('success', 'Bem Patrimonial atualizado com sucesso');
     }
 
 
@@ -272,16 +277,17 @@ public function apibenspatrimoniais(Request $request)
         BensPatrimoniais::find($id)->delete();
 
         return redirect()->route('benspatrimoniais.index')
-                        ->with('success','Bem Patrimonial excluído com êxito!');
+            ->with('success', 'Bem Patrimonial excluído com êxito!');
     }
 
 
-    public function listaUnidadeMedida() {
+    public function listaUnidadeMedida()
+    {
         $listaUnidadeMedida = DB::select('SELECT * FROM unidademedida');
 
         return response()->json($listaUnidadeMedida)
-        ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
     }
 }

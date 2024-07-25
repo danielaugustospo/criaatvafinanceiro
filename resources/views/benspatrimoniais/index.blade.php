@@ -124,7 +124,7 @@
                     }
                 }        
                 sheet.frozenRows = 2;
-                sheet.mergedCells = ["A1:G1"];
+                sheet.mergedCells = ["A1:H1"];
                 sheet.name = "Relatorio de " + document.title + " -  CRIAATVA";
 
                 var myHeaders = [{
@@ -179,6 +179,18 @@
                 { field: "estante", title: "Setor", filterable: true, width: '150' },
                 { field: "prateleira", title: "Local", filterable: true, width: '150' },
                 { field: "qtdestoqueminimo", title: "Estoque<br />Mínimo", filterable: true, width: '150' },
+                { 
+                    field: "quantidadeEmEstoque", 
+                    title: "Quantidade em<br />Estoque", 
+                    filterable: true, 
+                    width: '150',
+                    template: function(dataItem) {
+                        if(dataItem.quantidadeEmEstoque < dataItem.qtdestoqueminimo) {
+                            return '<span style="color:red;">' + dataItem.quantidadeEmEstoque + '</span>';
+                        }
+                        return dataItem.quantidadeEmEstoque;
+                    }
+                },
                 { field: "tipo.name", 
                   title: "Tipo", 
                   filterable: true, 

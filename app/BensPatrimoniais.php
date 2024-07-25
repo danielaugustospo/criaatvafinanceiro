@@ -42,4 +42,9 @@ class BensPatrimoniais extends Model
             'nomeunidade' => null
         ]);
     }
+
+    public function estoque()
+    {
+        return $this->hasMany(Estoque::class, 'idbenspatrimoniais');
+    }
 }
