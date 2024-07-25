@@ -569,15 +569,15 @@ class ReceitaController extends Controller
     public function apiUpdate(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'idformapagamentoreceita' => 'required',
-            'datapagamentoreceita' => 'required',
-            'dataemissaoreceita' => 'required',
+            // 'idformapagamentoreceita' => 'required',
+            // 'datapagamentoreceita' => 'required',
+            // 'dataemissaoreceita' => 'required',
             'valorreceita' => 'required',
-            'pagoreceita' => 'required',
-            'contareceita' => 'required',
-            'registroreceita' => 'required',
-            'nfreceita' => 'required',
-            'idclientereceita' => 'required',
+            // 'pagoreceita' => 'required',
+            // 'contareceita' => 'required',
+            // 'registroreceita' => 'required',
+            // 'nfreceita' => 'required',
+            // 'idclientereceita' => 'required',
         ]);
 
         if ($validator->fails()) {

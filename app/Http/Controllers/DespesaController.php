@@ -333,7 +333,7 @@ class DespesaController extends Controller
         
         if (isset($request->reembolso))     $descricao .= " AND d.reembolsado != '0'"; $verificaInputCampos++;
 
-        if (isset($request->notafiscal))    $descricao .= " AND d.notaFiscal = '$request->notafiscal'"; $verificaInputCampos++;
+        if (isset($request->notafiscal))    $descricao .= " AND d.notaFiscal like '$request->notafiscal'"; $verificaInputCampos++;
         
         if (isset($request->cliente))       $descricao .= " AND os.idClienteOrdemdeServico = '$request->cliente'"; $verificaInputCampos++;
 
