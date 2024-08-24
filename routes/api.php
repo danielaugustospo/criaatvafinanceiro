@@ -1,7 +1,9 @@
 <?php
 
+use App\Fornecedores;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\FormaPagamentoController;
+use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -138,7 +140,7 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     Route::post('/receitas', 'ReceitaController@apiStore')->name('apiStoreReceita');
     Route::put('/receitas/{id}', 'ReceitaController@apiUpdate')->name('apiUpdateReceita');
 
-
+    
     #Contas
     Route::get('/listaContasBancarias', 'ContaController@listaContasBancariasApi')->name('v2listaContasBancarias');
     Route::post('/contas', 'ContaController@salvarContaApi')->name('v2criarConta');
@@ -179,15 +181,22 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     #Funções comuns do sistema
     Route::post('/calculatePercent', '\App\Helpers\MathHelper@calculatePercent')->name('v2calculatePercent');   
     Route::post('/generate-pdf', [PDFController::class, 'generatePDF']);
-
+    
     #Cliente
     Route::get('/listaclientes', [ClientesController::class, 'getClientesApi']);
-
+    
+    #Fornecedores
+    Route::get('/apiFornecedores/{id?}', [FornecedorController::class, 'apiFornecedores']);
+    
     #Forma de Pagamento
     Route::get('/listaformapagamento', [FormaPagamentoController::class, 'getFormadePagamentoApi']);
-
-
     
+    
+    #Ordem de Serviços
+    Route::get('/lastOS', 'OrdemdeServicoController@lastOS')->name('v2apiordemservicoslast');
+    Route::get('/apiordemdeservicos/{id?}', 'OrdemdeServicoController@apiOS')->name('v2apiordemservicos');
+    Route::post('/apiordemdeservicos', 'OrdemdeServicoController@apiStore')->name('v2apiordemservicosstore');
+    Route::put('/apiordemdeservicos/{id?}', 'OrdemdeServicoController@updateOSApi')->name('v2apiordemservicosupdate');
     
     // Route::get('/userroles', [UserController::class, 'getUserRoles']);
     // Route::post('/login', 'AuthController@login')->name('v2login');

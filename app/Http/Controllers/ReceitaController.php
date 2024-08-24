@@ -109,12 +109,12 @@ class ReceitaController extends Controller
         $listaReceita = DB::select('SELECT distinct r.id, 
         r.idosreceita,
         r.idclientereceita,
-        r.idformapagamentoreceita,
+        (r.idformapagamentoreceita * 1) as idformapagamentoreceita,
         r.datapagamentoreceita,
         r.dataemissaoreceita,
         r.valorreceita,
         r.pagoreceita,
-        r.contareceita,
+        (r.contareceita * 1 ) as contareceita,
         r.descricaoreceita,
         r.registroreceita,
         r.nfreceita,
@@ -164,6 +164,9 @@ class ReceitaController extends Controller
         endif;
 
         if ($request->ordemservico) : $descricao .= " AND r.idosreceita = '$request->ordemservico'";
+            $verificaInputCampos++;
+        endif;
+        if ($request->ordemdeservico) : $descricao .= " AND r.idosreceita = '$request->ordemdeservico'";
             $verificaInputCampos++;
         endif;
         if ($request->valorreceita) : $descricao .= " AND r.valorreceita = '$request->valorreceita'";

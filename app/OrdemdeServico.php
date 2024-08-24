@@ -38,7 +38,7 @@ class OrdemdeServico extends Model
     'obsOrdemdeServico',
     'dataCriacaoOrdemdeServico',
     'dataExclusaoOrdemdeServico',
-
+    'vendedor',
 
     'ativoOrdemdeServico',
     'excluidoOrdemdeServico',
@@ -51,6 +51,11 @@ class OrdemdeServico extends Model
     public static function laratablesCustomAction($osModel)
     {
         return view('ordemdeservicos.action', compact('osModel'))->render();
+    }
+
+    public function cliente()
+    {
+        return $this->hasMany(Clientes::class, 'id', 'idClienteOrdemdeServico');
     }
 
 }

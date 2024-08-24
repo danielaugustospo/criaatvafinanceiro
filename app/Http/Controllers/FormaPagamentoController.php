@@ -202,9 +202,12 @@ class FormaPagamentoController extends Controller
     }
 
     public function getFormadePagamentoApi() {
-        $listaFPG = FormaPagamento::select('id','nomeFormaPagamento')->where('ativoFormaPagamento', 1)->get();
+        $listaFPG = FormaPagamento::select('id', \DB::raw('UPPER(nomeFormaPagamento) as nomeFormaPagamento'))
+                                    ->where('ativoFormaPagamento', 1)
+                                    ->get();
         return response()->json($listaFPG, 200);
-    }    
+    }
+    
 
     public function logCadastraFormaPagamento($param)
     {

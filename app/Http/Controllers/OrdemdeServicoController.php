@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use App\Classes\Logger;
+use App\Despesa;
 use Gate;
 
 
@@ -20,6 +21,7 @@ class OrdemdeServicoController extends Controller
 {
 
     private $Logger;
+
     /**
      * Display a listing of the resource.
      *
@@ -52,6 +54,7 @@ class OrdemdeServicoController extends Controller
             $this->variavelDisabledNaView = 'disabled';
         }
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -60,79 +63,175 @@ class OrdemdeServicoController extends Controller
     public function index(Request $request)
     {
         $consulta = $this->consultaIndexOrdemServicos();
-        
+
         if ($request->ajax()) {
 
             return Datatables::of($consulta)
                 ->addIndexColumn()
-                ->addColumn('action', function($consulta) {
+                ->addColumn('action', function ($consulta) {
 
 
                     $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
                     $btnEditar     = Gate::allows('ordemdeservico-edit') ? '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>' : '';
-        
-                    $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar . $btnEditar . '</div>';
-        
+
+                    $grupoBtn = '<div class="row col-sm-12">' . $btnVisualizar . $btnEditar . '</div>';
+
                     return $grupoBtn;
-                        })
+                })
 
                 ->rawColumns(['action'])
                 ->make(true);
-        }        else {
+        } else {
             $data = Receita::orderBy('id', 'DESC')->paginate(5);
             return view('ordemdeservicos.index', compact('data'))
                 ->with('i', ($request->input('page', 1) - 1) * 5);
         }
     }
 
-    public function tabelaOrdemServicos(Request $request){
+    public function tabelaOrdemServicos(Request $request)
+    {
 
         $consulta = $this->consultaIndexOrdemServicos();
 
-        
+
         return Datatables::of($consulta)
-        ->filter(function ($query) use ($request) {
+            ->filter(function ($query) use ($request) {
 
 
-            if (($request->has('id')) && ($request->id != NULL)) {
-                $query->where('ordemdeservico.id', '=', "{$request->get('id')}");
-            }
-            if (($request->has('idClienteOrdemdeServico')) && ($request->idClienteOrdemdeServico != NULL)) {
-                $query->where('idClienteOrdemdeServico', '=', "{$request->get('idClienteOrdemdeServico')}");
-            }
-            if (($request->has('eventoOrdemdeServico')) && ($request->eventoOrdemdeServico != NULL)) {
-                $query->where('eventoOrdemdeServico', '=', "{$request->get('eventoOrdemdeServico')}");
-            }
+                if (($request->has('id')) && ($request->id != NULL)) {
+                    $query->where('ordemdeservico.id', '=', "{$request->get('id')}");
+                }
+                if (($request->has('idClienteOrdemdeServico')) && ($request->idClienteOrdemdeServico != NULL)) {
+                    $query->where('idClienteOrdemdeServico', '=', "{$request->get('idClienteOrdemdeServico')}");
+                }
+                if (($request->has('eventoOrdemdeServico')) && ($request->eventoOrdemdeServico != NULL)) {
+                    $query->where('eventoOrdemdeServico', '=', "{$request->get('eventoOrdemdeServico')}");
+                }
 
-            if (($request->has('valorOrdemdeServico')) && ($request->valorOrdemdeServico != NULL)) {
-                $query->where('valorOrdemdeServico', '=', "{$request->get('valorOrdemdeServico')}");
-            }
+                if (($request->has('valorOrdemdeServico')) && ($request->valorOrdemdeServico != NULL)) {
+                    $query->where('valorOrdemdeServico', '=', "{$request->get('valorOrdemdeServico')}");
+                }
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function ($consulta) {
 
+                $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
+                $btnEditar     = Gate::allows('ordemdeservico-edit') ? '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>' : '';
 
-        })
-        ->addIndexColumn()
-        ->addColumn('action', function($consulta) {
+                $grupoBtn = '<div class="row col-sm-12">' . $btnVisualizar . $btnEditar . '</div>';
 
-            $btnVisualizar = Gate::allows('ordemdeservico-show') ? '<a href="ordemdeservicos/' . $consulta->id . '" class="col-sm-6 edit btn btn-primary btn-sm" title="Visualizar Financeiro"><i style="color:white;" class="fa fa-eye" aria-hidden="true"></i></a>' : '';
-            $btnEditar     = Gate::allows('ordemdeservico-edit') ? '<a href="ordemdeservicos/' . $consulta->id . '/edit" class="col-sm-6 btn btn-primary btn-sm" title="Editar OS"><i class="fa fa-edit" aria-hidden="true"></i></a>' : '';
+                return $grupoBtn;
+            })
 
-            $grupoBtn = '<div class="row col-sm-12">'. $btnVisualizar . $btnEditar . '</div>';
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 
-            return $grupoBtn;
-        })
+    public function lastOS() {
+        return OrdemdeServico::selectRaw('id + 1 as id')
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
     
-        ->rawColumns(['action'])
-        ->make(true);
+    public function apiOS(Request $request, $id = null)
+    {
+        $query = OrdemdeServico::where('ativoOrdemdeServico', 1);
+
+        if ($id) {
+            $query->where('id', $id);
+        }
+
+        $listaOS = $query->with(['cliente:id,razaosocialCliente'])
+            ->get();
+
+        $listaOS = $listaOS->map(function ($item) use ($id) {
+            if ($item->relationLoaded('cliente') && $item->cliente->isNotEmpty()) {
+                $item->razaosocialCliente = $item->cliente->first()->razaosocialCliente;
+
+                if ($id) {
+                    $totals = DB::table('receita')
+                        ->selectRaw('
+                        SUM(CASE WHEN idosreceita = ? THEN valorreceita ELSE 0 END) as totalReceitaPorOS,
+                        SUM(CASE WHEN idosreceita = ? AND ativoreceita = 1 AND excluidoreceita = 0 AND pagoreceita = "S" THEN valorreceita ELSE 0 END) as totalReceitasPagas,
+                        SUM(CASE WHEN idosreceita = ? AND ativoreceita = 1 AND excluidoreceita = 0 AND pagoreceita = "N" THEN valorreceita ELSE 0 END) as totalReceitasNaoPagas,
+                        (SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ?) as totalDespesas,
+                        (SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ? AND pago = "S") as totalDespesasPagas,
+                        (SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ? AND pago = "N") as totalDespesasNaoPagas,
+                        (SUM(CASE WHEN idosreceita = ? THEN valorreceita ELSE 0 END) * 100) / ? as percReceita,
+                        ((SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ?) * 100) / ? as percDespesa,
+                        (SUM(CASE WHEN idosreceita = ? AND ativoreceita = 1 AND excluidoreceita = 0 AND pagoreceita = "N" THEN valorreceita ELSE 0 END) * 100) / ? as percReceitasNaoPagas,
+                        ((SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ? AND pago = "N") * 100) / ? as percDespesasNaoPagas,
+                        (SUM(CASE WHEN idosreceita = ? AND ativoreceita = 1 AND excluidoreceita = 0 AND pagoreceita = "S" THEN valorreceita ELSE 0 END) * 100) / ? as percReceitasPagas,
+                        ((SELECT SUM(precoReal) FROM despesas WHERE ativoDespesa = 1 and excluidoDespesa = 0 and idOS = ? AND pago = "S") * 100) / ? as percDespesasPagas
+                    ', [
+                            $item->id,
+                            $item->id,
+                            $item->id, // Para os valores de receitas
+                            $item->id,
+                            $item->id,
+                            $item->id, // Para os valores de despesas
+                            $item->id,
+                            $item->valorOrdemdeServico, // Para percentuais de receitas
+                            $item->id,
+                            $item->valorOrdemdeServico, // Para percentuais de despesas
+                            $item->id,
+                            $item->valorOrdemdeServico, // Para percentuais de receitas não pagas
+                            $item->id,
+                            $item->valorOrdemdeServico, // Para percentuais de despesas não pagas
+                            $item->id,
+                            $item->valorOrdemdeServico, // Para percentuais de receitas pagas
+                            $item->id,
+                            $item->valorOrdemdeServico  // Para percentuais de despesas pagas
+                        ])
+                        ->first();
+
+                    // Atribui os valores calculados
+                    $item->totalReceitaPorOS        = number_format($totals->totalReceitaPorOS ?? 0, 2);
+                    $item->totalReceitasPagas       = number_format($totals->totalReceitasPagas ?? 0, 2);
+                    $item->totalReceitasNaoPagas    = number_format($totals->totalReceitasNaoPagas ?? 0, 2);
+                    $item->totalDespesas            = number_format($totals->totalDespesas ?? 0, 2);
+                    $item->totalDespesasPagas       = number_format($totals->totalDespesasPagas ?? 0, 2);
+                    $item->totalDespesasNaoPagas    = number_format($totals->totalDespesasNaoPagas ?? 0, 2);
+
+                    $item->percReceita          = number_format($totals->percReceita ?? 0, 2);
+                    $item->percDespesa          = number_format($totals->percDespesa ?? 0, 2);
+                    $item->percReceitasNaoPagas = number_format($totals->percReceitasNaoPagas ?? 0, 2);
+                    $item->percDespesasNaoPagas = number_format($totals->percDespesasNaoPagas ?? 0, 2);
+                    $item->percReceitasPagas    = number_format($totals->percReceitasPagas ?? 0, 2);
+                    $item->percDespesasPagas    = number_format($totals->percDespesasPagas ?? 0, 2);
+
+
+                    // Convertendo valores para float e garantindo que eles não sejam null
+                    // $totalReceitaPorOS = floatval($item->totalReceitaPorOS ?? 0);
+                    // $totalDespesas = floatval($item->totalDespesas ?? 0);
+
+                    // Cálculo do valorReceitaReal
+                    $valorReceitaReal = $totals->totalReceitaPorOS - $totals->totalDespesas;
+
+                    // Formatação do valorReceitaReal
+                    $item->valorReceitaReal = number_format($valorReceitaReal, 2);
+
+                    // Cálculo do perLucro com duas casas decimais, garantindo que $item->valorOrdemdeServico seja um número
+                    $valorOrdemdeServico = floatval($item->valorOrdemdeServico ?? 1); // Evita divisão por zero
+                    $item->perLucro = number_format(($valorReceitaReal * 100) / $valorOrdemdeServico, 2);
+                    
+                }
+
+                unset($item->cliente);
+            }
+            return $item;
+        });
+
+        return response()->json($listaOS, 200);
     }
 
     public function consultaIndexOrdemServicos()
     {
         $consulta = DB::table('ordemdeservico')
-        ->leftJoin('clientes', 'idClienteOrdemdeServico', 'clientes.id')
-        
-        ->select (['ordemdeservico.id', 'ordemdeservico.idClienteOrdemdeServico', 'ordemdeservico.dataVendaOrdemdeServico', 'ordemdeservico.valorOrdemdeServico','ordemdeservico.dataOrdemdeServico','clientes.id as idcliente','clientes.razaosocialCliente', 'ordemdeservico.eventoOrdemdeServico','ordemdeservico.servicoOrdemdeServico','ordemdeservico.obsOrdemdeServico','ordemdeservico.dataCriacaoOrdemdeServico','ordemdeservico.dataExclusaoOrdemdeServico','ordemdeservico.ativoOrdemdeServico','ordemdeservico.excluidoOrdemdeServico']);
+            ->leftJoin('clientes', 'idClienteOrdemdeServico', 'clientes.id')
+
+            ->select(['ordemdeservico.id', 'ordemdeservico.idClienteOrdemdeServico', 'ordemdeservico.dataVendaOrdemdeServico', 'ordemdeservico.valorOrdemdeServico', 'ordemdeservico.dataOrdemdeServico', 'clientes.id as idcliente', 'clientes.razaosocialCliente', 'ordemdeservico.eventoOrdemdeServico', 'ordemdeservico.servicoOrdemdeServico', 'ordemdeservico.obsOrdemdeServico', 'ordemdeservico.dataCriacaoOrdemdeServico', 'ordemdeservico.dataExclusaoOrdemdeServico', 'ordemdeservico.ativoOrdemdeServico', 'ordemdeservico.excluidoOrdemdeServico']);
         return $consulta;
-        
     }
 
     /**
@@ -164,6 +263,83 @@ class OrdemdeServicoController extends Controller
         return view('ordemdeservicos.create', compact('novaOS', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'codigoDespesa', 'ultimaOS', 'vendedores', 'dataInicio', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
     }
 
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function apiStore(Request $request)
+    {
+        $ordemdeservico = new OrdemdeServico();
+        
+        
+        $request->validate([
+            'idClienteOrdemdeServico'   => 'required',
+            'eventoOrdemdeServico'      => 'required|min:3',
+        ]);
+
+        $ordemdeservico->dataCriacaoOrdemdeServico  = $request->dataCriacaoOrdemdeServico;
+        $ordemdeservico->eventoOrdemdeServico       = $request->eventoOrdemdeServico;
+        $ordemdeservico->fatorR                     = $request->fatorR;
+        $ordemdeservico->idClienteOrdemdeServico    = $request->idClienteOrdemdeServico;
+        $ordemdeservico->percentualPermitido        = $request->percentualPermitido;
+        $ordemdeservico->valorOrcamento             = $request->valorOrcamento;
+        $ordemdeservico->valorOrdemdeServico        = $request->valorOrdemdeServico;
+        $ordemdeservico->servicoOrdemdeServico      = 'Campo Serviço';
+        $ordemdeservico->vendedor                   = $request->vendedor;
+        // $ordemdeservico->update($request->all());
+        $salvaOS = $ordemdeservico->save($request->all());
+        $idDaOS = $ordemdeservico->id;
+        
+        // Verifica se existem receitas a serem processadas
+        $receitas = $request->get('receitas', []);
+
+        foreach ($receitas as $index => $receitaData) {
+            // Validação específica de cada receita
+            $request->validate([
+                "receitas.$index.idformapagamentoreceita" => 'required',
+                "receitas.$index.datapagamentoreceita"    => 'required',
+                "receitas.$index.pagoreceita"             => 'required',
+                "receitas.$index.contareceita"            => 'required',
+                "receitas.$index.nfreceita"               => 'required',
+            ]);
+
+            $receita = isset($receitaData['idReceita']) && $receitaData['idReceita'] != 0
+                ? Receita::find($receitaData['idReceita'])
+                : new Receita();
+
+            // Ajuste para validar e formatar o valor monetário
+            // $valorReceita = FormatacoesServiceProvider::validaValoresParaBackEnd($receitaData['valorreceita']);
+
+            // Atribui os valores para a receita
+            $receita->fill([
+                'idformapagamentoreceita' => $receitaData['idformapagamentoreceita'],
+                'datapagamentoreceita'    => $receitaData['datapagamentoreceita'],
+                'dataemissaoreceita'      => $receitaData['dataemissaoreceita'],
+                'valorreceita'            => $receitaData['valorreceita'],
+                'pagoreceita'             => $receitaData['pagoreceita'],
+                'contareceita'            => $receitaData['contareceita'],
+                'nfreceita'               => $receitaData['nfreceita'],
+                'descricaoreceita'        => $request->get('eventoOrdemdeServico'),
+                'idclientereceita'        => $request->get('idClienteOrdemdeServico'),
+                'excluidoreceita'         => $receitaData['excluidoreceita'],
+                'idosreceita'             => $idDaOS,
+                'ativoreceita'            => $receitaData['excluidoreceita'] == '1' ? 0 : 1,
+            ]);
+
+            $receita->save();
+        }
+
+        // Atualiza os valores principais da Ordem de Serviço
+        // $request['valorOrdemdeServico'] = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
+        // $request['valorOrcamento']      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrcamento'));
+
+
+        $this->logVisualizaOS($ordemdeservico);
+        return response()->json($ordemdeservico, 200);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -255,7 +431,7 @@ class OrdemdeServicoController extends Controller
                 $this->logCadastraReceitaOS($idReceita);
             }
         }
-        
+
         $this->logCadastraOS($ordemdeservico);
         if ($temReceita != '0') {
             return redirect()->route('ordemdeservicos.index')
@@ -265,7 +441,7 @@ class OrdemdeServicoController extends Controller
                 ->with('success', 'Ordem de Serviço n°' . $idDaOS . ' cadastrada com êxito. Não foram cadastradas receitas.');
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -369,9 +545,6 @@ class OrdemdeServicoController extends Controller
             $porcentagemLucro = bcdiv($porcentagemLucro, $totalOS); // divido pelo total da OS
         }
 
-
-
-
         $totalreceitas = number_format($getArrayTotalReceitas, 2, ',', '.');
         $totalreceitasAPagar = number_format($getArrayTotalReceitasAPagar, 2, ',', '.');
         $totaldespesas = number_format($getArrayTotalDespesas, 2, ',', '.');
@@ -393,9 +566,7 @@ class OrdemdeServicoController extends Controller
 
         $this->logVisualizaOS($ordemdeservico);
         return view('ordemdeservicos.show', compact('ordemdeservico', 'dataInicio', 'cliente', 'formapagamento', 'listaContas', 'listaForncedores', 'vendedores', 'codigoDespesa', 'despesaPorOS', 'receitasPorOS', 'percentualPorOS', 'totaldespesas', 'totaldespesasAPagar', 'totaldespesasPagas', 'totalreceitas', 'totalreceitasAPagar', 'qtdDespesas', 'qtdReceitas', 'lucro', 'totalOS', 'porcentagemDespesa', 'porcentagemReceita', 'porcentagemLucro', 'porcentagemDespesaAPagar', 'porcentagemDespesaPagas', 'porcentagemReceitaAPagar', 'valorInput', 'valorSemCadastro', 'variavelReadOnlyNaView', 'variavelDisabledNaView'));
-
     }
-
 
 
     /**
@@ -423,7 +594,7 @@ class OrdemdeServicoController extends Controller
         if (isset($valorOS)) {
             $ordemdeservico->valorOrdemdeServico = number_format($valorOS, 2, ',', '.');
         }
-   
+
         $valorOrcamento = $ordemdeservico->valorOrcamento;
         if (isset($valorOrcamento)) {
             $ordemdeservico->valorOrcamento = number_format($valorOrcamento, 2, ',', '.');
@@ -500,10 +671,9 @@ class OrdemdeServicoController extends Controller
                 $receita->idclientereceita              = $request->get('idClienteOrdemdeServico');
                 $receita->excluidoreceita               = $request->get('excluidoreceita')[$i];
 
-                if($receita->excluidoreceita == '1' || $receita->excluidoreceita == 1){
+                if ($receita->excluidoreceita == '1' || $receita->excluidoreceita == 1) {
                     $receita->ativoreceita = 0;
-                }
-                else{
+                } else {
                     $receita->ativoreceita = 1;
                 }
 
@@ -524,31 +694,31 @@ class OrdemdeServicoController extends Controller
                         'nfreceita'                 => $receita->nfreceita,
                         'idosreceita'               => $receita->idosreceita,
                         'excluidoreceita'           => $receita->excluidoreceita,
-                        'ativoreceita'              => $receita->ativoreceita 
+                        'ativoreceita'              => $receita->ativoreceita
                     ]);
                 } else {
 
-                Receita::where('id', $receita->idReceita)
-                ->update([
-                            'idformapagamentoreceita'     => $receita->idformapagamentoreceita, 
+                    Receita::where('id', $receita->idReceita)
+                        ->update([
+                            'idformapagamentoreceita'     => $receita->idformapagamentoreceita,
                             'descricaoreceita'            => $request->eventoOrdemdeServico,
                             'idclientereceita'            => $request->idClienteOrdemdeServico,
-                            'datapagamentoreceita'        => $receita->datapagamentoreceita,           
-                            'dataemissaoreceita'          => $receita->dataemissaoreceita,             
-                            'valorreceita'                => $receita->valorreceita,                   
-                            'pagoreceita'                 => $receita->pagoreceita,                    
-                            'contareceita'                => $receita->contareceita,                   
-                            'registroreceita'             => $receita->registroreceita,                
-                            'nfreceita'                   => $receita->nfreceita,                      
-                            'idosreceita'                 => $receita->idosreceita,                  
+                            'datapagamentoreceita'        => $receita->datapagamentoreceita,
+                            'dataemissaoreceita'          => $receita->dataemissaoreceita,
+                            'valorreceita'                => $receita->valorreceita,
+                            'pagoreceita'                 => $receita->pagoreceita,
+                            'contareceita'                => $receita->contareceita,
+                            'registroreceita'             => $receita->registroreceita,
+                            'nfreceita'                   => $receita->nfreceita,
+                            'idosreceita'                 => $receita->idosreceita,
                             'excluidoreceita'             => $receita->excluidoreceita,
-                            'ativoreceita'                => $receita->ativoreceita 
+                            'ativoreceita'                => $receita->ativoreceita
                         ]);
                 }
             }
         }
 
-       
+
         $request['valorOrdemdeServico']      = FormatacoesServiceProvider::validaValoresParaBackEnd($request->get('valorOrdemdeServico'));
         $ordemdeservico->vendedor            = $request->get('vendedor');
         $ordemdeservico->percentualPermitido = $request->get('percentualPermitido');
@@ -562,6 +732,88 @@ class OrdemdeServicoController extends Controller
             ->with('success', 'Ordem de Serviço atualizada com êxito');
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\OrdemdeServico  $ordemdeservico
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOSApi(Request $request, OrdemdeServico $ordemdeservico)
+    {
+        $ordemdeservico = OrdemdeServico::findOrFail($request->id);
+    
+        $request->validate([
+            'idClienteOrdemdeServico'   => 'required',
+            'eventoOrdemdeServico'      => 'required|min:3',
+            'servicoOrdemdeServico'     => 'required|min:3',
+        ]);
+    
+        // Verifica se existem receitas a serem processadas
+        $receitas = $request->get('receitas', []);
+        $receitaIdsInRequest = [];  // Initialize an empty array to collect receita IDs
+    
+        foreach ($receitas as $index => $receitaData) {
+            // Validação específica de cada receita
+            $request->validate([
+                "receitas.$index.idformapagamentoreceita" => 'required',
+                "receitas.$index.datapagamentoreceita"    => 'required',
+                "receitas.$index.pagoreceita"             => 'required',
+                "receitas.$index.contareceita"            => 'required',
+                "receitas.$index.nfreceita"               => 'required',
+            ]);
+    
+            
+            $receita = isset($receitaData['id']) && $receitaData['id'] != 0
+            ? Receita::find($receitaData['id'])
+            : new Receita();
+            
+            // Atribui os valores para a receita
+            $receita->fill([
+                'idformapagamentoreceita' => $receitaData['idformapagamentoreceita'],
+                'datapagamentoreceita'    => $receitaData['datapagamentoreceita'],
+                'dataemissaoreceita'      => $receitaData['dataemissaoreceita'],
+                'valorreceita'            => $receitaData['valorreceita'],
+                'pagoreceita'             => $receitaData['pagoreceita'],
+                'contareceita'            => $receitaData['contareceita'],
+                'nfreceita'               => $receitaData['nfreceita'],
+                'descricaoreceita'        => $request->get('eventoOrdemdeServico'),
+                'idclientereceita'        => $request->get('idClienteOrdemdeServico'),
+                'excluidoreceita'         => $receitaData['excluidoreceita'],
+                'idosreceita'             => $ordemdeservico->id,
+                'ativoreceita'            => $receitaData['excluidoreceita'] == '1' ? 0 : 1,
+            ]);
+            
+            $receita->save();
+            $idReceita = $receita->id;
+            // Collect the id if it exists
+            if ($idReceita) {
+                $receitaIdsInRequest[] = $idReceita;
+            }
+        }
+    // return $receitaIdsInRequest;
+        // Now that the foreach loop is done, $receitaIdsInRequest contains all the IDs from the request
+        // Fetch all receitas that belong to the ordemdeservico and are not in the request
+        $receitasToExclude = Receita::where('idosreceita', $ordemdeservico->id)
+            ->whereNotIn('id', $receitaIdsInRequest)
+            ->get();
+    
+        // Update excluidoreceita and ativoreceita for these receitas
+        foreach ($receitasToExclude as $receita) {
+            $receita->update([
+                'excluidoreceita' => 1,
+                'ativoreceita' => 0
+            ]);
+        }
+    
+        // Atualiza os valores principais da Ordem de Serviço
+        $ordemdeservico->update($request->all());
+    
+        $this->logVisualizaOS($ordemdeservico);
+        return response()->json($ordemdeservico, 200);
+    }
+    
+    
 
     /**
      * Remove the specified resource from storage.
@@ -576,56 +828,106 @@ class OrdemdeServicoController extends Controller
             ->with('success', 'Ordem de Serviço excluída com êxito!');
     }
 
-    
-    public function logCadastraOS($ordemdeservico )
-    {       
-            $this->Logger->log('info', 'Cadastrou a OS '. $ordemdeservico->id);
+
+    public function logCadastraOS($ordemdeservico)
+    {
+        $this->Logger->log('info', 'Cadastrou a OS ' . $ordemdeservico->id);
     }
 
-    public function logCadastraReceitaOS($idReceita )
-    {       
-            $this->Logger->log('info', 'Cadastrou a Receita'. $idReceita);
+    public function logCadastraReceitaOS($idReceita)
+    {
+        $this->Logger->log('info', 'Cadastrou a Receita' . $idReceita);
     }
 
     public function logVisualizaOS($ordemdeservico)
     {
-            $this->Logger->log('info', 'Visualizou a OS '. $ordemdeservico->id);
+        $this->Logger->log('info', 'Visualizou a OS ' . $ordemdeservico->id);
     }
 
-    public function logAtualizaOS($ordemdeservico , $alteracoes, $original)
-    {   
-        $trechoMensagem =  $ordemdeservico->id . " Dados Alterados: " . PHP_EOL;
-        if(isset($alteracoes['despesaCodigoDespesas']) != NULL)  { $trechoMensagem .= 'Id Cod Desp Atual: '.       $alteracoes['despesaCodigoDespesas'] .    '. Antigo: '.  $original['despesaCodigoDespesas'] . PHP_EOL  ; }
-        if(isset($alteracoes['idOS']) != NULL )                  { $trechoMensagem .= 'Id OS Atual: '.             $alteracoes['idOS'] .                     '. Antigo: '.  $original['idOS'] . PHP_EOL  ; }
-        if(isset($alteracoes['idDespesaPai']) != NULL )          { $trechoMensagem .= 'Id Desp Pai Atual: '.       $alteracoes['idDespesaPai'] .             '. Antigo: '.  $original['idDespesaPai'] . PHP_EOL  ; }
-        if(isset($alteracoes['descricaoDespesa']) != NULL )      { $trechoMensagem .= 'Desc Desp Atual: '.         $alteracoes['descricaoDespesa'] .         '. Antigo: '.  $original['descricaoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['idFornecedor']) != NULL )          { $trechoMensagem .= 'Id Fornecedor Atual: '.     $alteracoes['idFornecedor'] .             '. Antigo: '.  $original['idFornecedor'] . PHP_EOL  ; }
-        if(isset($alteracoes['precoReal']) != NULL )             { $trechoMensagem .= 'Valor Atual: '.             $alteracoes['precoReal'] .                '. Antigo: '.  $original['precoReal'] . PHP_EOL  ; }
-        if(isset($alteracoes['ehcompra']) != NULL )              { $trechoMensagem .= 'Foi uma compra Atual: '.    $alteracoes['ehcompra'] .                 '. Antigo: '.  $original['ehcompra'] . PHP_EOL  ; }
-        if(isset($alteracoes['pago']) != NULL )                  { $trechoMensagem .= 'Pago Atual: '.              $alteracoes['pago'] .                     '. Antigo: '.  $original['pago'] . PHP_EOL  ; }
-        if(isset($alteracoes['quempagou']) != NULL )             { $trechoMensagem .= 'Quem Pagou Atual: '.        $alteracoes['quempagou'] .                '. Antigo: '.  $original['quempagou'] . PHP_EOL  ; }
-        if(isset($alteracoes['idFormaPagamento']) != NULL )      { $trechoMensagem .= 'Forma PG Atual: '.          $alteracoes['idFormaPagamento'] .         '. Antigo: '.  $original['idFormaPagamento'] . PHP_EOL  ; }
-        if(isset($alteracoes['conta']) != NULL )                 { $trechoMensagem .= 'Id Conta Atual: '.          $alteracoes['conta'] .                    '. Antigo: '.  $original['conta'] . PHP_EOL  ; }
-        if(isset($alteracoes['nRegistro']) != NULL )             { $trechoMensagem .= 'Num Reg Atual: '.           $alteracoes['nRegistro'] .                '. Antigo: '.  $original['nRegistro'] . PHP_EOL  ; }
-        if(isset($alteracoes['valorEstornado']) != NULL )        { $trechoMensagem .= 'Estornado Atual: '.         $alteracoes['valorEstornado'] .           '. Antigo: '.  $original['valorEstornado'] . PHP_EOL  ; }
-        if(isset($alteracoes['vencimento']) != NULL )            { $trechoMensagem .= 'Vencimento Atual: '.        $alteracoes['vencimento'] .               '. Antigo: '.  $original['vencimento'] . PHP_EOL  ; }
-        if(isset($alteracoes['despesaFixa']) != NULL )           { $trechoMensagem .= 'Desp Fixa Atual: '.         $alteracoes['despesaFixa'] .              '. Antigo: '.  $original['despesaFixa'] . PHP_EOL  ; }
-        if(isset($alteracoes['notaFiscal']) != NULL )            { $trechoMensagem .= 'Nota Fiscal Atual: '.       $alteracoes['notaFiscal'] .               '. Antigo: '.  $original['notaFiscal'] . PHP_EOL  ; }
-        if(isset($alteracoes['idBanco']) != NULL )               { $trechoMensagem .= 'Id Banco Atual: '.          $alteracoes['idBanco'] .                  '. Antigo: '.  $original['idBanco'] . PHP_EOL  ; }
-        if(isset($alteracoes['reembolsado']) != NULL )           { $trechoMensagem .= 'Id Reembolsado Atual: '.    $alteracoes['reembolsado'] .              '. Antigo: '.  $original['reembolsado'] . PHP_EOL  ; }
-        if(isset($alteracoes['cheque']) != NULL )                { $trechoMensagem .= 'Cheque Atual: '.            $alteracoes['cheque'] .                   '. Antigo: '.  $original['cheque'] . PHP_EOL  ; }
-        if(isset($alteracoes['dataDoTrabalho']) != NULL )        { $trechoMensagem .= 'Data do Trabalho Atual: '.  $alteracoes['dataDoTrabalho'] .           '. Antigo: '.  $original['dataDoTrabalho'] . PHP_EOL  ; }
-        if(isset($alteracoes['dataDaCompra']) != NULL )          { $trechoMensagem .= 'Data da Compra Atual: '.    $alteracoes['dataDaCompra'] .             '. Antigo: '.  $original['dataDaCompra'] . PHP_EOL  ; }
-        if(isset($alteracoes['ativoDespesa']) != NULL )          { $trechoMensagem .= 'Despesa Ativa Atual: '.     $alteracoes['ativoDespesa'] .             '. Antigo: '.  $original['ativoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['excluidoDespesa']) != NULL )       { $trechoMensagem .= 'Despesa Excluída Atual: '.  $alteracoes['excluidoDespesa'] .          '. Antigo: '.  $original['excluidoDespesa'] . PHP_EOL  ; }
-        if(isset($alteracoes['idAlteracaoUsuario']) != NULL )    { $trechoMensagem .= 'Id Alter. Usuario Atual: '. $alteracoes['idAlteracaoUsuario'] .       '. Antigo: '.  $original['idAlteracaoUsuario'] . PHP_EOL  ; }
-        if(isset($alteracoes['idAutor']) != NULL )               { $trechoMensagem .= 'Id Usuario Autor Atual: '.  $alteracoes['idAutor'] .                  '. Antigo: '.  $original['idAutor'] . PHP_EOL  ; }
-        
-        $this->Logger->log('info', 'Atualizou a OS '.  $trechoMensagem);
-    }
-
-    public function logExcluiOS($ordemdeservico )
+    public function logAtualizaOS($ordemdeservico, $alteracoes, $original)
     {
-        $this->Logger->log('info', 'Excluiu a OS '. $ordemdeservico->id);
+        $trechoMensagem =  $ordemdeservico->id . " Dados Alterados: " . PHP_EOL;
+        if (isset($alteracoes['despesaCodigoDespesas']) != NULL) {
+            $trechoMensagem .= 'Id Cod Desp Atual: ' .       $alteracoes['despesaCodigoDespesas'] .    '. Antigo: ' .  $original['despesaCodigoDespesas'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idOS']) != NULL) {
+            $trechoMensagem .= 'Id OS Atual: ' .             $alteracoes['idOS'] .                     '. Antigo: ' .  $original['idOS'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idDespesaPai']) != NULL) {
+            $trechoMensagem .= 'Id Desp Pai Atual: ' .       $alteracoes['idDespesaPai'] .             '. Antigo: ' .  $original['idDespesaPai'] . PHP_EOL;
+        }
+        if (isset($alteracoes['descricaoDespesa']) != NULL) {
+            $trechoMensagem .= 'Desc Desp Atual: ' .         $alteracoes['descricaoDespesa'] .         '. Antigo: ' .  $original['descricaoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idFornecedor']) != NULL) {
+            $trechoMensagem .= 'Id Fornecedor Atual: ' .     $alteracoes['idFornecedor'] .             '. Antigo: ' .  $original['idFornecedor'] . PHP_EOL;
+        }
+        if (isset($alteracoes['precoReal']) != NULL) {
+            $trechoMensagem .= 'Valor Atual: ' .             $alteracoes['precoReal'] .                '. Antigo: ' .  $original['precoReal'] . PHP_EOL;
+        }
+        if (isset($alteracoes['ehcompra']) != NULL) {
+            $trechoMensagem .= 'Foi uma compra Atual: ' .    $alteracoes['ehcompra'] .                 '. Antigo: ' .  $original['ehcompra'] . PHP_EOL;
+        }
+        if (isset($alteracoes['pago']) != NULL) {
+            $trechoMensagem .= 'Pago Atual: ' .              $alteracoes['pago'] .                     '. Antigo: ' .  $original['pago'] . PHP_EOL;
+        }
+        if (isset($alteracoes['quempagou']) != NULL) {
+            $trechoMensagem .= 'Quem Pagou Atual: ' .        $alteracoes['quempagou'] .                '. Antigo: ' .  $original['quempagou'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idFormaPagamento']) != NULL) {
+            $trechoMensagem .= 'Forma PG Atual: ' .          $alteracoes['idFormaPagamento'] .         '. Antigo: ' .  $original['idFormaPagamento'] . PHP_EOL;
+        }
+        if (isset($alteracoes['conta']) != NULL) {
+            $trechoMensagem .= 'Id Conta Atual: ' .          $alteracoes['conta'] .                    '. Antigo: ' .  $original['conta'] . PHP_EOL;
+        }
+        if (isset($alteracoes['nRegistro']) != NULL) {
+            $trechoMensagem .= 'Num Reg Atual: ' .           $alteracoes['nRegistro'] .                '. Antigo: ' .  $original['nRegistro'] . PHP_EOL;
+        }
+        if (isset($alteracoes['valorEstornado']) != NULL) {
+            $trechoMensagem .= 'Estornado Atual: ' .         $alteracoes['valorEstornado'] .           '. Antigo: ' .  $original['valorEstornado'] . PHP_EOL;
+        }
+        if (isset($alteracoes['vencimento']) != NULL) {
+            $trechoMensagem .= 'Vencimento Atual: ' .        $alteracoes['vencimento'] .               '. Antigo: ' .  $original['vencimento'] . PHP_EOL;
+        }
+        if (isset($alteracoes['despesaFixa']) != NULL) {
+            $trechoMensagem .= 'Desp Fixa Atual: ' .         $alteracoes['despesaFixa'] .              '. Antigo: ' .  $original['despesaFixa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['notaFiscal']) != NULL) {
+            $trechoMensagem .= 'Nota Fiscal Atual: ' .       $alteracoes['notaFiscal'] .               '. Antigo: ' .  $original['notaFiscal'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idBanco']) != NULL) {
+            $trechoMensagem .= 'Id Banco Atual: ' .          $alteracoes['idBanco'] .                  '. Antigo: ' .  $original['idBanco'] . PHP_EOL;
+        }
+        if (isset($alteracoes['reembolsado']) != NULL) {
+            $trechoMensagem .= 'Id Reembolsado Atual: ' .    $alteracoes['reembolsado'] .              '. Antigo: ' .  $original['reembolsado'] . PHP_EOL;
+        }
+        if (isset($alteracoes['cheque']) != NULL) {
+            $trechoMensagem .= 'Cheque Atual: ' .            $alteracoes['cheque'] .                   '. Antigo: ' .  $original['cheque'] . PHP_EOL;
+        }
+        if (isset($alteracoes['dataDoTrabalho']) != NULL) {
+            $trechoMensagem .= 'Data do Trabalho Atual: ' .  $alteracoes['dataDoTrabalho'] .           '. Antigo: ' .  $original['dataDoTrabalho'] . PHP_EOL;
+        }
+        if (isset($alteracoes['dataDaCompra']) != NULL) {
+            $trechoMensagem .= 'Data da Compra Atual: ' .    $alteracoes['dataDaCompra'] .             '. Antigo: ' .  $original['dataDaCompra'] . PHP_EOL;
+        }
+        if (isset($alteracoes['ativoDespesa']) != NULL) {
+            $trechoMensagem .= 'Despesa Ativa Atual: ' .     $alteracoes['ativoDespesa'] .             '. Antigo: ' .  $original['ativoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['excluidoDespesa']) != NULL) {
+            $trechoMensagem .= 'Despesa Excluída Atual: ' .  $alteracoes['excluidoDespesa'] .          '. Antigo: ' .  $original['excluidoDespesa'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idAlteracaoUsuario']) != NULL) {
+            $trechoMensagem .= 'Id Alter. Usuario Atual: ' . $alteracoes['idAlteracaoUsuario'] .       '. Antigo: ' .  $original['idAlteracaoUsuario'] . PHP_EOL;
+        }
+        if (isset($alteracoes['idAutor']) != NULL) {
+            $trechoMensagem .= 'Id Usuario Autor Atual: ' .  $alteracoes['idAutor'] .                  '. Antigo: ' .  $original['idAutor'] . PHP_EOL;
+        }
+
+        $this->Logger->log('info', 'Atualizou a OS ' .  $trechoMensagem);
+    }
+
+    public function logExcluiOS($ordemdeservico)
+    {
+        $this->Logger->log('info', 'Excluiu a OS ' . $ordemdeservico->id);
     }
 }

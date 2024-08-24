@@ -60,6 +60,32 @@ class FornecedorController extends Controller
     }
 
 
+    public function apiFornecedores(Request $request, $id = null)
+    {
+        $query = Fornecedores::where('ativoFornecedor', 1);
+    
+        if ($id) {
+            $query->where('id', $id);
+            $listaFornecedores = $query->get();
+        } else {
+            if ($request->consultaSimplificada) {
+                $listaFornecedores = $query->get(['id', 'razaosocialFornecedor']);
+            }else {
+                $listaFornecedores = $query->get();
+            }
+        }
+    
+        // $listaFornecedores = $listaFornecedores->map(function ($item) {
+        //     if ($item->cliente->isNotEmpty()) {
+        //         $item->razaosocialCliente = $item->cliente->first()->razaosocialCliente;
+        //         unset($item->cliente);
+        //     }
+        //     return $item;
+        // });
+    
+        return response()->json($listaFornecedores, 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
