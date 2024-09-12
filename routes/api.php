@@ -159,6 +159,11 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     Route::get('/apianaliseMaterial', 'EstoqueController@apianaliseMaterial')->name('v2apianaliseMaterial');
     
     #User
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+
     Route::get('/users', [UserController::class, 'getUsersApi']);
     Route::get('/users/{id}', [UserController::class, 'getUsersApi']);
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('v2update-profile');
@@ -198,7 +203,6 @@ Route::prefix('v2')->middleware('auth:sanctum')->group(function () {
     Route::post('/apiordemdeservicos', 'OrdemdeServicoController@apiStore')->name('v2apiordemservicosstore');
     Route::put('/apiordemdeservicos/{id?}', 'OrdemdeServicoController@updateOSApi')->name('v2apiordemservicosupdate');
     
-    // Route::get('/userroles', [UserController::class, 'getUserRoles']);
-    // Route::post('/login', 'AuthController@login')->name('v2login');
+    Route::post('/login', 'AuthController@login')->name('v2login');
     // Route::post('/apicreatedespesas', 'DespesaController@apistore')->name('v2apicreatedespesas');
 });

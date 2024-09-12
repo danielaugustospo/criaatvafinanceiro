@@ -5,6 +5,7 @@
 
     RewriteEngine On
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+    Header add Content-Security-Policy "upgrade-insecure-requests"
 
     RewriteCond %{REQUEST_FILENAME} -d [OR]
     RewriteCond %{REQUEST_FILENAME} -f

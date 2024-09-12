@@ -1,15 +1,19 @@
 @extends('layouts.app')
 @section('content')
-    <script>
-        function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
+<script>
+    function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
         }
-    </script>
+    }
+
+
+</script>
+
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">

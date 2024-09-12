@@ -21,17 +21,17 @@ return [
      * You can enable CORS for 1 or multiple paths.
      * Example: ['api/*']
      */
-    'paths' => ['api/*'],
+    'paths' => ['api/*', '/login', 'logout', '/displayreceita'],
 
     /*
-    * Matches the request method. `['*']` allows all methods.
-    */
+     * Matches the request method. `['*']` allows all methods.
+     */
     'allowed_methods' => ['*'],
 
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['http://localhost:4200','*.danieltecnologia.com'],
+    'allowed_origins' => ['http://localhost:4200', '*.danieltecnologia.com', 'https://v2devcriaatva.danieltecnologia.com'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.

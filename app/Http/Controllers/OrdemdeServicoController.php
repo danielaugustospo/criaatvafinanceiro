@@ -200,11 +200,6 @@ class OrdemdeServicoController extends Controller
                     $item->percReceitasPagas    = number_format($totals->percReceitasPagas ?? 0, 2);
                     $item->percDespesasPagas    = number_format($totals->percDespesasPagas ?? 0, 2);
 
-
-                    // Convertendo valores para float e garantindo que eles não sejam null
-                    // $totalReceitaPorOS = floatval($item->totalReceitaPorOS ?? 0);
-                    // $totalDespesas = floatval($item->totalDespesas ?? 0);
-
                     // Cálculo do valorReceitaReal
                     $valorReceitaReal = $totals->totalReceitaPorOS - $totals->totalDespesas;
 
@@ -791,7 +786,7 @@ class OrdemdeServicoController extends Controller
                 $receitaIdsInRequest[] = $idReceita;
             }
         }
-    // return $receitaIdsInRequest;
+        // return $receitaIdsInRequest;
         // Now that the foreach loop is done, $receitaIdsInRequest contains all the IDs from the request
         // Fetch all receitas that belong to the ordemdeservico and are not in the request
         $receitasToExclude = Receita::where('idosreceita', $ordemdeservico->id)
@@ -812,7 +807,6 @@ class OrdemdeServicoController extends Controller
         $this->logVisualizaOS($ordemdeservico);
         return response()->json($ordemdeservico, 200);
     }
-    
     
 
     /**

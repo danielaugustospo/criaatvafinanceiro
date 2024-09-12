@@ -41,18 +41,27 @@ class AuthController extends Controller
                 'user'  => $user,
                 'allPermissions' => $allPermissions,
                 'token' => $token,
-            ], 200);
+            ], 200)->cookie('laravel_session', session()->getId(), 60, null, null, false, true);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
+    
     public function logout(Request $request)
     {
-        // Revoga todos os tokens do usuário logado
-        $request->user()->tokens()->delete();
-
-        // Retorna uma resposta de sucesso
-        return response()->json(['message' => 'Logout bem-sucedido'], 200);
+        if (Auth::check()) {
+            // Se o usuário estiver logado, revoga o token (se estiver usando Sanctum ou Passport)
+            if ($request->user()) {
+                $request->user()->tokens()->delete(); // Revoga todos os tokens de API do usuário
+            }
+            
+            Auth::logout(); // Logout do sistema
+            $request->session()->invalidate(); // Invalida a sessão
+            $request->session()->regenerateToken(); // Gera um novo token de sessão
+        }
+    
+        return response()->json(['message' => 'Logout successful']);
     }
+    
 }
