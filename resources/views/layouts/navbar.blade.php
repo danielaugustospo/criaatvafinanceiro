@@ -34,6 +34,12 @@
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('ordemdeservico-list')
+                                <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/ordemdeservicos">Consulta (V2)</a>
+                            @endcan
+                            @can('ordemdeservico-create')
+                                <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/ordemdeservicos/create">Cadastrar (V2)</a>
+                            @endcan
+                            @can('ordemdeservico-list')
                                 <a class="dropdown-item" href="{{ route('ordemdeservicos.index') }}">Consultar</a>
                             @endcan
                             @can('ordemdeservico-create')
