@@ -186,12 +186,13 @@ class OrdemdeServicoController extends Controller
                         ->first();
 
                     // Atribui os valores calculados
-                    $item->totalReceitaPorOS        = number_format($totals->totalReceitaPorOS ?? 0, 2);
-                    $item->totalReceitasPagas       = number_format($totals->totalReceitasPagas ?? 0, 2);
-                    $item->totalReceitasNaoPagas    = number_format($totals->totalReceitasNaoPagas ?? 0, 2);
-                    $item->totalDespesas            = number_format($totals->totalDespesas ?? 0, 2);
-                    $item->totalDespesasPagas       = number_format($totals->totalDespesasPagas ?? 0, 2);
-                    $item->totalDespesasNaoPagas    = number_format($totals->totalDespesasNaoPagas ?? 0, 2);
+                    $item->totalReceitaPorOS        = FormatacoesServiceProvider::validaValoresParaView($totals->totalReceitaPorOS);
+                    $item->totalReceitasPagas       = FormatacoesServiceProvider::validaValoresParaView($totals->totalReceitasPagas);
+                    $item->totalReceitasNaoPagas    = FormatacoesServiceProvider::validaValoresParaView($totals->totalReceitasNaoPagas);
+                    $item->totalDespesas            = FormatacoesServiceProvider::validaValoresParaView($totals->totalDespesas);
+                    $item->totalDespesasPagas       = FormatacoesServiceProvider::validaValoresParaView($totals->totalDespesasPagas);
+                    $item->totalDespesasNaoPagas    = FormatacoesServiceProvider::validaValoresParaView($totals->totalDespesasNaoPagas);
+
 
                     $item->percReceita          = number_format($totals->percReceita ?? 0, 2);
                     $item->percDespesa          = number_format($totals->percDespesa ?? 0, 2);
