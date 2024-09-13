@@ -201,9 +201,11 @@ class PedidoCompra extends Model
 
     public static function getAuditLogs($id): array
     {
-        $mongoClient = new MongoClient("mongodb://" . env('MONGODB_USERNAME') . ":" . env('MONGODB_PASSWORD') . "@" . env('MONGODB_HOST') . ":" . env('MONGODB_PORT'));
+        $mongoConfig = config('database.connections.mongodb');
+
+        $mongoClient = new MongoClient("mongodb://" . $mongoConfig['username'] . ":" . $mongoConfig['password'] . "@" . $mongoConfig['host'] . ":" . $mongoConfig['port']);
         
-        $db = $mongoClient->selectDatabase(env('MONGODB_DATABASE'));
+        $db = $mongoClient->selectDatabase($mongoConfig['database']);
         $collection = $db->selectCollection('audit_logs');
         
         $filter = ['id' => $id];

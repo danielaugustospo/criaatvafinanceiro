@@ -45,3 +45,4 @@ storage/logs/*
 bootstrap/cache/*
 public/img/homolog.jpeg
 storage/logs/acoes.log
+config/database.php
