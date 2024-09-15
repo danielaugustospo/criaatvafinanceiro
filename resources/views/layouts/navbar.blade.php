@@ -133,10 +133,11 @@
                         @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('receita-list')
+                                <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/receitas">Consulta (V2)</a>
+                            @endcan
+                            @can('receita-list')
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modalreceita"
                                     style="cursor:pointer;">Pesquisar por receita</a>
-
-                                {{-- <a class="dropdown-item" href="{{ route('receita.index') }}">Consultar</a> --}}
                             @endcan
                             @can('receita-create')
                                 <a class="dropdown-item" href="{{ route('receita.create') }}">Cadastrar</a>
