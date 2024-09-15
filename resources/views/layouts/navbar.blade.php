@@ -155,12 +155,12 @@
                             @can('relatorio-list')
                                 <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/receitas">Relatórios V2</a>
                                 <a class="dropdown-item" href="{{ route('relatorio.index') }}" role="button">Relatórios</a>
-
+                                
                             @endcan
                             {{-- @can('entradas-list')
-                                    <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
+                            <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
                             @endcan --}}
-
+                            
                         </div>
                     </li>
                                            
@@ -174,18 +174,18 @@
                                 Forn. <span class="caret"></span>
                             </a>
                         @endcan
-
+                        
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('fornecedor-create')
                                 <a class="dropdown-item" href="{{ route('fornecedores.create') }}">Cadastrar</a>
-                            @endcan
-                            @can('fornecedor-list')
+                                @endcan
+                                @can('fornecedor-list')
                                 <a class="dropdown-item" href="{{ route('fornecedores.index') }}">Consultar</a>
-                            @endcan
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
+                                @endcan
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
                         @can('cliente-list')
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -195,7 +195,7 @@
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('cliente-create')
-                                <a class="dropdown-item" href="{{ route('clientes.create') }}">Cadastrar</a>
+                            <a class="dropdown-item" href="{{ route('clientes.create') }}">Cadastrar</a>
                             @endcan
                             @can('cliente-list')
                                 <a class="dropdown-item" href="{{ route('clientes.index') }}">Consultar</a>
@@ -205,41 +205,41 @@
 
                     <li class="nav-item dropdown">
                         @can('funcionario-list')
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Funcionários <span class="caret"></span>
-                            </a>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Funcionários <span class="caret"></span>
+                    </a>
+                    @endcan
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @can('funcionario-create')
+                        <a class="dropdown-item" href="{{ route('funcionarios.create') }}">Cadastrar</a>
                         @endcan
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @can('funcionario-create')
-                                <a class="dropdown-item" href="{{ route('funcionarios.create') }}">Cadastrar</a>
-                            @endcan
-                            @can('funcionario-list')
+                        @can('funcionario-list')
                                 <a class="dropdown-item" href="{{ route('funcionarios.index') }}">Consultar</a>
-                            @endcan
-                        </div>
-                    </li>
-
-                    @can('notasrecibos-list')
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Notas/Alíquotas <span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @can('notasrecibos-list')
-                                    <a class="dropdown-item" href="{{ route('notasrecibos.index') }}">Consultar
-                                        Notas/Recibos</a>
                                 @endcan
-
-                                @can('notasrecibos-list')
-                                    <a class="dropdown-item" href="{{ route('aliquotamensal.index') }}">Alíquotas Mensais</a>
-                                @endcan
-
                             </div>
                         </li>
-                    @endcan
+                        
+                        @can('notasrecibos-list')
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Notas/Alíquotas <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @can('notasrecibos-list')
+                            <a class="dropdown-item" href="{{ route('notasrecibos.index') }}">Consultar
+                                        Notas/Recibos</a>
+                                        @endcan
+                                        
+                                        @can('notasrecibos-list')
+                                        <a class="dropdown-item" href="{{ route('aliquotamensal.index') }}">Alíquotas Mensais</a>
+                                        @endcan
+
+                                    </div>
+                        </li>
+                        @endcan
 
 
                     <li class="nav-item dropdown">
@@ -248,40 +248,42 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Conf. <span class="caret"></span>
                             </a>
-                        @endcan
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @can('usuario-list')
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/settings">Configurações (V2)</a>
+                            
+                                @can('usuario-list')
                                 <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
-                            @endcan
-
-                            @can('banco-list')
+                                @endcan
+                                
+                                @can('banco-list')
                                 <a class="dropdown-item" href="{{ route('bancos.index') }}">Bancos</a>
-                            @endcan
+                                @endcan
 
-                            @can('formapagamento-list')
+                                @can('formapagamento-list')
                                 <a class="dropdown-item" href="{{ route('formapagamentos.index') }}">Formas de Pagamento</a>
-                            @endcan
-
-                            @can('conta-list')
+                                @endcan
+                                
+                                @can('conta-list')
                                 <a class="dropdown-item" href="{{ route('contas.index') }}">Contas</a>
                             @endcan
 
                             @can('codigodespesa-list')
-                                <a class="dropdown-item" href="{{ route('codigodespesas.index') }}">Código Despesas</a>
+                            <a class="dropdown-item" href="{{ route('codigodespesas.index') }}">Código Despesas</a>
                             @endcan
 
                             @can('role-list')
                                 <a class="dropdown-item" href="{{ route('roles.index') }}">Regras</a>
-                            @endcan
-
-                            @can('orgaorg-list')
+                                @endcan
+                                
+                                @can('orgaorg-list')
                                 <a class="dropdown-item" href="{{ route('orgaosrg.index') }}">Órgãos RG</a>
-                            @endcan
-
-                            @can('benspatrimoniais-list')
+                                @endcan
+                                
+                                @can('benspatrimoniais-list')
                                 <a class="dropdown-item" href="{{ route('products.index') }}">Tipo de Bens Patrimoniais</a>
+                                @endcan
+                            </div>
                             @endcan
-                        </div>
                     </li>
 
                     @can('benspatrimoniais-list')
