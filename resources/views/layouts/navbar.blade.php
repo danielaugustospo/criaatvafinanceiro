@@ -5,6 +5,51 @@
     @endif
 @endcan    
 >
+<script>
+    // Pega os dados da sessão do Laravel e os coloca no cookie
+    const userData = @json(session('userData'));
+    const token = @json(session('token')); // Se o token já for uma string, não precisa acessar ->token
+    const userPermissions = @json(session('userPermissions'));
+
+    // Verifica se a rota atual é "/login". Se for, não faz nada.
+    if (window.location.pathname === '/login') {
+        console.log('Bem-vindo a área de login.');
+    } else {
+        if (userData && token) {
+            // Verifica se o cookie 'userData' já está definido
+            if (!getCookie('userData')) {
+                document.cookie = `userData=${JSON.stringify(userData)}; path=/; domain=.danieltecnologia.com; secure; samesite=strict`;
+            }
+
+            if (!getCookie('token')) {
+                document.cookie = `token=${token}; path=/; domain=.danieltecnologia.com; secure; samesite=strict`;
+            }
+
+            if (!getCookie('userPermissions')) {
+                const compactPermissions = userPermissions.map(permission => permission.name);
+                document.cookie = `userPermissions=${JSON.stringify(compactPermissions)}; path=/; domain=.danieltecnologia.com; secure; samesite=strict`;
+            }
+
+            // console.log('Dados de sessão armazenados no cookie (se não já presentes):');
+            // console.log('UserData:', userData);
+            // console.log('Token:', token);
+            // console.log('UserPermissions:', userPermissions);
+        } else {
+            console.error('Erro: Dados de sessão ausentes');
+        }
+    }
+
+    // Função para pegar o valor do cookie
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+</script>
+
+
+
     @yield('nav')
     <div class="container" style="max-width: fit-content !important;">
         <a href="{{ route('home') }}" class="mr-3"> <i class="fas fa-home" style="color: white;"></i></a>
