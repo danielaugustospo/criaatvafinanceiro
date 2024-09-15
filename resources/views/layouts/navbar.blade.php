@@ -134,31 +134,36 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @can('receita-list')
                                 <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/receitas">Consulta (V2)</a>
-                            @endcan
-                            @can('receita-list')
+                                @endcan
+                                @can('receita-list')
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modalreceita"
-                                    style="cursor:pointer;">Pesquisar por receita</a>
-                            @endcan
-                            @can('receita-create')
+                                style="cursor:pointer;">Pesquisar por receita</a>
+                                @endcan
+                                @can('receita-create')
                                 <a class="dropdown-item" href="{{ route('receita.create') }}">Cadastrar</a>
-                            @endcan
-                        </div>
+                                @endcan
+                            </div>
                     </li>
-
-                    {{-- <a href="{{ url('https://v2devcriaatva.danieltecnologia.com/#/relatorios') }}">Relatórios V2</a> --}}
-                    <li class="nav-item ">
-                        @can('relatorio-list')
-                            <a class="nav-link" href="{{ route('relatorio.index') }}" role="button">
+                    <li class="nav-item dropdown">
+                        @can('receita-list')
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Relatórios <span class="caret"></span>
                             </a>
                         @endcan
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @can('entradas-list')
-                                <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
+                            @can('relatorio-list')
+                                <a class="dropdown-item" href="https://v2{{$_SERVER['SERVER_NAME']}}/receitas">Relatórios V2</a>
+                                <a class="dropdown-item" href="{{ route('relatorio.index') }}" role="button">Relatórios</a>
+
                             @endcan
+                            {{-- @can('entradas-list')
+                                    <a class="dropdown-item" href="{{ route('resumofinanceiro') }}">Resumo Financeiro</a>
+                            @endcan --}}
+
                         </div>
                     </li>
-                    
+                                           
                     @include('layouts/helpersview/navpedidocompra')
 
 
