@@ -205,7 +205,8 @@ class OrdemdeServicoController extends Controller
                     $valorReceitaReal = $totals->totalReceitaPorOS - $totals->totalDespesas;
 
                     // Formatação do valorReceitaReal
-                    $item->valorReceitaReal = number_format($valorReceitaReal, 2);
+                    // $item->valorReceitaReal = number_format($valorReceitaReal, 2);
+                    $item->valorReceitaReal         = FormatacoesServiceProvider::validaValoresParaView($valorReceitaReal);
 
                     // Cálculo do perLucro com duas casas decimais, garantindo que $item->valorOrdemdeServico seja um número
                     $valorOrdemdeServico = floatval($item->valorOrdemdeServico ?? 1); // Evita divisão por zero
